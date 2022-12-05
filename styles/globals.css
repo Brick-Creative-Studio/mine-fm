@@ -17,9 +17,21 @@
 
 }
 
+@font-face {
+  font-family: CamptonMedium;
+  src: url('../fonts/campton/CamptonMedium.otf');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
 
 html,
 body {
+  font-family: CamptonMedium, 'Helvetica', 'sans-serif'
+}
+
+h2 {
   font-family: CamptonBold, 'Helvetica', 'sans-serif'
 }
 
