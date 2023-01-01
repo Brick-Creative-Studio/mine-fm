@@ -8,6 +8,9 @@ import Image from 'next/image'
 
 const Nav = () => {
 
+    //TODO: Check if we have signer then return UI based on if value is present or not
+    //TODO: Add Search to NavBar
+    //TODO: Add gradient circle for profile image when connected
 
     return(
         <div className={NavBar}>

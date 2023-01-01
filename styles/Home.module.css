@@ -178,4 +178,21 @@
 
 }
 
+.exploreButton{
+  margin: 12px;
+  background-color: #FF9900;
+  border: none;
+  border-radius: 24px;
+  width: 80px;
+  color: white;
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100px;
+  height: 34px;
+  justify-content: space-around;
+  padding: 4;
+  align-items: center;
+
+}
+
 

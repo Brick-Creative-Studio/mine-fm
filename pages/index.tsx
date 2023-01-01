@@ -7,65 +7,12 @@ import SearchBar from '../components/SearchBar'
 import CollectionGrid from '../components/Collections'
 import { inputFocus, container, submitsearch, searchInput } from '../styles/SearchBar.css';
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+// export const getServerSideProps: GetServerSideProps = async (context) => {
 
-  try {
-    
-    const favoriteCollections = [
-      {
-        url: '/sample-cl-freddie.png', 
-        artist: 'Freddie Gibbs',
-        title: 'Alfredo'
-      }, 
-      {
-        url: '/sample-cl-jaquell.png', 
-        artist: 'Jaquell',
-        title: 'Exit Earth'
-      }, 
-      {
-        url: '/sample-cl-saba.png', 
-        artist: 'Saba',
-        title: 'Few Good Things'
-      }, 
-      {
-        url: '/sample-cl-sango.png', 
-        artist: 'Sango',
-        title: 'Deep End'
-      }, 
-      {
-        url: '/sample-cl-solange.png', 
-        artist: 'Solange',
-        title: 'When I Get Home'
-      }, 
-      {
-        url: '/sample-cl-ljune.png', 
-        artist: 'Larry June',
-        title: 'Spaceships on...'
-      }, 
-      {
-        url: '/sample-cl-alchemist.png', 
-        artist: 'Roc Marcian..',
-        title: 'Rubber Hand Gr..'
-      }, 
-      {
-        url: '/sample-cl-pusha.png', 
-        artist: 'Pusha T',
-        title: 'Neck and Wrist'
-      }, 
-      
-    ]
-    return {
-      props: {favoriteCollections}, // will be passed to the page component as props
-    }
-  } catch (e) {
-    console.log(e)
-    return {
-      notFound: true,
-    }
-  }
-  
-}
+// }
 
+
+//TODO: check signer to see if connected then render Buttons based on proper state
 export default function HomePage({favoriteCollections}: any) {
   return (
     <div className={styles.container}>
@@ -82,7 +29,10 @@ export default function HomePage({favoriteCollections}: any) {
           <Image src='/header-text-logo.png' width={515} height={232} />
         </div>
         <div className={styles.searchAndCreate}>
-          <SearchBar />
+        <button className={styles.exploreButton}>
+            <Image src={'/map-icon.png'} width={24} height={24} />
+            Explore
+          </button>
           <p> Or </p>
           <button className={styles.createButton}>
             <Image src={'/create-icon.png'} width={24} height={24} />
