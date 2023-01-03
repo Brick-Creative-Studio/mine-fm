@@ -1,11 +1,8 @@
-import type { NextPage, GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Nav from '../components/Layout/Nav'
-import SearchBar from '../components/SearchBar'
 import CollectionGrid from '../components/Collections'
-import { inputFocus, container, submitsearch, searchInput } from '../styles/SearchBar.css';
 
 // export const getServerSideProps: GetServerSideProps = async (context) => {
 

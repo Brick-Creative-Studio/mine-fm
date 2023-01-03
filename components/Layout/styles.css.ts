@@ -1,4 +1,4 @@
-import { keyframes, style } from '@vanilla-extract/css'
+import { style } from '@vanilla-extract/css'
 
 
 
@@ -63,6 +63,22 @@ export const navButtonRadio = style([
     }
 ])
 
+export const navCreate = style([
+    {
+        margin: 8,
+        borderRadius: 6,
+        color: '#EFE9DB',
+        fontSize: 16,
+        background: 'rgba(0, 0, 0, 0.2)',
+        height: 40,
+        width: 93.05,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+    }
+])
+
 export const navButtonMap = style([
     {
         margin: 8,
@@ -76,6 +92,18 @@ export const navButtonMap = style([
         color: '#EFE9DB',
         fontSize: 16,
         background: 'rgba(0, 0, 0, 0.2)'
+    }
+])
+
+export const navAvatar = style ([
+    {
+        margin: 8,
+        borderRadius: '50%',
+        width: 40,
+        height: 40,
+        display: 'flex', 
+        background: 'linear-gradient(180deg, #FFB200 0%, #FF2313 100%)'
+    
     }
 ])
 
