@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import { bodyGradient } from 'styles/gradient.css'
 import CollectionGrid from '../components/Collections'
 import { useLayoutStore } from 'stores'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
@@ -16,14 +17,14 @@ export default function HomePage({ favoriteCollections }: any) {
   console.log('home signer', signerAddress)
 
   return (
-    <div className={styles.container}>
+    <div >
       <Head>
         <title>Mine.FM</title>
         <meta name="description" content="Discover Music with a Community" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={styles.bodyGradient} />
+      <div className={bodyGradient} />
       <main className={styles.main}>
         <div className={styles.headerLogo}>
           <Image src='/logo-purple-header.png' width={515} height={232} />

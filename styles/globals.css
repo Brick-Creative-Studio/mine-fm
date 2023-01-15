@@ -28,7 +28,18 @@
 
 html,
 body {
-  font-family: CamptonMedium, 'Helvetica', 'sans-serif'
+  font-family: CamptonMedium, 'Helvetica', 'sans-serif';
+}
+
+.bodyGradient {
+  background: radial-gradient(167.15% 124.39% at 49.96% -38.05%, #E1C2FF 0%, #03AECF 45.83%, #8000FF 100%);
+  opacity: 0.55;
+  filter: blur(180.5px);
+  z-index: -1;
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  top: 208px;
 }
 
 h2 {
@@ -44,14 +55,37 @@ a {
   box-sizing: border-box;
 }
 
+footer {
+  display: flex;
+  padding: 2rem 0;
+  border-top: 1px solid #eaeaea;
+  color: #111;
+  font-family: 'Courier New', Courier, monospace;
+  margin-left: 18px;
+  margin-right: 18px;
+
+}
+
+footer a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
 
   body {
-    background: #000
+    background: #000;
+    margin: 0%;
+    padding: 0%;
+    
   }
+
 
   button {
     font-family: CamptonBold !important;

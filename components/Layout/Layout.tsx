@@ -4,6 +4,7 @@ import { useSigner } from 'wagmi'
 import { getProvider } from '../../utils/provider'
 import Nav from './Nav'
 import Footer from './Footer'
+import { flexContainer } from './styles.css'
 
 
 type Props = {
@@ -46,11 +47,11 @@ const Layout = ({ children }: Props) => {
   }
 
   return (
-    <>
+    <div className={flexContainer}>
     <Nav /> 
     <>{children}</>
     <Footer />
-    </>
+    </div>
   )
 }
 

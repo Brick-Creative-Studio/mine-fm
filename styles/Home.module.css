@@ -4,7 +4,6 @@
 
 .header{
   color: #C3F463;
-  margin-top: 1em;
   font-family: 'CamptonBold';
   padding: 1em;
 }
@@ -20,7 +19,6 @@
 
 .main {
   min-height: 100vh;
-  padding: 4rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -28,23 +26,6 @@
   align-items: center;
 }
 
-.footer {
-  display: flex;
-  flex: 1;
-  padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
-  justify-content: center;
-  align-items: center;
-  color: #111;
-  font-family: 'Courier New', Courier, monospace;
-}
-
-.footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-}
 
 .title a {
   color: #0070f3;
@@ -74,14 +55,7 @@
   font-size: 1.5rem;
 }
 
-.code {
-  background: #fafafa;
-  border-radius: 5px;
-  padding: 0.75rem;
-  font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
-}
+
 
 .grid {
   display: flex;
@@ -131,9 +105,6 @@
 
 @media (prefers-color-scheme: dark) {
   .card,
-  .footer {
-    border-color: #222;
-  }
   .code {
     background: #111;
   }
@@ -142,18 +113,7 @@
   }
 }
 
-.bodyGradient {
-  background: radial-gradient(167.15% 124.39% at 49.96% -38.05%, #E1C2FF 0%, #03AECF 45.83%, #8000FF 100%);
-  opacity: 0.55;
-  filter: blur(180.5px);
-  border-radius: 18px;
-  z-index: -1;
-  position: absolute;
-  width: 80%;
-  height: 80%;
-  top: 208px;
 
-}
 
 .searchAndCreate {
   display: flex;
