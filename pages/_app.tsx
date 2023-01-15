@@ -1,15 +1,16 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
+import '@rainbow-me/rainbowkit/styles.css'
 import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { WagmiConfig, chain, configureChains, createClient } from 'wagmi'
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
-import { publicProvider } from 'wagmi/providers/public'
+import Layout  from '../components/Layout/Layout'
+import { alchemyProvider } from 'wagmi/providers/alchemy'
 
 function MyApp({ Component, pageProps }: AppProps) {
 
   const { chains, provider } = configureChains(
     [
-      // chain.mainnet,
+      chain.mainnet,
       // chain.polygon,
       // chain.optimism,
       // chain.arbitrum,
@@ -17,13 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       chain.goerli,
     ],
     [
-      jsonRpcProvider({
-        priority: 0,
-        rpc: () => ({
-          http: process?.env?.ETH_RPC_URL || '',
-        }),
-      }),
-      publicProvider({ priority: 1 }),
+    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID })
     ]
   )
 
@@ -40,8 +35,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} initialChain={chain.goerli}>
+      <RainbowKitProvider chains={chains} initialChain={chain.mainnet}>
+      <Layout>
         <Component {...pageProps} />
+      </Layout>
       </RainbowKitProvider>
     </WagmiConfig>
   )

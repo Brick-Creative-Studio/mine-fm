@@ -1,25 +1,30 @@
 import React from 'react'
-import { NavBar, navButtonConnect, navActions, navButtonMap, navButtonRadio, navCreate, navAvatar } from './styles.css'
+import { NavBar, navConnect, navActions, navButtonMap, navButtonRadio, navCreate, navAvatar } from './styles.css'
 import Image from 'next/image'
+import { useLayoutStore } from 'stores'
+import Link from 'next/link'
 
 
 
 const Nav = () => {
         //TODO: Check if we have signer then return UI based on if value is present or not
-    const signer = 55
+    const signerAddress = useLayoutStore((state) => state.signerAddress)
 
     //TODO: Add Search to NavBar
     //TODO: Add gradient circle for profile image when connected
 
-
     return (
-        signer ? (
+        signerAddress ? (
             <div className={NavBar}>
                 <div>
+                    <Link 
+                    key={'home'}
+                    href={'./'}>
                     <img
                         src={'/mine-text-logo-goblin.png'}
                         alt={'minefm-logo'}
                     />
+                    </Link>
                 </div>
                 <div>
 
@@ -34,11 +39,14 @@ const Nav = () => {
                         <Image src={'/map-icon.png'} width={24} height={24} />
                         Map
                     </button>
+                    <Link
+                        key={'create'}
+                        href={'./create'}>
                     <button className={navCreate} >
                         <Image src={'/create-icon.png'} width={24} height={24} />
                         Create
                     </button>
-
+                    </Link>
                     <button className={navAvatar} />
                       
                 </div>
@@ -57,7 +65,7 @@ const Nav = () => {
 
                 <div className={navActions}>
 
-                    <button className={navButtonConnect} >
+                    <button className={navConnect} >
                         <Image src={'/wallet-icon.png'} width={24} height={24} />
                         Connect Wallet
                     </button>

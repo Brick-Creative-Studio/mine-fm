@@ -29,7 +29,7 @@ export const navActions = style([
     }
 ])
 
-export const navButtonConnect = style([
+export const navConnect = style([
     {
         margin: 8,
         borderRadius: 6,

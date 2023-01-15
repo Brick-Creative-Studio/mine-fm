@@ -2,9 +2,12 @@ import React from 'react'
 import { useLayoutStore } from '../../stores/index'
 import { useSigner } from 'wagmi'
 import { getProvider } from '../../utils/provider'
+import Nav from './Nav'
+import Footer from './Footer'
+
 
 type Props = {
-  children: JSX.Element
+  children: JSX.Element | null 
 }
 
 const Layout = ({ children }: Props) => {
@@ -41,6 +44,14 @@ const Layout = ({ children }: Props) => {
   const handleResize = () => {
     setIsMobile(window.innerWidth <= 768)
   }
+
+  return (
+    <>
+    <Nav /> 
+    <>{children}</>
+    <Footer />
+    </>
+  )
 }
 
 export default Layout
