@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavBar, navConnect, navActions, navButtonMap, navButtonRadio, navCreate, navAvatar } from './styles.css'
+import { NavBar, navConnect, navActions, navButtonMap, navButtonRadio, navCreate, navAvatar, navLogo } from './styles.css'
 import Image from 'next/image'
 import { useLayoutStore } from 'stores'
 import Link from 'next/link'
@@ -16,13 +16,14 @@ const Nav = () => {
     return (
         signerAddress ? (
             <div className={NavBar}>
-                <div>
+                <div className={navLogo}>
                     <Link 
                     key={'home'}
                     href={'./'}>
                     <img
-                        src={'/mine-text-logo-goblin.png'}
+                        src={'/icon-white-small.png'}
                         alt={'minefm-logo'}
+                       
                     />
                     </Link>
                 </div>

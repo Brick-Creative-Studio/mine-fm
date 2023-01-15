@@ -107,3 +107,8 @@ export const navAvatar = style ([
     }
 ])
 
+export const navLogo = style ([
+    {
+        alignSelf: 'center'
+    }
+])

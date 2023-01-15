@@ -26,7 +26,7 @@ export default function HomePage({ favoriteCollections }: any) {
       <div className={styles.bodyGradient} />
       <main className={styles.main}>
         <div className={styles.headerLogo}>
-          <Image src='/header-text-logo.png' width={515} height={232} />
+          <Image src='/logo-purple-header.png' width={515} height={232} />
         </div>
         {signerAddress ? (
           <>
