@@ -1,24 +1,24 @@
 import React  from 'react'
 import Image from 'next/image'
+import styles from './Collection.module.css'
 
 
-
-export const CollectionSquare: React.FC<{ collectionData: { url: string, artist: string, ore: string }}> = ({
+export const CollectionSquare: React.FC<{ collectionData: { url: string, artist: string, title: string }}> = ({
      collectionData
     }) => {
 
 
     return (
-        <div>
+        <div className={styles.collection}>
            {
            collectionData && (
             <>
-           <Image src={ collectionData.url } width={195} height={195}/>
+           <Image src={ collectionData.url } width={125} height={125}/>
            <div>
             {collectionData.artist}
             </div>
             <div>
-            {collectionData.ore}
+            {collectionData.title}
             </div>
             </>
             )}

@@ -1,57 +1,65 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import Nav from '../components/Layout/Nav'
-import SearchBar from '../components/SearchBar'
-import { inputFocus, container, submitsearch, searchInput } from '../styles/SearchBar.css';
+import { bodyGradient } from 'styles/gradient.css'
+import CollectionGrid from '../components/Collections'
+import { useLayoutStore } from 'stores'
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import Link from 'next/link'
 
 
-const Home: NextPage = () => {
+
+//TODO: check signer to see if connected then render Buttons based on proper state
+export default function HomePage({ favoriteCollections }: any) {
+
+  const signerAddress = useLayoutStore((state) => state.signerAddress)
+  // const signerAddress = null
+  console.log('home signer', signerAddress)
+
   return (
-    <div className={styles.container}>
+    <div >
       <Head>
         <title>Mine.FM</title>
         <meta name="description" content="Discover Music with a Community" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
-      <div className={styles.bodyGradient}/>
+
+      <div className={bodyGradient} />
       <main className={styles.main}>
-       <Nav/>
-       <div className={styles.headerLogo}>
-      <Image src='/header-text-logo.png'  width={515} height={232}/>
-      </div>
-      <div className={styles.searchAndCreate}>
-      <SearchBar/>
-      <p> Or </p>
-      <button className={styles.createButton}> 
-      <Image src={'/create-icon.png'} width={24} height={24} /> 
-      Create 
-      </button>
-      </div>
-      <div>
-        <h1 className={styles.header}> Collections You Like to Listen To </h1>
-      </div>
-      
+        <div className={styles.headerLogo}>
+          <Image src='/logo-purple-header.png' width={515} height={232} />
+        </div>
+        {signerAddress ? (
+          <>
+            <div className={styles.searchAndCreate}>
+              <button className={styles.exploreButton}>
+                <Image src={'/map-icon.png'} width={24} height={24} />
+                Explore
+              </button>
+              <p> Or </p>
+              <Link 
+                key={'create'}
+                href={'./create'}
+                >
+              <button className={styles.createButton}>
+           
+                <Image src={'/create-icon.png'} width={24} height={24} />
+                Create
+               
+              </button>
+              </Link>
+            </div>
+            <div>
+              <h1 className={styles.header}> Collections You Like to Listen To </h1>
+            </div>
+            <div>
+              <CollectionGrid collectionData={favoriteCollections} />
+            </div>
+          </>
+        ) : <ConnectButton />
+        }
 
-      
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="brickxstudio.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          A Brick Studio Product{' '}
-          <span className={styles.logo}>
-            <Image src="/BrckStd_BS-logo-Black.svg" alt="Brick Studio Logo" width={42} height={42} />
-          </span>
-        </a>
-      </footer>
     </div>
   )
 }
-
-export default Home
