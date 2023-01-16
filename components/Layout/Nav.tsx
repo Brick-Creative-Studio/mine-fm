@@ -3,6 +3,7 @@ import { NavBar, navConnect, navActions, navButtonMap, navButtonRadio, navCreate
 import Image from 'next/image'
 import { useLayoutStore } from 'stores'
 import Link from 'next/link'
+import NavMenu from './NavMenu'
 
 
 
@@ -48,7 +49,7 @@ const Nav = () => {
                         Create
                     </button>
                     </Link>
-                    <button className={navAvatar} />
+                    <NavMenu />
                       
                 </div>
             </div>

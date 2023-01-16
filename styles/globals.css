@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url('https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@400;900&display=swap');
 
 
@@ -58,8 +62,7 @@ a {
 footer {
   display: flex;
   padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
-  color: #111;
+  border-top: 1px solid gray;
   font-family: 'Courier New', Courier, monospace;
   margin-left: 18px;
   margin-right: 18px;
@@ -70,6 +73,7 @@ footer a {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: grey;
   flex-grow: 1;
 }
 
