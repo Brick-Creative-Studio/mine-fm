@@ -12,7 +12,7 @@ const CollectionGrid: React.FC<{ collectionData: { url: string, artist: string, 
         
         <div  className={styles.grid}>
             {collectionData?.map((item, key) => (
-                <CollectionSquare collectionData={item} />
+                <CollectionSquare collectionData={item} key={key} />
 
             ))}
         </div>
