@@ -13,9 +13,8 @@ import Link from 'next/link'
 export default function HomePage({ favoriteCollections }: any) {
 
   const signerAddress = useLayoutStore((state) => state.signerAddress)
-  // const signerAddress = null
-  console.log('home signer', signerAddress)
 
+  
   return (
     <div >
       <Head>

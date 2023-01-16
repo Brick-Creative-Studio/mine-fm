@@ -4,6 +4,8 @@ import Image from 'next/image'
 import { useLayoutStore } from 'stores'
 import Link from 'next/link'
 import NavMenu from './NavMenu'
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+
 
 
 
@@ -12,7 +14,6 @@ const Nav = () => {
     const signerAddress = useLayoutStore((state) => state.signerAddress)
 
     //TODO: Add Search to NavBar
-    //TODO: Add gradient circle for profile image when connected
 
     return (
         signerAddress ? (
@@ -33,14 +34,6 @@ const Nav = () => {
                 </div>
 
                 <div className={navActions}>
-                    <button className={navButtonRadio}>
-                        <Image src={'/radio-icon.png'} width={24} height={24} />
-                        Radio
-                    </button>
-                    <button className={navButtonMap}>
-                        <Image src={'/map-icon.png'} width={24} height={24} />
-                        Map
-                    </button>
                     <Link
                         key={'create'}
                         href={'./create'}>
@@ -57,7 +50,7 @@ const Nav = () => {
             <div className={NavBar}>
                 <div>
                     <img
-                        src={'/mine-text-logo-goblin.png'}
+                        src={'/icon-white-small.png'}
                         alt={'minefm-logo'}
                     />
                 </div>
@@ -67,10 +60,7 @@ const Nav = () => {
 
                 <div className={navActions}>
 
-                    <button className={navConnect} >
-                        <Image src={'/wallet-icon.png'} width={24} height={24} />
-                        Connect Wallet
-                    </button>
+                   <ConnectButton/>
 
                     <img />
                 </div>

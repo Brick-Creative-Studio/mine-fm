@@ -15,6 +15,7 @@
   width: 515px;
   height: 232px;
   filter: drop-shadow(2px 6px 31px rgba(0, 0, 0, 0.46));
+ 
 }
 
 .main {
@@ -101,6 +102,17 @@
     width: 100%;
     flex-direction: column;
   }
+
+  .headerLogo {
+    align-self: center;
+    margin: 32px;
+    margin-top: 6em;
+    width: 340px;
+    height: 180px;
+    filter: drop-shadow(2px 6px 31px rgba(0, 0, 0, 0.46));
+    z-index: -1;
+  }
+
 }
 
 @media (prefers-color-scheme: dark) {

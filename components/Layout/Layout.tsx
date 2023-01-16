@@ -16,6 +16,8 @@ const Layout = ({ children }: Props) => {
   const { setSigner, setProvider, setSignerAddress } = useLayoutStore()
   const { setIsMobile } = useLayoutStore()
 
+  //TODO: Server side props to retrieve 
+
   /*
 
     store signer, signerAddress and provider is store
@@ -28,8 +30,10 @@ const Layout = ({ children }: Props) => {
       setSigner(signer)
       //@ts-ignore
       setSignerAddress(signer?._address)
+      console.log('provider reset', signer?.provider)
+      console.log('signer reset', signer)
     }
-  }, [status, signer, setProvider, setProvider])
+  }, [status, signer])
 
   /*
 
