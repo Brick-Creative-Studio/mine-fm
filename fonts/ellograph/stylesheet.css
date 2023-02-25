@@ -1,0 +1,192 @@
+@font-face {
+    font-family: 'Ellograph CF';
+    src: url('EllographCF-Light.eot');
+    src: local('Ellograph CF Light'), local('EllographCF-Light'),
+        url('EllographCF-Light.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-Light.woff2') format('woff2'),
+        url('EllographCF-Light.woff') format('woff'),
+        url('EllographCF-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ellograph CF Extra';
+    src: url('EllographCF-ExtraLightItalic.eot');
+    src: local('Ellograph CF Extra Light Italic'), local('EllographCF-ExtraLightItalic'),
+        url('EllographCF-ExtraLightItalic.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-ExtraLightItalic.woff2') format('woff2'),
+        url('EllographCF-ExtraLightItalic.woff') format('woff'),
+        url('EllographCF-ExtraLightItalic.ttf') format('truetype');
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Ellograph CF';
+    src: url('EllographCF-BoldItalic.eot');
+    src: local('Ellograph CF Bold Italic'), local('EllographCF-BoldItalic'),
+        url('EllographCF-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-BoldItalic.woff2') format('woff2'),
+        url('EllographCF-BoldItalic.woff') format('woff'),
+        url('EllographCF-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Ellograph CF';
+    src: url('EllographCF-LightItalic.eot');
+    src: local('Ellograph CF Light Italic'), local('EllographCF-LightItalic'),
+        url('EllographCF-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-LightItalic.woff2') format('woff2'),
+        url('EllographCF-LightItalic.woff') format('woff'),
+        url('EllographCF-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Ellograph CF Demi';
+    src: url('EllographCF-DemiBold.eot');
+    src: local('Ellograph CF Demi Bold'), local('EllographCF-DemiBold'),
+        url('EllographCF-DemiBold.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-DemiBold.woff2') format('woff2'),
+        url('EllographCF-DemiBold.woff') format('woff'),
+        url('EllographCF-DemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ellograph CF Demi';
+    src: url('EllographCF-DemiBoldItalic.eot');
+    src: local('Ellograph CF Demi Bold Italic'), local('EllographCF-DemiBoldItalic'),
+        url('EllographCF-DemiBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-DemiBoldItalic.woff2') format('woff2'),
+        url('EllographCF-DemiBoldItalic.woff') format('woff'),
+        url('EllographCF-DemiBoldItalic.ttf') format('truetype');
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Ellograph CF';
+    src: url('EllographCF-Heavy.eot');
+    src: local('Ellograph CF Heavy'), local('EllographCF-Heavy'),
+        url('EllographCF-Heavy.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-Heavy.woff2') format('woff2'),
+        url('EllographCF-Heavy.woff') format('woff'),
+        url('EllographCF-Heavy.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ellograph CF';
+    src: url('EllographCF-Bold.eot');
+    src: local('Ellograph CF Bold'), local('EllographCF-Bold'),
+        url('EllographCF-Bold.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-Bold.woff2') format('woff2'),
+        url('EllographCF-Bold.woff') format('woff'),
+        url('EllographCF-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ellograph CF';
+    src: url('EllographCF-ThinItalic.eot');
+    src: local('Ellograph CF Thin Italic'), local('EllographCF-ThinItalic'),
+        url('EllographCF-ThinItalic.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-ThinItalic.woff2') format('woff2'),
+        url('EllographCF-ThinItalic.woff') format('woff'),
+        url('EllographCF-ThinItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Ellograph CF Extra';
+    src: url('EllographCF-ExtraBold.eot');
+    src: local('Ellograph CF Extra Bold'), local('EllographCF-ExtraBold'),
+        url('EllographCF-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-ExtraBold.woff2') format('woff2'),
+        url('EllographCF-ExtraBold.woff') format('woff'),
+        url('EllographCF-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ellograph CF Extra';
+    src: url('EllographCF-ExtraBoldItalic.eot');
+    src: local('Ellograph CF Extra Bold Italic'), local('EllographCF-ExtraBoldItalic'),
+        url('EllographCF-ExtraBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-ExtraBoldItalic.woff2') format('woff2'),
+        url('EllographCF-ExtraBoldItalic.woff') format('woff'),
+        url('EllographCF-ExtraBoldItalic.ttf') format('truetype');
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Ellograph CF Extra';
+    src: url('EllographCF-ExtraLight.eot');
+    src: local('Ellograph CF Extra Light'), local('EllographCF-ExtraLight'),
+        url('EllographCF-ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-ExtraLight.woff2') format('woff2'),
+        url('EllographCF-ExtraLight.woff') format('woff'),
+        url('EllographCF-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ellograph CF';
+    src: url('EllographCF-Thin.eot');
+    src: local('Ellograph CF Thin'), local('EllographCF-Thin'),
+        url('EllographCF-Thin.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-Thin.woff2') format('woff2'),
+        url('EllographCF-Thin.woff') format('woff'),
+        url('EllographCF-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ellograph CF';
+    src: url('EllographCF-HeavyItalic.eot');
+    src: local('Ellograph CF Heavy Italic'), local('EllographCF-HeavyItalic'),
+        url('EllographCF-HeavyItalic.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-HeavyItalic.woff2') format('woff2'),
+        url('EllographCF-HeavyItalic.woff') format('woff'),
+        url('EllographCF-HeavyItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Ellograph CF';
+    src: url('EllographCF-RegularItalic.eot');
+    src: local('Ellograph CF Italic'), local('EllographCF-RegularItalic'),
+        url('EllographCF-RegularItalic.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-RegularItalic.woff2') format('woff2'),
+        url('EllographCF-RegularItalic.woff') format('woff'),
+        url('EllographCF-RegularItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Ellograph CF';
+    src: url('EllographCF-Regular.eot');
+    src: local('Ellograph CF'), local('EllographCF-Regular'),
+        url('EllographCF-Regular.eot?#iefix') format('embedded-opentype'),
+        url('EllographCF-Regular.woff2') format('woff2'),
+        url('EllographCF-Regular.woff') format('woff'),
+        url('EllographCF-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+

@@ -127,7 +127,7 @@
 
 
 
-.searchAndCreate {
+.exploreAndCreate {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -135,48 +135,32 @@
 
 .createButton{
   margin: 12px;
-  background-color: #52B8CE;
+  background-color: rgba( 255, 153, 0, 0.7)	;
   border: none;
-  border-radius: 24px;
-  width: 80px;
+  border-radius: 12px;
   color: white;
   display: flex;
   flex-direction: row-reverse;
-  width: 100px;
-  height: 34px;
-  justify-content: space-around;
-  padding: 4;
+  width: 148px;
+  height: 42px;
+  justify-content: center;
   align-items: center;
+  cursor: pointer;
 
 }
 
 .exploreButton{
   margin: 12px;
-  background-color: #FF9900;
+  background-color: rgba( 62, 92, 118, 0.7)	;
   border: none;
-  border-radius: 24px;
+  border-radius: 12px;
   color: white;
   display: flex;
   flex-direction: row-reverse;
-  width: 100px;
-  height: 34px;
-  justify-content: space-around;
-  padding: 4;
-  align-items: center;
-
-}
-
-.connectButton{
-  margin: 12px;
-  background-color: #000;
-  border-radius: 24px;
-  color: white;
-  display: flex;
-  height: 40px;
-  width: 166.1px;
-  padding: 4;
-  align-items: center;
+  width: 148px;
+  height: 42px;
   justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
 }
-
-

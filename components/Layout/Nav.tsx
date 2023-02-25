@@ -1,45 +1,58 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavBar, navConnect, navActions, navButtonMap, navButtonRadio, navCreate, navAvatar, navLogo } from './styles.css'
 import Image from 'next/image'
-import { useLayoutStore } from 'stores'
 import Link from 'next/link'
 import NavMenu from './NavMenu'
+import { useIsMounted } from '../../hooks/useMounted'
+import { useAccount } from 'wagmi'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useLayoutStore } from 'stores'
+
 
 
 
 
 const Nav = () => {
         //TODO: Check if we have signer then return UI based on if value is present or not
-    const signerAddress = useLayoutStore((state) => state.signerAddress)
-
-    //TODO: Add Search to NavBar
+        const isMounted = useIsMounted()
+        const { address } = useAccount({
+            onDisconnect() {
+              console.log('Disconnected')
+            },
+            onConnect({ address, connector, isReconnected }) {
+                console.log('Connected', { address, connector, isReconnected })
+              },
+          })
+        
+        useEffect(() => {
+            console.log('nav here', address )
+        },[] )
+        
+    
 
     return (
-        signerAddress ? (
+        isMounted && address ? (
             <div className={NavBar}>
                 <div className={navLogo}>
                     <Link 
                     key={'home'}
-                    href={'./'}>
-                    <img
-                        src={'/icon-white-small.png'}
+                    href={'/'}>
+                    <Image
+                        src={'/mine-boxLogo-icon.svg'}
                         alt={'minefm-logo'}
-                       
+                        width={48}
+                        height={48}
+                        color={'#FFF'}
                     />
                     </Link>
-                </div>
-                <div>
-
                 </div>
 
                 <div className={navActions}>
                     <Link
                         key={'create'}
-                        href={'./create'}>
+                        href={'/create'}>
                     <button className={navCreate} >
-                        <Image src={'/create-icon.png'} width={24} height={24} />
-                        Create
+                        <Image src={'/boulder.svg'} alt="create button" width={24} height={24} />
                     </button>
                     </Link>
                     <NavMenu />
@@ -48,12 +61,19 @@ const Nav = () => {
             </div>
         ) :
             <div className={NavBar}>
-                <div>
-                    <img
+                <div className={navLogo}>
+                    <Link 
+                    key={'home'}
+                    href={'/'}>
+                    <Image
                         src={'/icon-white-small.png'}
                         alt={'minefm-logo'}
+                        width={24} 
+                        height={24}
                     />
+                    </Link>
                 </div>
+
                 <div>
 
                 </div>
@@ -62,7 +82,6 @@ const Nav = () => {
 
                    <ConnectButton/>
 
-                    <img />
                 </div>
             </div>
     )

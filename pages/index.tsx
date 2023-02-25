@@ -1,18 +1,22 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { bodyGradient } from 'styles/gradient.css'
-import CollectionGrid from '../components/Collections'
 import { useLayoutStore } from 'stores'
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Link from 'next/link'
+import { useIsMounted } from 'hooks/useMounted'
+import { useAccount } from 'wagmi'
+
 
 
 
 //TODO: check signer to see if connected then render Buttons based on proper state
 export default function HomePage({ favoriteCollections }: any) {
 
-  const signerAddress = useLayoutStore((state) => state.signerAddress)
+  // const { setSigner, setSignerAddress, signer, signerAddress } = useLayoutStore()
+
+
+  const isMounted = useIsMounted()
+  const { isConnected } = useAccount()
 
   
   return (
@@ -23,40 +27,36 @@ export default function HomePage({ favoriteCollections }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={bodyGradient} />
       <main className={styles.main}>
         <div className={styles.headerLogo}>
-          <Image src='/logo-purple-header.png' width={515} height={232} />
+          <Image src='/logo-purple-header.png' alt='mine-header-logo' width={515} height={232} />
         </div>
-        {signerAddress ? (
+        {isMounted && (
           <>
-            <div className={styles.searchAndCreate}>
-              <button className={styles.exploreButton}>
-                <Image src={'/map-icon.png'} width={24} height={24} />
-                Explore
-              </button>
-              <p> Or </p>
-              <Link 
-                key={'create'}
-                href={'./create'}
-                >
+            <div className={styles.exploreAndCreate}>
+              <Link
+              href={'/create'}
+              >
               <button className={styles.createButton}>
-           
-                <Image src={'/create-icon.png'} width={24} height={24} />
-                Create
-               
+                <Image src={'/boulder.svg'} className="m-4"  alt='create button'  width={28} height={28} />
+                <h2 className='mr-2'>Create</h2>
               </button>
               </Link>
+
+              <Link
+              href={'/explore'}
+              >
+              <button className={styles.exploreButton}>
+                <Image src={'/shovel.svg'} className="m-4"  alt='explore button'  width={28} height={28} />
+                <h2 className='mr-2'>Explore</h2>
+              </button>
+              </Link>
+            
             </div>
             <div>
-              <h1 className={styles.header}> Collections You Like to Listen To </h1>
-            </div>
-            <div>
-              <CollectionGrid collectionData={favoriteCollections} />
             </div>
           </>
-        ) : <ConnectButton />
-        }
+        )}
 
       </main>
     </div>

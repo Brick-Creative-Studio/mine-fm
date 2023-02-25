@@ -20,7 +20,7 @@ export const NavBar = style([
         justifyContent : 'space-between',
         width: '100%',
         padding: '20px 32px',
-        background: '#5D2E8C', 
+        background: 'rgba(93, 46, 140, .5)', 
         '@media': {
             '(max-width: 768px)': {
                 padding: '10px 32px',
@@ -80,11 +80,12 @@ export const navCreate = style([
         fontSize: 16,
         background: 'rgba(0, 0, 0, 0.2)',
         height: 40,
-        width: 93.05,
+        width: 60,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
+        cursor: 'pointer'
     }
 ])
 
@@ -111,7 +112,9 @@ export const navAvatar = style ([
         width: 40,
         height: 40,
         display: 'flex', 
-        background: 'linear-gradient(180deg, #FFB200 0%, #FF2313 100%)'
+        background: 'linear-gradient(180deg, #FFB200 0%, #FF2313 100%)',
+        cursor: 'pointer'
+
     
     }
 ])

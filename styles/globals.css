@@ -30,9 +30,73 @@
 }
 
 
+/* EllographCF Font*/
+@font-face {
+  font-family: EllographCF;
+  font-weight: normal;
+  font-style: normal;
+  src: url('../fonts/ellograph/EllographCF-Regular.woff') format('woff');
+}
+
+
+@font-face {
+  font-family: EllographCF-Bold;
+  font-weight: bold;
+  font-style: normal;
+  src: url('../fonts/ellograph/EllographCF-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: EllographCF-Light;
+  font-weight: lighter;
+  font-style: normal;
+  src: url('../fonts/ellograph/EllographCF-Thin.woff') format('woff');
+}
+
+
+
+/* Carbon Font*/
+@font-face {
+  font-family: 'T.26 Carbon';
+  font-weight: normal;
+  font-style: normal;
+  src: url('../fonts/carbon/CARBONRegular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'T.26 Carbon Light';
+  font-weight: lighter;
+  font-style: normal;
+  src: url('../fonts/carbon/CARBONThin.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'T.26 Carbon Bold';
+  font-weight: bold;
+  font-style: normal;
+  src: url('../fonts/carbon/CARBONBold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'T.26 Carbon Italic';
+  font-weight: normal;
+  font-style: italic;
+  src: url('../fonts/carbon/CARBONRegularItalic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'T.26 Carbon Light-Italic';
+  font-weight: lighter;
+  font-style: italic;
+  src: url('../fonts/carbon/CARBONThinItalic.woff') format('woff');
+}
+
+
+
+
 html,
 body {
-  font-family: CamptonMedium, 'Helvetica', 'sans-serif';
+  font-family: 'T.26 Carbon Bold', 'Helvetica', 'sans-serif';
 }
 
 .bodyGradient {
@@ -47,7 +111,7 @@ body {
 }
 
 h2 {
-  font-family: CamptonBold, 'Helvetica', 'sans-serif'
+  font-family: EllographCF, 'Helvetica', 'sans-serif'
 }
 
 a {
@@ -92,7 +156,7 @@ footer a {
 
 
   button {
-    font-family: CamptonBold !important;
+    font-family: EllographCF-Bold !important;
     border: none;
 
   }

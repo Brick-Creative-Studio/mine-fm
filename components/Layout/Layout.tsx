@@ -4,6 +4,8 @@ import { useSigner } from 'wagmi'
 import { getProvider } from '../../utils/provider'
 import Nav from './Nav'
 import Footer from './Footer'
+import { bodyGradient } from 'styles/gradient.css'
+
 import { flexContainer } from './styles.css'
 
 
@@ -13,11 +15,8 @@ type Props = {
 
 const Layout = ({ children }: Props) => {
   const { data: signer, status } = useSigner()
-  const { setSigner, setProvider, setSignerAddress } = useLayoutStore()
+  const { setSigner, setSignerAddress, signerAddress } = useLayoutStore()
   const { setIsMobile } = useLayoutStore()
-
-  //TODO: Server side props to retrieve 
-
   /*
 
     store signer, signerAddress and provider is store
@@ -26,14 +25,14 @@ const Layout = ({ children }: Props) => {
 
   React.useEffect(() => {
     if (status === 'success') {
-      setProvider(signer?.provider ?? getProvider())
+      // setProvider(signer?.provider ?? getProvider())
       setSigner(signer)
       //@ts-ignore
       setSignerAddress(signer?._address)
-      console.log('provider reset', signer?.provider)
-      console.log('signer reset', signer)
+      console.log('layout address', signerAddress)
+      console.log('layout signer', signer)
     }
-  }, [status, signer])
+  }, [status, signer, signerAddress])
 
   /*
 
@@ -53,7 +52,11 @@ const Layout = ({ children }: Props) => {
   return (
     <div className={flexContainer}>
     <Nav /> 
-    <>{children}</>
+    <>
+    <div className={bodyGradient} />
+
+    {children}
+    </>
     <Footer />
     </div>
   )

@@ -14,7 +14,6 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "sourceMap": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

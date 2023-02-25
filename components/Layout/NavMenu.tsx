@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { navAvatar } from './styles.css'
 import { useDisconnect } from 'wagmi'
-import { useLayoutStore } from 'stores'
 import { Menu } from '@headlessui/react'
+import { useLayoutStore } from 'stores'
 
 
 
 
 
-const NavMenu: React.FC<{}> = () => {
 
-    const { signerAddress, setSignerAddress} = useLayoutStore()
+const NavMenu: React.FC<{}> = ({}) => {
+
     const { disconnect } = useDisconnect()
+    const { signerAddress } = useLayoutStore()
 
-
-    useEffect(() => {
-        
-    }),[signerAddress]
 
     return (
         <div className=''>
@@ -40,7 +37,7 @@ const NavMenu: React.FC<{}> = () => {
                         {({ active }) => (
                             <a
                                 className={`${active && 'bg-blue-500'}`}
-                                href="/account-settings"
+                                href={`/profile/${signerAddress}`}
                             >
                                 Profile
                             </a>
@@ -49,7 +46,7 @@ const NavMenu: React.FC<{}> = () => {
                     <Menu.Item>
                         <button 
                             className='rounded p-2 bg-black w-32 h-18'
-                            onClick={() => disconnect()}
+                            onClick={() => {disconnect()}}
                             >
                              Disconnect
                          </button>
