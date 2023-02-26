@@ -10,7 +10,7 @@ export const bodyGradient = style([
         zIndex: -1,
         position: 'absolute',
         width: '80%',
-        height: '80%',
+        height: '100%',
         top: '208px'
        
     }

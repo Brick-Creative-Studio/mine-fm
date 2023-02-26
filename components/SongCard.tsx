@@ -12,6 +12,7 @@ export const SongCard = () => {
                 width={240}
                 height={240}
                 src={coverArt}
+                alt="cover art"
                 className='rounded-lg'
                 />
                 </div>
