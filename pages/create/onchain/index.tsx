@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import SongForm from 'modules/onchain/forms/SongForm'
+import SongForm from 'pages/create/onchain/SongForm'
 
 
 const Create: React.FC = () => {

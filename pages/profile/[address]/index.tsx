@@ -9,17 +9,18 @@ import { SongCard } from "components/SongCard";
 export default function Profile ({}) {
 
     return(
-        <div className="flex flex-col mt-32 mb-auto mx-12 border-solid border-white p-4">
-            <div className={bodyGradient} />
+        <div className="flex flex-col mt-32 mb-auto mx-12">
 
-            <div>
+            <div className="flex">
+                <div className="w-11/12 bg-gradient-to-r from-purple-500 to-pink-500 h-32 absolute rounded-lg z-0"/>
                 <Image 
-                className="bg-white rounded-full"
+                className="bg-white rounded-full ml-4 z-10"
                 src={testAvi}
-                width={86}
-                height={86}
+                width={140}
+                height={140}
                 alt='avatar'
                 />
+                <h1 className="z-20 mx-8"> Blobitty Blah</h1>
             </div>
             <div>
                 <h2> Bio </h2>
@@ -34,17 +35,12 @@ export default function Profile ({}) {
 
                 <div className='w-inherite border border-white opacity-10 border-solid -mt-3'></div>
 
-            <div className="self-center">
-                <h2> Search Bar </h2>
-            </div>
+            
 
-            <div className="flex flex-row border-solid border-orange-700 w-full">
+            <div className="flex flex-row w-full">
                 <div className="mr-32 ml-4">
-                    <h2> Sort Filters </h2>
                 </div>
-                
-                <SongCard/>
-                
+                                
             </div>
         </div>
     )

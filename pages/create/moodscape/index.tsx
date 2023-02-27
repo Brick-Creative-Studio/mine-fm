@@ -1,25 +1,23 @@
 import React from "react";
-
+import Head from "next/head";
+import MoodScapeForm from "components/moodscape/form/MSForm";
 
 export default function Moodscape() {
 
 
     return (
-        <div className="flex flex-row justify-center h-full items-center m-auto">
-        
-        <div>
-            <h2>
-                
-            </h2>
+        <div className='flex w-full px-8 '>
+        <Head>
+            <title> Make a Mood IRL </title>
+            <meta name="description" content="Create Your Sound" />
+            <meta property="og:url" content={`https://mine.fm/create}`} />
 
-        </div>
+            <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-        <div className="h-80 w-[0.5px]	bg-white "/>
+    <MoodScapeForm/>
 
-        <div>
-
-        </div>
-
-        </div>
+      
+    </div>
     )
 }
