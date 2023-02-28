@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 
-
 export const MSCard = () => {
 
     return (
@@ -34,7 +33,7 @@ export const MSCard = () => {
 
                 <div className="flex flex-row justify-evenly mt-2">
 
-                <div className=" bg-gradient-to-r from-red-400 to-amber-300 px-2 rounded-lg flex flex-col justify-center items-center">
+                <div className="bg-gradient-to-r from-red-400 to-amber-300 px-2 rounded-lg flex flex-col justify-center items-center">
                     <p className="text-black" > Mood </p>
                 </div>
 

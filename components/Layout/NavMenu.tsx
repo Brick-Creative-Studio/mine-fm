@@ -16,13 +16,13 @@ const NavMenu: React.FC<{}> = ({}) => {
 
 
     return (
-        <div className=''>
+        <div className='z-40'>
 
-            <Menu as='div' >
+            <Menu as='div' className="" >
                 <Menu.Button as={React.Fragment}>
                     <button className={navAvatar} />
                 </Menu.Button>
-                <Menu.Items className='fixed right-10 mt-4 flex flex-col justify-around h-32 bg-indigo-700 p-4 rounded-md'>
+                <Menu.Items className='absolute right-10 mt-4 flex flex-col justify-around h-32 bg-indigo-700 p-4 rounded-md'>
                     {/* <Menu.Item>
                         {({ active }) => (
                             <a

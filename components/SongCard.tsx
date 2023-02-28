@@ -6,12 +6,12 @@ import Image from "next/image";
 export const SongCard = () => {
 
     return (
-        <div className="w-[267px] h-[367px] rounded-lg bg-[#535353] p-2">
-                <div className="flex w-fit h-fit ml-1 border-solid border-[#EFE9DB] drop-shadow-lg rounded-lg mb-4">
+        <div className="w-fit h-fit rounded-lg bg-black p-2">
+                <div className="flex h-auto ml-1 border-solid border-[#EFE9DB] drop-shadow-lg rounded-lg mb-4 relative aspect-square">
                 <Image 
-                width={240}
-                height={240}
-                src={coverArt}
+                 layout="fill"
+                 sizes="100vw"
+                src={'/stock/pa-token.jpg'}
                 alt="cover art"
                 className='rounded-lg'
                 />
@@ -27,23 +27,23 @@ export const SongCard = () => {
                     <div>
                         artist
                     </div>
-                    <div className="bg-[#EFE9DB] text-[11px] text-[#9B5B46] w-28  rounded-lg flex flex-row justify-center items-center">
+                    <div className="bg-[#EFE9DB] text-[#9B5B46] w-28  rounded-lg flex flex-row justify-center items-center">
                         122k listens
                     </div>
                 </div>
 
                 <div className="flex flex-row justify-between mt-2">
 
-                <div className="bg-[#EFE9DB] w-[119px] h-[44px] rounded-lg flex flex-col justify-center items-center">
-                    <p className="text-black text-[11px]"> Price </p>
-                    <p className="text-black text-[11px] -mt-2"> 1 Eth </p>
+                <div className="bg-[#EFE9DB] w-28 mx-2  rounded-lg flex flex-col justify-center items-center">
+                    <p className="text-black"> Price </p>
+                    <p className="text-black -mt-2"> 1 Eth </p>
 
 
                 </div>
 
-                <div className="bg-[#EFE9DB] w-[119px] h-[44px] rounded-lg flex flex-col justify-center items-center" >
-                <p className="text-black text-[11px]"> Highest Bid </p>
-                <p className="text-black text-[11px] -mt-2"> 1 Eth </p>
+                <div className="bg-[#EFE9DB] w-28 mx-2 rounded-lg flex flex-col justify-center items-center" >
+                <p className="text-black"> Highest Bid </p>
+                <p className="text-black -mt-2"> 1 Eth </p>
                 </div>
                 </div>
 
