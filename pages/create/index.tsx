@@ -6,12 +6,13 @@ import Link from "next/link";
 export default function CreatePage() {
 
     return (
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center mt-40">
+            <h1 className="mb-12"> Create </h1>
             <Link
             href={"create/onchain"}
             key={'onchain'}
             >
-            <button className="flex justify-center items-center border-solid border-white h-32 w-1/4 mt-56 rounded-lg bg-gradient-to-r from-fuchsia-600 to-indigo-500 italic cursor-pointer focus:ring">
+            <button className="flex justify-center items-center border-solid border-white h-32 w-1/4  rounded-lg bg-gradient-to-r from-fuchsia-600 to-indigo-500 italic cursor-pointer focus:ring">
                 <h1 className="mr-4"> Onchain </h1>
                 <Image
                     src={"/play.svg"}

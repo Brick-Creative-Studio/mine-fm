@@ -4,7 +4,7 @@ import Image from 'next/image'
 const Footer = () => {
 
     return (
-        <footer>
+        <footer className='flex'>
         <a
           href="https://brickxstudio.com"
           target="_blank"

@@ -1,40 +1,76 @@
 import React from 'react'
 import Image from 'next/image'
-import testAvi from '../../../public/test-avi.png'
+import Link from 'next/link'
 import { SongCard } from 'components/SongCard'
 import { MSCard } from 'components/moodscape/MSCard'
 
 export default function Profile({}) {
   return (
     <div className="flex flex-col mt-32 mb-auto mx-12">
-      <div className="flex">
-        <div className="w-11/12 bg-gradient-to-r from-purple-500 to-pink-500 h-32 absolute rounded-lg z-0" />
+      <div className="flex p-4">
+        <div className="w-11/12 bg-gradient-to-r from-purple-500 to-pink-500 h-36 absolute rounded-lg z-0" />
+        <div className='px-2 pt-1'>
         <Image
-          className="bg-white rounded-full ml-4 z-10"
-          src={testAvi}
+          className="rounded-full z-10"
+          src={"/stock/flubber-token.png"}
           width={140}
           height={140}
           alt="avatar"
         />
-        <div className="z-20 mx-8">
+        </div>
+        <div className="z-20 mx-8 w-full">
           <h1> Blobitty Blah</h1>
-          <p className="-mt-4"> @ChillPenguin </p>
-          <div className="flex flex-row">
-            <div className="flex justify-center w-fit h-fit items-center mr-8 bg-white text-black rounded-lg px-2">
-              <p> 0x4bF7F1...</p>
+          <p className="-mt-4"> @Blobitty </p>
+          <div className="flex flex-row w-full justify-between">
+            <div className='flex flex-row'>
+            <div className="flex justify-center w-40 h-fit items-center mr-8 bg-white text-black rounded-lg px-2 ">
+              <p className='text-ellipsis overflow-hidden'> 0x4bF7F16fDF430DAEAEE579A80233d97A11A81Ae2</p>
               <button className="bg-transparent hover:bg-sky-100 w-fit h-fit">
                 <Image
-                  width={14}
-                  height={14}
+                  width={48}
+                  height={48}
                   src={'/copy.svg'}
                   alt="coply address button"
                 />
               </button>
             </div>
-            <div className="flex justify-center bg-sky-500/90 hover:bg-sky-300 w-14 h-14 items-center -mt-2 bg-white text-black rounded-full px-2">
+            <div className="flex self-center bg-sky-500/90 hover:bg-sky-300 w-12 h-12 items-center -mt-2 bg-white text-black rounded-full px-2">
               <button className="bg-transparent w-fit h-fit">
                 <Image width={24} height={24} src={'/plus.svg'} alt="follow button" />
               </button>
+            </div>
+            </div>
+            <div className='flex justify-self-end items-end	mt-4 space-x-4 > * + *'>
+            <button className="bg-gray-50 hover:bg-sky-100 w-10 h-10 rounded-lg">
+                <Image
+                  width={24}
+                  height={24}
+                  src={'/stock/twitter-logo.svg'}
+                  alt="coply address button"
+                />
+              </button>
+              <button className="bg-gray-50 hover:bg-sky-100  w-10 h-10 rounded-lg">
+                <Image
+                   width={24}
+                   height={24}
+                  src={'/stock/instagram-logo.svg'}
+                  alt="coply address button"
+                />
+              </button>
+              <Link
+              href={'/settings'}
+              >
+              <button className="bg-gray-50	 hover:bg-sky-100  w-10 h-10 rounded-full">
+                <Image
+                  width={24}
+                  height={24}
+                  src={'/gear.svg'}
+                  alt="settings button"
+                  className='justify-self-center self-center'
+                />
+              </button>
+              </Link>
+
             </div>
           </div>
         </div>
@@ -48,16 +84,19 @@ export default function Profile({}) {
         </p>
         <div className="flex flex-col items-center">
           <p > Sounds </p>
-          <p className='-mt-2'> 10 </p>
+          <p className='-mt-2'> 25 </p>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col items-center">
           <p> MOODs </p>
+          <p className='-mt-2'> 310 </p>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col items-center">
           <p> Collection </p>
+          <p className='-mt-2'> 103 </p>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col items-center">
           <p> Subs </p>
+          <p className='-mt-2'> 5 </p>
         </div>
       </div>
 

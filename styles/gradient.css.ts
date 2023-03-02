@@ -9,10 +9,9 @@ export const bodyGradient = style([
         filter: 'blur(180.5px)',
         zIndex: -1,
         position: 'absolute',
-        width: '80%',
+        width: '100%',
         height: '100%',
-        top: '208px'
-       
+        marginTop: '48px'       
     }
 ])
  
