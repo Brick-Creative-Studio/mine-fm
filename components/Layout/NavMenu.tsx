@@ -4,15 +4,16 @@ import { useDisconnect } from 'wagmi'
 import { Menu } from '@headlessui/react'
 import { useLayoutStore } from 'stores'
 
+interface NavMenuProps {
+    signerAddress: string,
+}
 
 
 
 
-
-const NavMenu: React.FC<{}> = ({}) => {
+const NavMenu: React.FC<NavMenuProps> = ({ signerAddress }) => {
 
     const { disconnect } = useDisconnect()
-    const { signerAddress } = useLayoutStore()
 
 
     return (

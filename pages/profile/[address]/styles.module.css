@@ -1,0 +1,56 @@
+.crossCenter {
+  background-color: #333333;
+  width: 35px;
+  height: 35px;
+  margin: 24px;
+}
+
+.crossCircle {
+  background-color: #292929;
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  border-radius: 100%;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+.crossTop {
+  background-color: #333333;
+  width: 35px;
+  height: 55px;
+  position: absolute;
+  border-radius: 15%;
+  margin-top: -50px;
+  cursor: pointer;
+}
+
+.crossBottom {
+  background-color: #333333;
+  width: 35px;
+  height: 55px;
+  position: absolute;
+  border-radius: 15%;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+.crossLeft {
+  background-color: #333333;
+  width: 55px;
+  height: 35px;
+  position: absolute;
+  border-radius: 15%;
+  margin-left: -50px;
+  cursor: pointer;
+}
+
+.crossRight {
+  background-color: #333333;
+  width: 55px;
+  height: 35px;
+  position: absolute;
+  border-radius: 15%;
+  margin-left: 30px;
+  cursor: pointer;
+}

@@ -66,14 +66,14 @@ export default function MoodScapeForm({ }){
  
     
     return (            
-            <div className='flex-col w-full mt-32 mb-8 p-4'>
+            <div className='flex-col w-full mt-24 mb-8 p-4'>
                 <h2> Connect via Moods IRL  </h2>
 
                 <div className='w-inherite border border-white opacity-10 border-solid -mt-3'></div>
 
                 <div className='flex flex-col justify-evenly'>
                     <div>
-                    <h2> Moodscape Information </h2>
+                    <h2> MOODSCAPE Information </h2>
                     <p className='opacity-40 -mt-4'> Required* </p>
                     </div>
 
@@ -100,9 +100,9 @@ export default function MoodScapeForm({ }){
                                 </div>
 
                                 <div className='flex flex-col'>
-                                    <label htmlFor="featuredArtist"> Moods </label>
+                                    <label htmlFor="featuredArtist"> Theme </label>
                                     {/* register your input into the hook by invoking the "register" function */}
-                                    <input defaultValue="" className='bg-transparent h-10 border p-2 border-solid rounded-md text-white ' {...register("featured")} />
+                                    <input defaultValue="" placeholder="ex: chill, family-friendly, hi-key" className='bg-transparent h-10 border p-2 border-solid rounded-md text-white ' {...register("featured")} />
                                 </div>
                                 <div>
                                     <label htmlFor="MS Date" className="mr-2"> Date </label>
@@ -119,7 +119,7 @@ export default function MoodScapeForm({ }){
                                 </div>
 
                                 <div className='flex flex-col'>
-                                    <label htmlFor="description"> How Would You Describe the Song? </label>
+                                    <label htmlFor="description"> How Would You Describe the MOODSCAPE Event? </label>
                                     <p className='opacity-40 '> Description </p>
 
 
@@ -137,7 +137,7 @@ export default function MoodScapeForm({ }){
 
                             <div className='flex flex-col basis-2/5 space-y-12 '>
                                 <div>
-                                    <label> Event Poster </label>
+                                    <label> Poster </label>
 
                                     <div className='flex justify-center items-center border border-solid w-80 h-80 rounded-md border-zinc-500'>
                                     <label htmlFor="file-input">
@@ -161,31 +161,9 @@ export default function MoodScapeForm({ }){
                                     </div>
                                 </div>
                                 <div>
-                                    <label htmlFor="file-input"> Upload Mood </label>
-                                    <div className='flex justify-center items-center border border-solid w-80 h-24 rounded-md border-zinc-500'>
+                                   
 
-                                    <label htmlFor="file-input">
-                                        <Image
-                                            src={"/plus-icon.png"}
-                                            alt='add-art'
-                                            width={42}
-                                            height={42}
-                                            className='cursor-pointer'
-                                        />
-                                        </label>
-                                        <input 
-                                        type="file" 
-                                        id="file-input"
-                                        className='hidden' 
-                                        name="file" 
-                                        multiple={true} 
-                                        onChange={(event) => {
-                                            handleFileUpload(event.currentTarget.files)
-                                        }} />
-                                    </div>
-                                   <p className='text-xs '> AIF, WAV, M4A, MP4, MP3, or FLAC. <br/> Max 100mb.</p>
-
-                                   <input type="submit" className='bg-gradient-to-r from-sky-500 to-indigo-500 h-12 rounded-lg font-mono font-bold text-lg italic w-80 h-[64px] mt-8' />
+                                   <input type="submit" value={'Select Moods >'}  className='bg-gradient-to-r from-sky-500 to-indigo-500 h-12 rounded-lg font-mono font-bold text-lg italic w-80 h-[64px] mt-8' />
 
                                 </div>
                             </div>

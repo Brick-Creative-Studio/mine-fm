@@ -66,7 +66,7 @@ export default function SongForm({ }){
  
     
     return (            
-            <div className='flex-col w-full mt-32 mb-8 p-4'>
+            <div className='flex-col w-full mt-24 mb-8 p-4'>
                 <h2> Put Your Sound Onchain  </h2>
 
                 <div className='flex flex-row space-x-6'>
@@ -77,7 +77,7 @@ export default function SongForm({ }){
                     <p>Collection</p>
                 </div>
 
-                <div className='w-inherite border border-white opacity-10 border-solid -mt-3'></div>
+                <div className='w-inherite border border-white opacity-10 border-solid -mt-3'/>
 
                 <div className='flex flex-col justify-evenly'>
                     <div>

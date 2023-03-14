@@ -20,7 +20,6 @@ export const NavBar = style([
         justifyContent : 'space-between',
         width: '100%',
         padding: '20px 32px',
-        background: 'rgba(93, 46, 140, .5)', 
         '@media': {
             '(max-width: 768px)': {
                 padding: '10px 32px',

@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function CreatePage() {
 
     return (
-        <div className="flex flex-col justify-center items-center mt-40">
+        <div className="flex flex-col justify-center items-center mt-24">
             <h1 className="mb-12"> Create </h1>
             <Link
             href={"create/onchain"}
@@ -28,7 +28,7 @@ export default function CreatePage() {
             key={'moodscape'}
             >
             <button className="flex justify-center items-center border-2 border-solid border-white h-32 w-1/4 mt-12 rounded-lg bg-gradient-to-r from-red-400 to-amber-300 italic cursor-pointer focus:ring">
-                <h1 className="mr-4"> Moodscape </h1>
+                <h1 className="mr-4"> MOODSCAPE </h1>
                 <Image
                     src={"/play.svg"}
                     width={32}

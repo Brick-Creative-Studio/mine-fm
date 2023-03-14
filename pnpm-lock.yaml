@@ -15,6 +15,7 @@ specifiers:
   eslint: 8.25.0
   eslint-config-next: 12.3.1
   ethers: 5.7.1
+  framer-motion: ^10.3.1
   next: 12.3.1
   postcss: ^8.4.21
   prettier: ^2.7.1
@@ -37,6 +38,7 @@ dependencies:
   autoprefixer: 10.4.13_postcss@8.4.21
   dayjs: 1.11.7
   ethers: 5.7.1
+  framer-motion: 10.3.1_react-dom@18.2.0+react@18.2.0
   next: 12.3.1_react-dom@18.2.0+react@18.2.0
   postcss: 8.4.21
   prettier: 2.8.3
@@ -366,6 +368,18 @@ packages:
   /@emotion/hash/0.9.0:
     resolution: {integrity: sha512-14FtKiHhy2QoPIzdTcvh//8OyBlknNs2nXRwIhG904opCby3l+9Xaf/wuPvICBF0rc1ZCNBd3nKe9cd2mecVkQ==}
     dev: false
+
+  /@emotion/is-prop-valid/0.8.8:
+    resolution: {integrity: sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA==}
+    dependencies:
+      '@emotion/memoize': 0.7.4
+    dev: false
+    optional: true
+
+  /@emotion/memoize/0.7.4:
+    resolution: {integrity: sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==}
+    dev: false
+    optional: true
 
   /@esbuild/android-arm/0.16.17:
     resolution: {integrity: sha512-N9x1CMXVhtWEAMS7pNNONyA14f71VPQN9Cnavj1XQh6T7bskqiLLrSca4O0Vr8Wdcga943eThxnVp3JLnBMYtw==}
@@ -3956,6 +3970,24 @@ packages:
 
   /fraction.js/4.2.0:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
+    dev: false
+
+  /framer-motion/10.3.1_react-dom@18.2.0+react@18.2.0:
+    resolution: {integrity: sha512-z90Dwg2adrltIdYiibynBN+EbSRrakFKGgOnE5TN24E1bmb2TdpfzFqvwxLTvvMimh+/yN43njMFKFKe2CkY/g==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      tslib: 2.5.0
+    optionalDependencies:
+      '@emotion/is-prop-valid': 0.8.8
     dev: false
 
   /fs.realpath/1.0.0:

@@ -15,12 +15,16 @@ import { useLayoutStore } from 'stores'
 const Nav = () => {
         //TODO: Check if we have signer then return UI based on if value is present or not
         const isMounted = useIsMounted()
+        const { signerAddress, setSignerAddress } = useLayoutStore()
+
         const { address } = useAccount({
             onDisconnect() {
               console.log('Disconnected')
+              setSignerAddress( null )
             },
             onConnect({ address, connector, isReconnected }) {
                 console.log('Connected', { address, connector, isReconnected })
+                address && setSignerAddress( address )
               },
           })
         
@@ -55,7 +59,7 @@ const Nav = () => {
                         <Image src={'/boulder.svg'} alt="create button" width={24} height={24} />
                     </button>
                     </Link>
-                    <NavMenu />
+                   { signerAddress && <NavMenu signerAddress={signerAddress}/> }
                       
                 </div>
             </div>
@@ -65,11 +69,12 @@ const Nav = () => {
                     <Link 
                     key={'home'}
                     href={'/'}>
-                    <Image
-                        src={'/icon-white-small.png'}
+                     <Image
+                        src={'/mine-boxLogo-icon.svg'}
                         alt={'minefm-logo'}
-                        width={24} 
-                        height={24}
+                        width={48}
+                        height={48}
+                        color={'#FFF'}
                     />
                     </Link>
                 </div>

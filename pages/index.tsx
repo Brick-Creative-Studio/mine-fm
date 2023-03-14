@@ -1,23 +1,18 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { useLayoutStore } from 'stores'
 import Link from 'next/link'
 import { useIsMounted } from 'hooks/useMounted'
-import { useAccount } from 'wagmi'
 
 
 
 
 //TODO: check signer to see if connected then render Buttons based on proper state
-export default function HomePage({ favoriteCollections }: any) {
+export default function HomePage({}) {
 
   // const { setSigner, setSignerAddress, signer, signerAddress } = useLayoutStore()
 
-
   const isMounted = useIsMounted()
-  const { isConnected } = useAccount()
-
   
   return (
     <div >
@@ -29,7 +24,7 @@ export default function HomePage({ favoriteCollections }: any) {
 
       <main className={styles.main}>
         <div className={styles.headerLogo}>
-          <Image src='/logo-purple-header.png' alt='mine-header-logo' width={515} height={232} />
+          <Image src='/text-logo-pr-header.png' alt='mine-header-logo' width={515} height={232} />
         </div>
         {isMounted && (
           <>
