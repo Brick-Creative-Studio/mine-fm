@@ -1,12 +1,32 @@
-import React from 'react'
+import React, { useEffect} from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { SongCard } from 'components/SongCard'
 import { MSCard } from 'components/moodscape/MSCard'
+import { SectionHanlder } from 'components/Layout/SectionHandler'
 import { useLayoutStore } from 'stores'
+import Moods from 'components/Sections/Moods'
+import MemoryCards from 'components/Sections/MemoryCards'
 
 export default function Profile({}) {
   const { signerAddress } = useLayoutStore((state) => state)
+  const { query } = useRouter()
+
+  const sections = [
+    {
+      title: 'Memory Cards',
+      component: [<MemoryCards key={'memory-cards'} />],
+    },
+    {
+      title: 'Moods',
+      component: [<Moods key={'moods'} />],
+    },
+  ]
+
+  useEffect(() => {
+    
+  })
 
   return (
     <div className="flex flex-col mt-24 mb-auto mx-12">
@@ -102,31 +122,11 @@ export default function Profile({}) {
           <p className="-mt-2"> 5 </p>
         </div>
       </div>
-
-      <div className="flex flex-row space-x-6">
-        <div className="flex flex-col">
-          <p>Memory Cards</p>
-          <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
-        </div>
-        <div className="flex flex-col">
-          <p>Songs</p>
-          <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 " />
-        </div>
-        <div className="flex flex-col">
-          <p>Moods</p>
-          <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
-        </div>
-        <div className="flex flex-col">
-          <p>Collections</p>
-          <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
-        </div>
-      </div>
-
-      <div className="w-inherite border border-white opacity-10 border-solid -mt-3"></div>
-      <div className="grid grid-cols-4 gap-4 p-4">
-        <SongCard />
-        <MSCard />
-      </div>
+        <SectionHanlder
+          sections={sections}
+          signerAddress={signerAddress ? signerAddress : undefined}
+          activeTab={query?.tab ? (query.tab as string) : undefined}
+        />
     </div>
   )
 }

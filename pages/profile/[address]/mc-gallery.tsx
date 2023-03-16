@@ -46,18 +46,20 @@ export default function MCGallery({}) {
 
       <div className="flex flex-row w-full justify-around items-center">
         <button className="w-16 h-16 bg-slate-200/75 rounded-full ">
-          <Image src="/arrow-left.svg" width={68} height={68} alt="back-button" />
+          <Image src="/arrow-left.svg" width={32} height={32} alt="back-button" />
         </button>
-        <div>
+        <div className='mt-24 border-solid border-black h-fit bg-gradient-to-r from-indigo-500 rounded-lg'>
           <Image
-            src="/stock/mem-card-nobg.png"
-            width={340}
-            height={420}
+            src="/stock/mCARD_LIGHT.svg"
+            width={200}
+            height={280}
             alt="memory-card"
+            className='rounded-lg'
+            
           />
         </div>
         <button className="w-16 h-16 bg-slate-200/75 rounded-full">
-          <Image src="/arrow-right.svg" width={68} height={68} alt="forward-button" />
+          <Image src="/arrow-right.svg" width={32} height={32} alt="forward-button" />
         </button>
       </div>
     </div>
