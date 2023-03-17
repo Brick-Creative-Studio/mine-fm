@@ -1,5 +1,4 @@
 import React from "react";
-import { SongCard } from "components/SongCard";
 import { MSCard } from "components/moodscape/MSCard";
 
 export default function Explore({}){

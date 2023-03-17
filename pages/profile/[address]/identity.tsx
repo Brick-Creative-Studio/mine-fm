@@ -1,5 +1,5 @@
 import React from 'react'
-import IdentityForm from 'components/Settings/IdentityForm'
+import IdentityForm from 'components/Forms/IdentityForm'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useLayoutStore } from 'stores'

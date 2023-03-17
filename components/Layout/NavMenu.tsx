@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { navAvatar } from './styles.css'
 import { useDisconnect } from 'wagmi'
 import { Menu } from '@headlessui/react'
-import { useLayoutStore } from 'stores'
 
 interface NavMenuProps {
     signerAddress: string,

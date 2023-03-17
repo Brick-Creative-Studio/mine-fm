@@ -21,7 +21,6 @@ export default function Aura({}) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm<AuraInputs>()
 
   const { aura ,setAura } = useProfileStore((state) => state)

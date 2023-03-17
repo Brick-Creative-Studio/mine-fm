@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Image from 'next/image'
-import styles from './styles.module.css'
+import styles from '../../pages/create/onchain/styles.module.css'
 
 type SongInputs = {
 
@@ -66,19 +66,7 @@ export default function SongForm({ }){
  
     
     return (            
-            <div className='flex-col w-full mt-24 mb-8 p-4'>
-                <h2> Put Your Sound Onchain  </h2>
-
-                <div className='flex flex-row space-x-6'>
-                    <p>Song</p>
-
-                    <p>Mood</p>
-
-                    <p>Collection</p>
-                </div>
-
-                <div className='w-inherite border border-white opacity-10 border-solid -mt-3'/>
-
+           
                 <div className='flex flex-col justify-evenly'>
                     <div>
                     <h2> Song Information </h2>
@@ -126,9 +114,6 @@ export default function SongForm({ }){
                                     {/* register your input into the hook by invoking the "register" function */}
                                     <textarea defaultValue="feels like summer" className=' bg-transparent  h-44 border p-2 border-solid  rounded-md text-white ' {...register("mDescription")} />
                                 </div>
-                                {/*//TODO: Add Rigth side form preview and add color picker */}
-                                {/*//TODO: update footer icon with white outline */}
-
 
                                 {/* errors will return when field validation fails  */}
                                 {errors.nameRequired && <span>This field is required</span>}
@@ -199,6 +184,5 @@ export default function SongForm({ }){
                 </div>
 
 
-            </div>
     )
 }

@@ -1,6 +1,5 @@
 import React  from 'react'
-import { inputFocus, searchContainer, submitsearch, searchInput } from './styles.css';
-import searchIcon from '../public/search-icon-24.png'
+import { searchContainer, searchInput } from './styles.css';
 
 
 

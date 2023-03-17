@@ -1,5 +1,4 @@
 import React from "react";
-import coverArt from "../public/sample-cl-alchemist.png"
 import Image from "next/image";
 
 

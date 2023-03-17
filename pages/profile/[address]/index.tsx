@@ -2,9 +2,7 @@ import React, { useEffect} from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { SongCard } from 'components/SongCard'
-import { MSCard } from 'components/moodscape/MSCard'
-import { SectionHanlder } from 'components/Layout/SectionHandler'
+import { SectionHandler } from 'components/Layout/SectionHandler'
 import { useLayoutStore } from 'stores'
 import Moods from 'components/Sections/Moods'
 import MemoryCards from 'components/Sections/MemoryCards'
@@ -122,7 +120,7 @@ export default function Profile({}) {
           <p className="-mt-2"> 5 </p>
         </div>
       </div>
-        <SectionHanlder
+        <SectionHandler
           sections={sections}
           signerAddress={signerAddress ? signerAddress : undefined}
           activeTab={query?.tab ? (query.tab as string) : undefined}

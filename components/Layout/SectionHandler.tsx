@@ -10,7 +10,6 @@ interface SectionHandlerProps {
     component: ReactElement[]
   }[]
   signerAddress?: string
-  tokenId?: string
   activeTab?: string
 }
 
@@ -19,12 +18,11 @@ interface activeSectionProps {
   component: React.ReactElement[]
 }
 
-export const SectionHanlder: React.FC<SectionHandlerProps> = ({
+export const SectionHandler: React.FC<SectionHandlerProps> = ({
   sections,
   signerAddress,
   activeTab,
 }) => {
-
   /*
 
     handle active session if:
@@ -44,7 +42,7 @@ export const SectionHanlder: React.FC<SectionHandlerProps> = ({
     const moods = tab('Moods')
 
     if (!activeTab) {
-      return moods
+      return mCard
     }
 
     return tab(unslugify(activeTab)) ?? mCard
@@ -80,6 +78,8 @@ export const SectionHanlder: React.FC<SectionHandlerProps> = ({
           })}
         </div>
       )}
+      <div className="w-inherite border border-white opacity-10 border-solid -mt-3" />
+
       <div>
         <AnimatePresence mode={'wait'}>
           <motion.div

@@ -5,9 +5,6 @@ import Link from 'next/link'
 import { useIsMounted } from 'hooks/useMounted'
 
 
-
-
-//TODO: check signer to see if connected then render Buttons based on proper state
 export default function HomePage({}) {
 
   // const { setSigner, setSignerAddress, signer, signerAddress } = useLayoutStore()
