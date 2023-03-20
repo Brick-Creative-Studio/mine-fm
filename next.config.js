@@ -8,6 +8,16 @@ const withVanillaExtract = createVanillaExtractPlugin();
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  images: {
+    dangerouslyAllowSVG: true,
+    domains: [
+      'mine-fm.infura-ipfs.io'
+    ],
+  },
+  env: {
+    INFURA_PROJECT_ID: process.env.INFURA_PROJECT_ID,
+    INFURA_PROJECT_SECRET: process.env.INFURA_PROJECT_SECRET,
+  },
 
   webpack(config) {
     config.module.rules.push({

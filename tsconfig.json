@@ -15,8 +15,6 @@
     "jsx": "preserve",
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "incremental": true,
     "baseUrl": ".",
   },

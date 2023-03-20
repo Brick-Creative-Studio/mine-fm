@@ -2,6 +2,9 @@
   "name": "mine-fm",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "next dev",
@@ -21,6 +24,8 @@
     "ethers": "5.7.1",
     "framer-motion": "10.3.2",
     "ipfs-http-client": "^60.0.0",
+    "ipfs-service": "workspace:*",
+    "multiformats": "^11.0.2",
     "next": "12.3.1",
     "postcss": "^8.4.21",
     "prettier": "^2.7.1",
