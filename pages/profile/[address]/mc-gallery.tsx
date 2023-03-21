@@ -48,11 +48,11 @@ export default function MCGallery({}) {
         <button className="w-16 h-16 bg-slate-200/75 rounded-full ">
           <Image src="/arrow-left.svg" width={32} height={32} alt="back-button" />
         </button>
-        <div className='mt-24 border-solid border-black h-fit bg-gradient-to-r from-indigo-500 rounded-lg'>
+        <div className='h-fit rounded-lg'>
           <Image
             src="/stock/mCARD_LIGHT.svg"
-            width={200}
-            height={280}
+            width={300}
+            height={580}
             alt="memory-card"
             className='rounded-lg'
             
