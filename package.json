@@ -13,6 +13,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ethersproject/abstract-provider": "^5.7.0",
     "@headlessui/react": "^1.7.7",
     "@radix-ui/react-icons": "^1.1.1",
     "@rainbow-me/rainbowkit": "^0.8.1",

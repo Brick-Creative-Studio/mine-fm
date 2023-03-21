@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@ethersproject/abstract-provider': ^5.7.0
   '@headlessui/react': ^1.7.7
   '@radix-ui/react-icons': ^1.1.1
   '@rainbow-me/rainbowkit': ^0.8.1
@@ -32,6 +33,7 @@ specifiers:
   zustand: ^4.1.2
 
 dependencies:
+  '@ethersproject/abstract-provider': 5.7.0
   '@headlessui/react': 1.7.9_react-dom@18.2.0+react@18.2.0
   '@radix-ui/react-icons': 1.1.1_react@18.2.0
   '@rainbow-me/rainbowkit': 0.8.1_4f993b20c7ecf4a9e7b5b120e4443d31
