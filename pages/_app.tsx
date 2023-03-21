@@ -17,7 +17,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       // chain.polygon,
       // chain.optimism,
       // chain.arbitrum,
-      // chain.ropsten,
       goerli,
     ],
     [
@@ -29,16 +28,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     appName: 'Mine.fm',
     chains
   })
-
-  const connector = new MetaMaskConnector({
-    options: {
-      shimDisconnect: false,
-    },
-  })
-  
-  
-  
-  // connectors().push(connector)
 
   const wagmiClient = createClient({
     autoConnect: true,
