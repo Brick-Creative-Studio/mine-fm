@@ -25,6 +25,7 @@
     "ethers": "5.7.1",
     "framer-motion": "10.3.2",
     "ipfs-http-client": "^60.0.0",
+    "it-last": "^2.0.1",
     "multiformats": "^11.0.2",
     "next": "12.3.1",
     "postcss": "^8.4.21",
