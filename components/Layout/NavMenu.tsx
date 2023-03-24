@@ -22,7 +22,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress }) => {
                 <Menu.Button as={React.Fragment}>
                     <button className={navAvatar} />
                 </Menu.Button>
-                <Menu.Items className='absolute right-10 mt-4 flex flex-col justify-around h-32 bg-indigo-700 p-4 rounded-md'>
+                <Menu.Items className='absolute right-10 flex flex-col justify-around h-32 bg-indigo-700 p-4 rounded-md'>
                     {/* <Menu.Item>
                         {({ active }) => (
                             <a

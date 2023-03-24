@@ -9,7 +9,7 @@ interface SectionHandlerProps {
     title: string
     component: ReactElement[]
   }[]
-  signerAddress?: string
+  eventId?: string
   activeTab?: string
 }
 
@@ -18,9 +18,9 @@ interface activeSectionProps {
   component: React.ReactElement[]
 }
 
-export const SectionHandler: React.FC<SectionHandlerProps> = ({
+export const MSSectionHandler: React.FC<SectionHandlerProps> = ({
   sections,
-  signerAddress,
+  eventId,
   activeTab,
 }) => {
   /*
@@ -38,25 +38,29 @@ export const SectionHandler: React.FC<SectionHandlerProps> = ({
   )
 
   const activeSection: activeSectionProps | undefined = React.useMemo(() => {
-    const mCard = tab('Memory Cards')
+    
     const moods = tab('Moods')
+    const comments = tab('Comments')
+    const attendance = tab('Attendance')
+    const miniMoods = tab('Mini-Moods')
+    const personal = tab('Personal')
 
     if (!activeTab) {
-      return mCard
+      return moods
     }
 
-    return tab(unslugify(activeTab)) ?? mCard
+    return tab(unslugify(activeTab)) ?? moods
   }, [activeTab, tab])
 
   return (
-    <>
+    <div className='m-2'>
       {sections && sections.length > 1 && (
         <div className="flex flex-row space-x-6">
           {sections?.map((section, index) => {
             return (
               <Link
                 href={{
-                  pathname: `/profile/${signerAddress}`,
+                  pathname: `/moodscape/${eventId}`,
                   query: {
                     tab: slugify(section.title),
                   },
@@ -102,28 +106,6 @@ export const SectionHandler: React.FC<SectionHandlerProps> = ({
           </motion.div>
         </AnimatePresence>
       </div>
-    </>
+    </div>
   )
 }
-
-//   <div className="flex flex-row space-x-6">
-//   <div className="flex flex-col">
-//     <p>Memory Cards</p>
-//     <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
-//   </div>
-//   <div className="flex flex-col">
-//     <p>Songs</p>
-//     <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 " />
-//   </div>
-//   <div className="flex flex-col">
-//     <p>Moods</p>
-//     <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
-//   </div>
-//   <div className="flex flex-col">
-//     <p>Collections</p>
-//     <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
-//   </div>
-// </div>
-
-// <div className="w-inherite border border-white opacity-10 border-solid -mt-3"></div>
-// <div className="grid grid-cols-4 gap-4 p-4">
