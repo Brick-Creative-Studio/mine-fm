@@ -8,7 +8,7 @@ export const bodyGradient = style([
         opacity: 0.55,
         filter: 'blur(180.5px)',
         zIndex: -1,
-        position: 'absolute',
+        position: 'fixed',
         width: '100%',
         height: '100%',
     }

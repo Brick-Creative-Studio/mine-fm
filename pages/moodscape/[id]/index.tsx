@@ -4,8 +4,8 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { MSSectionHandler as SectionHandler } from 'components/Layout/MSSectionHandler'
 import { useLayoutStore } from 'stores'
-import Moods from 'components/Sections/Moods'
-import MemoryCards from 'components/Sections/MemoryCards'
+import Moods from 'components/Sections/MoodsSection'
+import MemoryCards from 'components/Sections/MScapeSection'
 
 export default function MoodscapePage({}) {
   const { signerAddress } = useLayoutStore((state) => state)
@@ -20,10 +20,6 @@ export default function MoodscapePage({}) {
       },
       {
         title: 'Comments',
-        component: [<Moods key={'moods'} />],
-      },
-      {
-        title: 'Attendance',
         component: [<Moods key={'moods'} />],
       },
       {

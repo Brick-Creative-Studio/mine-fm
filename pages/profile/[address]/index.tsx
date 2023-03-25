@@ -4,8 +4,8 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { ProfileSectionHandler as SectionHandler } from 'components/Layout/ProfileSectionHandler'
 import { useLayoutStore } from 'stores'
-import Moods from 'components/Sections/Moods'
-import MemoryCards from 'components/Sections/MemoryCards'
+import MoodsSection from 'components/Sections/MoodsSection'
+import MscapeSection from 'components/Sections/MScapeSection'
 
 export default function Profile({}) {
   const { signerAddress } = useLayoutStore((state) => state)
@@ -13,12 +13,12 @@ export default function Profile({}) {
 
   const sections = [
     {
-      title: 'Memory Cards',
-      component: [<MemoryCards key={'memory-cards'} />],
+      title: 'Moodscapes',
+      component: [<MscapeSection key={'moodscape'} />],
     },
     {
       title: 'Moods',
-      component: [<Moods key={'moods'} />],
+      component: [<MoodsSection key={'moods'} />],
     },
   ]
 
