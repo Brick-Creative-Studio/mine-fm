@@ -10,10 +10,8 @@ export const uploadErrorBox = style({
 })
 
 export const singleImageUploadWrapper = style({
-  height: 160,
-  width: 160,
-  borderRadius: 80,
-  background: '#F2F2F2',
+ 
+
   overflow: 'hidden',
   selectors: {
     '&:hover': {

@@ -1,6 +1,7 @@
 // import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from 'packages/ipfs-service'
-import Image from 'next/image'
+import Image from 'next/future/image'
 import React, { ReactElement, useEffect, useState } from 'react'
+import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from 'packages/ipfs-service'
 
 // import { Spinner } from 'src/components/Spinner'
 
@@ -26,6 +27,8 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
   const acceptableMIME = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']
 
   const [isMounted, setIsMounted] = useState(false)
+  const [fileUrl, updateFileUrl] = useState('')
+
   const [uploadArtworkError, setUploadArtworkError] = React.useState<any>()
   const [isUploading, setIsUploading] = React.useState<boolean>(false)
 
@@ -35,6 +38,7 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
 
   const handleFileUpload = React.useCallback(
     async (_input: FileList | null) => {
+      console.log('image upload clicked')
       if (!_input) return
       const input = _input[0]
 
@@ -52,7 +56,9 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
 
         const { cid } = await uploadFile(_input[0], { cache: true })
 
-        // formik.setFieldValue(id, normalizeIPFSUrl(cid))
+        const url = normalizeIPFSUrl(cid)?.toString()
+        updateFileUrl(url ? url : '')
+        console.log('mood poster', url)
         setIsUploading(false)
         setUploadArtworkError(null)
       } catch (err: any) {
@@ -68,55 +74,33 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
   )
 
   return (
-    <div >
-      <div width={'100%'}>
-        <div
-          className={singleImageUploadWrapper}
-        >
-          {isUploading && <Spinner alignSelf={'center'} m={'x0'} />}
-
-          {!isUploading && isMounted && !!value && (
-            <Image
-              src={getFetchableUrl(value) || ''}
-              fill
-              alt="Avatar"
-              style={{
-                objectFit: 'contain',
-              }}
-            />
-          )}
-
-          {!isUploading && isMounted && !value && (
-            <>
-              <div>
-                {inputLabel}
-              </div>
-              <div>{helperText}</div>
-            </>
-          )}
-
-          <input
-            className={defaultUploadStyle}
-            id="file-upload"
-            data-testid="file-upload"
-            name="file"
-            type="file"
-            multiple={true}
-            onChange={(event) => {
-              handleFileUpload(event.currentTarget.files)
-            }}
-          />
-        </div>
-
-        {uploadArtworkError && (
-          <div data-testid="error-msg" className={uploadErrorBox}>
-            <div>
-              <li>{uploadArtworkError.message}</li>
-            </div>
-          </div>
+    <>
+        {isUploading && (
+          <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24" />
         )}
-      </div>
-    </div>
+
+        {!isUploading && isMounted && !!value && (
+          <Image
+            src={getFetchableUrl(value)!!}
+            fill
+            sizes="100vw"
+            className="w-full h-auto"
+            alt="Avatar"
+          />
+        )}
+
+        <input
+          className={defaultUploadStyle}
+          id="file-upload"
+          data-testid="file-upload"
+          name="file"
+          type="file"
+          multiple={true}
+          onChange={(event) => {
+            handleFileUpload(event.currentTarget.files)
+          }}
+        />
+    </>
   )
 }
 
