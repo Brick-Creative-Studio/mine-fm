@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import Image from 'next/image'
 import styles from '../../pages/create/onchain/styles.module.css'
-import { client } from 'packages/ipfs-service'
+import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from 'packages/ipfs-service'
 
 type MoodInputs = {
   title: string
@@ -39,56 +39,61 @@ export default function MoodForm({}) {
     setIsMounted(true)
   }, [])
 
-  const handleFileUpload = React.useCallback(async (_input: FileList | null) => {
-    if (!_input) return
-    
-    const input = _input[0]
-
-    const file = input
-    try {
-      const added = await client.add(file)
-      const url = `https://mine-fm.infura-ipfs.io/ipfs/${added.path}`
-      updateFileUrl(url)
-      console.log('mood poster', url)
-    } catch (error) {
-      console.log('Error uploading file: ', error)
-    }
-  }, [])
-
   // const handleFileUpload = React.useCallback(async (_input: FileList | null) => {
+  //   if (!_input) return
+    
+  //   const input = _input[0]
 
-  //         console.log("click test")
-  //         if (!_input) return
-  //         const input = _input[0]
+  //   const file = input
+  //   try {
+  //     const added = await client.add(file)
+  //     const url = `https://mine-fm.infura-ipfs.io/ipfs/${added.path}`
+  //     updateFileUrl(url)
+  //     console.log('mood poster', url)
+  //   } catch (error) {
+  //     console.log('Error uploading file: ', error)
+  //   }
+  // }, [])
 
-  //         setUploadArtworkError(false)
+  const handleFileUpload = React.useCallback(async (_input: FileList | null) => {
 
-  //         if (input?.type?.length && !acceptableMIME.includes(input.type)) {
-  //             setUploadArtworkError({
-  //                 message: `Sorry, ${input.type} is an unsupported file type`,
-  //             })
-  //             return
-  //         }
+          console.log("click test")
+          if (!_input) return
+          const input = _input[0]
 
-  //         try {
-  //             setIsUploading(true)
+          setUploadArtworkError(false)
 
-  //             //     const { cid } = await upload(_input[0], { cache: true })
+          if (input?.type?.length && !acceptableMIME.includes(input.type)) {
+              setUploadArtworkError({
+                  message: `Sorry, ${input.type} is an unsupported file type`,
+              })
+              console.log(`Sorry, ${input.type} is an unsupported file type`)
 
-  //             // formik.setFieldValue(id, normalizeIPFSUrl(cid))
-  //             setIsUploading(false)
-  //             setUploadArtworkError(null)
-  //         } catch (err: any) {
-  //             setIsUploading(false)
-  //             setUploadArtworkError({
-  //                 ...err,
-  //                 message: `Sorry, there was an error with our file uploading service. ${err?.message}`,
-  //             })
-  //         }
-  //     },
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //     []
-  // )
+              return
+          }
+
+          try {
+              setIsUploading(true)
+
+                  const { cid } = await uploadFile(_input[0], { cache: true })
+
+              // formik.setFieldValue(id, normalizeIPFSUrl(cid))
+              const url  = normalizeIPFSUrl(cid)?.toString()
+              updateFileUrl(url ? url : '')
+              console.log('mood poster', url)
+              setIsUploading(false)
+              setUploadArtworkError(null)
+          } catch (err: any) {
+              setIsUploading(false)
+              setUploadArtworkError({
+                  ...err,
+                  message: `Sorry, there was an error with our file uploading service. ${err?.message}`,
+              })
+          }
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
+  )
 
   return (
     <div className="flex flex-col justify-evenly">
@@ -189,8 +194,8 @@ export default function MoodForm({}) {
                   />
                    {fileUrl && (
                     <Image
-                      src={fileUrl}
-                      alt="mood-poster"
+                    src={getFetchableUrl(fileUrl) || ''}
+                    alt="mood-poster"
                       width={120}
                       height={120}
                     />

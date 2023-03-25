@@ -1,34 +1,27 @@
 import { hashFiles } from './hash'
 import { create as createIpfsClient } from 'ipfs-http-client'
 import last from 'it-last'
-// const projectId =  process.env.INFURA_PROJECT_ID;
-// const projectSecret = process.env.INFURA_PROJECT_SECRET
-// const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
 
 
+const IPFS_API_BASE =  process.env.NEXT_PUBLIC_IPFS_UPLOAD_API || 'https://ipfs.infura.io'
+const projectId =  process.env.INFURA_PROJECT_ID;
+const projectSecret = process.env.INFURA_PROJECT_SECRET
 
-
-
-const IPFS_API_BASE =
-  process.env.NEXT_PUBLIC_IPFS_UPLOAD_API || 'ipfs.infura.io'
-
-
-
-  export const client = createIpfsClient({
-    host: IPFS_API_BASE,
-    port: 5001,
-    protocol: 'https',
-    apiPath: '/api/v0',
-    headers: {
-      authorization: auth,
-    }
-  })
 const defaultIpfsOptions = {
   cidVersion: 1,
 } as const
 
+const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
+
+
 const ipfs = createIpfsClient({
-  url: `${IPFS_API_BASE}/api/v0`,
+  host: 'ipfs.infura.io',
+  port: 5001,
+  protocol: 'https',
+  apiPath: '/api/v0',
+  headers: {
+    authorization: auth,
+  }
 })
 
 const defaultOptions = {
@@ -44,7 +37,7 @@ export type IPFSUploadResponse = {
 type ProgressCallback = (progress: number) => void
 
 const uploadCache = {
-  prefix: 'ZORA/IPFSUploadCache',
+  prefix: 'MINEFM/IPFSUploadCache',
   get(files: File[]): IPFSUploadResponse | undefined {
     const digest = hashFiles(files)
     try {
