@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import EventMoods from 'components/Sections/EventMoods'
 import Link from 'next/link'
 import { MSSectionHandler as SectionHandler } from 'components/Layout/MSSectionHandler'
 import { useLayoutStore } from 'stores'
@@ -15,8 +16,8 @@ export default function MoodscapePage({}) {
 
   const sections = [
     {
-        title: 'Moods',
-        component: [<Moods key={'moods'} />],
+        title: 'EventMoods',
+        component: [<EventMoods key={'eventMood'} />],
       },
       {
         title: 'Comments',
@@ -63,7 +64,7 @@ export default function MoodscapePage({}) {
           </div>
 
           <div className="flex flex-col justify-between">
-            <div className='px-2 bg-black/50 h-fit'>
+            <div className='px-2 bg-[#F25C54]/50 break-words rounded-md w-fit h-fit'>
             <h3> Status: Active</h3>
             </div>
             <div className='flex flex-row justify-between'>

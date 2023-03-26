@@ -44,7 +44,7 @@ export default function Profile({}) {
           <p className="-mt-4"> @Blobitty </p>
           <div className="flex flex-row w-full justify-between">
             <div className="flex flex-row">
-              <div className="flex justify-center w-40 h-fit items-center mr-8 bg-white text-black rounded-lg px-2 ">
+              <div className="flex justify-center w-40 h-fit items-center mr-8 bg-white drop-shadow-lg text-black border-1 rounded-full px-2 ">
                 <p className="text-ellipsis overflow-hidden">
                   {' '}
                   0x4bF7F16fDF430DAEAEE579A80233d97A11A81Ae2
@@ -59,13 +59,13 @@ export default function Profile({}) {
                 </button>
               </div>
               <div className="flex self-center bg-sky-500/90 hover:bg-sky-300 h-12 items-center justify-between -mt-2 bg-white text-black rounded-full">
-                <button className="flex flex-row justify-center bg-transparent w-32 h-fit p-4">
+                <button className="flex flex-row justify-center bg-transparent hidden w-32 h-fit p-4">
                   <h3>Follow</h3>
                 </button>
               </div>
             </div>
-            <div className="flex justify-self-end items-end	mt-4 space-x-4 > * + *">
-              <button className="bg-gray-50 hover:bg-sky-100 w-10 h-10 rounded-lg">
+            <div className="flex justify-self-end items-end	mt-4 space-x-4 > * + * bg-black/50 rounded-xl">
+              <button className="hover:bg-sky-100 w-10 h-10 rounded-lg bg-transparent">
                 <Image
                   width={24}
                   height={24}
@@ -73,7 +73,7 @@ export default function Profile({}) {
                   alt="twitter button"
                 />
               </button>
-              <button className="bg-gray-50 hover:bg-sky-100  w-10 h-10 rounded-lg">
+              <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent">
                 <Image
                   width={24}
                   height={24}
@@ -82,7 +82,7 @@ export default function Profile({}) {
                 />
               </button>
               <Link href={`${signerAddress}/identity`}>
-                <button className="bg-gray-50	 hover:bg-sky-100  w-10 h-10 rounded-full">
+                <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent">
                   <Image
                     width={24}
                     height={24}

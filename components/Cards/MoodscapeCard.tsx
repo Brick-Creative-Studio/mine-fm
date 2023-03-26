@@ -19,14 +19,20 @@ export const MoodscapeCard: React.FC<CardProps> = ({ id }) => {
             className="rounded-lg"
           />
         </div>
-        <div className="flex flex-row justify-between mb-2">
+        <div className="flex flex-row justify-between my-4">
           <div>Bloomin Moodscape</div>
         </div>
-        <div className="flex flex-row justify-between">
-          <div>@Somewhere Good</div>
-          <div className="text-[#00FF00]">4/8/23</div>
+        <div className="flex flex-row justify-between mb-4">
+          <div className='mr-4'>@Somewhere Good</div>
+          <div className="text-[#00FF00] ml-2">4/8/23</div>
         </div>
-        <div className='my-2'>Brooklyn, NY</div>
+        <div className="flex flex-row justify-between mb-4">
+
+        <div className=''>Brooklyn, NY</div>
+        <div className="text-[#00FF00] ml-2">5 - 8pm EST </div>
+
+
+        </div>
         <div className="my-2 w-full h-0.5 bg-gray-500/75" />
 
         <div className="flex flex-row justify-evenly mt-2">
