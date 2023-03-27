@@ -6,6 +6,8 @@ import { ProfileSectionHandler as SectionHandler } from 'components/Layout/Profi
 import { useLayoutStore } from 'stores'
 import MoodsSection from 'components/Sections/MoodsSection'
 import MscapeSection from 'components/Sections/MScapeSection'
+import InstaModal from 'components/Modals/InstaModal'
+import TwitterModal from 'components/Modals/TwitterModal'
 
 export default function Profile({}) {
   const { signerAddress } = useLayoutStore((state) => state)
@@ -54,7 +56,7 @@ export default function Profile({}) {
                     width={48}
                     height={48}
                     src={'/copy.svg'}
-                    alt="coply address button"
+                    alt="copy address button"
                   />
                 </button>
               </div>
@@ -65,22 +67,9 @@ export default function Profile({}) {
               </div>
             </div>
             <div className="flex justify-self-end items-end	mt-4 space-x-4 > * + * bg-black/50 rounded-xl">
-              <button className="hover:bg-sky-100 w-10 h-10 rounded-lg bg-transparent">
-                <Image
-                  width={24}
-                  height={24}
-                  src={'/stock/twitter-logo.svg'}
-                  alt="twitter button"
-                />
-              </button>
-              <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent">
-                <Image
-                  width={24}
-                  height={24}
-                  src={'/stock/instagram-logo.svg'}
-                  alt="instagram button"
-                />
-              </button>
+              <TwitterModal/>
+              <InstaModal/>
+
               <Link href={`${signerAddress}/identity`}>
                 <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent">
                   <Image
