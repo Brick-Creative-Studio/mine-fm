@@ -38,14 +38,14 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
   )
 
   const activeSection: activeSectionProps | undefined = React.useMemo(() => {
-    const mCard = tab('Memory Cards')
+    const moodscapes = tab('Moodscapes')
     const moods = tab('Moods')
 
     if (!activeTab) {
-      return mCard
+      return moodscapes
     }
 
-    return tab(unslugify(activeTab)) ?? mCard
+    return tab(unslugify(activeTab)) ?? moodscapes
   }, [activeTab, tab])
 
   return (

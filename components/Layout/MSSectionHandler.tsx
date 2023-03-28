@@ -39,10 +39,9 @@ export const MSSectionHandler: React.FC<SectionHandlerProps> = ({
 
   const activeSection: activeSectionProps | undefined = React.useMemo(() => {
     
-    const moods = tab('Moods')
+    const moods = tab('EventMoods')
     const comments = tab('Comments')
-    const attendance = tab('Attendance')
-    const miniMoods = tab('Mini-Moods')
+    const miniMoods = tab('Mini')
     const personal = tab('Personal')
 
     if (!activeTab) {

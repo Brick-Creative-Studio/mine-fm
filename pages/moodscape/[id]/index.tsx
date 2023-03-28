@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import EventMoods from 'components/Sections/EventMoods'
 import Link from 'next/link'
 import { MSSectionHandler as SectionHandler } from 'components/Layout/MSSectionHandler'
 import { useLayoutStore } from 'stores'
-import Moods from 'components/Sections/Moods'
-import MemoryCards from 'components/Sections/MemoryCards'
+import Moods from 'components/Sections/MoodsSection'
+import MemoryCards from 'components/Sections/MScapeSection'
+import ChatBox from 'components/ChatRoom/ChatBox'
+import EventComments from 'components/Sections/EventComments'
 
 export default function MoodscapePage({}) {
   const { signerAddress } = useLayoutStore((state) => state)
@@ -15,16 +18,12 @@ export default function MoodscapePage({}) {
 
   const sections = [
     {
-        title: 'Moods',
-        component: [<Moods key={'moods'} />],
+        title: 'EventMoods',
+        component: [<EventMoods key={'eventMood'} />],
       },
       {
         title: 'Comments',
-        component: [<Moods key={'moods'} />],
-      },
-      {
-        title: 'Attendance',
-        component: [<Moods key={'moods'} />],
+        component: [<EventComments key={'commments'} />],
       },
       {
         title: 'Mini',
@@ -48,7 +47,7 @@ export default function MoodscapePage({}) {
           <div className='flex flex-row'>
             <div className='mr-8'>
             <Image
-              src={'/stock/stonie-test-poster.jpeg'}
+              src={'/stock/bloomin_poster_square.png'}
               width={340}
               height={340}
               alt={'moodscape poster'}
@@ -67,7 +66,7 @@ export default function MoodscapePage({}) {
           </div>
 
           <div className="flex flex-col justify-between">
-            <div className='px-2 bg-black/50 h-fit'>
+            <div className='px-2 bg-[#F25C54]/50 break-words rounded-md w-fit h-fit'>
             <h3> Status: Active</h3>
             </div>
             <div className='flex flex-row justify-between'>

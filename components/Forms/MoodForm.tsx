@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import Image from 'next/image'
+import Image from 'next/future/image'
 import styles from '../../pages/create/onchain/styles.module.css'
-import { client } from 'packages/ipfs-service'
+import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from 'packages/ipfs-service'
 
 type MoodInputs = {
   title: string
@@ -39,59 +39,46 @@ export default function MoodForm({}) {
     setIsMounted(true)
   }, [])
 
-  const handleFileUpload = React.useCallback(async (_input: FileList | null) => {
-    if (!_input) return
-    
-    const input = _input[0]
 
-    const file = input
-    try {
-      const added = await client.add(file)
-      const url = `https://mine-fm.infura-ipfs.io/ipfs/${added.path}`
-      updateFileUrl(url)
-      console.log('mood poster', url)
-    } catch (error) {
-      console.log('Error uploading file: ', error)
-    }
-  }, [])
+  const handleFileUpload = async (_input: FileList | null) => {
 
-  // const handleFileUpload = React.useCallback(async (_input: FileList | null) => {
+          console.log("click test")
+          if (!_input) return
+          const input = _input[0]
 
-  //         console.log("click test")
-  //         if (!_input) return
-  //         const input = _input[0]
+          setUploadArtworkError(false)
 
-  //         setUploadArtworkError(false)
+          if (input?.type?.length && !acceptableMIME.includes(input.type)) {
+              setUploadArtworkError({
+                  message: `Sorry, ${input.type} is an unsupported file type`,
+              })
+              console.log(`Sorry, ${input.type} is an unsupported file type`)
 
-  //         if (input?.type?.length && !acceptableMIME.includes(input.type)) {
-  //             setUploadArtworkError({
-  //                 message: `Sorry, ${input.type} is an unsupported file type`,
-  //             })
-  //             return
-  //         }
+              return
+          }
 
-  //         try {
-  //             setIsUploading(true)
+          try {
+              setIsUploading(true)
 
-  //             //     const { cid } = await upload(_input[0], { cache: true })
+                  const { cid } = await uploadFile(_input[0], { cache: true })
 
-  //             // formik.setFieldValue(id, normalizeIPFSUrl(cid))
-  //             setIsUploading(false)
-  //             setUploadArtworkError(null)
-  //         } catch (err: any) {
-  //             setIsUploading(false)
-  //             setUploadArtworkError({
-  //                 ...err,
-  //                 message: `Sorry, there was an error with our file uploading service. ${err?.message}`,
-  //             })
-  //         }
-  //     },
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //     []
-  // )
+              // formik.setFieldValue(id, normalizeIPFSUrl(cid))
+              const url  = normalizeIPFSUrl(cid)?.toString()
+              updateFileUrl(url ? url : '')
+              console.log('mood poster', url)
+              setIsUploading(false)
+              setUploadArtworkError(null)
+          } catch (err: any) {
+              setIsUploading(false)
+              setUploadArtworkError({
+                  ...err,
+                  message: `Sorry, there was an error with our file uploading service. ${err?.message}`,
+              })
+          }
+      }
 
   return (
-    <div className="flex flex-col justify-evenly">
+    <div className="flex flex-col">
       <div>
         <h2> Mood Information </h2>
         <p className="opacity-40 -mt-4"> Required* </p>
@@ -99,8 +86,8 @@ export default function MoodForm({}) {
 
       {/* /* "handleSubmit" will validate your inputs before invoking "onSubmit" */}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-row justify-between">
-          <div className="flex flex-col space-y-8 basis-1/2">
+        <div className="flex flex-row">
+          <div className="flex flex-col space-y-8 basis-1/2 mr-24">
             <div className="flex flex-col">
               <label htmlFor="song title"> Title </label>
               {/* include validation with required or other standard HTML validation rules */}
@@ -174,72 +161,46 @@ export default function MoodForm({}) {
             />
           </div>
 
-          <div className="flex flex-col basis-2/5 space-y-12 ">
+          <div className="flex flex-col space-y-12 ">
             <div>
-              <label> Artwork </label>
+              <label className='mb-4'> Artwork </label>
 
-              <div className="flex justify-center items-center border border-solid w-80 h-80 rounded-md border-zinc-500">
-                <label htmlFor="file-input">
-                  <Image
-                    src={'/plus-icon.png'}
-                    alt="add-art"
-                    width={42}
-                    height={42}
-                    className={ fileUrl.length ? 'hidden' : 'cursor-pointer'}
-                  />
-                   {fileUrl && (
+              <div className="flex justify-center items-center border border-solid w-96 h-96 relative cursor-pointer rounded-md border-zinc-500 mt-4">
+                <label htmlFor="poster-file-input">
+                 
+                   {fileUrl ? (
                     <Image
-                      src={fileUrl}
-                      alt="mood-poster"
-                      width={120}
-                      height={120}
+                    src={getFetchableUrl(fileUrl) || ''}
+                    alt="mood-poster"
+                    fill
                     />
-                  )}
-                </label>
-                <input
-                  type="file"
-                  className="hidden"
-                  name="file"
-                  multiple={true}
-                  onChange={(event) => {
-                    handleFileUpload(event.currentTarget.files)
-                  }}
-                />
-              </div>
-            </div>
-            <div>
-              <label htmlFor="file-input"> Upload Song </label>
-              <div className="flex justify-center items-center border border-solid w-80 h-24 rounded-md border-zinc-500">
-                <label htmlFor="file-input">
+                  ) :  
                   <Image
-                    src={'/plus-icon.png'}
-                    alt="add-art"
-                    width={42}
-                    height={42}
-                    className={'cursor-pointer'}
-                    />
+                  src={'/plus-icon.png'}
+                  alt="add-art"
+                  width={42}
+                  height={42}
+                  className={ fileUrl.length ? 'hidden' : 'cursor-pointer'}
+                />
+                  }
                 </label>
                 <input
                   type="file"
-                  id="file-input"
+                  id="poster-file-input"
                   className={ fileUrl.length ? '' : 'hidden'}
-                  {...register('audioUrl')}
-
+                  {...register('posterUrl')}
                   onChange={(event) => {
-                    console.log('upload triggered')
                     handleFileUpload(event.currentTarget.files)
-                    // onChange(event)
                   }}
+                  
                 />
               </div>
-              <p className="text-xs ">
-                {' '}
-                AIF, WAV, M4A, MP4, MP3, or FLAC. <br /> Max 100mb.
-              </p>
             </div>
-            <div>
+           
+             
+            <div className='flex flex-col justify-center items-center'>
               <label htmlFor="description"> Add a Color to Match the Mood </label>
-              <div className="flex justify-center self-center ml-20 mt-4 w-40 h-40">
+              <div className="flex justify-center self-center mt-4 w-40 h-40">
                 <input type="color" className={styles.style2} {...register('color')} />
               </div>
             </div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { MSCard } from 'components/moodscape/MSCard'
+import { MoodscapeCard } from 'components/Cards/MoodscapeCard'
 
 export default function Explore({}) {
   return (
@@ -13,17 +13,11 @@ export default function Explore({}) {
           <h3 className="mx-8"> Explore </h3>
           <div className="w-auto h-0.5 bg-sky-500/75" />
         </div>
-
-        <div>
-          <h3 className="mx-8"> My MoodScapes </h3>
-          {/* Add conditonal state logic when path changes */}
-          <div className="w-auto h-0.5 bg-sky-500/75 hidden" />
-        </div>
       </div>
       <div className="w-full h-0.5 bg-gray-500/75" />
 
       <div className="grid grid-cols-4 gap-4 p-4">
-        <MSCard id={'1'} />
+        <MoodscapeCard id={'1'} />
       </div>
     </div>
   )

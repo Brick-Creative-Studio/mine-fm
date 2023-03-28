@@ -11,9 +11,11 @@ interface ProfileStoreProps {
   setPhone: (phone: string) => void
   vibe: string | null
   setVibe: (vibe: string) => void
-  //   colorOne: string | null
-  //   colorTwo: string | null
-  //   direction: string | null
+  instagram: string | null
+  twitter: string | null
+  setTwitter: (url: string) => void
+  setInstagram: (link: string) => void
+
   aura: AuraType
   setAura: (aura: AuraType) => void
   setIdentity: (identity: Identity) => void
@@ -24,6 +26,8 @@ const initialState = {
   m_tag: null,
   phone: null,
   email: null,
+  instagram: null,
+  twitter: null,
   vibe: null,
   aura: {
     colorOne: '#000',
@@ -33,18 +37,17 @@ const initialState = {
 }
 
 type AuraType = {
-  colorOne: string 
-  colorTwo: string 
+  colorOne: string
+  colorTwo: string
   direction: string
 }
 
 type Identity = {
-    name: string | null
-    m_tag: string | null
-    phone: string | null
-    email: string | null
-    vibe: string | null
-
+  name: string | null
+  m_tag: string | null
+  phone: string | null
+  email: string | null
+  vibe: string | null
 }
 
 export const useProfileStore = create(
@@ -56,7 +59,9 @@ export const useProfileStore = create(
       setPhone: (phone: string) => set({ phone }),
       setAura: (aura: AuraType) => set({ aura }),
       setIdentity: (identity: Identity) => set({ ...identity }),
-      setVibe: (vibe: string) => set({ vibe })
+      setVibe: (vibe: string) => set({ vibe }),
+      setInstagram: (instagram: string) => set({ instagram }),
+      setTwitter: (twitter: string) => set({ twitter }),
     }),
     {
       name: `mine-fm-profile`,
