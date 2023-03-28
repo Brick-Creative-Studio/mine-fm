@@ -1,10 +1,34 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import Image from 'next/image'
+import { useForm } from 'react-hook-form'
+import { useProfileStore } from 'stores'
+
+type InstaInput = {
+  url: string
+}
+
 
 export default function InstaModal() {
   let [isOpen, setIsOpen] = useState(false)
   let [] = useState('')
+  let { setInstagram } = useProfileStore(state => state)
+
+
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm<InstaInput>()
+
+  function closeAndSubmit(){
+    const url = getValues('url')
+    setInstagram(url)
+    closeModal()
+    
+  }
 
   function closeModal() {
     setIsOpen(false)
@@ -58,22 +82,28 @@ export default function InstaModal() {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Payment successful
+                    Add your Insatgram profile url
                   </Dialog.Title>
+                  <form>
+
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      Your payment has been successfully submitted. We’ve sent you an
-                      email with all of the details of your order.
-                    </p>
+                  <input
+                    placeholder='www.insagram/mine_fm'
+                    className="bg-slate-200/75 h-10 w-full border p-2 border-solid rounded-md text-black"
+                    {...register('url')}
+                     >
+                      
+                    </input>
                   </div>
+                  </form>
 
                   <div className="mt-4">
                     <button
-                      type="button"
+                      type="submit"
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
+                      onClick={closeAndSubmit}
                     >
-                      Got it, thanks!
+                      Save
                     </button>
                   </div>
                 </Dialog.Panel>

@@ -7,6 +7,8 @@ import { MSSectionHandler as SectionHandler } from 'components/Layout/MSSectionH
 import { useLayoutStore } from 'stores'
 import Moods from 'components/Sections/MoodsSection'
 import MemoryCards from 'components/Sections/MScapeSection'
+import ChatBox from 'components/ChatRoom/ChatBox'
+import EventComments from 'components/Sections/EventComments'
 
 export default function MoodscapePage({}) {
   const { signerAddress } = useLayoutStore((state) => state)
@@ -21,7 +23,7 @@ export default function MoodscapePage({}) {
       },
       {
         title: 'Comments',
-        component: [<Moods key={'moods'} />],
+        component: [<EventComments key={'commments'} />],
       },
       {
         title: 'Mini',
@@ -45,7 +47,7 @@ export default function MoodscapePage({}) {
           <div className='flex flex-row'>
             <div className='mr-8'>
             <Image
-              src={'/stock/stonie-test-poster.jpeg'}
+              src={'/stock/bloomin_poster_square.png'}
               width={340}
               height={340}
               alt={'moodscape poster'}
