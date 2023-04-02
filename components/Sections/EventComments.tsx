@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { MessagesContainer } from 'components/Containers/MessagesContainer';
 import Image from 'next/image'
 import io from 'socket.io-client';
 
@@ -45,7 +46,8 @@ export default function EventComments({}) {
       <div className="flex flex-col m-8  border-solid border-white h-96 px-2 bg-slate-100/75 text-black w-5/6 rounded-xl">
         <h3> Comments </h3>
         <div className="h-full border-solid border-black/50 rounded-lg overflow-y-scroll">
-        <ul id="messages"></ul>
+        {/* <ul id="messages"></ul> */}
+        <MessagesContainer messages={} eventTitle={}/>
         </div>
        
         <div className="flex flex-row h-12 w-full mb-2  ">

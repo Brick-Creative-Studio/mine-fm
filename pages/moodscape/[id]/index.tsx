@@ -7,7 +7,7 @@ import { MSSectionHandler as SectionHandler } from 'components/Layout/MSSectionH
 import { useLayoutStore } from 'stores'
 import Moods from 'components/Sections/MoodsSection'
 import MemoryCards from 'components/Sections/MScapeSection'
-import ChatBox from 'components/ChatRoom/ChatBox'
+import ChatBox from 'components/Containers/MessagesContainer'
 import EventComments from 'components/Sections/EventComments'
 
 export default function MoodscapePage({}) {
