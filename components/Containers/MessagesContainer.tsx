@@ -26,3 +26,5 @@ export const MessagesContainer: React.FC<MsgContainerProps> = ({
         </div>
     )
 }
+
+export default MessagesContainer;
