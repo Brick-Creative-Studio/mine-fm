@@ -1,34 +1,29 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
+import { Message } from 'types/Message'
 
 interface MsgStoreProps {
-  messages: Messages[]
-  setMessages: (message: Messages) => void
-}
-
-type Messages = {
-  message: string
-  time: string
-  mTag: string
-}
-
-const initialState = {
-  messages: [],
+  messages: Message[]
+  setMessages: (message: Message) => void
 }
 
 export const useMsgStore = create(
   persist<MsgStoreProps>(
     (set) => ({
-      ...initialState,
-      setMessages: (message: Messages) =>
+      messages: [],
+      setMessages: (message: Message) =>
         set((state) => ({
-          messages: {...state.messages, message},
-        }))
-  }),
-  {
-    name: `mine-msgs`,
-    storage: createJSONStorage(() => localStorage),
-    version: 0,
-  }
+          messages: {
+            ...state.messages,
+            message
+          },
+        })
+        ),
+    }),
+    {
+      name: `mine-msgs`,
+      storage: createJSONStorage(() => localStorage),
+      version: 0,
+    }
   )
 )
