@@ -37,18 +37,6 @@ export default function EventComments({}) {
     }
   }, [socket])
 
-  const handleNewMessage = (message: string) => {
-    // htmlMessages && htmlMessages?.appendChild(buildNewMessage(message))
-  }
-
-  // const buildNewMessage = (message: string) => {
-  //   console.log('message built', getValues('comment') )
-
-  //   const li = document.createElement('li')
-  //   li.appendChild(document.createTextNode(message))
-  //   return li
-  // }
-
   return (
     <form>
       <div className="flex flex-col m-8  border-solid border-white h-96 px-2 bg-slate-100/75 text-black w-5/6 rounded-xl">

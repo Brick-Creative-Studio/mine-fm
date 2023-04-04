@@ -5,12 +5,13 @@ import { Menu } from '@headlessui/react'
 
 interface NavMenuProps {
     signerAddress: string,
+    hasAccount: boolean
 }
 
 
 
 
-const NavMenu: React.FC<NavMenuProps> = ({ signerAddress }) => {
+const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
 
     const { disconnect } = useDisconnect()
 
@@ -37,7 +38,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress }) => {
                         {({ active }) => (
                             <a
                                 className={`${active && 'bg-blue-500'}`}
-                                href={`/profile/${signerAddress}`}
+                                href={ hasAccount ? `/profile/${signerAddress}` : '/onboarding'}
                             >
                                 Profile
                             </a>
