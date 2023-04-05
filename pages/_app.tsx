@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} initialChain={mainnet}>
+      <RainbowKitProvider chains={chains} initialChain={optimism}>
       <Layout>
         <Component {...pageProps} />
       </Layout>

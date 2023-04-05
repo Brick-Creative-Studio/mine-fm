@@ -10,6 +10,7 @@ import Link from 'next/link'
 import NavMenu from './NavMenu'
 import { useIsMounted } from '../../hooks/useMounted'
 import { useAccount } from 'wagmi'
+import { useProfileStore } from 'stores'
 import useSWR from 'swr'
 import axios from 'axios'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
@@ -18,34 +19,52 @@ import { Miner } from 'types/Miner'
 
 const Nav = () => {
   const isMounted = useIsMounted()
-  const { signerAddress, setSignerAddress } = useLayoutStore()
+  const { signerAddress, setSignerAddress } = useLayoutStore((state) => state)
+  const { hasAccount, setHasAccount } = useProfileStore((state) => state)
 
-
-  const [ hasAccount, setHasAccount ] = useState(false) 
+  const [ isAccount, setStateAccount ] = useState(false) 
 
   const { address } = useAccount({
     onDisconnect() {
       setSignerAddress(null)
+      setHasAccount(false)
     },
     onConnect({ address, connector, isReconnected }) {
+      console.log('nav address check', address)
       address && setSignerAddress(address)
+      if(miner){
+        setHasAccount(true)
+      } else {
+        setHasAccount(false)
+      }
     },
   })
 
-  const isMinerFetcher = async (url: string) => {
+  const isMinerFetcher = async (url: string, address: string) => {
     let miner: Miner = await axios.post(url, {
-        address: address
-    }).then((res) => res.data)
+        walletAddress: address
+    }).then((res) => {
+      console.log('wallet check', res.data)
+      return res.data
+    })
+    return miner;
   }
 
-  const url = `https://minefm-server.herokuapp.com/miner/${address}`
-  const miner = useSWR(url, isMinerFetcher)
+  const url = `https://minefm-server.herokuapp.com/miner/miner`
+  const miner = useSWR([url, address], isMinerFetcher).data
+  console.log('user check', miner)
 
   useEffect(() => {
     if(miner){
-        setHasAccount(true)
+        setStateAccount(true)
+        if(hasAccount){
+          setHasAccount(true)
+        } else {
+          setHasAccount(false)
+        }
+        
        }
-  }, [address])
+  }, [miner])
 
   return isMounted && address ? (
     <div className={NavBar}>
@@ -67,7 +86,7 @@ const Nav = () => {
             <Image src={'/boulder.svg'} alt="create button" width={24} height={24} />
           </button>
         </Link>
-        {signerAddress && <NavMenu hasAccount={hasAccount} signerAddress={signerAddress} />}
+        {signerAddress && <NavMenu hasAccount={isAccount} signerAddress={signerAddress} />}
       </div>
     </div>
   ) : (

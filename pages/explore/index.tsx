@@ -1,7 +1,41 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { MoodscapeCard } from 'components/Cards/MoodscapeCard'
+import Link from 'next/link'
+import { useLayoutStore, useProfileStore, useMCStore } from 'stores'
+import { useRouter } from 'next/router'
+import ConnectModal from 'components/Modals/ConnectModal'
+import CreateAcctModal from 'components/Modals/CreateAcctModal'
+import { useAccount } from 'wagmi'
 
 export default function Explore({}) {
+  const { signerAddress } = useLayoutStore((state) => state)
+  const router = useRouter()
+  const { isConnected } = useAccount()
+  const { hasAccount } = useProfileStore((state) => state)
+
+  const checkAccountStatus = () => {
+    console.log('moodscape acct check', hasAccount)
+    console.log('moodscape acct check', hasAccount)
+    if (!isConnected) {
+      return <ConnectModal />
+    }
+    if (!hasAccount) return <CreateAcctModal />
+
+    if (hasAccount && isConnected) {
+      return(
+        <Link href={`/moodscape/${1}`} key={1}>
+        <button className="hover:bg-sky-100 rounded-lg bg-gradient-to-r from-yellow-500 to-blue-500">
+          <h3> Enter Moodscape </h3>
+        </button>
+      </Link>
+      )
+    }
+  }
+
+  useEffect( () => {
+
+  }, [signerAddress, isConnected])
+
   return (
     <div className="flex flex-col mt-28 mx-32">
       <div>
@@ -16,8 +50,9 @@ export default function Explore({}) {
       </div>
       <div className="w-full h-0.5 bg-gray-500/75" />
 
-      <div className="grid grid-cols-4 gap-4 p-4">
+      <div className="flex flex-col items-center justify-center gap-4 p-4">
         <MoodscapeCard id={'1'} />
+        {checkAccountStatus()}
       </div>
     </div>
   )

@@ -38,9 +38,9 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                         {({ active }) => (
                             <a
                                 className={`${active && 'bg-blue-500'}`}
-                                href={ hasAccount ? `/profile/${signerAddress}` : '/onboarding'}
+                                href={ hasAccount ? `/profile/${signerAddress}` : '/onboarding?tab=aura'}
                             >
-                                Profile
+                              {hasAccount ? <p>Profile</p> : <p>Create Account</p>}
                             </a>
                         )}
                     </Menu.Item>
