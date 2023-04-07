@@ -14,8 +14,7 @@ export default function Explore({}) {
   const { hasAccount } = useProfileStore((state) => state)
 
   const checkAccountStatus = () => {
-    console.log('moodscape acct check', hasAccount)
-    console.log('moodscape acct check', hasAccount)
+
     if (!isConnected) {
       return <ConnectModal />
     }

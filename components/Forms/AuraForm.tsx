@@ -51,7 +51,7 @@ const AuraForm: React.FC = ({}) => {
     data.direction = direction
     setAura(data)
     console.log('aura state set', data)
-    router.push(`/profile/${address}/mc-gallery`)
+    router.push('/onboarding?tab=identity')
   }
 
   const onChangeColorOne = (event: React.ChangeEvent<HTMLInputElement>) => {

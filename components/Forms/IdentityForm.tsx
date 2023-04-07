@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useLayoutStore, useProfileStore } from 'stores'
+import { useLayoutStore, useProfileStore, useMCStore } from 'stores'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import useSWR from 'swr'
 import { Miner } from 'types/Miner'
+
 
 
 type Identity = {
@@ -21,6 +22,7 @@ export default function IdentityForm({}) {
   const { register, handleSubmit, getValues } = useForm<Identity>()
   const { setIdentity, setHasAccount, hasAccount, aura } = useProfileStore((state) => state)
   const { signerAddress: address } = useLayoutStore()
+  const { needsCard, setStatus } = useMCStore((state) => state)
 
   const createMiner = async (url: string, newMiner: any) => {
     let miner: Miner = await axios.post(url, newMiner).then((res) => {
@@ -48,7 +50,12 @@ export default function IdentityForm({}) {
       try{ 
         createMiner(url, newMiner).then(() => {
           console.log("create miner request")
-          router.push(`/profile/${address}`)
+
+          if(needsCard){
+            router.push('/onboarding?tab=mintMC')
+          } else{
+            router.push(`/profile/${address}`)
+          }
   
         })
       } catch(e){

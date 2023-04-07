@@ -1,17 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { OnboardingSectionHandler as SectionHandler } from 'components/Layout/OnboardingSection'
-import { useLayoutStore } from 'stores'
+import { useLayoutStore, useMCStore } from 'stores'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import IdentityForm from 'components/Forms/IdentityForm'
 import AuraForm from 'components/Forms/AuraForm'
-
+import MintCard from 'components/Sections/MintCard'
+import { GetServerSideProps } from 'next'
 
 export default function Onboarding({}) {
   const { signerAddress } = useLayoutStore((state) => state)
   const { query } = useRouter()
+  const { needsCard, setStatus} = useMCStore((state) => state)
 
-  const sections = [
+  let sections = [
     {
       title: 'Aura',
       component: [<AuraForm key={'Aura'} />],
@@ -19,9 +21,12 @@ export default function Onboarding({}) {
     {
       title: 'Identity',
       component: [<IdentityForm key={'Identity'} />],
+    },
+    {
+      title: 'Memorycard',
+      component: [<MintCard key={'memorycard'}/> ]
     }
-    
-  ]
+  ] 
 
 
   return (

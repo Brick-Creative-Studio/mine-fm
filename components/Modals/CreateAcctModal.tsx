@@ -1,16 +1,17 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import Image from 'next/image'
-import { useProfileStore } from 'stores'
-import { useLayoutStore } from 'stores'
+import { useProfileStore, useLayoutStore, useMCStore } from 'stores'
 import { useRouter } from 'next/router'
 
 export default function CreateAcctModal() {
   let [isOpen, setIsOpen] = useState(false)
+  const { needsCard, setStatus } = useMCStore((state) => state)
 
   const  router  = useRouter()
 
   function createNewAcct(){
+    setStatus(true)
     router.push('/onboarding?tab=aura')
     closeModal()
   }
