@@ -15,6 +15,7 @@ interface SongInput {
 type Moody = {
   song: SongInput[]
   miner: string
+  mood: string
 }
 
 export const SongCell: React.FC<SongInput> = ({ songAndArtist, isMoodOne, key }) => {

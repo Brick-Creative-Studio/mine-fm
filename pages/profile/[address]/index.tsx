@@ -5,13 +5,20 @@ import Link from 'next/link'
 import { ProfileSectionHandler as SectionHandler } from 'components/Layout/ProfileSectionHandler'
 import { useLayoutStore } from 'stores'
 import MoodsSection from 'components/Sections/MoodsSection'
-import MscapeSection from 'components/Sections/MScapeSection'
+import MscapeSection from 'components/Sections/MsSection'
 import InstaModal from 'components/Modals/InstaModal'
+import {useProfileStore} from "stores";
 import TwitterModal from 'components/Modals/TwitterModal'
 
 export default function Profile({}) {
   const { signerAddress } = useLayoutStore((state) => state)
   const { query } = useRouter()
+  const { aura } = useProfileStore((state) => state)
+  let userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorTwo})`
+  useEffect(() => {
+    userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorTwo})`
+  },[aura])
+
 
   const sections = [
     {
@@ -19,19 +26,15 @@ export default function Profile({}) {
       component: [<MscapeSection key={'moodscape'} />],
     },
     {
-      title: 'Moods',
-      component: [<MoodsSection key={'moods'} />],
+      title: 'Moodys',
+      component: [<MoodsSection key={'moodys'} />],
     },
   ]
-
-  useEffect(() => {
-    
-  })
 
   return (
     <div className="flex flex-col mt-24 mb-auto mx-12">
       <div className="flex p-4">
-        <div className="w-11/12 bg-gradient-to-r from-purple-500 to-pink-500 h-36 absolute rounded-lg z-0" />
+        <div style={{ background: `${userGradient}`}} className="w-11/12 h-36 absolute rounded-lg z-0" />
         <div className="px-2 pt-1">
           <Image
             className="rounded-full z-10"

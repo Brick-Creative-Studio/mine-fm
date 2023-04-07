@@ -10,7 +10,7 @@ type Comment = {
 }
 
 export default function EventComments({}) {
-  const { register, handleSubmit, getValues } = useForm<Comment>()
+  const { register, handleSubmit, getValues, resetField } = useForm<Comment>()
   const socket = io('https://minefm-server.herokuapp.com/')
   const [messages, setMessages] = useState<Message[]>([])
 
@@ -20,7 +20,10 @@ export default function EventComments({}) {
       mTag: '',
       time: '',
     }
+
     socket.emit('message', message)
+    // resetField('comment')
+
 
   }
 
@@ -29,7 +32,9 @@ export default function EventComments({}) {
     socket.on('message', (message: Message) => {
       console.log('message submitted', getValues('comment'))
         setMessages((messages) => [...messages, message])
-        console.log('msgs obj', ...messages)
+      resetField('comment')
+
+      console.log('msgs obj', ...messages)
       //handleNewMessage(message.message)
     })
     return () => {
@@ -40,7 +45,7 @@ export default function EventComments({}) {
   return (
     <form>
       <div className="flex flex-col m-8  border-solid border-white h-96 px-2 bg-slate-100/75 text-black w-5/6 rounded-xl">
-        <h3> Comments </h3>
+        <h3> Share a message with the DJ's </h3>
         <div className="h-full border-solid border-black/50 rounded-lg overflow-y-scroll">
           <ul id="messages">
             {messages.length ? (
