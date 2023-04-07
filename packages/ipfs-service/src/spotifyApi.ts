@@ -12,14 +12,15 @@ const scopes = [
     'ugc-image-upload',
   ],
   redirectUri = 'https://mine-fm.vercel.app/',
-  clientId = process.env.NEXT_PUBLIC_CLIENT_ID ? process.env.NEXT_PUBLIC_CLIENT_ID : '',
-  clientSecret = process.env.NEXT_PUBLIC_CLIENT_SECRET,
+  clientId = process.env.CLIENT_ID ? process.env.CLIENT_ID : '',
+  clientSecret = process.env.CLIENT_SECRET,
   state = 'some-state-of-my-choice'
-var code = process.env.NEXT_PUBLIC_ACCESS_CODE ? process.env.NEXT_PUBLIC_ACCESS_CODE : ''
+var code = process.env.ACCESS_CODE ? process.env.NEXT_PUBLIC_ACCESS_CODE : ''
 
 ;(SpotifyWebApi as unknown as { _addMethods: (fncs: unknown) => void })._addMethods(
   SpotifyWebApiServer
 )
+
 const spotifyApi = new SpotifyWebApi({
   clientId: clientId,
   clientSecret: clientSecret,

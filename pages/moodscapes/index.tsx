@@ -23,7 +23,7 @@ export default function Explore({}) {
     if (hasAccount && isConnected) {
       return(
         <Link href={`/moodscape/${1}`} key={1}>
-        <button className="hover:bg-sky-100 rounded-lg bg-gradient-to-r from-yellow-500 to-blue-500">
+        <button className="hover:bg-sky-100 hover:text-black rounded-lg bg-black/50">
           <h3> Enter Moodscape </h3>
         </button>
       </Link>

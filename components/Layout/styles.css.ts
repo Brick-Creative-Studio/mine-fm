@@ -74,6 +74,7 @@ export const navButtonRadio = style([
 export const navCreate = style([
     {
         margin: 8,
+        marginLeft: 12,
         borderRadius: 6,
         color: '#EFE9DB',
         fontSize: 16,

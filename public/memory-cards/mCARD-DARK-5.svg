@@ -5,10 +5,10 @@
       <stop offset="0" stop-color="#000"/>
       <stop offset="1" stop-color="#282828"/>
     </linearGradient>
-     <linearGradient id="mGradient"  gradientUnits="userSpaceOnUse">
-      <stop offset="25%" stop-color="#fff83a"/>
-      <stop offset="50%" stop-color="#647eb6"/>
-       <stop offset="75%" stop-color="#27ff2e"/>
+     <linearGradient id="mGradient" gradientTransform="rotate(38)">
+      <stop offset="35%" stop-color="#fff83a"/>
+      <stop offset="50%" stop-color="#4ef753"/>
+      <stop offset="95%" stop-color="#004cf0"/>
     </linearGradient>
     <linearGradient id="g" x1="932.786" y1="3124.038" x2="3096.739" y2="960.084" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#4d4d4d"/>

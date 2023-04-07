@@ -93,20 +93,16 @@ export default function Profile({}) {
           old. Richard McClintock, a Latin professor at Hampden
         </p>
         <div className="flex flex-col items-center">
-          <p> Sounds </p>
-          <p className="-mt-2"> 25 </p>
+          <p> Moodscapes </p>
+          <p className="-mt-2"> 1 </p>
+        </div>
+        <div className="flex w-fit flex-col items-center">
+          <p> MemCards </p>
+          <p className="-mt-2"> 1 </p>
         </div>
         <div className="flex flex-col items-center">
-          <p> MOODs </p>
-          <p className="-mt-2"> 310 </p>
-        </div>
-        <div className="flex flex-col items-center">
-          <p> Collection </p>
-          <p className="-mt-2"> 103 </p>
-        </div>
-        <div className="flex flex-col items-center">
-          <p> Subs </p>
-          <p className="-mt-2"> 5 </p>
+          <p> Moodys </p>
+          <p className="-mt-2"> 0 </p>
         </div>
       </div>
         <SectionHandler

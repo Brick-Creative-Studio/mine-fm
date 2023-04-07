@@ -83,7 +83,7 @@ const Nav = () => {
       <div className={navActions}>
         <Link key={miner ? 'create' : 'make-account'} href={ miner ? '/create' : '/make-account'}>
           <button className={navCreate}>
-            <Image src={'/boulder.svg'} alt="create button" width={24} height={24} />
+          <h3> Create </h3>
           </button>
         </Link>
         {signerAddress && <NavMenu hasAccount={isAccount} signerAddress={signerAddress} />}

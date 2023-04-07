@@ -7,51 +7,17 @@ import { MSSectionHandler as SectionHandler } from 'components/Layout/MSSectionH
 import { useLayoutStore } from 'stores'
 import Moods from 'components/Sections/MoodsSection'
 import MemoryCards from 'components/Sections/MScapeSection'
-import ChatBox from 'components/Containers/MessagesContainer'
 import EventComments from 'components/Sections/EventComments'
 import MoodyModal from 'components/Modals/MoodyModal'
 import VoteModal from 'components/Modals/VoteModal'
-import { GetServerSideProps } from 'next'
-import SpotifyWebApi from 'spotify-web-api-node'
-import { InferGetStaticPropsType } from 'next'
-import { GetStaticProps } from 'next'
-// import spotifyApi from '../../../packages/ipfs-service/src/spotifyApi'
 
-
-// interface Props {
-//   spotify: SpotifyWebApi
-// }
-
-// export const getServerSideProps: GetStaticProps = async(context: any) => {
-//   const spotify = spotifyApi
-
-//   return {
-//     props: { spotify, }, // will be passed to the page component as props
-//   }
-// }
 
 export default function MoodscapePage({ })  {
-  const scopes = [
-    'streaming',
-    'user-library-read',
-    'user-read-playback-state',
-    'user-read-currently-playing',
-    'ugc-image-upload',
-  ],
-  redirectUri = 'https://mine-fm.vercel.app/',
-  clientId = process.env.NEXT_PUBLIC_CLIENT_ID ? process.env.NEXT_PUBLIC_CLIENT_ID : '',
-  clientSecret = process.env.NEXT_PUBLIC_CLIENT_SECRET,
-  state = 'some-state-of-my-choice'
+  
   const { signerAddress } = useLayoutStore((state) => state)
  
   useEffect(() => {
-    const spotifyApi = new SpotifyWebApi({
-     
-    }).getAlbum('4aawyAB9vmqN3uQ7FjRGTy').then(function(data) {
-      console.log('runnig query')
-      console.log(data.body.tracks)
-      return data.body.tracks
-    })
+   
   }, [])
 
   const { query } = useRouter()
@@ -106,17 +72,13 @@ export default function MoodscapePage({ })  {
           </div>
 
           <div className="flex flex-col justify-between">
-            <div className='px-2 bg-[#F25C54]/50 break-words rounded-md w-fit h-fit'>
-            <h3> Status: Active</h3>
+            <div className='px-2 bg-yellow-400/50 break-words rounded-md w-fit h-fit'>
+            <h3> Status: Approaching </h3>
             </div>
-            <div className='flex flex-row justify-between'>
-                <div className='flex flex-col jusify-center'> 
+            <div className='flex flex-row	justify-end mr-12'>
+                <div className='flex flex-col		'> 
                 <p> Make Moody </p>
                 <MoodyModal/>
-                </div>
-                <div className='flex flex-col jusify-center'> 
-                <p> Vote </p>
-                <VoteModal/>
                 </div>
             </div>
             </div>

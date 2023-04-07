@@ -30,17 +30,15 @@ export default function HomePage({}) {
               href={'/create'}
               >
               <button className={styles.createButton}>
-                <Image src={'/boulder.svg'} className="m-4"  alt='create button'  width={28} height={28} />
                 <h2 className='mr-2'>Create</h2>
               </button>
               </Link>
 
               <Link
-              href={'/explore'}
+              href={'/moodscapes'}
               >
               <button className={styles.exploreButton}>
-                <Image src={'/shovel.svg'} className="m-4"  alt='explore button'  width={28} height={28} />
-                <h2 className='mr-2'>Explore</h2>
+                <h2 className='mr-2'> Moodscapes </h2>
               </button>
               </Link>
             
