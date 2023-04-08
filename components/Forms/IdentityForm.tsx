@@ -51,11 +51,9 @@ export default function IdentityForm({}) {
         createMiner(url, newMiner).then(() => {
           console.log("create miner request")
 
-          if(needsCard){
+
             router.push('/onboarding?tab=memorycard')
-          } else{
-            router.push(`/profile/${address}`)
-          }
+
   
         })
       } catch(e){
@@ -64,7 +62,7 @@ export default function IdentityForm({}) {
       }
   
       }    
-    router.push(`/profile/${address}`)
+    router.push(`/onboarding?tab=memorycard`)
   }
 
   const onAuraSubmit = () => {
