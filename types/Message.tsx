@@ -1,5 +1,5 @@
 export type Message = {
   message: string
-  time: string
+  aura: string
   mTag: string
 }

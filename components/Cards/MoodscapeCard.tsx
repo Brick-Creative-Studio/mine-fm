@@ -1,20 +1,22 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useLayoutStore, useProfileStore, useMCStore } from 'stores'
+import { useRouter } from 'next/router'
 
 interface CardProps {
   id: string
 }
 
 export const MoodscapeCard: React.FC<CardProps> = ({ id }) => {
+
   return (
-    <Link href={`/moodscape/${id}`} key={id}>
       <div className="w-64 h-fit rounded-lg bg-[#535353]/50 p-2">
         <div className="flex h-auto ml-1 border-solid border-[#EFE9DB] drop-shadow-lg rounded-lg mb-4 cursor-pointer relative aspect-square">
           <Image
             layout="fill"
             sizes="100vw"
-            src={'/stock/bloomin_poster_square.png'}
+            src={'https://mine-fm.infura-ipfs.io/ipfs/bafybeiba2fhfax54zl2viol57i3egdeybt4xrgjsluieqau22r7k5i4kvq'}
             alt="cover art"
             className="rounded-lg"
           />
@@ -41,6 +43,5 @@ export const MoodscapeCard: React.FC<CardProps> = ({ id }) => {
           </div>
         </div>
       </div>
-    </Link>
   )
 }

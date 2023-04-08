@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import '@rainbow-me/rainbowkit/styles.css'
 import { RainbowKitProvider, getDefaultWallets, connectorsForWallets } from '@rainbow-me/rainbowkit'
 import { WagmiConfig, configureChains, createClient } from 'wagmi'
-import {mainnet, goerli} from 'wagmi/chains'
+import {mainnet, goerli, optimism} from 'wagmi/chains'
 import Layout  from '../components/Layout/Layout'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
@@ -13,11 +13,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const { chains, provider } = configureChains(
     [
-      mainnet,
+      // mainnet,
       // chain.polygon,
-      // chain.optimism,
+      optimism
       // chain.arbitrum,
-      goerli,
+      // goerli,
     ],
     [
     alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID ? process.env.NEXT_PUBLIC_ALCHEMY_ID : ""})
@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 
   const { connectors } = getDefaultWallets({
-    appName: 'Mine.fm',
+    appName: 'MINE.FM',
     chains
   })
 
@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains} initialChain={mainnet}>
+      <RainbowKitProvider chains={chains} initialChain={optimism}>
       <Layout>
         <Component {...pageProps} />
       </Layout>

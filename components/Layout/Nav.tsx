@@ -1,95 +1,115 @@
-import React, { useEffect } from 'react'
-import { NavBar, navConnect, navActions, navButtonMap, navButtonRadio, navCreate, navAvatar, navLogo } from './styles.css'
+import React, { useEffect, useState } from 'react'
+import {
+  NavBar,
+  navActions,
+  navCreate,
+  navLogo,
+} from './styles.css'
 import Image from 'next/image'
 import Link from 'next/link'
 import NavMenu from './NavMenu'
 import { useIsMounted } from '../../hooks/useMounted'
 import { useAccount } from 'wagmi'
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useProfileStore } from 'stores'
+import useSWR from 'swr'
+import axios from 'axios'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useLayoutStore } from 'stores'
-
-
-
-
+import { Miner } from 'types/Miner'
 
 const Nav = () => {
-        //TODO: Check if we have signer then return UI based on if value is present or not
-        const isMounted = useIsMounted()
-        const { signerAddress, setSignerAddress } = useLayoutStore()
+  const isMounted = useIsMounted()
+  const { signerAddress, setSignerAddress } = useLayoutStore((state) => state)
+  const { hasAccount, setHasAccount } = useProfileStore((state) => state)
 
-        const { address } = useAccount({
-            onDisconnect() {
-              console.log('Disconnected')
-              setSignerAddress( null )
-            },
-            onConnect({ address, connector, isReconnected }) {
-                console.log('Connected', { address, connector, isReconnected })
-                address && setSignerAddress( address )
-              },
-          })
+  const [ isAccount, setStateAccount ] = useState(false) 
+
+  const { address } = useAccount({
+    onDisconnect() {
+      setSignerAddress(null)
+      setHasAccount(false)
+    },
+    onConnect({ address, connector, isReconnected }) {
+      console.log('nav address check', address)
+      address && setSignerAddress(address)
+      if(miner){
+        setHasAccount(true)
+      } else {
+        setHasAccount(false)
+      }
+    },
+  })
+
+  const isMinerFetcher = async (url: string, address: string) => {
+    let miner: Miner = await axios.post(url, {
+        walletAddress: address
+    }).then((res) => {
+      console.log('wallet check', res.data)
+      return res.data
+    })
+    return miner;
+  }
+
+  const url = `https://minefm-server.herokuapp.com/miner/miner`
+  const miner = useSWR([url, address], isMinerFetcher).data
+  console.log('user check', miner)
+
+  useEffect(() => {
+    if(miner){
+        setStateAccount(true)
+        if(hasAccount){
+          setHasAccount(true)
+        } else {
+          setHasAccount(false)
+        }
         
-        useEffect(() => {
-            console.log('nav here', address )
-        },[] )
-        
-    
+       }
+  }, [miner])
 
-    return (
-        isMounted && address ? (
-            <div className={NavBar}>
-                <div className={navLogo}>
-                    <Link 
-                    key={'home'}
-                    href={'/'}>
-                    <Image
-                        src={'/mine-boxLogo-icon.svg'}
-                        alt={'minefm-logo'}
-                        width={48}
-                        height={48}
-                        color={'#FFF'}
-                    />
-                    </Link>
-                </div>
+  return isMounted && address ? (
+    <div className={NavBar}>
+      <div className={navLogo}>
+        <Link key={'home'} href={'/'}>
+          <Image
+            src={'/mine-boxLogo-icon.svg'}
+            alt={'minefm-logo'}
+            width={48}
+            height={48}
+            color={'#FFF'}
+          />
+        </Link>
+      </div>
 
-                <div className={navActions}>
-                    <Link
-                        key={'create'}
-                        href={'/create'}>
-                    <button className={navCreate} >
-                        <Image src={'/boulder.svg'} alt="create button" width={24} height={24} />
-                    </button>
-                    </Link>
-                   { signerAddress && <NavMenu signerAddress={signerAddress}/> }
-                      
-                </div>
-            </div>
-        ) :
-            <div className={NavBar}>
-                <div className={navLogo}>
-                    <Link 
-                    key={'home'}
-                    href={'/'}>
-                     <Image
-                        src={'/mine-boxLogo-icon.svg'}
-                        alt={'minefm-logo'}
-                        width={48}
-                        height={48}
-                        color={'#FFF'}
-                    />
-                    </Link>
-                </div>
+      <div className={navActions}>
+        <Link key={miner ? 'create' : 'make-account'} href={ miner ? '/create' : '/make-account'}>
+          <button className={navCreate}>
+          <h3> Create </h3>
+          </button>
+        </Link>
+        {signerAddress && <NavMenu hasAccount={isAccount} signerAddress={signerAddress} />}
+      </div>
+    </div>
+  ) : (
+    <div className={NavBar}>
+      <div className={navLogo}>
+        <Link key={'home'} href={'/'}>
+          <Image
+            src={'/mine-boxLogo-icon.svg'}
+            alt={'minefm-logo'}
+            width={48}
+            height={48}
+            color={'#FFF'}
+          />
+        </Link>
+      </div>
 
-                <div>
+      <div></div>
 
-                </div>
-
-                <div className={navActions}>
-
-                   <ConnectButton/>
-
-                </div>
-            </div>
-    )
+      <div className={navActions}>
+        <ConnectButton />
+      </div>
+    </div>
+  )
 }
 
-export default Nav;
+export default Nav

@@ -10,27 +10,28 @@ import { useRouter } from 'next/router'
 interface AuraInputs {
   colorOne: string
   colorTwo: string
+  colorThree: string
   direction: string
 }
 
 export default function Aura({}) {
   const router = useRouter()
+  const path = router.pathname.replace(/\//g, '')
+
   const { signerAddress: address } = useLayoutStore()
 
   //form handlers
-  const {
-    register,
-    handleSubmit,
-  } = useForm<AuraInputs>()
+  const { register, handleSubmit } = useForm<AuraInputs>()
 
-  const { aura ,setAura } = useProfileStore((state) => state)
+  const { aura, setAura } = useProfileStore((state) => state)
   const [colorOne, setOne] = useState('#240045')
-  const [colorTwo, setTwo] = useState( '#FF8500')
+  const [colorTwo, setTwo] = useState('#FF8500')
+  const [colorThree, setThree] = useState('#FF8500')
+
   const [direction, setDirection] = useState('top')
   const [gradient, setGradient] = useState('')
 
-  const initialGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo})`
-  
+  const initialGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, #240045)`
 
   const cardinalMap = new Map<string, string>([
     ['left', 'West'],
@@ -40,10 +41,10 @@ export default function Aura({}) {
   ])
 
   const onSubmit: SubmitHandler<AuraInputs> = (data) => {
-    data.direction = direction;
+    data.direction = direction
     setAura(data)
     console.log('aura state set', data)
-    router.push(`/profile/${address}/mc-gallery`)
+    router.push('/onboarding?tab=identity')
   }
 
   const onChangeColorOne = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,19 +55,24 @@ export default function Aura({}) {
     setTwo(event.target.value.toString())
   }
 
+  const onChangeColorThree = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setThree(event.target.value.toString())
+  }
+
   const changeDirection = (event: React.MouseEvent<HTMLInputElement>) => {
     setDirection(event.currentTarget.id)
   }
 
   const onGenerateColor = () => {
-    const formatColor = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo})`
+    const formatColor = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`
     setGradient(formatColor)
   }
 
-  useEffect(() =>{ 
+  useEffect(() => {
     console.log(initialGradient)
     aura?.colorOne && setOne(aura.colorOne)
     aura?.colorTwo && setTwo(aura.colorTwo)
+    aura?.colorThree && setThree(aura.colorThree)
     aura?.direction && setDirection(aura?.direction)
   }, [])
 
@@ -135,6 +141,16 @@ export default function Aura({}) {
                   className="w-24 h-12 border-none bg-transparent"
                 />
                 <p>{colorTwo}</p>
+              </div>
+              <div className="flex flex-col justify-center items-center">
+                <input
+                  type="color"
+                  value={colorThree}
+                  {...register('colorThree')}
+                  onChange={(event) => onChangeColorThree(event)}
+                  className="w-24 h-12 border-none bg-transparent"
+                />
+                <p>{colorThree}</p>
               </div>
             </div>
             <div className="flex justify-center m-8">

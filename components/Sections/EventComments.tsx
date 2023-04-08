@@ -6,11 +6,21 @@ import io from 'socket.io-client'
 import { Message } from 'types/Message'
 
 type Comment = {
-  comment: string
+  comment: string,
+  aura: string,
+  minerTag: string
+}
+
+export const CommentCell: React.FC<Comment> = ({ comment, aura, minerTag}) => {
+  return(
+      <div className="flex w-full h-16 bg-transparent rounded-xl border-solid border-r-0 border-gray-400">
+        {comment}
+      </div>
+      )
 }
 
 export default function EventComments({}) {
-  const { register, handleSubmit, getValues } = useForm<Comment>()
+  const { register, handleSubmit, getValues, resetField } = useForm<Comment>()
   const socket = io('https://minefm-server.herokuapp.com/')
   const [messages, setMessages] = useState<Message[]>([])
 
@@ -18,9 +28,12 @@ export default function EventComments({}) {
     const message: Message = {
       message: getValues('comment'),
       mTag: '',
-      time: '',
+      aura: '',
     }
+
     socket.emit('message', message)
+    // resetField('comment')
+
 
   }
 
@@ -29,7 +42,9 @@ export default function EventComments({}) {
     socket.on('message', (message: Message) => {
       console.log('message submitted', getValues('comment'))
         setMessages((messages) => [...messages, message])
-        console.log('msgs obj', ...messages)
+      resetField('comment')
+
+      console.log('msgs obj', ...messages)
       //handleNewMessage(message.message)
     })
     return () => {
@@ -37,32 +52,25 @@ export default function EventComments({}) {
     }
   }, [socket])
 
-  const handleNewMessage = (message: string) => {
-    // htmlMessages && htmlMessages?.appendChild(buildNewMessage(message))
-  }
-
-  // const buildNewMessage = (message: string) => {
-  //   console.log('message built', getValues('comment') )
-
-  //   const li = document.createElement('li')
-  //   li.appendChild(document.createTextNode(message))
-  //   return li
-  // }
-
   return (
     <form>
       <div className="flex flex-col m-8  border-solid border-white h-96 px-2 bg-slate-100/75 text-black w-5/6 rounded-xl">
-        <h3> Comments </h3>
-        <div className="h-full border-solid border-black/50 rounded-lg overflow-y-scroll">
-          <ul id="messages">
+        <h3> Share a message with the DJs </h3>
+        <div className="h-full items-center justify-center border-solid border-black/50 rounded-lg bg-blue-50/75 overflow-y-scroll">
+          <div className={'w-full'} >
             {messages.length ? (
-              messages.map(({ message, mTag, time }, index) => {
-                return <li key={index}>{message}</li>
+              messages.map(({ message, mTag, aura }, index) => {
+                return (
+                    <CommentCell key={index} comment={message} aura={aura} minerTag={mTag}/>
+                )
               })
             ) : (
-              <></>
+                <div className={'flex items-center justify-center h-full w-full'}>
+                  <p >No comments added yet</p>
+
+                </div>
             )}
-          </ul>
+          </div>
           {/* <MessagesContainer messages={} eventTitle={} /> */}
         </div>
 
