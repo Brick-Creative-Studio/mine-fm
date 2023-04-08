@@ -12,7 +12,7 @@ export default function PersonalSection({}) {
             <p> View Profile  </p>
 
         </div>
-      </div>{' '}
+      </div>
     </div>
   )
 }

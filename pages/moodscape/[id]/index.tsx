@@ -82,7 +82,7 @@ export default function MoodscapePage({}) {
         <p className={'text-xl'}>
 
           This April, we welcome you to BLOOMIN, our first ever MOODSCAPE event. Enter
-          the world of MINE.FM and learn more about how we're bridging communities through
+          the world of MINE.FM and learn more about how we are bridging communities through
           music. Get a chance to play with the MINE.FM beta and help decide the future of
           music curation
         </p>
