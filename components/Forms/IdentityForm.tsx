@@ -40,7 +40,7 @@ export default function IdentityForm({}) {
         miner_tag: data.m_tag,
         email: data.email,
         phone: data.phone,
-        walletAddress: address,
+        walletAddress: "0x4bF7F16fDF430DAEAEE579A80233d97A11A81Ae2",
         name: data.name,
         colorOne: aura.colorOne,
         colorTwo: aura.colorTwo,
