@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from "next/link";
 
 export default function MintCard() {
   return (
@@ -15,14 +16,15 @@ export default function MintCard() {
       </div>
 
       <div className="flex flex-col m-8 space-y-8 > * + *	">
+        {/*<button className="hover:bg-green-300/75 hover:text-black rounded-lg bg-black/50 cursor-pointer">*/}
+        {/*  {' '}*/}
+        {/*  <h2>Mint</h2>{' '}*/}
+        {/*</button>*/}
+        <Link href={'/moodscape/1'}>
         <button className="hover:bg-green-300/75 hover:text-black rounded-lg bg-black/50 cursor-pointer">
-          {' '}
-          <h2>Mint</h2>{' '}
+          <h2> Enter Moodscape </h2>{' '}
         </button>
-
-        <button className="hover:bg-red-300/75 hover:text-black rounded-lg bg-black/50 cursor-pointer">
-          <h2> Skip Minting</h2>{' '}
-        </button>
+        </Link>
       </div>
     </div>
   )
