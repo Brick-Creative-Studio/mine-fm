@@ -4,39 +4,40 @@ import Image from "next/image";
 
 export const MoodCard = () => {
 
+
     return (
-        <div className="w-fit h-fit rounded-lg bg-black p-2">
-                <div className="flex h-auto ml-1 border-solid border-[#EFE9DB] bg-[#9AE072] drop-shadow-lg rounded-lg mb-4 relative aspect-square">
+        <div className=" flex flex-col w-fit h-fit rounded-lg bg-black p-2 justify-center">
+                <div style={{}} className="flex h-48 w-max self-center justify-self-center border-solid border-[#EFE9DB] drop-shadow-lg rounded-lg mb-4 relative aspect-square">
               
                 </div>
                 <div className="flex flex-row justify-between mb-2">
                     <div>
-                        song
+                        creator
                     </div>
-                    <div className="w-4 h-4 rounded-full bg-orange-700 border-solid border-[#EFE9DB]"/>
-                
+                    <div className="bg-[#EFE9DB] text-[#9B5B46] w-28  rounded-lg flex flex-row justify-center items-center">
+                        Minertag
+                    </div>
                 </div>
                 <div className="flex flex-row justify-between">
                     <div>
-                        favorite
+                        Mood
                     </div>
                     <div className="bg-[#EFE9DB] text-[#9B5B46] w-28  rounded-lg flex flex-row justify-center items-center">
-                        122k listens
+                        Mood
                     </div>
                 </div>
 
                 <div className="flex flex-row justify-between mt-2">
 
                 <div className="bg-[#EFE9DB] w-28 mx-2  rounded-lg flex flex-col justify-center items-center">
-                    <p className="text-black"> Price </p>
-                    <p className="text-black -mt-2"> 1 Eth </p>
+                    <button className="text-black bg-transparent"> View songs </button>
+
 
 
                 </div>
 
                 <div className="bg-[#EFE9DB] w-28 mx-2 rounded-lg flex flex-col justify-center items-center" >
-                <p className="text-black"> Highest Bid </p>
-                <p className="text-black -mt-2"> 1 Eth </p>
+                <p className="text-black"> Vote </p>
                 </div>
                 </div>
 

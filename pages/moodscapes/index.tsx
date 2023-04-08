@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import ConnectModal from 'components/Modals/ConnectModal'
 import CreateAcctModal from 'components/Modals/CreateAcctModal'
 import { useAccount } from 'wagmi'
+import axios from "axios";
 
 export default function Explore({}) {
   const { signerAddress } = useLayoutStore((state) => state)
@@ -13,6 +14,18 @@ export default function Explore({}) {
   const { isConnected } = useAccount()
   const { hasAccount } = useProfileStore((state) => state)
 
+
+  // const getComments = async(url: string, id: string) => {
+  //   console.log('modal id check: ',id)
+  //   const myMoody: string = await axios.get(url, {
+  //     moodscapeId: id,
+  //   }).then((res) => {
+  //     console.log('got moody', res.data)
+  //     return res.data
+  //   })
+  //
+  //   return myMoody;
+  // }
   const checkAccountStatus = () => {
 
     if (!isConnected) {
@@ -32,6 +45,10 @@ export default function Explore({}) {
   }
 
   useEffect( () => {
+    const server = `https://minefm-server.herokuapp.com/comments`
+
+
+    //getComments(server, 1)
 
   }, [signerAddress, isConnected])
 

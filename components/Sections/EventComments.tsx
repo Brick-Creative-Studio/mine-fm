@@ -4,6 +4,8 @@ import { MessagesContainer } from 'components/Containers/MessagesContainer'
 import Image from 'next/image'
 import io from 'socket.io-client'
 import { Message } from 'types/Message'
+import axios from "axios";
+import {useProfileStore} from "../../stores";
 
 type Comment = {
   comment: string,
@@ -11,10 +13,15 @@ type Comment = {
   minerTag: string
 }
 
+// interface Props {
+//   comments: any
+// }
+
 export const CommentCell: React.FC<Comment> = ({ comment, aura, minerTag}) => {
   return(
-      <div className="flex w-full h-16 bg-transparent rounded-xl border-solid border-r-0 border-gray-400">
-        {comment}
+      <div className="flex flex-col justify-center w-full h-16 bg-transparent rounded-xl px-6">
+        <p>{minerTag}</p>
+        <p className={'-mt-2.5'}> {comment}</p>
       </div>
       )
 }
@@ -23,27 +30,60 @@ export default function EventComments({}) {
   const { register, handleSubmit, getValues, resetField } = useForm<Comment>()
   const socket = io('https://minefm-server.herokuapp.com/')
   const [messages, setMessages] = useState<Message[]>([])
+  let { id, m_tag } = useProfileStore(state => state)
 
-  const handleSubmitNewMessage = () => {
+
+  const getComments = async(url: string, id: string) => {
+    console.log('modal id check: ',id)
+    const myMoody: string = await axios.get(url, {
+      moodscapeId: id,
+    }).then((res) => {
+      console.log('got moody', res.data)
+      return res.data
+    })
+
+    return myMoody;
+  }
+  async function handleSubmitNewMessage (){
     const message: Message = {
       message: getValues('comment'),
-      mTag: '',
+      mTag: m_tag,
       aura: '',
     }
 
     socket.emit('message', message)
+    const server = `https://minefm-server.herokuapp.com/comments/create`
+
+    await createComment(server, id, getValues('comment'))
     // resetField('comment')
 
 
   }
 
-  useEffect(() => {
-    
+  const createComment = async(url: string, id: string, message: string) => {
+    console.log('modal id check: ',id)
+    let newMoody: string = await axios.post(url, {
+      minerId: id,
+      message: message,
+      moodscapeId: '1'
+    }).then((res) => {
+      console.log('updated twitter!', res.data)
+      return res.data
+    })
+
+    return newMoody;
+  }
+
+  async function create(){
+  }
+
+  useEffect((async) => {
+    const server = `https://minefm-server.herokuapp.com/comments/create`
+
     socket.on('message', (message: Message) => {
       console.log('message submitted', getValues('comment'))
         setMessages((messages) => [...messages, message])
       resetField('comment')
-
       console.log('msgs obj', ...messages)
       //handleNewMessage(message.message)
     })
@@ -52,12 +92,16 @@ export default function EventComments({}) {
     }
   }, [socket])
 
+  useEffect(() => {
+
+  })
+
   return (
     <form>
-      <div className="flex flex-col m-8 md:w-full sm:w-full border-solid border-white h-96 px-2 bg-slate-100/75 text-black w-5/6 rounded-xl">
+      <div className="flex flex-col m-8 md:w-full sm:w-full border-solid border-white h-96 px-2 bg-slate-100/75 text-black rounded-xl">
         <h3> Share a message with the DJs </h3>
         <div className="h-full items-center justify-center border-solid border-black/50 rounded-lg bg-blue-50/75 overflow-y-scroll">
-          <div className={'w-full'} >
+          <div className={'w-full flex flex-col'} >
             {messages.length ? (
               messages.map(({ message, mTag, aura }, index) => {
                 return (

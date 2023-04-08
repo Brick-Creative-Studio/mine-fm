@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import EventMoods from 'components/Sections/EventMoods'
 import Link from 'next/link'
+import useSWR from 'swr'
 import { MSSectionHandler as SectionHandler } from 'components/Layout/MSSectionHandler'
 import { useLayoutStore } from 'stores'
 import Moods from 'components/Sections/MoodsSection'
@@ -10,11 +11,27 @@ import PersonalSection from 'components/Sections/PersonalSection'
 import EventComments from 'components/Sections/EventComments'
 import MoodyModal from 'components/Modals/MoodyModal'
 import VoteModal from 'components/Modals/VoteModal'
+import axios from "axios";
 
 export default function MoodscapePage({}) {
   const { signerAddress } = useLayoutStore((state) => state)
+  const server = `https://minefm-server.herokuapp.com/comments`
 
-  useEffect(() => {}, [])
+  // const getComments = async(url: string, id: string) => {
+  //   console.log('modal id check: ',id)
+  //   const comments = await axios.get(url, {
+  //     moodscapeId: id,
+  //   }).then((res) => {
+  //     console.log('got moody', res.data)
+  //     return res.data
+  //   })
+  //
+  //   return comments;
+  // }
+
+  // const comments = useSWR([server, 1], getComments).data
+  //
+
 
   const { query } = useRouter()
 
@@ -37,10 +54,9 @@ export default function MoodscapePage({}) {
     },
   ]
 
-  useEffect(() => {})
-
+  //
   return (
-    <div className="flex flex-col md:w-full sm:w-full w-2/3 mt-24 self-center justify-center">
+    <div className="flex flex-col w-2/3 mt-24 self-center justify-center">
       <div className="flex flex-col p-4 w-full">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row">
@@ -87,21 +103,15 @@ export default function MoodscapePage({}) {
           music curation
         </p>
       </div>
-      <div className="flex flex-row p-4 w-2/3 justify-between">
+      <div className="flex flex-row p-4 w-full justify-center">
         {/* attendance list box component */}
         {/* TODO: Break out to seperae component  */}
         <div className="w-2/3 h-80 bg-black mr-8 flex items-center justify-center">
           <p> Attendance will appear when event the begins </p>
         </div>
-        <div className="">
-          <h2> Latest Activity </h2>
-          <ul>
-            <li>Current Mood Title: Uplift</li>
-            <li>Current DJ: Stonie Blue</li>
-          </ul>
-        </div>
+
       </div>
-      <div className="w-full md:w-full sm:w-full p-4 h-full">
+      <div className="w-full p-4 h-full">
         <SectionHandler
           sections={sections}
           eventId={query?.id?.toString()}
