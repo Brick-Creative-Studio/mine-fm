@@ -20,7 +20,7 @@ export default function MintCard() {
         {/*  {' '}*/}
         {/*  <h2>Mint</h2>{' '}*/}
         {/*</button>*/}
-        <Link href={'/'}>
+        <Link href={'/onboarding?tab=aura'}>
         <button className="hover:bg-green-300/75 hover:text-black rounded-lg bg-black/50 cursor-pointer">
           <h2> Finish Account Set Up </h2>{' '}
         </button>
