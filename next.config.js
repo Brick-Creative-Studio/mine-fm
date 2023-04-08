@@ -18,6 +18,10 @@ const nextConfig = {
     INFURA_PROJECT_ID: process.env.INFURA_PROJECT_ID,
     INFURA_PROJECT_SECRET: process.env.INFURA_PROJECT_SECRET,
   },
+  eslint : {
+    emitWarning: true,
+    failOnWarning: false,
+  },
 
   webpack(config) {
     config.module.rules.push({
