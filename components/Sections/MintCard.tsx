@@ -19,6 +19,7 @@ export default function MintCard() {
           {' '}
           <h2>Mint</h2>{' '}
         </button>
+
         <button className="hover:bg-red-300/75 hover:text-black rounded-lg bg-black/50 cursor-pointer">
           <h2> Skip Minting</h2>{' '}
         </button>

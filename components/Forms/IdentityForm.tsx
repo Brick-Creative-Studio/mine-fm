@@ -52,7 +52,7 @@ export default function IdentityForm({}) {
           console.log("create miner request")
 
           if(needsCard){
-            router.push('/onboarding?tab=mintMC')
+            router.push('/onboarding?tab=memorycard')
           } else{
             router.push(`/profile/${address}`)
           }

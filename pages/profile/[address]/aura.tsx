@@ -31,7 +31,7 @@ export default function Aura({}) {
   const [direction, setDirection] = useState('top')
   const [gradient, setGradient] = useState('')
 
-  const initialGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, #240045)`
+  const initialGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
   const cardinalMap = new Map<string, string>([
     ['left', 'West'],

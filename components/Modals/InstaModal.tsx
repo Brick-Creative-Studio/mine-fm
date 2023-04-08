@@ -2,7 +2,8 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import Image from 'next/image'
 import { useForm } from 'react-hook-form'
-import { useProfileStore } from 'stores'
+import {useLayoutStore, useProfileStore} from 'stores'
+import axios from "axios";
 
 type InstaInput = {
   url: string
@@ -12,7 +13,10 @@ type InstaInput = {
 export default function InstaModal() {
   let [isOpen, setIsOpen] = useState(false)
   let [] = useState('')
-  let { setInstagram } = useProfileStore(state => state)
+  const { signerAddress } = useLayoutStore((state) => state)
+
+
+  let { setInstagram, id } = useProfileStore(state => state)
 
 
 
@@ -23,8 +27,26 @@ export default function InstaModal() {
     getValues,
   } = useForm<InstaInput>()
 
-  function closeAndSubmit(){
+  const updateInsta = async(url: string, address: string, id: string, profile: string) => {
+    console.log('modal id check: ',id)
+    let socialLink: string = await axios.put(url, {
+      instagram: profile,
+      id: id,
+      walletAddress: address
+    }).then((res) => {
+      console.log('updated twitter!', res.data.twitter)
+      return res.data
+    })
+
+    return socialLink;
+  }
+
+
+  async function closeAndSubmit(){
     const url = getValues('url')
+    const server = `https://minefm-server.herokuapp.com/miner`
+
+    await updateInsta(server, signerAddress, id, url)
     setInstagram(url)
     closeModal()
     

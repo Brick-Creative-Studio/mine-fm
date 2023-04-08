@@ -25,6 +25,14 @@
   cursor: pointer;
 }
 
+.divBackground {
+  position: absolute;
+  z-index: 0;
+  width: 91.666667%;
+  height: 9rem;
+  border-radius: 0.5rem;
+}
+
 .crossBottom {
   background-color: #333333;
   width: 35px;

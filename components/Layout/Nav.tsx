@@ -20,7 +20,7 @@ import { Miner } from 'types/Miner'
 const Nav = () => {
   const isMounted = useIsMounted()
   const { signerAddress, setSignerAddress } = useLayoutStore((state) => state)
-  const { hasAccount, setHasAccount } = useProfileStore((state) => state)
+  const { hasAccount, setHasAccount, setId } = useProfileStore((state) => state)
 
   const [ isAccount, setStateAccount ] = useState(false) 
 
@@ -45,6 +45,7 @@ const Nav = () => {
         walletAddress: address
     }).then((res) => {
       console.log('wallet check', res.data)
+        setId(res.data.id);
       return res.data
     })
     return miner;

@@ -2,13 +2,16 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import Image from 'next/image'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { useProfileStore } from 'stores'
+import {useLayoutStore, useProfileStore} from 'stores'
+import axios from "axios";
 
 type TwitterInput = {
     url: string
 }
 
 export default function TwitterModal() {
+
+  const { signerAddress } = useLayoutStore((state) => state)
 
   const {
     register,
@@ -19,12 +22,29 @@ export default function TwitterModal() {
   let [isOpen, setIsOpen] = useState(false)
   let [] = useState('')
 
-  let { setTwitter } = useProfileStore(state => state)
+  let { setTwitter, id } = useProfileStore(state => state)
+
+  const updateTwitter = async(url: string, address: string, id: string, profile: string) => {
+    console.log('modal id check: ',id)
+    let socialLink: string = await axios.put(url, {
+      twitter: profile,
+      id: id,
+      walletAddress: address
+    }).then((res) => {
+      console.log('updated twitter!', res.data.twitter)
+      return res.data
+    })
+
+    return socialLink;
+  }
 
   const onSubmit: SubmitHandler<TwitterInput> = (data) => console.log('twitter url', data)
 
-  function closeAndSubmit(){
+  async function closeAndSubmit(){
     const url = getValues('url')
+    const server = `https://minefm-server.herokuapp.com/miner`
+
+    await updateTwitter(server, signerAddress, id, url)
     setTwitter(url)
     closeModal()
     

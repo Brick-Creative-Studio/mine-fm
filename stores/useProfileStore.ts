@@ -2,7 +2,11 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface ProfileStoreProps {
+  id: string | null
+  setId: (id: string) => void
   name: string | null
+  hasMoody: boolean
+  setHasMoody: (status: boolean) => void
   setName: (name: string) => void
   m_tag: string | null
   email: string | null
@@ -15,21 +19,23 @@ interface ProfileStoreProps {
   twitter: string | null
   setTwitter: (url: string) => void
   setInstagram: (link: string) => void
-  hasAccount: boolean,
+  hasAccount: boolean
   setHasAccount: (condition: boolean) => void
   aura: AuraType
   setAura: (aura: AuraType) => void
   setIdentity: (identity: Identity) => void
-    hasVote: boolean
-    setVoteStatus: (status: boolean) => void
+  hasVote: boolean
+  setVoteStatus: (status: boolean) => void
 }
 
 const initialState = {
   name: null,
+  id: null,
+  hasMoody: false,
   m_tag: null,
   phone: null,
   email: null,
-    hasVote: true,
+  hasVote: true,
   hasAccount: false,
   instagram: null,
   twitter: null,
@@ -62,15 +68,17 @@ export const useProfileStore = create(
     (set) => ({
       ...initialState,
       setName: (name: string) => set({ name }),
+      setId: (id: string) => set({ id }),
+      setHasMoody: (status: boolean) => set({ status }),
       setTag: (m_tag: string) => set({ m_tag }),
       setPhone: (phone: string) => set({ phone }),
       setAura: (aura: AuraType) => set({ aura }),
-      setHasAccount: (condition: boolean) => set((state) => ({ hasAccount: condition})),
+      setHasAccount: (condition: boolean) => set((state) => ({ hasAccount: condition })),
       setIdentity: (identity: Identity) => set({ ...identity }),
       setVibe: (vibe: string) => set({ vibe }),
       setInstagram: (instagram: string) => set({ instagram }),
       setTwitter: (twitter: string) => set({ twitter }),
-        setVoteStatus: (status: boolean) => set({status}),
+      setVoteStatus: (status: boolean) => set({ status }),
     }),
     {
       name: `mine-fm-profile`,

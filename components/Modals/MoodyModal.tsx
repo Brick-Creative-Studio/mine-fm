@@ -5,6 +5,8 @@ import { useProfileStore } from 'stores'
 import { useForm } from 'react-hook-form'
 import { Switch } from '@headlessui/react'
 import AudioPlayer from '../AudioPlayer/AudioPlayer'
+import {keithMood, stonieMood} from "../../constants/moodID";
+import axios from "axios";
 
 interface SongInput {
   songAndArtist: string
@@ -36,12 +38,64 @@ export default function MoodyModal() {
   const [moody, setMoody] = useState<Moody>()
   const [songs, setSong] = useState<string[]>([])
   const [isMoodOne, setMood] = useState(false)
+  let { setTwitter, id, hasMoody, setHasMoody } = useProfileStore(state => state)
 
   const deleteSong = (songIndex: number) => {
     const newSongArr = songs.filter((value, index) => {
       if (songIndex !== index) return
     })
     setSong((songs) => songs.filter((value, index) => index !== songIndex))
+  }
+
+  const editMoody = async(url: string, id: string, moodyId: string, songs: string[], moodId: string) => {
+    console.log('modal id check: ',id)
+    let editedMoody: string = await axios.put(url, {
+      moodyId: moodyId,
+      curatorId: id,
+      moodId: moodId,
+      songOne: songs[0],
+      songTwo: songs[1],
+      songThree: songs[2],
+    }).then((res) => {
+      setHasMoody(true)
+
+      console.log('updated twitter!', res.data)
+      return res.data
+    })
+
+    return editedMoody;
+  }
+
+  const createMoody = async(url: string, id: string, songs: string[], moodId: string) => {
+    console.log('modal id check: ',id)
+    let newMoody: string = await axios.post(url, {
+      curatorId: id,
+      moodId: moodId,
+      songOne: songs[0],
+      songTwo: songs[1],
+      songThree: songs[2],
+    }).then((res) => {
+      console.log('updated twitter!', res.data)
+      setHasMoody(true)
+      return res.data
+    })
+
+    return newMoody;
+  }
+
+  let myMoody = undefined;
+
+  const getMoody = async(url: string, id: string) => {
+    console.log('modal id check: ',id)
+    const myMoody: string = await axios.get(url, {
+      curatorId: id,
+    }).then((res) => {
+      setHasMoody(true)
+      console.log('got moody', res.data)
+      return res.data
+    })
+
+    return myMoody;
   }
 
   const handleSubmitNewSong = () => {
@@ -56,8 +110,10 @@ export default function MoodyModal() {
     console.log('max songs added')
   }
 
+
+
   useEffect(() => {
-    console.log('songs array:', songs)
+
   })
 
   function closeModal() {
@@ -66,6 +122,34 @@ export default function MoodyModal() {
 
   function openModal() {
     setIsOpen(true)
+
+      const server = `https://minefm-server.herokuapp.com/moodys`
+      myMoody = getMoody(server, id)
+      console.log('moody check' + hasMoody, myMoody )
+      setHasMoody(true)
+
+
+  }
+
+  async function closeAndSubmit (){
+    if(songs.length < 3){
+      return
+    }
+
+    if(myMoody !== undefined){
+      const server = `https://minefm-server.herokuapp.com/moodys`
+      console.log('editing moody')
+      await editMoody(server, id, moody.id, songs, "7e6142cb-a3cd-4ef3-aa93-66f675ef2929")
+      closeModal()
+
+
+    } else{
+      const server = `https://minefm-server.herokuapp.com/moodys/create`
+
+      await createMoody(server, id, songs, "7e6142cb-a3cd-4ef3-aa93-66f675ef2929")
+      closeModal()
+    }
+
   }
 
   return (
@@ -184,9 +268,9 @@ export default function MoodyModal() {
                         )}
                       </div>
                       <button
-                        type="submit"
+                        type="button"
                         className="inline-flex justify-center mt-4 rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={closeModal}
+                        onClick={closeAndSubmit}
                       >
                         Save Selections to Moody
                       </button>

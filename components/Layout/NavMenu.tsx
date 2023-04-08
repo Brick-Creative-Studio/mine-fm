@@ -14,10 +14,12 @@ interface NavMenuProps {
 const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
     const { aura } = useProfileStore((state) => state)
     const { disconnect } = useDisconnect()
-    let userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorTwo})`
+    let userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
     useEffect(() => {
-        userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorTwo})`
+        console.log('navAvatar gradient', userGradient)
+
+        userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     },[aura])
 
     return (

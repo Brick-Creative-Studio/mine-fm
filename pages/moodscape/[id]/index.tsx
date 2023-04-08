@@ -40,7 +40,7 @@ export default function MoodscapePage({}) {
   useEffect(() => {})
 
   return (
-    <div className="flex flex-col w-2/3 mt-24 self-center justify-center">
+    <div className="flex flex-col md:w-full sm:w-full w-2/3 mt-24 self-center justify-center">
       <div className="flex flex-col p-4 w-full">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row">
@@ -101,7 +101,7 @@ export default function MoodscapePage({}) {
           </ul>
         </div>
       </div>
-      <div className="w-full p-4 h-full">
+      <div className="w-full md:w-full sm:w-full p-4 h-full">
         <SectionHandler
           sections={sections}
           eventId={query?.id?.toString()}
