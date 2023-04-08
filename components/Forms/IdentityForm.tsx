@@ -120,7 +120,6 @@ export default function IdentityForm({}) {
               {/* include validation with required or other standard HTML validation rules */}
               <input
                 type="tel"
-                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                 required
                 placeholder="555-456-6780"
                 className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
