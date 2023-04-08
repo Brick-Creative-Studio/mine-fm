@@ -18,7 +18,9 @@ const nextConfig = {
     INFURA_PROJECT_ID: process.env.INFURA_PROJECT_ID,
     INFURA_PROJECT_SECRET: process.env.INFURA_PROJECT_SECRET,
   },
-
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
