@@ -9,7 +9,6 @@ import AudioPlayer from '../AudioPlayer/AudioPlayer'
 interface SongInput {
   songAndArtist: string
   isMoodOne: boolean
-  key: number
 }
 
 type Moody = {
@@ -18,12 +17,13 @@ type Moody = {
   mood: string
 }
 
-export const SongCell: React.FC<SongInput> = ({ songAndArtist, isMoodOne, key }) => {
+export const SongCell: React.FC<SongInput> = ({ songAndArtist, isMoodOne}) => {
   return (
     <div className="flex w-full h-16 bg-black/50 rounded-xl border-solid border-r-0 border-gray-400">
       <div className="flex flex-row w-full items-center  px-2 space-x-2 > * + *	">
         {isMoodOne ? <div className="bg-gradient-to-r from-yellow-500 to-yellow-100 w-12 h-12 mr-4 rounded-xl" /> : <div className="bg-gradient-to-r from-blue-500 w-12 h-12 mr-4 rounded-xl" />}
         {songAndArtist}
+
 
       </div>
     </div>
@@ -47,6 +47,7 @@ export default function MoodyModal() {
   const handleSubmitNewSong = () => {
     const song: SongInput = {
       songAndArtist: getValues('songAndArtist'),
+      key: songs
     }
     if (songs.length < 3) {
       setSong((songs) => [...songs, song.songAndArtist])
@@ -168,10 +169,10 @@ export default function MoodyModal() {
                     <div className="mt-4 items-center justify-center flex flex-col">
                       <div className="flex flex-col items-center justify-center  border-black border-solid h-56 w-full rounded-xl mt-4 overflow-y-scroll">
                         {songs.length ? (
-                          songs.map((value, index) => {
+                          songs.map((value) => {
                             return (
                                 <div className={'flex w-full'}>
-                                <SongCell  key={index} isMoodOne={isMoodOne} songAndArtist={value} />
+                                <SongCell isMoodOne={isMoodOne} songAndArtist={value} />
                             <button type={'button'} className={'bg-black/50 rounded-lg border-solid border-gray-400 justify-self-end border-l-0'} onClick={() => deleteSong(index)}  >
                               <Image alt={'delete-song'} src={'/trash.svg'} className={''} width={16} height={16}/>
                             </button>
