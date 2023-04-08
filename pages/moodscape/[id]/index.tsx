@@ -46,7 +46,7 @@ export default function MoodscapePage({}) {
           <div className="flex flex-row">
             <div className="mr-8">
               <Image
-                src={'/stock/bloomin_poster_square.png'}
+                src={'https://mine-fm.infura-ipfs.io/ipfs/bafybeiba2fhfax54zl2viol57i3egdeybt4xrgjsluieqau22r7k5i4kvq'}
                 width={340}
                 height={340}
                 alt={'moodscape poster'}
@@ -80,17 +80,19 @@ export default function MoodscapePage({}) {
       <div className="flex flex-col p-4">
         <h2> Description </h2>
         <p className={'text-xl'}>
-          {' '}
+
           This April, we welcome you to BLOOMIN, our first ever MOODSCAPE event. Enter
           the world of MINE.FM and learn more about how we're bridging communities through
           music. Get a chance to play with the MINE.FM beta and help decide the future of
-          music curation.{' '}
+          music curation
         </p>
       </div>
       <div className="flex flex-row p-4 w-2/3 justify-between">
         {/* attendance list box component */}
         {/* TODO: Break out to seperae component  */}
-        <div className="w-2/3 h-80 bg-black mr-8"></div>
+        <div className="w-2/3 h-80 bg-black mr-8 flex items-center justify-center">
+          <p> Attendance will appear when event the begins </p>
+        </div>
         <div className="">
           <h2> Latest Activity </h2>
           <ul>

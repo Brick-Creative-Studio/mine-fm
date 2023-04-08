@@ -6,7 +6,17 @@ import io from 'socket.io-client'
 import { Message } from 'types/Message'
 
 type Comment = {
-  comment: string
+  comment: string,
+  aura: string,
+  minerTag: string
+}
+
+export const CommentCell: React.FC<Comment> = ({ comment, aura, minerTag}) => {
+  return(
+      <div className="flex w-full h-16 bg-transparent rounded-xl border-solid border-r-0 border-gray-400">
+        {comment}
+      </div>
+      )
 }
 
 export default function EventComments({}) {
@@ -18,7 +28,7 @@ export default function EventComments({}) {
     const message: Message = {
       message: getValues('comment'),
       mTag: '',
-      time: '',
+      aura: '',
     }
 
     socket.emit('message', message)
@@ -46,16 +56,21 @@ export default function EventComments({}) {
     <form>
       <div className="flex flex-col m-8  border-solid border-white h-96 px-2 bg-slate-100/75 text-black w-5/6 rounded-xl">
         <h3> Share a message with the DJ's </h3>
-        <div className="h-full border-solid border-black/50 rounded-lg overflow-y-scroll">
-          <ul id="messages">
+        <div className="h-full items-center justify-center border-solid border-black/50 rounded-lg bg-blue-50/75 overflow-y-scroll">
+          <div className={'w-full'} >
             {messages.length ? (
-              messages.map(({ message, mTag, time }, index) => {
-                return <li key={index}>{message}</li>
+              messages.map(({ message, mTag, aura }, index) => {
+                return (
+                    <CommentCell comment={message} aura={aura} minerTag={mTag}/>
+                )
               })
             ) : (
-              <></>
+                <div className={'flex items-center justify-center h-full w-full'}>
+                  <p >No comments added yet</p>
+
+                </div>
             )}
-          </ul>
+          </div>
           {/* <MessagesContainer messages={} eventTitle={} /> */}
         </div>
 

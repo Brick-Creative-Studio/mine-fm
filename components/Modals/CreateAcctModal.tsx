@@ -28,7 +28,7 @@ export default function CreateAcctModal() {
     <>
       <button
         onClick={openModal}
-        className="hover:bg-sky-100 rounded-lg bg-gradient-to-r from-yellow-500 to-blue-500"
+        className="cursor-pointer hover:bg-sky-100 border-solid border-yellow-200 hover:text-black rounded-lg bg-black/50"
       >
         <h3> Enter Moodscape </h3>
       </button>
@@ -69,7 +69,7 @@ export default function CreateAcctModal() {
                   <div className="flex justify-center items-center mt-6">
                     <button
                       onClick={createNewAcct}
-                      className="hover:bg-sky-100 rounded-lg bg-gradient-to-r from-yellow-500 to-blue-500"
+                      className="hover:bg-sky-100 hover:text-black cursor-pointer rounded-lg bg-black/50"
                     >
                       <h3> Create a New Account </h3>
                     </button>

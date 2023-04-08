@@ -20,6 +20,8 @@ interface ProfileStoreProps {
   aura: AuraType
   setAura: (aura: AuraType) => void
   setIdentity: (identity: Identity) => void
+    hasVote: boolean
+    setVoteStatus: (status: boolean) => void
 }
 
 const initialState = {
@@ -27,6 +29,7 @@ const initialState = {
   m_tag: null,
   phone: null,
   email: null,
+    hasVote: true,
   hasAccount: false,
   instagram: null,
   twitter: null,
@@ -67,6 +70,7 @@ export const useProfileStore = create(
       setVibe: (vibe: string) => set({ vibe }),
       setInstagram: (instagram: string) => set({ instagram }),
       setTwitter: (twitter: string) => set({ twitter }),
+        setVoteStatus: (status: boolean) => set({status}),
     }),
     {
       name: `mine-fm-profile`,

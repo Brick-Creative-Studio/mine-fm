@@ -16,7 +16,7 @@ export const MoodscapeCard: React.FC<CardProps> = ({ id }) => {
           <Image
             layout="fill"
             sizes="100vw"
-            src={'/stock/bloomin_poster_square.png'}
+            src={'https://mine-fm.infura-ipfs.io/ipfs/bafybeiba2fhfax54zl2viol57i3egdeybt4xrgjsluieqau22r7k5i4kvq'}
             alt="cover art"
             className="rounded-lg"
           />

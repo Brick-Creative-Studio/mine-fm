@@ -38,7 +38,7 @@ export default function ConnectModal() {
     <>
       <button
         onClick={openModal}
-        className="hover:bg-sky-100 rounded-lg bg-gradient-to-r from-yellow-500 to-blue-500"
+        className="cursor-pointer hover:bg-sky-100 border-solid border-red-400 hover:text-black rounded-lg bg-black/50"
       >
        <h3> Enter Moodscape </h3>
       </button>

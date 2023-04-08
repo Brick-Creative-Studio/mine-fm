@@ -9,7 +9,7 @@ export default function PersonalSection({}) {
         <div className="m-2 ml-4">
           <p> Miner Tag: Blobitty </p>
           <h2> Moody Votes Recieved: 0 </h2>
-            <p> View Profile > </p>
+            <p> View Profile  </p>
 
         </div>
       </div>{' '}

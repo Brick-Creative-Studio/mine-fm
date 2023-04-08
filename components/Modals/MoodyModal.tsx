@@ -173,7 +173,7 @@ export default function MoodyModal() {
                                 <div className={'flex w-full'}>
                                 <SongCell  key={index} isMoodOne={isMoodOne} songAndArtist={value} />
                             <button type={'button'} className={'bg-black/50 rounded-lg border-solid border-gray-400 justify-self-end border-l-0'} onClick={() => deleteSong(index)}  >
-                              <Image src={'/trash.svg'} className={''} width={16} height={16}/>
+                              <Image alt={'delete-song'} src={'/trash.svg'} className={''} width={16} height={16}/>
                             </button>
                                 </div>
                             )
