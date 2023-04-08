@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect } from 'react'
 import { navAvatar } from './styles.css'
 import { useDisconnect } from 'wagmi'
