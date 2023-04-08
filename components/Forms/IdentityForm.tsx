@@ -34,6 +34,7 @@ export default function IdentityForm({}) {
   const onSubmit: SubmitHandler<Identity> = (data) => {
     setIdentity(data)
 
+
       const url = `https://minefm-server.herokuapp.com/miner/create`
       const newMiner = {
         miner_tag: data.m_tag,
@@ -48,7 +49,6 @@ export default function IdentityForm({}) {
       }
       try{
         createMiner(url, newMiner).then(() => {
-          console.log("create miner request")
 
             router.push('/onboarding?tab=memorycard')
 
@@ -59,7 +59,7 @@ export default function IdentityForm({}) {
         return
       }
   
-      }
+
     router.push(`/onboarding?tab=memorycard`)
   }
 
