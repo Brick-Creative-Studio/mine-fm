@@ -169,7 +169,7 @@ export default function MoodyModal() {
                     <div className="mt-4 items-center justify-center flex flex-col">
                       <div className="flex flex-col items-center justify-center  border-black border-solid h-56 w-full rounded-xl mt-4 overflow-y-scroll">
                         {songs.length ? (
-                          songs.map((value) => {
+                          songs.map((value, index) => {
                             return (
                                 <div className={'flex w-full'}>
                                 <SongCell isMoodOne={isMoodOne} songAndArtist={value} />
