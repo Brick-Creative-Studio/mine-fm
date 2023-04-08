@@ -55,13 +55,13 @@ export default function EventComments({}) {
   return (
     <form>
       <div className="flex flex-col m-8  border-solid border-white h-96 px-2 bg-slate-100/75 text-black w-5/6 rounded-xl">
-        <h3> Share a message with the DJ's </h3>
+        <h3> Share a message with the DJs </h3>
         <div className="h-full items-center justify-center border-solid border-black/50 rounded-lg bg-blue-50/75 overflow-y-scroll">
           <div className={'w-full'} >
             {messages.length ? (
               messages.map(({ message, mTag, aura }, index) => {
                 return (
-                    <CommentCell comment={message} aura={aura} minerTag={mTag}/>
+                    <CommentCell key={index} comment={message} aura={aura} minerTag={mTag}/>
                 )
               })
             ) : (
