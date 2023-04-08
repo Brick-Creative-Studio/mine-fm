@@ -34,7 +34,6 @@ export default function IdentityForm({}) {
   const onSubmit: SubmitHandler<Identity> = (data) => {
     setIdentity(data)
 
-    if (!hasAccount) {
       const url = `https://minefm-server.herokuapp.com/miner/create`
       const newMiner = {
         miner_tag: data.m_tag,
@@ -47,21 +46,20 @@ export default function IdentityForm({}) {
         colorThree: aura.colorThree,
         direction: aura.direction,
       }
-      try{ 
+      try{
         createMiner(url, newMiner).then(() => {
           console.log("create miner request")
 
-
             router.push('/onboarding?tab=memorycard')
 
-  
+
         })
       } catch(e){
         alert('error creating account')
         return
       }
   
-      }    
+      }
     router.push(`/onboarding?tab=memorycard`)
   }
 
