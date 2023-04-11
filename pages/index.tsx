@@ -27,7 +27,7 @@ export default function HomePage({}) {
           <>
             <div className={styles.exploreAndCreate}>
               <Link
-              href={'/onboarding?tab=identity'}
+              href={'/create'}
               >
               <button className={styles.createButton}>
                 <h2 className='mr-2'>Create</h2>

@@ -62,7 +62,7 @@ export default function MoodscapePage({}) {
           <div className="flex flex-row">
             <div className="mr-8">
               <Image
-                src={'https://mine-fm.infura-ipfs.io/ipfs/bafybeiba2fhfax54zl2viol57i3egdeybt4xrgjsluieqau22r7k5i4kvq'}
+                src={'/stock/bloomin_poster_square.png'}
                 width={340}
                 height={340}
                 alt={'moodscape poster'}
