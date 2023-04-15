@@ -98,7 +98,7 @@ export default function EventComments({}) {
 
   return (
     <form>
-      <div className="flex flex-col m-8 md:w-full sm:w-full border-solid border-white h-96 px-2 bg-slate-100/75 text-black rounded-xl">
+      <div className="flex flex-col mt-4 border-solid border-white h-96 px-2 bg-slate-100/75 text-black rounded-xl">
         <h3> Share a message with the DJs </h3>
         <div className="h-full items-center justify-center border-solid border-black/50 rounded-lg bg-blue-50/75 overflow-y-scroll">
           <div className={'w-full flex flex-col'} >

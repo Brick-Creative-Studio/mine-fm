@@ -56,11 +56,11 @@ export default function MoodscapePage({}) {
 
   //
   return (
-    <div className="flex flex-col w-2/3 mt-24 self-center justify-center">
-      <div className="flex flex-col p-4 w-full">
-        <div className="flex flex-row justify-between">
-          <div className="flex flex-row">
-            <div className="mr-8">
+    <div className="flex flex-col mt-24 items-center justify-center w-full">
+      <div className="flex flex-col p-4  ">
+        <div className="flex flex-col justify-between items-center justify-center">
+          <div className="flex flex-col">
+            <div className="">
               <Image
                 src={'/stock/bloomin_poster_square.png'}
                 width={340}
@@ -80,20 +80,18 @@ export default function MoodscapePage({}) {
             </div>
           </div>
 
-          <div className="flex flex-col justify-between">
-            <div className="px-2 bg-yellow-400/50 break-words rounded-md w-fit h-fit">
-              <h3> Status: Approaching </h3>
+          <div className="flex flex-col">
+            <div className="px-2 bg-red-500/75 break-words rounded-md w-fit h-fit">
+              <p> Status: Finished </p>
             </div>
-            <div className="flex flex-row	justify-end mr-12">
-              <div className="flex flex-col		">
+              <div className="flex flex-col	items-center">
                 <p> Make Moody </p>
                 <MoodyModal />
               </div>
-            </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-col p-4">
+      <div className="flex flex-col p-4 items-center">
         <h2> Description </h2>
         <p className={'text-xl'}>
 
@@ -103,15 +101,15 @@ export default function MoodscapePage({}) {
           music curation
         </p>
       </div>
-      <div className="flex flex-row p-4 w-full justify-center">
+      <div className="flex flex-row p-4 w-full justify-center rounded-lg">
         {/* attendance list box component */}
         {/* TODO: Break out to seperae component  */}
-        <div className="w-2/3 h-80 bg-black mr-8 flex items-center justify-center">
+        <div className="w-full h-80 bg-black flex items-center justify-center">
           <p> Attendance will appear when event the begins </p>
         </div>
 
       </div>
-      <div className="w-full p-4 h-full">
+      <div className="w-full p-4 h-full items-center justify-center">
         <SectionHandler
           sections={sections}
           eventId={query?.id?.toString()}
