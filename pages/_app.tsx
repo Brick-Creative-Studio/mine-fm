@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import '@rainbow-me/rainbowkit/styles.css'
+import { Analytics } from '@vercel/analytics/react'
 import { RainbowKitProvider, getDefaultWallets, connectorsForWallets } from '@rainbow-me/rainbowkit'
 import { WagmiConfig, configureChains, createClient } from 'wagmi'
 import {mainnet, goerli, optimism} from 'wagmi/chains'
@@ -41,6 +42,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
+      <Analytics />
       </RainbowKitProvider>
     </WagmiConfig>
   )
