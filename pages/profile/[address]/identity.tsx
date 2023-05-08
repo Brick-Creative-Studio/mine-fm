@@ -10,7 +10,7 @@ export default function SettingsPage({}) {
 
 
   return (
-    <div className="flex flex-col w-full mt-24 justify-center items-center">
+    <div className="flex flex-col w-full mt-24 ">
       
       <div className="flex flex-row justify-around w-full items-center">
         <div className="">
@@ -26,7 +26,7 @@ export default function SettingsPage({}) {
           </Link>
         </div>
 
-        <h1> Identity </h1>
+        <h2> Identity </h2>
 
         <div className="">
           <Link
@@ -46,7 +46,7 @@ export default function SettingsPage({}) {
           </Link>
         </div>
       </div>
-      <div className="w-full  border border-white opacity-10 border-solid bg-white" />
+      <div className="w-full border border-white opacity-10 border-solid bg-white" />
 
       
       <IdentityForm />

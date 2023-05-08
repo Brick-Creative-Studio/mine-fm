@@ -78,10 +78,9 @@ export default function IdentityForm({}) {
   }, [router])
 
   return (
-    <div className="flex flex-col w-full mt-8 justify-center items-center">
-      <div className="flex flex-col items-center h-1/2 w-1/4 rounded-lg">
+    <div className="flex flex-col mt-8  justify-center items-center">
         <form
-          className="flex flex-col w-full items-center"
+          className="flex flex-col w-3/4 items-center"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="space-y-4 > * + * w-full">
@@ -156,10 +155,10 @@ export default function IdentityForm({}) {
             type="submit"
             title="next"
             value={path === 'onboarding' ? 'Create Account' : 'Save & Exit'}
-            className="not-italic bg-black h-12 rounded-full font-mono font-bold text-lg italic p-2 px-4 border-none cursor-pointer"
+            className="not-italic bg-black h-12 rounded-full font-mono font-bold text-lg p-2 px-4 border-none cursor-pointer mb-4"
           />
         </form>
-      </div>
+
     </div>
   )
 }

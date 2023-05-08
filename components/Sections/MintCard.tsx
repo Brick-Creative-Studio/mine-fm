@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function MintCard() {
   return (
-    <div className="flex flex-col justify-center items-center mt-8">
+    <div className="flex flex-col p-12 justify-center items-center mt-8">
       <div className="h-fit w-fit border-solid border-black bg-black rounded-lg drop-shadow-lg">
         <Image
           src="/memory-cards/mCARD-DARK-5.svg"

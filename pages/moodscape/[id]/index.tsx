@@ -103,13 +103,13 @@ export default function MoodscapePage({}) {
       </div>
       <div className="flex flex-row p-4 w-full justify-center rounded-lg">
         {/* attendance list box component */}
-        {/* TODO: Break out to seperae component  */}
-        <div className="w-full h-80 bg-black flex items-center justify-center">
-          <p> Attendance will appear when event the begins </p>
+        {/* TODO: Break out to separate component  */}
+        <div className="w-full h-80 bg-black/50 border-solid border-gray-500 rounded-lg flex items-center justify-center">
+          <p className={'text-center'}> Attendance will appear when event the begins </p>
         </div>
 
       </div>
-      <div className="w-full p-4 h-full items-center justify-center">
+      <div className="w-full p-4 h-full items-center justify-center mr-4">
         <SectionHandler
           sections={sections}
           eventId={query?.id?.toString()}
