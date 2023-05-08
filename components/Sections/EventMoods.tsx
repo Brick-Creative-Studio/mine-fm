@@ -4,7 +4,7 @@ import Image from 'next/future/image'
 export default function EventMoods({}) {
   return (
     <div className="flex flex-col w-full">
-      <div className="flex h-fit mb-8 rounded-lg h-32 border-solid border-white bg-[#535353]/50">
+      <div className="flex mb-8 rounded-lg h-32 border-solid border-white bg-[#535353]/50">
         <div className="h-full w-32 relative bg-gradient-to-r from-yellow-500 to-yellow-100 rounded-lg">
           <Image
             alt={'keith-headshot'}
