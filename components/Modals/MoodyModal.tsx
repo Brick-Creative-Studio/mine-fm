@@ -274,6 +274,13 @@ export default function MoodyModal() {
                       >
                         Save Selections to Moody
                       </button>
+                      <button
+                        type="button"
+                        className="inline-flex justify-center mt-4 rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+                        onClick={closeModal}
+                      >
+                        Close
+                      </button>
                     </div>
                   </form>
                 </Dialog.Panel>

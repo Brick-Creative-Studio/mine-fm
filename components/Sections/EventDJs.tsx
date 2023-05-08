@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/future/image'
 
-export default function EventMoods({}) {
+export default function EventDJs({}) {
   return (
     <div className="flex flex-col w-full">
       <div className="flex my-8 rounded-lg h-32 border-solid border-white bg-[#535353]/50">

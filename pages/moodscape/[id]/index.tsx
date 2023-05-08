@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import EventMoods from 'components/Sections/EventMoods'
+import EventDJs from 'components/Sections/EventDJs'
 import Link from 'next/link'
 import useSWR from 'swr'
 import { MSSectionHandler as SectionHandler } from 'components/Layout/MSSectionHandler'
@@ -37,8 +37,8 @@ export default function MoodscapePage({}) {
 
   const sections = [
     {
-      title: 'EventMoods',
-      component: [<EventMoods key={'eventMood'} />],
+      title: 'DJs',
+      component: [<EventDJs key={'DJs'} />],
     },
     {
       title: 'Comments',
@@ -58,7 +58,7 @@ export default function MoodscapePage({}) {
   return (
     <div className="flex flex-col mt-24 items-center justify-center w-full">
       <div className="flex flex-col p-4  ">
-        <div className="flex flex-col justify-between items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
           <div className="flex flex-col">
             <div className="">
               <Image
