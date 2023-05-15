@@ -28,13 +28,11 @@ export default function InstaModal() {
   } = useForm<InstaInput>()
 
   const updateInsta = async(url: string, address: string, id: string, profile: string) => {
-    console.log('modal id check: ',id)
     let socialLink: string = await axios.put(url, {
       instagram: profile,
       id: id,
       walletAddress: address
     }).then((res) => {
-      console.log('updated twitter!', res.data.twitter)
       return res.data
     })
 

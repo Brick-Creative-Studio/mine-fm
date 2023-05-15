@@ -35,10 +35,10 @@ export default function HomePage({}) {
               </Link>
 
               <Link
-              href={'/moodscapes'}
+              href={'/explore'}
               >
               <button className={styles.exploreButton}>
-                <h2 className='mr-2'> Moodscapes </h2>
+                <h2 className='mr-2'> Explore </h2>
               </button>
               </Link>
             

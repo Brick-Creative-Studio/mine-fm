@@ -12,27 +12,21 @@ import {useProfileStore} from "stores";
 import TwitterModal from 'components/Modals/TwitterModal'
 import {Miner} from "../../../types/Miner";
 import axios from "axios";
-import useSWR from "swr";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
-export default function Profile({}) {
+import useSWR from "swr";
+interface MinerProps {
+  miner: Miner
+}
+
+
+export default function Profile({ miner }: MinerProps) {
   const { signerAddress } = useLayoutStore((state) => state)
+
   const { query } = useRouter()
   const { aura } = useProfileStore((state) => state)
   let userGradient = ``
   // navAvatar gradient linear-gradient(to bottom, #240045, #00ff59, #ff8500)
-
-
-  const url = `https://minefm-server.herokuapp.com/miner/miner`
-
-  const getMiner = async (url: string, address: string) => {
-    let miner: Miner = await axios.post(url, {
-      walletAddress: address
-    }).then((res) => {
-      console.log('wallet check', res.data)
-      return res.data
-    })
-    return miner;
-  }
 
   const sections = [
     {
@@ -45,20 +39,19 @@ export default function Profile({}) {
     },
   ]
 
-  const miner = useSWR([url, signerAddress], getMiner).data
+  // const miner = useSWR([url, signerAddress], getMiner).data
 
 
   useEffect(() => {
     if(miner) {
       userGradient = `linear-gradient(to ${miner.direction}, ${miner.colorOne}, ${miner.colorTwo}, ${miner.colorThree})`
-      console.log('profile check', userGradient)
     }
   },[miner])
 
 
   return (
-    <div className="flex flex-col mt-24 mb-auto mx-12">
-      <div className="flex p-4">
+    <div className="flex flex-col mt-24 mb-auto p-12">
+      <div className="flex">
         <div style={{ background: `${userGradient}`, position: "absolute",
           zIndex: "0",
           width: "91.666667%",
@@ -69,11 +62,11 @@ export default function Profile({}) {
             style={{ width: '140px', height: '140px', borderRadius:'50%' ,background: `linear-gradient(to ${aura?.direction}, ${aura?.colorOne}, ${aura?.colorTwo}, ${aura?.colorThree})` }}
           />
         </div>
-        <div className="z-20 mx-8 w-full">
+        <div className=" mx-8 w-full">
           <h1> {miner?.name}</h1>
           <p className="-mt-4"> @{miner?.miner_tag} </p>
-          <div className="flex flex-row w-full justify-between">
-            <div className="flex flex-row">
+          <div className="flex flex-col w-full justify-between">
+            <div className="flex flex-col">
               <div className="flex justify-center w-40 h-fit items-center mr-8 bg-white drop-shadow-lg text-black border-1 rounded-full px-2 ">
                 <p className="text-ellipsis overflow-hidden">
                   {' '}
@@ -88,13 +81,8 @@ export default function Profile({}) {
                   />
                 </button>
               </div>
-              <div className="flex self-center bg-sky-500/90 hover:bg-sky-300 h-12 items-center justify-between -mt-2 bg-white text-black rounded-full">
-                <button className="flex flex-row justify-center bg-transparent hidden w-32 h-fit p-4">
-                  <h3>Follow</h3>
-                </button>
-              </div>
             </div>
-            <div className="flex justify-self-end items-end	mt-4 space-x-4 > * + * bg-black/50 rounded-xl">
+            <div className="flex w-fit justify-around	mt-4 bg-black/50 rounded-xl">
               <TwitterModal/>
               <InstaModal/>
 
@@ -113,13 +101,8 @@ export default function Profile({}) {
           </div>
         </div>
       </div>
-      <div className="flex my-6 flex-row space-x-12 > * + *	">
-        <h2> Bio </h2>
-        <p className="text-ellipsis	">
-          Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots
-          in a piece of classical Latin literature from 45 BC, making it over 2000 years
-          old. Richard McClintock, a Latin professor at Hampden
-        </p>
+      <div className="flex justify-center my-6 flex-row space-x-12 > * + *	md:justify-start">
+
         <div className="flex flex-col items-center">
           <p> Moodscapes </p>
           <p className="-mt-2"> 1 </p>
@@ -132,6 +115,15 @@ export default function Profile({}) {
           <p> Moodys </p>
           <p className="-mt-2"> 0 </p>
         </div>
+
+      </div>
+      <div className='flex-col'>
+        <h2> Bio </h2>
+        <p className="text-ellipsis	">
+          Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots
+          in a piece of classical Latin literature from 45 BC, making it over 2000 years
+          old. Richard McClintock, a Latin professor at Hampden
+        </p>
       </div>
         <SectionHandler
           sections={sections}
@@ -140,4 +132,19 @@ export default function Profile({}) {
         />
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps<{miner: Miner}> = async (context : GetServerSidePropsContext)=>  {
+
+  const url = `https://minefm-server.herokuapp.com/miner/miner`
+ const signerAddress = context.params?.address as string
+  let miner: Miner = await axios.post(url, {
+    walletAddress: signerAddress
+  }).then((res) => {
+    return res.data
+  })
+
+  return {
+    props: { miner }, // will be passed to the page component as props
+  };
 }

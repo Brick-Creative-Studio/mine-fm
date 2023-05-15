@@ -25,13 +25,11 @@ export default function TwitterModal() {
   let { setTwitter, id } = useProfileStore(state => state)
 
   const updateTwitter = async(url: string, address: string, id: string, profile: string) => {
-    console.log('modal id check: ',id)
     let socialLink: string = await axios.put(url, {
       twitter: profile,
       id: id,
       walletAddress: address
     }).then((res) => {
-      console.log('updated twitter!', res.data.twitter)
       return res.data
     })
 

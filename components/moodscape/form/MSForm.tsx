@@ -31,7 +31,6 @@ export default function MoodScapeForm({ }){
     const handleFileUpload = React.useCallback(
         async (_input: FileList | null) => {
 
-            console.log("click test")
             if (!_input) return
             const input = _input[0]
 

@@ -40,7 +40,7 @@ export const OnboardingSectionHandler: React.FC<SectionHandlerProps> = ({
   const activeSection: activeSectionProps | undefined = React.useMemo(() => {
     const identity = tab('identity')
     const aura = tab('aura')
-    const memoryCard = tab('MemoryCard')
+    // const memoryCard = tab('MemoryCard')
 
 
     if (!activeTab) {
@@ -69,7 +69,6 @@ export const OnboardingSectionHandler: React.FC<SectionHandlerProps> = ({
               >
                 <div className="flex flex-col cursor-pointer ">
                   <p>{section.title}</p>
-                  {console.log(activeSection?.title, section.title)}
                   {activeSection?.title === section.title ? (
                     <div key={index} className="w-auto h-0.5 -mt-4 bg-sky-500/75" />
                   ) : (

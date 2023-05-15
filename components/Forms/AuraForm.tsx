@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
 import { useLayoutStore, useProfileStore } from 'stores'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import {
@@ -50,7 +48,6 @@ const AuraForm: React.FC = ({}) => {
   const onSubmit: SubmitHandler<AuraInputs> = (data) => {
     data.direction = direction
     setAura(data)
-    console.log('aura state set', data)
     router.push('/onboarding?tab=identity')
   }
 
@@ -76,7 +73,6 @@ const AuraForm: React.FC = ({}) => {
   }
 
   useEffect(() => {
-    console.log(initialGradient)
     aura?.colorOne && setOne(aura.colorOne)
     aura?.colorTwo && setTwo(aura.colorTwo)
     aura?.colorThree && setThree(aura.colorThree)
@@ -85,14 +81,14 @@ const AuraForm: React.FC = ({}) => {
 
   return (
     <>
-      <div className="flex justify-center items-center m-12">
+      <div className="flex flex-col justify-center items-center my-12">
         <div
           className={auraCircle}
           style={{ background: `${gradient ? gradient : initialGradient}` }}
         />
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col m-12">
-            <div className="flex flex-row space-x-12 > * + *">
+          <div className="flex flex-col my-12">
+            <div className="flex flex-row  justify-around" >
               <div className="flex flex-col justify-center items-center">
                 <input
                   type="color"
@@ -153,7 +149,7 @@ const AuraForm: React.FC = ({}) => {
                 <div className={crossCircle} />
               </div>
             </div>
-            <p className="self-center my-8"> Direction: {cardinalMap.get(direction)} </p>
+            <h3 className="self-center my-8"> Direction: {cardinalMap.get(direction)} </h3>
             <button
               type="button"
               onClick={() => onGenerateColor()}

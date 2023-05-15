@@ -78,8 +78,8 @@ export default function Aura({}) {
 
 
   return (
-    <div className="flex flex-col w-full mt-24 justify-center items-center">
-      <div className="flex flex-row justify-around w-full items-center">
+    <div className="flex flex-col mt-24 ">
+      <div className="flex justify-around  items-center">
         <div className="">
           <Link
             href={{
@@ -93,9 +93,9 @@ export default function Aura({}) {
           </Link>
         </div>
 
-        <div>
-          <h1> Build Your Aura </h1>
-        </div>
+
+          <h2 className={'w-24 text-center'}> Change Aura </h2>
+
         <div className="">
           <Link
             href={{
@@ -103,7 +103,7 @@ export default function Aura({}) {
             }}
           >
             <div className="flex flex-row cursor-pointer">
-              <h3>Card Gallery</h3>
+              <h3>Gallery</h3>
               <Image
                 src={'/chevron-right.svg'}
                 width={32}
@@ -115,11 +115,11 @@ export default function Aura({}) {
         </div>
       </div>
       <div className="w-full border border-white opacity-10 border-solid bg-white" />
-      <div className="flex justify-center items-center m-12">
+      <div className="flex flex-col justify-center items-center m-12">
         <div className={auraCircle} style={{ background: `${gradient ? gradient : initialGradient}` }} />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col m-12">
-            <div className="flex flex-row space-x-12 > * + *">
+            <div className="flex flex-row ">
               <div className="flex flex-col justify-center items-center">
                 <input
                   type="color"
