@@ -22,11 +22,7 @@ export default function Onboarding({}) {
       title: 'Identity',
       component: [<IdentityForm key={'Identity'} />],
     },
-    {
-      title: 'Memorycard',
-      component: [<MintCard key={'memorycard'}/> ]
-    }
-  ] 
+  ]
 
 
   return (

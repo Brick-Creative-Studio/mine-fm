@@ -19,6 +19,7 @@ type Identity = {
 }
 
 export default function IdentityForm({}) {
+
   const { register, handleSubmit, getValues } = useForm<Identity>()
   const { setIdentity, setHasAccount, hasAccount, aura } = useProfileStore((state) => state)
   const { signerAddress: address } = useLayoutStore()
@@ -49,8 +50,8 @@ export default function IdentityForm({}) {
       }
       try{
         createMiner(url, newMiner).then(() => {
-
-            router.push('/onboarding?tab=memorycard')
+          console.log('create api call')
+            router.push(`/profile/${address}`)
 
 
         })

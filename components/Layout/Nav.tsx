@@ -50,7 +50,7 @@ const Nav = () => {
     })
     return miner;
   }
-
+//TODO: Remove SWR state since this data does not change often
   const url = `https://minefm-server.herokuapp.com/miner/miner`
   const miner = useSWR([url, address], isMinerFetcher).data
   console.log('user check', miner)

@@ -12,10 +12,18 @@ import {useProfileStore} from "stores";
 import TwitterModal from 'components/Modals/TwitterModal'
 import {Miner} from "../../../types/Miner";
 import axios from "axios";
-import useSWR from "swr";
+import { GetServerSideProps } from 'next';
 
-export default function Profile({}) {
+import useSWR from "swr";
+interface MinerProps {
+  miner: Miner
+}
+
+
+export default function Profile({ miner }: MinerProps) {
   const { signerAddress } = useLayoutStore((state) => state)
+
+  console.log('in profile component check', miner)
   const { query } = useRouter()
   const { aura } = useProfileStore((state) => state)
   let userGradient = ``
@@ -24,15 +32,15 @@ export default function Profile({}) {
 
   const url = `https://minefm-server.herokuapp.com/miner/miner`
 
-  const getMiner = async (url: string, address: string) => {
-    let miner: Miner = await axios.post(url, {
-      walletAddress: address
-    }).then((res) => {
-      console.log('wallet check', res.data)
-      return res.data
-    })
-    return miner;
-  }
+  // const getMiner = async (url: string, address: string) => {
+  //   let miner: Miner = await axios.post(url, {
+  //     walletAddress: address
+  //   }).then((res) => {
+  //     console.log('wallet check', res.data)
+  //     return res.data
+  //   })
+  //   return miner;
+  // }
 
   const sections = [
     {
@@ -45,7 +53,7 @@ export default function Profile({}) {
     },
   ]
 
-  const miner = useSWR([url, signerAddress], getMiner).data
+  // const miner = useSWR([url, signerAddress], getMiner).data
 
 
   useEffect(() => {
@@ -57,7 +65,7 @@ export default function Profile({}) {
 
 
   return (
-    <div className="flex flex-col mt-24 mb-auto p-8">
+    <div className="flex flex-col mt-24 mb-auto p-12">
       <div className="flex">
         <div style={{ background: `${userGradient}`, position: "absolute",
           zIndex: "0",
@@ -108,7 +116,7 @@ export default function Profile({}) {
           </div>
         </div>
       </div>
-      <div className="flex justify-center my-6 flex-row space-x-12 > * + *	">
+      <div className="flex justify-center my-6 flex-row space-x-12 > * + *	md:justify-start">
 
         <div className="flex flex-col items-center">
           <p> Moodscapes </p>
@@ -139,4 +147,20 @@ export default function Profile({}) {
         />
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps<{miner: Miner}> = async (context)=>  {
+
+  const url = `https://minefm-server.herokuapp.com/miner/miner`
+ const signerAddress = context.params.address
+  let miner: Miner = await axios.post(url, {
+    walletAddress: signerAddress
+  }).then((res) => {
+    console.log('profile check', res.data)
+    return res.data
+  })
+
+  return {
+    props: { miner }, // will be passed to the page component as props
+  };
 }
