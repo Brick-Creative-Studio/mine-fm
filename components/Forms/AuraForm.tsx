@@ -29,14 +29,14 @@ const AuraForm: React.FC = ({}) => {
   const { register, handleSubmit } = useForm<AuraInputs>()
 
   const { aura, setAura } = useProfileStore((state) => state)
-  const [colorOne, setOne] = useState('#240045')
-  const [colorTwo, setTwo] = useState('#FF8500')
-  const [colorThree, setThree] = useState('#FF8500')
+  const [colorOne, setOne] = useState(aura.colorOne)
+  const [colorTwo, setTwo] = useState(aura.colorTwo)
+  const [colorThree, setThree] = useState(aura.colorThree)
 
-  const [direction, setDirection] = useState('top')
+  const [direction, setDirection] = useState(aura.direction)
   const [gradient, setGradient] = useState('')
 
-  const initialGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, #240045)`
+  const initialGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
   const cardinalMap = new Map<string, string>([
     ['left', 'West'],

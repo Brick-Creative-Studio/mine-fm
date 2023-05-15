@@ -4,8 +4,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useLayoutStore, useProfileStore } from 'stores'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import auraCircle  from '../../../styles/Aura.css'
+import auraCircle from '../../../styles/Aura.css'
 import { useRouter } from 'next/router'
+import AuraForm from "../../../components/Forms/AuraForm";
 
 interface AuraInputs {
   colorOne: string
@@ -16,7 +17,6 @@ interface AuraInputs {
 
 export default function Aura({}) {
   const router = useRouter()
-  const path = router.pathname.replace(/\//g, '')
 
   const { signerAddress: address } = useLayoutStore()
 
@@ -24,14 +24,12 @@ export default function Aura({}) {
   const { register, handleSubmit } = useForm<AuraInputs>()
 
   const { aura, setAura } = useProfileStore((state) => state)
-  const [colorOne, setOne] = useState('#240045')
-  const [colorTwo, setTwo] = useState('#FF8500')
-  const [colorThree, setThree] = useState('#FF8500')
+  const [colorOne, setOne] = useState(aura.colorOne)
+  const [colorTwo, setTwo] = useState(aura.colorTwo)
+  const [colorThree, setThree] = useState(aura.colorThree)
 
-  const [direction, setDirection] = useState('top')
+  const [direction, setDirection] = useState(aura.direction)
   const [gradient, setGradient] = useState('')
-
-  const initialGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
   const cardinalMap = new Map<string, string>([
     ['left', 'West'],
@@ -40,11 +38,12 @@ export default function Aura({}) {
     ['bottom', 'South'],
   ])
 
+  const initialGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
+
+
   const onSubmit: SubmitHandler<AuraInputs> = (data) => {
-    data.direction = direction
     setAura(data)
-    console.log('aura state set', data)
-    router.push('/onboarding?tab=identity')
+    router.push(`/profile/${address}`).then((r) => console.log(r))
   }
 
   const onChangeColorOne = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,13 +68,14 @@ export default function Aura({}) {
   }
 
   useEffect(() => {
-    console.log(initialGradient)
     aura?.colorOne && setOne(aura.colorOne)
     aura?.colorTwo && setTwo(aura.colorTwo)
     aura?.colorThree && setThree(aura.colorThree)
     aura?.direction && setDirection(aura?.direction)
-  }, [])
-
+    setGradient(
+      `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
+    )
+  }, [aura])
 
   return (
     <div className="flex flex-col mt-24 ">
@@ -93,10 +93,9 @@ export default function Aura({}) {
           </Link>
         </div>
 
+        <h2 className={'w-24 text-center'}> Change Aura </h2>
 
-          <h2 className={'w-24 text-center'}> Change Aura </h2>
-
-        <div className="">
+        <div className="invisible">
           <Link
             href={{
               pathname: `/profile/${address}/mc-gallery`,
@@ -116,7 +115,7 @@ export default function Aura({}) {
       </div>
       <div className="w-full border border-white opacity-10 border-solid bg-white" />
       <div className="flex flex-col justify-center items-center m-12">
-        <div className={auraCircle} style={{ background: `${gradient ? gradient : initialGradient}` }} />
+        {gradient && <div className={auraCircle} style={{ background: `${gradient ? gradient : initialGradient}` }} />}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col m-12">
             <div className="flex flex-row ">
@@ -124,8 +123,7 @@ export default function Aura({}) {
                 <input
                   type="color"
                   value={colorOne}
-                  {...register("colorOne")}
-
+                  {...register('colorOne')}
                   onChange={(event) => onChangeColorOne(event)}
                   className="w-24 h-12 border-none bg-transparent	"
                 />
@@ -135,8 +133,7 @@ export default function Aura({}) {
                 <input
                   type="color"
                   value={colorTwo}
-                  {...register("colorTwo")}
-
+                  {...register('colorTwo')}
                   onChange={(event) => onChangeColorTwo(event)}
                   className="w-24 h-12 border-none bg-transparent"
                 />
@@ -157,25 +154,25 @@ export default function Aura({}) {
               <div className={styles.crossCenter}>
                 <input
                   id={'top'}
-                  type='button'
+                  type="button"
                   onClick={(event) => changeDirection(event)}
                   className={styles.crossTop}
                 />
                 <input
                   id={'bottom'}
-                  type='button'
+                  type="button"
                   onClick={(event) => changeDirection(event)}
                   className={styles.crossBottom}
                 />
                 <input
                   id={'left'}
-                  type='button'
+                  type="button"
                   onClick={(event) => changeDirection(event)}
                   className={styles.crossLeft}
                 />
                 <input
                   id={'right'}
-                  type='button'
+                  type="button"
                   onClick={(event) => changeDirection(event)}
                   className={styles.crossRight}
                 />

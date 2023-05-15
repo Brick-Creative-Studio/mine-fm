@@ -74,10 +74,6 @@ export default function IdentityForm({}) {
 
   const path = router.pathname.replace(/\//g, '')
 
-  useEffect(() => {
-    console.log('check path', path)
-  }, [router])
-
   return (
     <div className="flex flex-col mt-8  justify-center items-center">
         <form

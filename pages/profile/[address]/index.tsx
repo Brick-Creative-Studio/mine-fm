@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react'
+import React, { useEffect, useState } from "react";
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -22,11 +22,9 @@ interface MinerProps {
 
 export default function Profile({ miner }: MinerProps) {
   const { signerAddress } = useLayoutStore((state) => state)
-
-  const { query } = useRouter()
   const { aura } = useProfileStore((state) => state)
-  let userGradient = ``
-  // navAvatar gradient linear-gradient(to bottom, #240045, #00ff59, #ff8500)
+  const [gradient, setGradient] = useState(``)
+  const { query } = useRouter()
 
   const sections = [
     {
@@ -38,28 +36,16 @@ export default function Profile({ miner }: MinerProps) {
       component: [<MoodsSection key={'moodys'} />],
     },
   ]
-
-  // const miner = useSWR([url, signerAddress], getMiner).data
-
-
   useEffect(() => {
-    if(miner) {
-      userGradient = `linear-gradient(to ${miner.direction}, ${miner.colorOne}, ${miner.colorTwo}, ${miner.colorThree})`
-    }
-  },[miner])
-
+    setGradient(`linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`)
+  },[aura])
 
   return (
     <div className="flex flex-col mt-24 mb-auto p-12">
       <div className="flex">
-        <div style={{ background: `${userGradient}`, position: "absolute",
-          zIndex: "0",
-          width: "91.666667%",
-          height: "9rem",
-          borderRadius: "0.5rem",}} />
         <div className="px-2 pt-1">
           <div
-            style={{ width: '140px', height: '140px', borderRadius:'50%' ,background: `linear-gradient(to ${aura?.direction}, ${aura?.colorOne}, ${aura?.colorTwo}, ${aura?.colorThree})` }}
+            style={{ width: '140px', height: '140px', borderRadius:'50%' , background: gradient && gradient }}
           />
         </div>
         <div className=" mx-8 w-full">
