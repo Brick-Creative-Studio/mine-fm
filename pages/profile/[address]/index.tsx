@@ -12,7 +12,7 @@ import {useProfileStore} from "stores";
 import TwitterModal from 'components/Modals/TwitterModal'
 import {Miner} from "../../../types/Miner";
 import axios from "axios";
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 import useSWR from "swr";
 interface MinerProps {
@@ -149,10 +149,10 @@ export default function Profile({ miner }: MinerProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<{miner: Miner}> = async (context)=>  {
+export const getServerSideProps: GetServerSideProps<{miner: Miner}> = async (context : GetServerSidePropsContext)=>  {
 
   const url = `https://minefm-server.herokuapp.com/miner/miner`
- const signerAddress = context.params.address
+ const signerAddress = context.params?.address as string
   let miner: Miner = await axios.post(url, {
     walletAddress: signerAddress
   }).then((res) => {
