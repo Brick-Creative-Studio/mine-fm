@@ -30,7 +30,6 @@ const Nav = () => {
       setHasAccount(false)
     },
     onConnect({ address, connector, isReconnected }) {
-      console.log('nav address check', address)
       address && setSignerAddress(address)
       if(miner){
         setHasAccount(true)
@@ -44,7 +43,6 @@ const Nav = () => {
     let miner: Miner = await axios.post(url, {
         walletAddress: address
     }).then((res) => {
-      console.log('wallet check', res.data)
         setId(res.data.id);
       return res.data
     })
@@ -53,7 +51,6 @@ const Nav = () => {
 //TODO: Remove SWR state since this data does not change often
   const url = `https://minefm-server.herokuapp.com/miner/miner`
   const miner = useSWR([url, address], isMinerFetcher).data
-  console.log('user check', miner)
 
   useEffect(() => {
     if(miner){

@@ -17,8 +17,6 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
     let userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
     useEffect(() => {
-        console.log('navAvatar gradient', userGradient)
-
         userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     },[aura])
 

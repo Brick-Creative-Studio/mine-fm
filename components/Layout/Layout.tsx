@@ -1,7 +1,6 @@
 import React from 'react'
-import { useLayoutStore } from '../../stores/index'
+import { useLayoutStore } from "../../stores"
 import { useSigner } from 'wagmi'
-import { getProvider } from '../../utils/provider'
 import Nav from './Nav'
 import Footer from './Footer'
 import { bodyGradient } from 'styles/gradient.css'
@@ -29,8 +28,6 @@ const Layout = ({ children }: Props) => {
       setSigner(signer)
       //@ts-ignore
       setSignerAddress(signer?._address)
-      console.log('layout address', signerAddress)
-      console.log('layout signer', signer)
     }
   }, [status, signer, signerAddress])
 

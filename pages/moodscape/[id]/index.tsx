@@ -2,36 +2,14 @@ import React, { useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import EventDJs from 'components/Sections/EventDJs'
-import Link from 'next/link'
-import useSWR from 'swr'
 import { MSSectionHandler as SectionHandler } from 'components/Layout/MSSectionHandler'
-import { useLayoutStore } from 'stores'
 import Moods from 'components/Sections/MoodsSection'
 import PersonalSection from 'components/Sections/PersonalSection'
 import EventComments from 'components/Sections/EventComments'
 import MoodyModal from 'components/Modals/MoodyModal'
-import VoteModal from 'components/Modals/VoteModal'
-import axios from "axios";
+
 
 export default function MoodscapePage({}) {
-  const { signerAddress } = useLayoutStore((state) => state)
-  const server = `https://minefm-server.herokuapp.com/comments`
-
-  // const getComments = async(url: string, id: string) => {
-  //   console.log('modal id check: ',id)
-  //   const comments = await axios.get(url, {
-  //     moodscapeId: id,
-  //   }).then((res) => {
-  //     console.log('got moody', res.data)
-  //     return res.data
-  //   })
-  //
-  //   return comments;
-  // }
-
-  // const comments = useSWR([server, 1], getComments).data
-  //
-
 
   const { query } = useRouter()
 

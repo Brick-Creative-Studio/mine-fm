@@ -48,7 +48,6 @@ export default function MoodyModal() {
   }
 
   const editMoody = async(url: string, id: string, moodyId: string, songs: string[], moodId: string) => {
-    console.log('modal id check: ',id)
     let editedMoody: string = await axios.put(url, {
       moodyId: moodyId,
       curatorId: id,
@@ -58,8 +57,6 @@ export default function MoodyModal() {
       songThree: songs[2],
     }).then((res) => {
       setHasMoody(true)
-
-      console.log('updated twitter!', res.data)
       return res.data
     })
 
@@ -67,7 +64,6 @@ export default function MoodyModal() {
   }
 
   const createMoody = async(url: string, id: string, songs: string[], moodId: string) => {
-    console.log('modal id check: ',id)
     let newMoody: string = await axios.post(url, {
       curatorId: id,
       moodId: moodId,
@@ -75,7 +71,6 @@ export default function MoodyModal() {
       songTwo: songs[1],
       songThree: songs[2],
     }).then((res) => {
-      console.log('updated twitter!', res.data)
       setHasMoody(true)
       return res.data
     })
@@ -86,12 +81,10 @@ export default function MoodyModal() {
   let myMoody = undefined;
 
   const getMoody = async(url: string, id: string) => {
-    console.log('modal id check: ',id)
     const myMoody: string = await axios.get(url, {
       curatorId: id,
     }).then((res) => {
       setHasMoody(true)
-      console.log('got moody', res.data)
       return res.data
     })
 
@@ -125,7 +118,6 @@ export default function MoodyModal() {
 
       const server = `https://minefm-server.herokuapp.com/moodys`
       myMoody = getMoody(server, id)
-      console.log('moody check' + hasMoody, myMoody )
       setHasMoody(true)
 
 
@@ -138,7 +130,6 @@ export default function MoodyModal() {
 
     if(myMoody !== undefined){
       const server = `https://minefm-server.herokuapp.com/moodys`
-      console.log('editing moody')
       await editMoody(server, id, moody.id, songs, "7e6142cb-a3cd-4ef3-aa93-66f675ef2929")
       closeModal()
 

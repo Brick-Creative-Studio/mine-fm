@@ -23,24 +23,10 @@ interface MinerProps {
 export default function Profile({ miner }: MinerProps) {
   const { signerAddress } = useLayoutStore((state) => state)
 
-  console.log('in profile component check', miner)
   const { query } = useRouter()
   const { aura } = useProfileStore((state) => state)
   let userGradient = ``
   // navAvatar gradient linear-gradient(to bottom, #240045, #00ff59, #ff8500)
-
-
-  const url = `https://minefm-server.herokuapp.com/miner/miner`
-
-  // const getMiner = async (url: string, address: string) => {
-  //   let miner: Miner = await axios.post(url, {
-  //     walletAddress: address
-  //   }).then((res) => {
-  //     console.log('wallet check', res.data)
-  //     return res.data
-  //   })
-  //   return miner;
-  // }
 
   const sections = [
     {
@@ -59,7 +45,6 @@ export default function Profile({ miner }: MinerProps) {
   useEffect(() => {
     if(miner) {
       userGradient = `linear-gradient(to ${miner.direction}, ${miner.colorOne}, ${miner.colorTwo}, ${miner.colorThree})`
-      console.log('profile check', userGradient)
     }
   },[miner])
 
@@ -156,7 +141,6 @@ export const getServerSideProps: GetServerSideProps<{miner: Miner}> = async (con
   let miner: Miner = await axios.post(url, {
     walletAddress: signerAddress
   }).then((res) => {
-    console.log('profile check', res.data)
     return res.data
   })
 

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
 import { useLayoutStore, useProfileStore } from 'stores'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import {
@@ -50,7 +48,6 @@ const AuraForm: React.FC = ({}) => {
   const onSubmit: SubmitHandler<AuraInputs> = (data) => {
     data.direction = direction
     setAura(data)
-    console.log('aura state set', data)
     router.push('/onboarding?tab=identity')
   }
 
@@ -76,7 +73,6 @@ const AuraForm: React.FC = ({}) => {
   }
 
   useEffect(() => {
-    console.log(initialGradient)
     aura?.colorOne && setOne(aura.colorOne)
     aura?.colorTwo && setTwo(aura.colorTwo)
     aura?.colorThree && setThree(aura.colorThree)
