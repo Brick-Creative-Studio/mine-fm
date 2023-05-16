@@ -6,7 +6,6 @@ import { useLayoutStore, useProfileStore } from 'stores'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import auraCircle from '../../../styles/Aura.css'
 import { useRouter } from 'next/router'
-import AuraForm from "../../../components/Forms/AuraForm";
 
 interface AuraInputs {
   colorOne: string
@@ -15,7 +14,7 @@ interface AuraInputs {
   direction: string
 }
 
-export default function Aura({}) {
+export default function Aura({})  {
   const router = useRouter()
 
   const { signerAddress: address } = useLayoutStore()
@@ -24,12 +23,13 @@ export default function Aura({}) {
   const { register, handleSubmit } = useForm<AuraInputs>()
 
   const { aura, setAura } = useProfileStore((state) => state)
+
   const [colorOne, setOne] = useState(aura.colorOne)
   const [colorTwo, setTwo] = useState(aura.colorTwo)
   const [colorThree, setThree] = useState(aura.colorThree)
-
-  const [direction, setDirection] = useState(aura.direction)
   const [gradient, setGradient] = useState('')
+  const [direction, setDirection] = useState(aura.direction)
+
 
   const cardinalMap = new Map<string, string>([
     ['left', 'West'],
@@ -38,10 +38,10 @@ export default function Aura({}) {
     ['bottom', 'South'],
   ])
 
-  const initialGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
-
-
   const onSubmit: SubmitHandler<AuraInputs> = (data) => {
+    data.direction = direction
+    console.log('direction check', data)
+
     setAura(data)
     router.push(`/profile/${address}`).then((r) => console.log(r))
   }
@@ -67,15 +67,23 @@ export default function Aura({}) {
     setGradient(formatColor)
   }
 
+  const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
-    aura?.colorOne && setOne(aura.colorOne)
-    aura?.colorTwo && setTwo(aura.colorTwo)
-    aura?.colorThree && setThree(aura.colorThree)
-    aura?.direction && setDirection(aura?.direction)
+    setHydrated(true);
+    aura.direction && setDirection(aura.direction)
+    aura.colorOne && setOne(aura.colorOne)
+    aura.colorTwo && setTwo(aura.colorTwo)
+    aura.colorThree && setThree(aura.colorThree)
     setGradient(
       `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     )
-  }, [aura])
+  }, [aura]);
+
+  if (!hydrated) {
+    // Returns null on first render, so the client and server match
+
+    return null;
+  }
 
   return (
     <div className="flex flex-col mt-24 ">
@@ -115,7 +123,7 @@ export default function Aura({}) {
       </div>
       <div className="w-full border border-white opacity-10 border-solid bg-white" />
       <div className="flex flex-col justify-center items-center m-12">
-        {gradient && <div className={auraCircle} style={{ background: `${gradient ? gradient : initialGradient}` }} />}
+        <div className={auraCircle} style={{ background:  gradient && gradient }} />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col m-12">
             <div className="flex flex-row ">
@@ -185,7 +193,7 @@ export default function Aura({}) {
               onClick={() => onGenerateColor()}
               className=" flex justify-center bg-[#0E4749] items-center mb-4 h-12 rounded-full p-2 border-none cursor-pointer"
             >
-              <h2> Generate Aura </h2>{' '}
+              <h2> Generate Aura </h2>
             </button>
             <input
               type="submit"
@@ -199,3 +207,5 @@ export default function Aura({}) {
     </div>
   )
 }
+
+
