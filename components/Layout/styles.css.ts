@@ -143,27 +143,6 @@ export const searchContainer = style({
   })
 
 
-
-
-export const submitsearch = style({
-  // border: '1px solid rgb(138, 134, 134)',
-  // marginLeft: '-82px',
-  // padding: '5px',
-  // borderRadius: '19px',
-  // cursor: 'pointer',
-  // paddingLeft: '10px',
-  // paddingRight: '8px', 
-  // paddingTop: '4px',
-  // display: 'none',
-  // boxShadow: '0 0 1px black',
-  // opacity: '0.2',
-  // backgroundColor: 'white',
-  // marginRight: '110px',
-  // width: 'inherit'
-
-  
-})
-
 export const searchInput = style({
       width: 'inherit',
       borderRadius: 'inherit',

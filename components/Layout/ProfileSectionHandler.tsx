@@ -105,25 +105,3 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
     </>
   )
 }
-
-//   <div className="flex flex-row space-x-6">
-//   <div className="flex flex-col">
-//     <p>Memory Cards</p>
-//     <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
-//   </div>
-//   <div className="flex flex-col">
-//     <p>Songs</p>
-//     <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 " />
-//   </div>
-//   <div className="flex flex-col">
-//     <p>Moods</p>
-//     <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
-//   </div>
-//   <div className="flex flex-col">
-//     <p>Collections</p>
-//     <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
-//   </div>
-// </div>
-
-// <div className="w-inherite border border-white opacity-10 border-solid -mt-3"></div>
-// <div className="grid grid-cols-4 gap-4 p-4">
