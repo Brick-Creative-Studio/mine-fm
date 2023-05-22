@@ -13,7 +13,7 @@ import TwitterModal from 'components/Modals/TwitterModal'
 import {Miner} from "../../../types/Miner";
 import axios from "axios";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-
+import CopyButton from "../../../components/CopyButton/CopyButton";
 import useSWR from "swr";
 interface MinerProps {
   miner: Miner
@@ -58,14 +58,7 @@ export default function Profile({ miner }: MinerProps) {
                   {' '}
                   {miner?.walletAddress}
                 </p>
-                <button className="bg-transparent hover:bg-sky-100 w-fit h-fit">
-                  <Image
-                    width={48}
-                    height={48}
-                    src={'/copy.svg'}
-                    alt="copy address button"
-                  />
-                </button>
+               <CopyButton text={ miner?.walletAddress as string } />
               </div>
             </div>
             <div className="flex w-fit justify-around	mt-4 bg-black/50 rounded-xl">
