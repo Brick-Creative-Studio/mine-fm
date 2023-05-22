@@ -41,18 +41,18 @@ const initialState = {
   twitter: null,
   vibe: null,
   aura: {
+    direction: 'top',
     colorOne: '#000',
     colorTwo: '#FFF',
-    colorThree: '#240045',
-    direction: 'top',
+    colorThree: '#240045'
   },
 }
 
 type AuraType = {
+  direction: string
   colorOne: string
   colorTwo: string
   colorThree: string
-  direction: string
 }
 
 type Identity = {

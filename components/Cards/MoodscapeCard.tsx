@@ -42,6 +42,13 @@ export const MoodscapeCard: React.FC<CardProps> = ({ id }) => {
             <p className="text-black"> Uplift </p>
           </div>
         </div>
+        <div className={'flex justify-center mt-4'}>
+        <Link href={`/moodscape/${1}`} key={1}>
+          <button className="cursor-pointer hover:bg-sky-100 hover:text-black rounded-lg bg-black/50">
+            <h3> Enter Moodscape </h3>
+          </button>
+        </Link>
+        </div>
       </div>
   )
 }

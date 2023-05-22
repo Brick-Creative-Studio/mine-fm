@@ -7,6 +7,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import auraCircle from '../../../styles/Aura.css'
 import { useRouter } from 'next/router'
 import AuraForm from "../../../components/Forms/AuraForm";
+import { useIsMounted } from "../../../hooks/useMounted";
 
 interface AuraInputs {
   colorOne: string
@@ -17,6 +18,7 @@ interface AuraInputs {
 
 export default function Aura({}) {
   const router = useRouter()
+  const isMounted = useIsMounted()
 
   const { signerAddress: address } = useLayoutStore()
 
@@ -28,7 +30,7 @@ export default function Aura({}) {
   const [colorTwo, setTwo] = useState(aura.colorTwo)
   const [colorThree, setThree] = useState(aura.colorThree)
 
-  const [direction, setDirection] = useState(aura.direction)
+  const [direction, setDirection] = useState('top')
   const [gradient, setGradient] = useState('')
 
   const cardinalMap = new Map<string, string>([
@@ -38,10 +40,11 @@ export default function Aura({}) {
     ['bottom', 'South'],
   ])
 
-  const initialGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
+  const initialGradient = `linear-gradient(to ${direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
 
   const onSubmit: SubmitHandler<AuraInputs> = (data) => {
+    data.direction = direction
     setAura(data)
     router.push(`/profile/${address}`).then((r) => console.log(r))
   }
@@ -68,16 +71,16 @@ export default function Aura({}) {
   }
 
   useEffect(() => {
-    aura?.colorOne && setOne(aura.colorOne)
-    aura?.colorTwo && setTwo(aura.colorTwo)
-    aura?.colorThree && setThree(aura.colorThree)
-    aura?.direction && setDirection(aura?.direction)
+    setOne(aura.colorOne)
+    setTwo(aura.colorTwo)
+    setThree(aura.colorThree)
+    setDirection(direction)
     setGradient(
-      `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
+      `linear-gradient(to ${direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     )
   }, [aura])
 
-  return (
+  return isMounted && aura ? (
     <div className="flex flex-col mt-24 ">
       <div className="flex justify-around  items-center">
         <div className="">
@@ -197,5 +200,5 @@ export default function Aura({}) {
         </form>
       </div>
     </div>
-  )
+  ): null
 }

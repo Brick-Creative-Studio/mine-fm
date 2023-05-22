@@ -9,7 +9,7 @@ export default function CreatePage() {
             <h1 className="mb-12"> Create </h1>
             
             <div className="flex flex-col justify-center items-center w-2/3 md:w-1/4  h-48 p-4 border-solid border-blue-500/50 rounded-lg bg-black/25 mb-12">
-                <h1 className="mt-4"> Onchain </h1>
+                <h1 className="mt-4"> Livestream </h1>
                 <h3 className="-mt-4 text-center"> Mint Music to the Optimism Blockchain, a Blockchain that works with Ethereum. </h3>
                 <button className="rounded-lg bg-black/50 mb-2">Feature Coming Soon</button>
             </div >
