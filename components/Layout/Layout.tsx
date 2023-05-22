@@ -15,7 +15,7 @@ type Props = {
 const Layout = ({ children }: Props) => {
   const { data: signer, status } = useSigner()
   const { setSigner, setSignerAddress, signerAddress } = useLayoutStore()
-  const { setIsMobile } = useLayoutStore()
+  const { setIsMobile, isMobile } = useLayoutStore()
   /*
 
     store signer, signerAddress and provider is store

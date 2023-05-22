@@ -6,6 +6,8 @@ import { useLayoutStore, useProfileStore } from 'stores'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import auraCircle from '../../../styles/Aura.css'
 import { useRouter } from 'next/router'
+import AuraForm from "../../../components/Forms/AuraForm";
+import { useIsMounted } from "../../../hooks/useMounted";
 
 interface AuraInputs {
   colorOne: string
@@ -16,6 +18,7 @@ interface AuraInputs {
 
 export default function Aura({})  {
   const router = useRouter()
+  const isMounted = useIsMounted()
 
   const { signerAddress: address } = useLayoutStore()
 
@@ -40,8 +43,6 @@ export default function Aura({})  {
 
   const onSubmit: SubmitHandler<AuraInputs> = (data) => {
     data.direction = direction
-    console.log('direction check', data)
-
     setAura(data)
     router.push(`/profile/${address}`).then((r) => console.log(r))
   }
@@ -67,25 +68,17 @@ export default function Aura({})  {
     setGradient(formatColor)
   }
 
-  const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
-    setHydrated(true);
-    aura.direction && setDirection(aura.direction)
-    aura.colorOne && setOne(aura.colorOne)
-    aura.colorTwo && setTwo(aura.colorTwo)
-    aura.colorThree && setThree(aura.colorThree)
+    setOne(aura.colorOne)
+    setTwo(aura.colorTwo)
+    setThree(aura.colorThree)
+    setDirection(direction)
     setGradient(
-      `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
+      `linear-gradient(to ${direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     )
   }, [aura]);
 
-  if (!hydrated) {
-    // Returns null on first render, so the client and server match
-
-    return null;
-  }
-
-  return (
+  return isMounted && aura ? (
     <div className="flex flex-col mt-24 ">
       <div className="flex justify-around  items-center">
         <div className="">
@@ -205,7 +198,7 @@ export default function Aura({})  {
         </form>
       </div>
     </div>
-  )
+  ): null
 }
 
 

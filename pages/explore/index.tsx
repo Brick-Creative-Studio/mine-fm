@@ -68,7 +68,6 @@ export default function Explore({}) {
 
       <div className="flex flex-col items-center justify-center gap-4 p-4">
         <MoodscapeCard id={'1'} />
-        {checkAccountStatus()}
       </div>
     </div>
   )

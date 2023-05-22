@@ -15,7 +15,7 @@ interface LayoutStoreProps {
 
 export const useLayoutStore = create<LayoutStoreProps>((set) => ({
   isMobile: false,
-  setIsMobile: (isMobile: boolean) => set({ isMobile }),
+  setIsMobile: (isMobile: boolean) => set( {isMobile }),
 
   signer: undefined,
   setSigner: (signer: FetchSignerResult | undefined) => set({ signer }),

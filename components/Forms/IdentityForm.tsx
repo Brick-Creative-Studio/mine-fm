@@ -77,7 +77,7 @@ export default function IdentityForm({}) {
   return (
     <div className="flex flex-col mt-8  justify-center items-center">
         <form
-          className="flex flex-col w-3/4 items-center"
+          className="flex flex-col w-3/4 md:w-1/3  items-center"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="space-y-4 > * + * w-full">
