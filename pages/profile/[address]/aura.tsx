@@ -16,7 +16,7 @@ interface AuraInputs {
   direction: string
 }
 
-export default function Aura({}) {
+export default function Aura({})  {
   const router = useRouter()
   const isMounted = useIsMounted()
 
@@ -26,12 +26,13 @@ export default function Aura({}) {
   const { register, handleSubmit } = useForm<AuraInputs>()
 
   const { aura, setAura } = useProfileStore((state) => state)
+
   const [colorOne, setOne] = useState(aura.colorOne)
   const [colorTwo, setTwo] = useState(aura.colorTwo)
   const [colorThree, setThree] = useState(aura.colorThree)
-
-  const [direction, setDirection] = useState('top')
   const [gradient, setGradient] = useState('')
+  const [direction, setDirection] = useState(aura.direction)
+
 
   const cardinalMap = new Map<string, string>([
     ['left', 'West'],
@@ -39,9 +40,6 @@ export default function Aura({}) {
     ['top', 'North'],
     ['bottom', 'South'],
   ])
-
-  const initialGradient = `linear-gradient(to ${direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
-
 
   const onSubmit: SubmitHandler<AuraInputs> = (data) => {
     data.direction = direction
@@ -78,7 +76,7 @@ export default function Aura({}) {
     setGradient(
       `linear-gradient(to ${direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     )
-  }, [aura])
+  }, [aura]);
 
   return isMounted && aura ? (
     <div className="flex flex-col mt-24 ">
@@ -118,7 +116,7 @@ export default function Aura({}) {
       </div>
       <div className="w-full border border-white opacity-10 border-solid bg-white" />
       <div className="flex flex-col justify-center items-center m-12">
-        {gradient && <div className={auraCircle} style={{ background: `${gradient ? gradient : initialGradient}` }} />}
+        <div className={auraCircle} style={{ background:  gradient && gradient }} />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col m-12">
             <div className="flex flex-row ">
@@ -188,7 +186,7 @@ export default function Aura({}) {
               onClick={() => onGenerateColor()}
               className=" flex justify-center bg-[#0E4749] items-center mb-4 h-12 rounded-full p-2 border-none cursor-pointer"
             >
-              <h2> Generate Aura </h2>{' '}
+              <h2> Generate Aura </h2>
             </button>
             <input
               type="submit"
@@ -202,3 +200,5 @@ export default function Aura({}) {
     </div>
   ): null
 }
+
+
