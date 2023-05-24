@@ -62,8 +62,8 @@ export default function Profile({ miner }: MinerProps) {
               </div>
             </div>
             <div className="flex w-fit justify-around	mt-4 bg-black/50 rounded-xl">
-              <TwitterModal/>
-              <InstaModal/>
+              <TwitterModal twitterUrl={miner.twitter}/>
+              <InstaModal instaUrl={miner.instagram}/>
 
               <Link href={`${signerAddress}/identity`}>
                 <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent">

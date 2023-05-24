@@ -9,7 +9,11 @@ type TwitterInput = {
     url: string
 }
 
-export default function TwitterModal() {
+interface SocialProps {
+  twitterUrl: string | null
+}
+
+export default function TwitterModal({ twitterUrl }: SocialProps) {
 
   const { signerAddress } = useLayoutStore((state) => state)
 
@@ -42,7 +46,7 @@ export default function TwitterModal() {
     const url = getValues('url')
     const server = `https://minefm-server.herokuapp.com/miner`
 
-    await updateTwitter(server, signerAddress, id, url)
+    signerAddress && id && await updateTwitter(server, signerAddress, id, url)
     setTwitter(url)
     closeModal()
     
@@ -107,6 +111,7 @@ export default function TwitterModal() {
                   <div className="mt-2">
                     <input
                     placeholder='www.twitter/mine_fm'
+                    defaultValue={ twitterUrl ? twitterUrl : undefined}
                     className="bg-slate-200/75 h-10 w-full border p-2 border-solid rounded-md text-black"
                     {...register('url')}
                      >
