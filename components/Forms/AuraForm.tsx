@@ -10,7 +10,7 @@ import {
   crossRight,
   crossTop,
 } from '../../styles/controlPad.css'
-import auraCircle from '../../styles/Aura.css'
+import auraCircle from '../../styles/aura.css'
 
 interface AuraInputs {
   colorOne: string

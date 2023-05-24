@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useLayoutStore, useProfileStore } from 'stores'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import auraCircle from '../../../styles/Aura.css'
+import auraCircle from '../../../styles/aura.css'
 import { useRouter } from 'next/router'
 import AuraForm from "../../../components/Forms/AuraForm";
 import { useIsMounted } from "../../../hooks/useMounted";

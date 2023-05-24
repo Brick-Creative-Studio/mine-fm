@@ -72,7 +72,7 @@ export const useProfileStore = create(
       setHasMoody: (hasMoody: boolean) => set({ hasMoody }),
       setTag: (m_tag: string) => set({ m_tag }),
       setPhone: (phone: string) => set({ phone }),
-      setAura: (aura: AuraType) => set({ ...aura }),
+      setAura: (aura: AuraType) => set({ aura }),
       setHasAccount: (condition: boolean) => set((state) => ({ hasAccount: condition })),
       setIdentity: (identity: Identity) => set({ ...identity }),
       setVibe: (vibe: string) => set({ vibe }),

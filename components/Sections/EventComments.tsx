@@ -34,9 +34,8 @@ export default function EventComments({}) {
 
 
   const getComments = async(url: string, id: string) => {
-    console.log('modal id check: ',id)
     const myMoody: string = await axios.get(url, {
-      moodscapeId: id,
+      //TODO: add createComment arg here
     }).then((res) => {
       console.log('got moody', res.data)
       return res.data

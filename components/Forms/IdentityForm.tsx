@@ -50,7 +50,7 @@ export default function IdentityForm({}) {
       }
       try{
         createMiner(url, newMiner).then(() => {
-          console.log('create api call')
+          console.log('create graphql call')
             router.push(`/profile/${address}`)
 
 

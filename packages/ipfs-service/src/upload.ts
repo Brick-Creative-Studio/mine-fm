@@ -18,7 +18,7 @@ const ipfs = createIpfsClient({
   host: 'ipfs.infura.io',
   port: 5001,
   protocol: 'https',
-  apiPath: '/api/v0',
+  apiPath: '/graphql/v0',
   headers: {
     authorization: auth,
   }

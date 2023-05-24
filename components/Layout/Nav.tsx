@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  NavBar,
-  navActions,
-  navCreate,
-  navLogo,
-} from './styles.css'
+import { NavBar, navActions, navCreate, navLogo } from './styles.css'
 import Image from 'next/image'
 import Link from 'next/link'
 import NavMenu from './NavMenu'
@@ -19,10 +14,8 @@ import { Miner } from 'types/Miner'
 
 const Nav = () => {
   const isMounted = useIsMounted()
-  const { signerAddress, setSignerAddress } = useLayoutStore((state) => state)
-  const { hasAccount, setHasAccount, setId } = useProfileStore((state) => state)
-
-  const [ isAccount, setStateAccount ] = useState(false) 
+  const { setSignerAddress } = useLayoutStore((state) => state)
+  const { hasAccount, setHasAccount, setId, id } = useProfileStore((state) => state)
 
   const { address } = useAccount({
     onDisconnect() {
@@ -31,7 +24,7 @@ const Nav = () => {
     },
     onConnect({ address, connector, isReconnected }) {
       address && setSignerAddress(address)
-      if(miner){
+      if (id) {
         setHasAccount(true)
       } else {
         setHasAccount(false)
@@ -39,30 +32,33 @@ const Nav = () => {
     },
   })
 
-  const isMinerFetcher = async (url: string, address: string) => {
-    let miner: Miner = await axios.post(url, {
-        walletAddress: address
-    }).then((res) => {
-        setId(res.data.id);
-      return res.data
-    })
-    return miner;
+  const getMiner = async (url: string, address: string) => {
+    let miner: Miner = await axios
+      .post(url, {
+        walletAddress: address,
+      })
+      .then((res) => {
+        setId(res.data.id)
+
+        return res.data
+      })
+    return miner
   }
-//TODO: Remove SWR state since this data does not change often
-  const url = `https://minefm-server.herokuapp.com/miner/miner`
-  const miner = useSWR([url, address], isMinerFetcher).data
 
   useEffect(() => {
-    if(miner){
-        setStateAccount(true)
-        if(hasAccount){
+    const url = `https://minefm-server.herokuapp.com/miner/miner`
+
+    const miner = getMiner(url, address as string).then((data) => {
+      if (data) {
+        if (hasAccount) {
           setHasAccount(true)
         } else {
           setHasAccount(false)
         }
-        
-       }
-  }, [miner])
+      }
+      return data
+    })
+  }, [])
 
   return isMounted && address ? (
     <div className={NavBar}>
@@ -79,12 +75,15 @@ const Nav = () => {
       </div>
 
       <div className={navActions}>
-        <Link key={miner ? 'create' : 'make-account'} href={ miner ? '/create' : '/make-account'}>
+        <Link
+          key={hasAccount ? 'create' : 'make-account'}
+          href={hasAccount ? '/create' : '/make-account'}
+        >
           <button className={navCreate}>
-          <h3> Create </h3>
+            <h3> Create </h3>
           </button>
         </Link>
-        {signerAddress && <NavMenu hasAccount={isAccount} signerAddress={signerAddress} />}
+        {address && <NavMenu hasAccount={hasAccount} signerAddress={address} />}
       </div>
     </div>
   ) : (

@@ -9,8 +9,12 @@ type InstaInput = {
   url: string
 }
 
+interface SocialProps {
+  instaUrl: string | null
+}
 
-export default function InstaModal() {
+
+export default function InstaModal({ instaUrl } : SocialProps) {
   let [isOpen, setIsOpen] = useState(false)
   let [] = useState('')
   const { signerAddress } = useLayoutStore((state) => state)
@@ -44,7 +48,7 @@ export default function InstaModal() {
     const url = getValues('url')
     const server = `https://minefm-server.herokuapp.com/miner`
 
-    await updateInsta(server, signerAddress, id, url)
+    signerAddress && id &&  await updateInsta(server, signerAddress, id, url)
     setInstagram(url)
     closeModal()
     
@@ -109,6 +113,7 @@ export default function InstaModal() {
                   <div className="mt-2">
                   <input
                     placeholder='www.insagram/mine_fm'
+                    defaultValue={ instaUrl ? instaUrl : undefined }
                     className="bg-slate-200/75 h-10 w-full border p-2 border-solid rounded-md text-black"
                     {...register('url')}
                      >
