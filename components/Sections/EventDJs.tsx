@@ -17,18 +17,22 @@ export default function EventDJs({}) {
           <p> Keith Charles </p>
           <p> Mood: Urgent </p>
             <div className={'flex flex-row space-x-3 > * + *'}>
+              <a href={'https://twitter.com/_SPACEBAR'} target={'_blank'}>
                 <Image
                     width={24}
                     height={24}
                     src={'/stock/twitter-logo.svg'}
                     alt="twitter button"
                 />
+              </a>
+              <a href={'https://www.instagram.com/keithcharles/'} target={'_blank'}>
                 <Image
                     width={24}
                     height={24}
                     src={'/stock/instagram-logo.svg'}
                     alt="instagram button"
                 />
+              </a>
             </div>
         </div>
       </div>
@@ -46,18 +50,22 @@ export default function EventDJs({}) {
           <p> Stonie Blue </p>
           <p> Mood: Uplift </p>
           <div className={'flex flex-row space-x-3 > * + *\t'}>
+            <a href={'https://twitter.com/antbluejr'} target={'_blank'}>
             <Image
               width={24}
               height={24}
               src={'/stock/twitter-logo.svg'}
               alt="twitter button"
             />
+            </a>
+            <a href={'https://www.instagram.com/antbluejr/'} target={'_blank'}>
             <Image
               width={24}
               height={24}
               src={'/stock/instagram-logo.svg'}
               alt="instagram button"
             />
+            </a>
           </div>
         </div>
       </div>

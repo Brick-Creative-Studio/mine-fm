@@ -48,8 +48,10 @@ export default function InstaModal({ instaUrl } : SocialProps) {
     const url = getValues('url')
     const server = `https://minefm-server.herokuapp.com/miner`
 
-    signerAddress && id &&  await updateInsta(server, signerAddress, id, url)
-    setInstagram(url)
+    if(url !== instaUrl) {
+      signerAddress && id && await updateInsta(server, signerAddress, id, url)
+      setInstagram(url)
+    }
     closeModal()
     
   }
