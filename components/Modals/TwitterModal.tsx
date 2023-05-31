@@ -24,8 +24,6 @@ export default function TwitterModal({ twitterUrl }: SocialProps) {
     getValues,
   } = useForm<TwitterInput>()
   let [isOpen, setIsOpen] = useState(false)
-  let [] = useState('')
-
   let { setTwitter, id } = useProfileStore(state => state)
 
   const updateTwitter = async(url: string, address: string, id: string, profile: string) => {
@@ -46,8 +44,11 @@ export default function TwitterModal({ twitterUrl }: SocialProps) {
     const url = getValues('url')
     const server = `https://minefm-server.herokuapp.com/miner`
 
-    signerAddress && id && await updateTwitter(server, signerAddress, id, url)
-    setTwitter(url)
+    if(url !== twitterUrl){
+      signerAddress && id && await updateTwitter(server, signerAddress, id, url)
+      setTwitter(url)
+    }
+
     closeModal()
     
   }

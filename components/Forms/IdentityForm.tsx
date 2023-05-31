@@ -8,25 +8,35 @@ import axios from 'axios'
 import useSWR from 'swr'
 import { Miner } from 'types/Miner'
 
-
-
 type Identity = {
   name: string
   m_tag: string
   phone: string
   email: string
-  vibe: string
+  bio: string
 }
 
 export default function IdentityForm({}) {
-
   const { register, handleSubmit, getValues } = useForm<Identity>()
-  const { setIdentity, setHasAccount, hasAccount, aura } = useProfileStore((state) => state)
+  const { setIdentity, name, aura, m_tag, email, phone, bio, id } = useProfileStore(
+    (state) => state
+  )
   const { signerAddress: address } = useLayoutStore()
   const { needsCard, setStatus } = useMCStore((state) => state)
 
+  const router = useRouter()
+  const path = router.pathname.replace(/\//g, '')
+
+  const isOnboarding = path === 'onboarding'
   const createMiner = async (url: string, newMiner: any) => {
     let miner: Miner = await axios.post(url, newMiner).then((res) => {
+      console.log(res.data)
+      return res.data
+    })
+  }
+
+  const updateMiner = async (url: string, updatedMiner: any) => {
+    let miner: Miner = await axios.put(url, updatedMiner).then((res) => {
       console.log(res.data)
       return res.data
     })
@@ -35,127 +45,146 @@ export default function IdentityForm({}) {
   const onSubmit: SubmitHandler<Identity> = (data) => {
     setIdentity(data)
 
-
+    if (isOnboarding) {
       const url = `https://minefm-server.herokuapp.com/miner/create`
       const newMiner = {
         miner_tag: data.m_tag,
         email: data.email,
         phone: data.phone,
-        walletAddress: "0x4bF7F16fDF430DAEAEE579A80233d97A11A81Ae2",
+        walletAddress: address,
         name: data.name,
         colorOne: aura.colorOne,
         colorTwo: aura.colorTwo,
         colorThree: aura.colorThree,
         direction: aura.direction,
+        bio: data.bio
       }
-      try{
+      try {
         createMiner(url, newMiner).then(() => {
-          console.log('create graphql call')
-            router.push(`/profile/${address}`)
-
-
+          router.push(`/profile/${address}`)
         })
-      } catch(e){
-        alert('error creating account')
+      } catch (e) {
+        alert('error creating new account')
         return
       }
-  
-
-    router.push(`/onboarding?tab=memorycard`)
+    } else {
+      const url = `https://minefm-server.herokuapp.com/miner`
+      const updatedMiner = {
+        miner_tag: data.m_tag,
+        email: data.email,
+        phone: data.phone,
+        walletAddress: address,
+        name: data.name,
+        colorOne: aura.colorOne,
+        colorTwo: aura.colorTwo,
+        colorThree: aura.colorThree,
+        direction: aura.direction,
+        id: id,
+        bio: data.bio
+      }
+      try {
+        console.log('update user', updatedMiner)
+        updateMiner(url, updatedMiner).then(() => {
+          router.push(`/profile/${address}`)
+        })
+      } catch (e) {
+        alert('error updating account')
+        return
+      }
+    }
   }
 
   const onAuraSubmit = () => {
     const identityValues: Identity = getValues()
-    console.log('identity form', identityValues)
+    onSubmit(identityValues)
     setIdentity(identityValues)
   }
 
-  const router = useRouter()
-
-  const path = router.pathname.replace(/\//g, '')
-
   return (
     <div className="flex flex-col mt-8  justify-center items-center">
-        <form
-          className="flex flex-col w-3/4 md:w-1/3  items-center"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <div className="space-y-4 > * + * w-full">
-            <div className="flex flex-col ">
-              <label htmlFor="Miner Name"> Name </label>
-              {/* include validation with required or other standard HTML validation rules */}
-              <input
-                type="text"
-                className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-                {...register('name', { required: true })}
-              />
-            </div>
-            <div className="flex flex-col w-full">
-              <label htmlFor="Miner tag"> miner_tag </label>
-              {/* include validation with required or other standard HTML validation rules */}
-              <input
-                type="text"
-                className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-                {...register('m_tag', { required: true })}
-              />
-            </div>
-            <div className="flex flex-col w-full">
-              <label htmlFor="email"> Email </label>
-              {/* include validation with required or other standard HTML validation rules */}
-              <input
-                type="text"
-                placeholder="miner@mine.fm"
-                className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-                {...register('email', { required: false })}
-              />
-            </div>
-            <div className="flex flex-col w-full">
-              <label htmlFor="phone"> Phone # </label>
-              {/* include validation with required or other standard HTML validation rules */}
-              <input
-                type="tel"
-                required
-                placeholder="555-456-6780"
-                className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
-                {...register('phone', { required: true })}
-              />
-            </div>
-            <div className="flex flex-col w-full">
-              <label htmlFor="vibe"> Vibe </label>
-              {/* include validation with required or other standard HTML validation rules */}
-              <input
-                type="text"
-                required
-                placeholder="ex: moody, mellow, just-me"
-                className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
-                {...register('vibe', { required: true })}
-              />
-            </div>
+      <form
+        className="flex flex-col w-3/4 md:w-1/3  items-center"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="space-y-4 > * + * w-full">
+          <div className="flex flex-col ">
+            <label htmlFor="Miner Name"> Name </label>
+            {/* include validation with required or other standard HTML validation rules */}
+            <input
+              type="text"
+              defaultValue={ isOnboarding ? undefined :  name as string}
+              className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
+              {...register('name', { required: true })}
+            />
           </div>
-          <Link
-            href={{
-              pathname: `/profile/${address}/aura`,
-            }}
+          <div className="flex flex-col w-full">
+            <label htmlFor="Miner tag"> miner_tag </label>
+            {/* include validation with required or other standard HTML validation rules */}
+            <input
+              type="text"
+              defaultValue={ isOnboarding ? undefined :  m_tag as string}
+              className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
+              {...register('m_tag', { required: true })}
+            />
+          </div>
+          <div className="flex flex-col w-full">
+            <label htmlFor="email"> Email </label>
+            {/* include validation with required or other standard HTML validation rules */}
+            <input
+              type="text"
+              defaultValue={ isOnboarding ? undefined :  email as string}
+              placeholder="miner@mine.fm"
+              className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
+              {...register('email', { required: false })}
+            />
+          </div>
+          <div className="flex flex-col w-full">
+            <label htmlFor="phone"> Phone # </label>
+            {/* include validation with required or other standard HTML validation rules */}
+            <input
+              type="tel"
+              required
+              defaultValue={ isOnboarding ? undefined :  phone as string}
+              placeholder="555-456-6780"
+              className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
+              {...register('phone', { required: true })}
+            />
+          </div>
+          <div className="flex flex-col w-full">
+            <label htmlFor="bio"> Bio </label>
+            {/* include validation with required or other standard HTML validation rules */}
+            <textarea
+              required
+              defaultValue={ isOnboarding ? undefined :  name as string}
+              placeholder="I am a musician, curator, and miner"
+              className=" bg-transparent  h-24 border p-2 border-solid rounded-md text-white "
+              {...register('bio', { required: true })}
+            />
+          </div>
+        </div>
+        <Link
+          href={{
+            pathname: `/profile/${address}/aura`,
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => onAuraSubmit()}
+            className={`flex flex-row rounded-full ${
+              path === 'onboarding' ? 'invisible' : 'visible mb-4'
+            }  items-center justify-evenly w-32 h-12 mt-8 bg-gradient-to-r from-teal-700 to-indigo-500 cursor-pointer`}
           >
-            <button
-              type="button"
-              onClick={() => onAuraSubmit()}
-              className={`flex flex-row rounded-full ${
-                path === 'onboarding' ? 'invisible' : 'visible mb-4'
-              }  items-center justify-evenly w-32 h-12 mt-8 bg-gradient-to-r from-teal-700 to-indigo-500 cursor-pointer`}
-            >
-              <h2> Aura </h2>
-              <Image src={'/color-wheel.svg'} height={32} width={32} alt="aura button" />
-            </button>
-          </Link>
-          <input
-            type="submit"
-            title="next"
-            value={path === 'onboarding' ? 'Create Account' : 'Save & Exit'}
-            className="not-italic bg-black h-12 rounded-full font-mono font-bold text-lg p-2 px-4 border-none cursor-pointer mb-4"
-          />
-        </form>
-
+            <h2> Aura </h2>
+            <Image src={'/color-wheel.svg'} height={32} width={32} alt="aura button" />
+          </button>
+        </Link>
+        <input
+          type="submit"
+          title="next"
+          value={path === 'onboarding' ? 'Create Account' : 'Save & Exit'}
+          className="not-italic bg-black h-12 rounded-full font-mono font-bold text-lg p-2 px-4 border-none cursor-pointer mb-4"
+        />
+      </form>
     </div>
   )
 }

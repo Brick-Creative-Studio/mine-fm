@@ -13,8 +13,8 @@ interface ProfileStoreProps {
   setTag: (m_tag: string) => void
   phone: string | null
   setPhone: (phone: string) => void
-  vibe: string | null
-  setVibe: (vibe: string) => void
+  bio: string | null
+  setBio: (vibe: string) => void
   instagram: string | null
   twitter: string | null
   setTwitter: (url: string) => void
@@ -39,7 +39,7 @@ const initialState = {
   hasAccount: false,
   instagram: null,
   twitter: null,
-  vibe: null,
+  bio: null,
   aura: {
     direction: 'top',
     colorOne: '#000',
@@ -60,7 +60,7 @@ type Identity = {
   m_tag: string | null
   phone: string | null
   email: string | null
-  vibe: string | null
+  bio: string | null
 }
 
 export const useProfileStore = create(
@@ -75,7 +75,7 @@ export const useProfileStore = create(
       setAura: (aura: AuraType) => set({ aura }),
       setHasAccount: (condition: boolean) => set((state) => ({ hasAccount: condition })),
       setIdentity: (identity: Identity) => set({ ...identity }),
-      setVibe: (vibe: string) => set({ vibe }),
+      setBio: (bio: string) => set({ bio }),
       setInstagram: (instagram: string) => set({ instagram }),
       setTwitter: (twitter: string) => set({ twitter }),
       setVoteStatus: (hasVote: boolean) => set({ hasVote }),

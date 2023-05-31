@@ -13,7 +13,6 @@ interface NavMenuProps {
 
 const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
     const { aura } = useProfileStore((state) => state)
-    console.log('nav aura check', aura)
     const { disconnect } = useDisconnect()
     let userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
