@@ -18,7 +18,7 @@ type Identity = {
 
 export default function IdentityForm({}) {
   const { register, handleSubmit, getValues } = useForm<Identity>()
-  const { setIdentity, name, aura, m_tag, email, phone, bio } = useProfileStore(
+  const { setIdentity, name, aura, m_tag, email, phone, bio, id } = useProfileStore(
     (state) => state
   )
   const { signerAddress: address } = useLayoutStore()
@@ -57,6 +57,7 @@ export default function IdentityForm({}) {
         colorTwo: aura.colorTwo,
         colorThree: aura.colorThree,
         direction: aura.direction,
+        bio: data.bio
       }
       try {
         createMiner(url, newMiner).then(() => {
@@ -67,7 +68,7 @@ export default function IdentityForm({}) {
         return
       }
     } else {
-      const url = `https://minefm-server.herokuapp.com/miner/`
+      const url = `https://minefm-server.herokuapp.com/miner`
       const updatedMiner = {
         miner_tag: data.m_tag,
         email: data.email,
@@ -78,8 +79,11 @@ export default function IdentityForm({}) {
         colorTwo: aura.colorTwo,
         colorThree: aura.colorThree,
         direction: aura.direction,
+        id: id,
+        bio: data.bio
       }
       try {
+        console.log('update user', updatedMiner)
         updateMiner(url, updatedMiner).then(() => {
           router.push(`/profile/${address}`)
         })

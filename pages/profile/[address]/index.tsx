@@ -101,7 +101,7 @@ export default function Profile({ miner }: MinerProps) {
       <div className="flex-col">
         <h2> Bio </h2>
         {miner.bio ? (
-          <p className="text-ellipsis	"> miner.bio </p>
+          <p className="text-ellipsis	"> {miner.bio} </p>
         ) : (
           <p className="text-ellipsis	">
             Contrary to popular belief, Lorem Ipsum is not simply random text. It has
