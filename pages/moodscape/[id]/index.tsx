@@ -126,7 +126,7 @@ export default function MoodscapePage({}) {
 
             <div className="flex flex-col justify-between">
               <div className="px-2 bg-[#F25C54]/50 break-words rounded-md w-fit h-fit">
-                <h3> Status: Active</h3>
+                <h3> Status: Finished</h3>
               </div>
               <div className="flex flex-row justify-between">
                 <div className="flex flex-col jusify-center">
