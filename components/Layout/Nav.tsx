@@ -33,6 +33,12 @@ const Nav = () => {
   })
 
   const getMiner = async (url: string, address: string) => {
+
+    try{
+
+    } catch (e) {
+      console.log('error get')
+    }
     let miner: Miner = await axios
       .post(url, {
         walletAddress: address,
