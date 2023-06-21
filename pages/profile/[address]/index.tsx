@@ -10,13 +10,13 @@ import MscapeSection from 'components/Sections/MsSection'
 import InstaModal from 'components/Modals/InstaModal'
 import { useProfileStore } from 'stores'
 import TwitterModal from 'components/Modals/TwitterModal'
-import { Miner } from '../../../types/Miner'
+import { User } from '../../../types/User'
 import axios from 'axios'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import CopyButton from '../../../components/CopyButton/CopyButton'
 import useSWR from 'swr'
 interface MinerProps {
-  miner: Miner
+  miner: User
 }
 
 export default function Profile({ miner }: MinerProps) {
@@ -119,12 +119,12 @@ export default function Profile({ miner }: MinerProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<{ miner: Miner }> = async (
+export const getServerSideProps: GetServerSideProps<{ miner: User }> = async (
   context: GetServerSidePropsContext
 ) => {
   const url = `https://minefm-server.herokuapp.com/miner/miner`
   const signerAddress = context.params?.address as string
-  let miner: Miner = await axios
+  let miner: User = await axios
     .post(url, {
       walletAddress: signerAddress,
     })

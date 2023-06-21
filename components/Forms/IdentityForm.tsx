@@ -6,7 +6,7 @@ import { useLayoutStore, useProfileStore, useMCStore } from 'stores'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import useSWR from 'swr'
-import { Miner } from 'types/Miner'
+import { User } from 'types/User'
 
 type Identity = {
   name: string
@@ -29,14 +29,14 @@ export default function IdentityForm({}) {
 
   const isOnboarding = path === 'onboarding'
   const createMiner = async (url: string, newMiner: any) => {
-    let miner: Miner = await axios.post(url, newMiner).then((res) => {
+    let miner: User = await axios.post(url, newMiner).then((res) => {
       console.log(res.data)
       return res.data
     })
   }
 
   const updateMiner = async (url: string, updatedMiner: any) => {
-    let miner: Miner = await axios.put(url, updatedMiner).then((res) => {
+    let miner: User = await axios.put(url, updatedMiner).then((res) => {
       console.log(res.data)
       return res.data
     })

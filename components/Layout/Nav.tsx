@@ -10,7 +10,7 @@ import useSWR from 'swr'
 import axios from 'axios'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useLayoutStore } from 'stores'
-import { Miner } from 'types/Miner'
+import { User } from 'types/User'
 
 const Nav = () => {
   const isMounted = useIsMounted()
@@ -32,29 +32,27 @@ const Nav = () => {
     },
   })
 
-  const getMiner = async (url: string, address: string) => {
+  const getUser = async (url: string, address: string) => {
+    try {
+      let user: User = await axios
+        .post(url, {
+          walletAddress: address,
+        })
+        .then((res) => {
+          setId(res.data.id)
 
-    try{
-
+          return res.data
+        })
+      return user
     } catch (e) {
-      console.log('error get')
+      console.log('error fecthing user', e)
     }
-    let miner: Miner = await axios
-      .post(url, {
-        walletAddress: address,
-      })
-      .then((res) => {
-        setId(res.data.id)
-
-        return res.data
-      })
-    return miner
   }
 
   useEffect(() => {
-    const url = `https://minefm-server.herokuapp.com/miner/miner`
+    const url = `https://minefm-server.herokuapp.com/user/user`
 
-    const miner = getMiner(url, address as string).then((data) => {
+    const user = getUser(url, address as string).then((data) => {
       if (data) {
         if (hasAccount) {
           setHasAccount(true)
@@ -82,8 +80,8 @@ const Nav = () => {
 
       <div className={navActions}>
         <Link
-          key={hasAccount ? 'create' : 'make-account'}
-          href={hasAccount ? '/create' : '/make-account'}
+          key={'create'}
+          href={'/create'}
         >
           <button className={navCreate}>
             <h3> Create </h3>
