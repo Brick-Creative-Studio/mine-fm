@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Image from 'next/image'
-import styles from '../../pages/create/onchain/styles.module.css'
+import styles from '../../pages/create/create-sound/styles.module.css'
 
 type CollectionInputs = {
 

@@ -7,7 +7,7 @@ import { FormHandler } from 'components/Layout/FormHandler'
 import { useRouter } from 'next/router'
 import { useLayoutStore } from 'stores'
 
-const Create: React.FC = () => {
+const CreateSound: React.FC = () => {
   const { signerAddress } = useLayoutStore((state) => state)
   const { query } = useRouter()
 
@@ -45,4 +45,4 @@ const Create: React.FC = () => {
   )
 }
 
-export default Create
+export default CreateSound
