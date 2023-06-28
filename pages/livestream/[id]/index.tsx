@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useLayoutStore } from '../../../stores'
 import Image from 'next/image'
-import { StreamSectionHandler } from "../../../components/Layout/StreamSectionHandler";
+import { StreamSectionHandler as SectionHandler } from "../../../components/Layout/StreamSectionHandler";
 import StreamSection from "../../../components/Sections/StreamSection";
 import IRLSection from "../../../components/Sections/IRLSection";
 
@@ -42,13 +42,13 @@ export default function LivestreamPage({}) {
         </div>
       </div>
       <div className="w-full border border-white opacity-10 border-solid" />
-      <div className={'flex justify-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% w-full h-72'}>
-        <div className={'rounded-full m-auto w-40 h-40 bg-black'} />
+      <div className={'flex justify-center items-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% w-full h-72 z-0'}>
+        <Image src={'/stock/keithcharles-headshot.jpeg'} width={180} height={180} alt={'artist-avatar'} className={' z-10 rounded-full '}  />
 
       </div>
       {/*  //TODO: Seperate UI sections into components
         //TODO: Create Livestream section handler*/}
-      <StreamSectionHandler sections={sections}/>
+      <SectionHandler sections={sections}/>
 
     </div>
   )
