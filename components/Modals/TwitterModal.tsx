@@ -10,7 +10,7 @@ type TwitterInput = {
 }
 
 interface SocialProps {
-  twitterUrl: string | null
+  twitterUrl: string | undefined | null
 }
 
 export default function TwitterModal({ twitterUrl }: SocialProps) {

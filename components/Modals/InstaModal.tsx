@@ -6,11 +6,11 @@ import {useLayoutStore, useProfileStore} from 'stores'
 import axios from "axios";
 
 type InstaInput = {
-  url: string
+  url: string | null | undefined
 }
 
 interface SocialProps {
-  instaUrl: string | null
+  instaUrl: string | null | undefined
 }
 
 
@@ -49,8 +49,8 @@ export default function InstaModal({ instaUrl } : SocialProps) {
     const server = `https://minefm-server.herokuapp.com/miner`
 
     if(url !== instaUrl) {
-      signerAddress && id && await updateInsta(server, signerAddress, id, url)
-      setInstagram(url)
+      signerAddress && id && await updateInsta(server, signerAddress, id, url as string)
+      setInstagram(url as string)
     }
     closeModal()
     

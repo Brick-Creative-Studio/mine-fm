@@ -35,7 +35,7 @@ export default function HomePage({}) {
               </Link>
 
               <Link
-              href={'/explore'}
+              href={'/explore?tab=livestream'}
               >
               <button className={styles.exploreButton}>
                 <h2 className='mr-2'> Explore </h2>

@@ -11,8 +11,8 @@ const CreateLiveStream: React.FC = () => {
 
   const forms = [
     {
-      title: 'Mood',
-      component: [<LivestreamForm key={'mood-form'} />],
+      title: 'Livestream',
+      component: [<LivestreamForm key={'livestream-form'} />],
     }
   ]
 
@@ -20,7 +20,7 @@ const CreateLiveStream: React.FC = () => {
     <div className="flex flex-col justify-center px-8 ml-8 w-full mt-24 mb-12">
       <Head>
         <title>Create a Livestream Event</title>
-  <meta name="description" content="Create Your Sound" />
+  <meta name="description" content="Create Your Moment" />
   <meta property="og:url" content={`https://mine.fm/create}`} />
 
   <link rel="icon" href="/favicon.ico" />

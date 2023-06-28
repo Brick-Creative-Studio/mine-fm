@@ -6,14 +6,18 @@ import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from 'packages/ipfs-ser
 
 type LivestreamInput = {
   title: string
-  genres: string
-  tags: [string]
+  address: string
+  organizer: string
+  artist: string
+  mood: string
   description: string
-  tracklist: [string]
+  tracklist: string
   posterUrl: string
   audioUrl: string
   color: string
   titleRequired: string
+  date: Date,
+  time: string
 }
 
 export default function LivestreamForm({}) {
@@ -99,56 +103,65 @@ export default function LivestreamForm({}) {
             </div>
 
             <div className="flex flex-col">
-              <label htmlFor="producer" className="">
+              <label htmlFor="organizer" className="">
                 {' '}
-                Producer{' '}
+                Organizer{' '}
               </label>
               {/* register your input into the hook by invoking the "register" function */}
               <input
                 defaultValue=""
                 className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-                {...register('genres')}
+                {...register('organizer')}
               />
             </div>
 
             <div className="flex flex-col">
-              <label htmlFor="writers"> Writers </label>
+              <label htmlFor="artist"> Featured Artist </label>
               {/* register your input into the hook by invoking the "register" function */}
               <input
                 defaultValue=""
                 className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-                {...register('tags')}
+                {...register('artist')}
               />
             </div>
-
             <div className="flex flex-col">
-              <label htmlFor="featuredArtist"> Featured Artist </label>
+              <label htmlFor="Mood"> Mood </label>
               {/* register your input into the hook by invoking the "register" function */}
               <input
                 defaultValue=""
                 className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-                {...register('description')}
+                {...register('mood')}
               />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="mixMaster"> Mix and Master </label>
+              <label htmlFor="tracklist"> Tracklist </label>
               {/* register your input into the hook by invoking the "register" function */}
-              <input
+              <textarea
                 defaultValue=""
                 className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                 {...register('tracklist')}
               />
             </div>
+            <div>
+              <label htmlFor="MS Date" className="mr-2"> Date </label>
+              {/* register your input into the hook by invoking the "register" function */}
+              <input defaultValue="" type="date" className='mr-16 w-1/3 bg-transparent h-10 border p-2 border-solid rounded-md text-white ' {...register("date")} />
+
+              <label htmlFor="MS Time" className="mr-2"> Time </label>
+              {/* register your input into the hook by invoking the "register" function */}
+              <input defaultValue="" type="time" className='w-1/3 bg-transparent h-10 border p-2 border-solid rounded-md text-white ' {...register("time")} />
+            </div>
+
 
             <div className="flex flex-col">
-              <label htmlFor="description"> How Would You Describe the Song? </label>
+              <label htmlFor="description"> How Would You Describe the Livestream? </label>
               <p className="opacity-40 "> Description </p>
 
               {/* register your input into the hook by invoking the "register" function */}
               <textarea
                 defaultValue="feels like summer"
                 className=" bg-transparent  h-44 border p-2 border-solid  rounded-md text-white "
-                {...register('posterUrl')}
+                {...register('description')}
               />
             </div>
 
@@ -157,7 +170,7 @@ export default function LivestreamForm({}) {
 
             <input
               type="submit"
-              className="bg-gradient-to-r from-sky-500 to-indigo-500 h-12 rounded-lg font-mono font-bold text-lg italic"
+              className="bg-[#5971ED] border-transparent h-12 rounded-lg font-mono font-bold text-lg"
             />
           </div>
 

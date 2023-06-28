@@ -11,15 +11,17 @@ import InstaModal from 'components/Modals/InstaModal'
 import { useProfileStore } from 'stores'
 import TwitterModal from 'components/Modals/TwitterModal'
 import { User } from '../../../types/User'
-import axios from 'axios'
+import fetchUser from "../../../data/rest/fetchUser";
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import CopyButton from '../../../components/CopyButton/CopyButton'
 import useSWR from 'swr'
-interface MinerProps {
-  miner: User
+import axios from "axios";
+interface UserProps {
+  user: User | undefined,
+
 }
 
-export default function Profile({ miner }: MinerProps) {
+export default function Profile({ user  }: UserProps) {
   const { signerAddress } = useLayoutStore((state) => state)
   const { aura } = useProfileStore((state) => state)
   const [gradient, setGradient] = useState(``)
@@ -41,7 +43,7 @@ export default function Profile({ miner }: MinerProps) {
     )
   }, [aura])
 
-  console.log('bio', miner.bio)
+  console.log('bio', user?.bio)
   return (
     <div className="flex flex-col mt-24 mb-auto p-12">
       <div className="flex">
@@ -56,18 +58,18 @@ export default function Profile({ miner }: MinerProps) {
           />
         </div>
         <div className=" mx-8 w-full">
-          <h1> {miner?.name}</h1>
-          <p className="-mt-4"> @{miner?.miner_tag} </p>
+          <h1> {user?.name}</h1>
+          <p className="-mt-4"> @{user?.miner_tag} </p>
           <div className="flex flex-col w-full justify-between">
             <div className="flex flex-col">
               <div className="flex justify-center w-40 h-fit items-center mr-8 bg-white drop-shadow-lg text-black border-1 rounded-full px-2 ">
-                <p className="text-ellipsis overflow-hidden"> {miner?.walletAddress}</p>
-                <CopyButton text={miner?.walletAddress as string} />
+                <p className="text-ellipsis overflow-hidden"> {user?.walletAddress}</p>
+                <CopyButton text={user?.walletAddress as string} />
               </div>
             </div>
             <div className="flex w-fit justify-around	mt-4 bg-black/50 rounded-xl">
-              <TwitterModal twitterUrl={miner.twitter} />
-              <InstaModal instaUrl={miner.instagram} />
+              <TwitterModal twitterUrl={user?.twitter} />
+              <InstaModal instaUrl={user?.instagram} />
 
               <Link href={`${signerAddress}/identity`}>
                 <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent">
@@ -100,8 +102,8 @@ export default function Profile({ miner }: MinerProps) {
       </div>
       <div className="flex-col">
         <h2> Bio </h2>
-        {miner.bio ? (
-          <p className="text-ellipsis	"> {miner.bio} </p>
+        {user?.bio ? (
+          <p className="text-ellipsis	"> {user.bio} </p>
         ) : (
           <p className="text-ellipsis	">
             Contrary to popular belief, Lorem Ipsum is not simply random text. It has
@@ -119,20 +121,20 @@ export default function Profile({ miner }: MinerProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<{ miner: User }> = async (
+export const getServerSideProps: GetServerSideProps<{ user: User }> = async (
   context: GetServerSidePropsContext
 ) => {
-  const url = `https://minefm-server.herokuapp.com/miner/miner`
+  const url = `https://minefm-server.herokuapp.com/user/user`
   const signerAddress = context.params?.address as string
-  let miner: User = await axios
+
+  let user: User = await axios
     .post(url, {
       walletAddress: signerAddress,
     })
     .then((res) => {
       return res.data
     })
-
   return {
-    props: { miner }, // will be passed to the page component as props
+    props: { user }, // will be passed to the page component as props
   }
 }
