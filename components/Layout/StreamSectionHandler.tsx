@@ -38,10 +38,10 @@ export const StreamSectionHandler: React.FC<SectionHandlerProps> = ({
   )
 
   const activeSection: activeSectionProps | undefined = React.useMemo(() => {
-    const chat = tab('chat')
-    const audience = tab('audience')
-    const section = tab('section')
-    const info = tab('info')
+    const chat = tab('Chat')
+    const audience = tab('Audience')
+    const section = tab('Section')
+    const info = tab('Info')
     const admin = tab('admin')
 
 
@@ -61,7 +61,7 @@ export const StreamSectionHandler: React.FC<SectionHandlerProps> = ({
             return (
               <Link
                 href={{
-                  pathname: `/explore`,
+                  pathname: `/livestream/1`,
                   query: {
                     tab: slugify(section.title),
                   },

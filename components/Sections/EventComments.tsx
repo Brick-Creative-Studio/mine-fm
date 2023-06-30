@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { MessagesContainer } from 'components/Containers/MessagesContainer'
 import Image from 'next/image'
 import io from 'socket.io-client'
 import { Message } from 'types/Message'
 import axios from "axios";
 import {useProfileStore} from "../../stores";
+import MessageCell from "../Message/MessageCell";
 
 type Comment = {
   comment: string,
@@ -19,10 +19,11 @@ type Comment = {
 
 export const CommentCell: React.FC<Comment> = ({ comment, aura, minerTag}) => {
   return(
-      <div className="flex flex-col justify-center w-full h-16 bg-transparent rounded-xl px-6">
-        <p>{minerTag}</p>
-        <p className={'-mt-2.5'}> {comment}</p>
-      </div>
+      // <div className="flex flex-col justify-center w-full h-16 bg-transparent rounded-xl px-6">
+      //   <p>{minerTag}</p>
+      //   <p className={'-mt-2.5'}> {comment}</p>
+      // </div>
+    <MessageCell/>
       )
 }
 

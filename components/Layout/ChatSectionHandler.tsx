@@ -9,7 +9,7 @@ interface SectionHandlerProps {
     title: string
     component: ReactElement[]
   }[]
-  eventId?: string
+  signerAddress?: string
   activeTab?: string
 }
 
@@ -18,9 +18,8 @@ interface activeSectionProps {
   component: React.ReactElement[]
 }
 
-export const MSSectionHandler: React.FC<SectionHandlerProps> = ({
+export const ChatSectionHandler: React.FC<SectionHandlerProps> = ({
   sections,
-  eventId,
   activeTab,
 }) => {
   /*
@@ -38,28 +37,25 @@ export const MSSectionHandler: React.FC<SectionHandlerProps> = ({
   )
 
   const activeSection: activeSectionProps | undefined = React.useMemo(() => {
-    
-    const moods = tab('DJs')
-    const comments = tab('Comments')
-    const miniMoods = tab('Moodys')
-    const personal = tab('Personal')
+    const generalChat = tab('General')
+    const sectionChat = tab('Private')
 
     if (!activeTab) {
-      return moods
+      return generalChat
     }
 
-    return tab(unslugify(activeTab)) ?? moods
+    return tab(unslugify(activeTab)) ?? generalChat
   }, [activeTab, tab])
 
   return (
-    <div className='m-2'>
+    <div className="w-full h-max">
       {sections && sections.length > 1 && (
-        <div className="flex flex-row space-x-6">
+        <div className="flex flex-row space-x-6 justify-around">
           {sections?.map((section, index) => {
             return (
               <Link
                 href={{
-                  pathname: `/moodscape/${eventId}`,
+                  pathname: `/livestream/1${'?'}tab=chat`,
                   query: {
                     tab: slugify(section.title),
                   },
@@ -81,7 +77,7 @@ export const MSSectionHandler: React.FC<SectionHandlerProps> = ({
           })}
         </div>
       )}
-      <div className="w-inherite border border-white opacity-10 border-solid -mt-3" />
+      <div className="w-full border border-white opacity-10 border-solid -mt-3" />
 
       <div>
         <AnimatePresence mode={'wait'}>
