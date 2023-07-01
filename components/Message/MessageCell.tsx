@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 export default function MessageCell({}){
 
   return (
-    <div className={'flex-col p-2 border-y-2 border-x-0 border-solid border-white/50 '}>
+    <div className={'flex-col h-32 p-2 border-y-2 border-x-0 border-solid border-white/50 bg-[#463850]/75'}>
       <div className={' w-full flex items-center mx-2'}>
         <div className={'rounded-full bg-red-600 w-[48px] h-[40px]'}/>
         <div className={'container mx-2'}>
