@@ -54,7 +54,7 @@ export const StreamSectionHandler: React.FC<SectionHandlerProps> = ({
   }, [activeTab, tab])
 
   return (
-    <div className='w-full max-h-screen'>
+    <div className='w-full h-full'>
       {sections && sections.length > 1 && (
         <div className="flex flex-row space-x-6 justify-around">
           {sections?.map((section, index) => {

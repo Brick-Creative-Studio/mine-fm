@@ -2,12 +2,16 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useLayoutStore } from '../../../stores'
 import Image from 'next/image'
+import AudienceGrid from "../../../components/Layout/AudienceGrid";
 import { StreamSectionHandler as SectionHandler } from "../../../components/Layout/StreamSectionHandler";
 import StreamSection from "../../../components/Sections/StreamSection";
 import IRLSection from "../../../components/Sections/IRLSection";
 import { ChatSectionHandler } from "../../../components/Layout/ChatSectionHandler";
 import GeneralChatSection from "../../../components/Sections/GenChatSection";
 import GroupChatSection from "../../../components/Sections/GroupChatSection";
+import StreamInfo from "../../../components/Sections/StreamInfo-Section";
+import SectionsGrid from "../../../components/Sections/SectionGrid";
+
 export default function LivestreamPage({}) {
   const { query } = useRouter()
   const { isMobile } = useLayoutStore()
@@ -35,20 +39,20 @@ export default function LivestreamPage({}) {
     },
     {
       title: 'Audience',
-      component: [<IRLSection key={'audience'} />],
+      component: [<AudienceGrid key={'audience'} />],
     },
     {
       title: 'Section',
-      component: [<StreamSection key={'section'} />],
+      component: [<SectionsGrid key={'section'} />],
     },
     {
       title: 'Info',
-      component: [<StreamSection key={'info'} />],
+      component: [<StreamInfo key={'info'} />],
     }
   ]
 
   return (
-    <div className="flex flex-col mt-24 w-full">
+    <div className="flex flex-col mt-24 h-full w-full">
       <div className={'flex justify-between'}>
         <div className="flex flex-row cursor-pointer mx-6">
           <Image src={'/chevron-left.svg'} width={28} height={28} alt="gallery button" />
