@@ -17,7 +17,7 @@ const CreateLiveStream: React.FC = () => {
   ]
 
   return (
-    <div className="flex flex-col justify-center px-8 ml-8 w-full mt-24 mb-12">
+    <div className="flex flex-col justify-center p-4 w-full mt-24 mb-12">
       <Head>
         <title>Create a Livestream Event</title>
   <meta name="description" content="Create Your Moment" />

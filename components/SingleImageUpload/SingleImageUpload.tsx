@@ -26,6 +26,8 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
 }) => {
   const acceptableMIME = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']
 
+  // TODO: ADD MINEFM Refactoring
+
   const [isMounted, setIsMounted] = useState(false)
   const [fileUrl, updateFileUrl] = useState('')
 
