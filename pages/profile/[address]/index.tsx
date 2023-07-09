@@ -14,8 +14,9 @@ import { User } from '../../../types/User'
 import fetchUser from '../../../data/rest/fetchUser'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import CopyButton from '../../../components/CopyButton/CopyButton'
-import useSWR from 'swr'
 import axios from 'axios'
+import FollowerModal from "../../../components/Modals/FollowerModal";
+import FollowingModal from "../../../components/Modals/FollowingModal";
 interface UserProps {
   user: User | undefined
 }
@@ -102,19 +103,14 @@ export default function Profile({ user }: UserProps) {
           </div>
         </div>
       </div>
-      <div className="flex justify-center my-6 flex-row space-x-12 > * + *	md:justify-start">
-        <div className="flex flex-col items-center">
+      <div className="flex justify-center my-6 flex-row items-baseline lg:space-x-12 > * + *	md:justify-start">
+        <div className="flex flex-col items-center mx-4">
           <p> Moodscapes </p>
           <p className="-mt-2"> 1 </p>
         </div>
-        <div className="flex w-fit flex-col items-center">
-          <p> Followers </p>
-          <p className="-mt-2"> 433 </p>
-        </div>
-        <div className="flex flex-col items-center">
-          <p> Following </p>
-          <p className="-mt-2"> 234 </p>
-        </div>
+
+        <FollowerModal/>
+        <FollowingModal/>
       </div>
       <div className="flex-col">
         <h2> Bio </h2>
