@@ -11,6 +11,7 @@ import GeneralChatSection from "../../../components/Sections/GenChatSection";
 import GroupChatSection from "../../../components/Sections/GroupChatSection";
 import StreamInfo from "../../../components/Sections/StreamInfo-Section";
 import SectionsGrid from "../../../components/Sections/SectionGrid";
+import Link from "next/link";
 
 export default function LivestreamPage({}) {
   const { query } = useRouter()
@@ -54,10 +55,12 @@ export default function LivestreamPage({}) {
   return (
     <div className="flex flex-col mt-24 h-full w-full">
       <div className={'flex justify-between'}>
+        <Link href={'/explore?tab=livestream'}>
         <div className="flex flex-row cursor-pointer mx-6">
           <Image src={'/chevron-left.svg'} width={28} height={28} alt="gallery button" />
           <p> Exit </p>
         </div>
+      </Link>
         <div className="flex flex-row items-center justify-around rounded-md bg-zinc-800 w-20 h-10 mx-6">
           <div className={'rounded-full w-4 h-4 bg-red-700'} />
           <p>LIVE</p>

@@ -48,7 +48,7 @@ export const ChatSectionHandler: React.FC<SectionHandlerProps> = ({
   }, [activeTab, tab])
 
   return (
-    <div className="w-full h-max ">
+    <div className="w-full h-max">
       {sections && sections.length > 1 && (
         <div className="flex flex-row space-x-6 justify-around">
           {sections?.map((section, index) => {

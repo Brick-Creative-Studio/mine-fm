@@ -11,21 +11,24 @@ import InstaModal from 'components/Modals/InstaModal'
 import { useProfileStore } from 'stores'
 import TwitterModal from 'components/Modals/TwitterModal'
 import { User } from '../../../types/User'
-import fetchUser from "../../../data/rest/fetchUser";
+import fetchUser from '../../../data/rest/fetchUser'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import CopyButton from '../../../components/CopyButton/CopyButton'
 import useSWR from 'swr'
-import axios from "axios";
+import axios from 'axios'
 interface UserProps {
-  user: User | undefined,
-
+  user: User | undefined
 }
 
-export default function Profile({ user  }: UserProps) {
+export default function Profile({ user }: UserProps) {
   const { signerAddress } = useLayoutStore((state) => state)
   const { aura } = useProfileStore((state) => state)
   const [gradient, setGradient] = useState(``)
   const { query } = useRouter()
+  const pathAddress = query?.address?.toString()
+  const isUserPage = () => {
+    return signerAddress === pathAddress;
+  }
 
   const sections = [
     {
@@ -43,7 +46,7 @@ export default function Profile({ user  }: UserProps) {
     )
   }, [aura])
 
-  console.log('bio', user?.bio)
+  console.log('isUserpage:', isUserPage())
   return (
     <div className="flex flex-col mt-24 mb-auto p-12">
       <div className="flex">
@@ -59,14 +62,27 @@ export default function Profile({ user  }: UserProps) {
         </div>
         <div className=" mx-8 w-full">
           <h1> {user?.name}</h1>
-          <p className="-mt-4"> @{user?.miner_tag} </p>
+          <p className="-mt-4"> {user?.miner_tag} </p>
           <div className="flex flex-col w-full justify-between">
             <div className="flex flex-col">
               <div className="flex justify-center w-40 h-fit items-center mr-8 bg-white drop-shadow-lg text-black border-1 rounded-full px-2 ">
                 <p className="text-ellipsis overflow-hidden"> {user?.walletAddress}</p>
                 <CopyButton text={user?.walletAddress as string} />
               </div>
+              {
+                isUserPage() ? null : (
+                  <div
+                    className={
+                      'w-40 h-12 flex items-center justify-center bg-fuchsia-700 rounded-full mt-4'
+                    }
+                  >
+                    {' '}
+                    <h3>Follow</h3>{' '}
+                  </div>
+                )
+              }
             </div>
+
             <div className="flex w-fit justify-around	mt-4 bg-black/50 rounded-xl">
               <TwitterModal twitterUrl={user?.twitter} />
               <InstaModal instaUrl={user?.instagram} />
@@ -92,12 +108,12 @@ export default function Profile({ user  }: UserProps) {
           <p className="-mt-2"> 1 </p>
         </div>
         <div className="flex w-fit flex-col items-center">
-          <p> MemCards </p>
-          <p className="-mt-2"> 1 </p>
+          <p> Followers </p>
+          <p className="-mt-2"> 433 </p>
         </div>
         <div className="flex flex-col items-center">
-          <p> Moodys </p>
-          <p className="-mt-2"> 0 </p>
+          <p> Following </p>
+          <p className="-mt-2"> 234 </p>
         </div>
       </div>
       <div className="flex-col">

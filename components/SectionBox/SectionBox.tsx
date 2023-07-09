@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState } from "react";
 import { Popover, Transition } from '@headlessui/react'
 import Image from 'next/image'
 
 export default function SectionBox() {
+
+
   const sectionInitial = 'MT'
   const sectionName = 'Mine Team'
   const hostTag = 'bbah'
@@ -22,7 +24,8 @@ export default function SectionBox() {
           <p className={'text-center'}>Mine Team</p>
         </div>
       </Popover.Button>
-      <Transition>
+      <Transition
+      >
         {/*TODO: Add Popover Panel styling that overlays section grid */}
         <Popover.Panel
           className={
