@@ -47,10 +47,9 @@ export default function Profile({ user }: UserProps) {
     )
   }, [aura])
 
-  console.log('isUserpage:', isUserPage())
   return (
-    <div className="flex flex-col mt-24 mb-auto p-12">
-      <div className="flex">
+    <div className="flex flex-col mt-24 mb-auto w-full">
+      <div className="flex mx-8">
         <div className="px-2 pt-1">
           <div
             style={{
@@ -103,7 +102,7 @@ export default function Profile({ user }: UserProps) {
           </div>
         </div>
       </div>
-      <div className="flex justify-center my-6 flex-row items-baseline lg:space-x-12 > * + *	md:justify-start">
+      <div className="flex justify-center m-6 flex-row items-baseline lg:space-x-12 > * + *	md:justify-start">
         <div className="flex flex-col items-center mx-4">
           <p> Moodscapes </p>
           <p className="-mt-2"> 1 </p>
@@ -112,7 +111,7 @@ export default function Profile({ user }: UserProps) {
         <FollowerModal/>
         <FollowingModal/>
       </div>
-      <div className="flex-col">
+      <div className="flex-col mx-8">
         <h2> Bio </h2>
         {user?.bio ? (
           <p className="text-ellipsis	"> {user.bio} </p>

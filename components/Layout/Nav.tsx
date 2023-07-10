@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect} from 'react'
 import { NavBar, navActions, navCreate, navLogo } from './styles.css'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -6,16 +6,14 @@ import NavMenu from './NavMenu'
 import { useIsMounted } from '../../hooks/useMounted'
 import { useAccount } from 'wagmi'
 import { useProfileStore } from 'stores'
-import useSWR from 'swr'
-import axios from 'axios'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useLayoutStore } from 'stores'
-import { User } from 'types/User'
+import fetchUser from "../../data/rest/fetchUser";
 
 const Nav = () => {
   const isMounted = useIsMounted()
   const { setSignerAddress } = useLayoutStore((state) => state)
-  const { hasAccount, setHasAccount, setId, id } = useProfileStore((state) => state)
+  const { hasAccount, setHasAccount, setIdentity, id } = useProfileStore((state) => state)
 
   const { address } = useAccount({
     onDisconnect() {
@@ -31,38 +29,24 @@ const Nav = () => {
       }
     },
   })
-
-  const getUser = async (url: string, address: string) => {
-    try {
-      let user: User = await axios
-        .post(url, {
-          walletAddress: address,
-        })
-        .then((res) => {
-          setId(res.data.id)
-
-          return res.data
-        })
-      return user
-    } catch (e) {
-      console.log('error fecthing user', e)
-    }
-  }
+  const { error, isLoading, user } = fetchUser(address as string)
 
   useEffect(() => {
-    const url = `https://minefm-server.herokuapp.com/user/user`
+    if (user){
+      setIdentity({
+        id: user.id,
+        m_tag: user.miner_tag,
+        instagram: user.instagram,
+        twitter: user.twitter,
+        email: user.email,
+        bio: user.bio,
+        phone: user.phone,
+        name: user.name
+      })
+    }
 
-    const user = getUser(url, address as string).then((data) => {
-      if (data) {
-        if (hasAccount) {
-          setHasAccount(true)
-        } else {
-          setHasAccount(false)
-        }
-      }
-      return data
-    })
-  }, [])
+
+  }, [user, error, isLoading])
 
   return isMounted && address ? (
     <div className={NavBar}>

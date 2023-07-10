@@ -10,11 +10,14 @@ import { User } from 'types/User'
 import { phoneNumberAutoFormat } from '../../utils/phoneNumberAutoFormat'
 
 type Identity = {
+  id: string | null
   name: string
   m_tag: string
   phone: string
   email: string
   bio: string
+  twitter: string | null
+  instagram: string | null
 }
 
 export default function IdentityForm({}) {
@@ -82,7 +85,7 @@ export default function IdentityForm({}) {
           })
 
       } catch (e) {
-        console.log('error creating a bew user', e)
+        console.log('error creating a new user', e)
         return
       }
     } else {
@@ -117,7 +120,6 @@ export default function IdentityForm({}) {
     onSubmit(identityValues)
     setIdentity(identityValues)
   }
-
   return (
     <div className="flex flex-col mt-8  justify-center items-center">
       <form
@@ -167,16 +169,16 @@ export default function IdentityForm({}) {
             <input
               type="tel"
               defaultValue={isOnboarding ? undefined : (phone as string)}
-              placeholder="555-456-6780"
+              placeholder={phone ? phone : "555-456-6780"}
               value={value}
               className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
               {...register('phone', {
-                required: true,
+                required: false,
                 minLength: 7,
-                maxLength: 12,
+                maxLength: 14,
                 onChange: (e) => {
                   const targetValue = phoneNumberAutoFormat(e.target.value)
-                  if (targetValue.length < 13) {
+                  if (targetValue.length < 14) {
                     setValue(targetValue)
                   }
                 },
@@ -188,7 +190,7 @@ export default function IdentityForm({}) {
             {/* include validation with required or other standard HTML validation rules */}
             <textarea
               required
-              defaultValue={isOnboarding ? undefined : (name as string)}
+              defaultValue={isOnboarding ? undefined : (bio as string)}
               placeholder="I am a musician, curator, and miner"
               className=" bg-transparent  h-24 border p-2 border-solid rounded-md text-white "
               {...register('bio', { required: true })}

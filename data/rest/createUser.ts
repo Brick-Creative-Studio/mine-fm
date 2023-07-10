@@ -1,35 +1,35 @@
 import axios from 'axios'
 import { User } from '../../types/User'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
-export default function fetchUser(address: string) {
+export default function createUser(address: string, newUser: User) {
   const [user, setUser] = useState<User>()
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
-  const url = 'https://minefm-server.herokuapp.com/user/user'
+  const url = `https://minefm-server.herokuapp.com/user/create`
 
   useEffect(() => {
-    const fetch = async () => {
+    const create = async () => {
       try {
-        await axios
-          .post(url, {
-            walletAddress: address,
+        await axios.post(url, newUser).then((res) => {
+          console.log(res.data)
+          return res.data
           })
           .then((res) => {
             setUser(res.data);
           }).catch((err) => {
             setError(err);
+            return err
           })
           .finally(() => {
             setIsLoading(false);
-
           });
       } catch (error) {
         console.log('fetch user error:', error)
         setError(error as string)
       }
     }
-    fetch()
+    create()
   }, [address]);
   return { user, error, isLoading }
 }

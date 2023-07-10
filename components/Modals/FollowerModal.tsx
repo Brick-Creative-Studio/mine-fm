@@ -1,9 +1,11 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { Fragment, useState } from 'react'
 
+interface FollowerList {
 
+}
 
-export const UserListItem: React.FC<> = ({}) =>{
+export const UserListItem: React.FC<FollowerList> = ({}) =>{
   return(
     <div className={'w-full flex items-center justify-between my-2'}>
       <div className={'flex'}>
