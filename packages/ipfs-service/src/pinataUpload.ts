@@ -6,22 +6,27 @@ import last from 'it-last'
 const IPFS_API_BASE =  process.env.NEXT_PUBLIC_IPFS_UPLOAD_API || 'https://ipfs.infura.io'
 const projectId =  process.env.INFURA_PROJECT_ID;
 const projectSecret = process.env.INFURA_PROJECT_SECRET
+const pinataSecret = process.env.INFURA_PROJECT_SECRET
+const pinataKey = process.env.PINATA_API_KEY
+
+const jwt = process.env.JWT_SECRET;
 
 const defaultIpfsOptions = {
   cidVersion: 1,
 } as const
 
 const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
+const pinataAuth = 'Basic ' + Buffer.from(pinataKey + ':' + pinataSecret).toString('base64');
+
 
 
 const ipfs = createIpfsClient({
-  host: 'ipfs.infura.io',
+  host: 'api.pinata.cloud',
   port: 5001,
   protocol: 'https',
-  apiPath: '/api/v0',
   headers: {
-    authorization: auth,
-}
+    authorization: pinataAuth,
+  }
 })
 
 const defaultOptions = {
@@ -97,9 +102,9 @@ export async function uploadFile(
 export type FileEntry =
   | File
   | {
-      content: File
-      path: string
-    }
+  content: File
+  path: string
+}
 
 export async function uploadDirectory(
   fileEntries: FileEntry[],
@@ -161,4 +166,3 @@ export async function uploadDirectory(
     cid,
   }
 }
- 

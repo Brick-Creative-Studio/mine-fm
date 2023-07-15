@@ -1,5 +1,7 @@
 // import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from 'packages/ipfs-service'
 import Image from 'next/future/image'
+import { useForm } from 'react-hook-form'
+
 import React, { ReactElement, useEffect, useState } from 'react'
 import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from 'packages/ipfs-service'
 
@@ -15,14 +17,18 @@ interface SingleImageUploadProps {
   id: string
   inputLabel: string | ReactElement
   helperText: string | undefined
-  value: string
+  imgUrl: string
+  name: string
+  register: any
 }
 
 const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
   id,
   inputLabel,
   helperText,
-  value,
+  imgUrl,
+  register,
+  name
 }) => {
   const acceptableMIME = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']
 
@@ -81,9 +87,9 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
           <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24" />
         )}
 
-        {!isUploading && isMounted && !!value && (
+        {!isUploading && isMounted && !!imgUrl && (
           <Image
-            src={getFetchableUrl(value)!!}
+            src={getFetchableUrl(imgUrl)!!}
             fill
             sizes="100vw"
             className="w-full h-auto"
@@ -95,9 +101,10 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({
           className={defaultUploadStyle}
           id="file-upload"
           data-testid="file-upload"
-          name="file"
+          name={name as string}
           type="file"
-          multiple={true}
+          multiple={false}
+          {...register(name)}
           onChange={(event) => {
             handleFileUpload(event.currentTarget.files)
           }}

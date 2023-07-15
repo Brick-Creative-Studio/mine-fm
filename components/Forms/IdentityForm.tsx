@@ -4,10 +4,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useLayoutStore, useProfileStore, useMCStore } from 'stores'
 import { useRouter } from 'next/router'
-import axios from 'axios'
-import useSWR from 'swr'
-import { User } from 'types/User'
+import createUser from "../../data/rest/createUser";
+import updateUser from "../../data/rest/updateUser";
 import { phoneNumberAutoFormat } from '../../utils/phoneNumberAutoFormat'
+import { User } from "../../types/User";
 
 type Identity = {
   id: string | null
@@ -31,20 +31,6 @@ export default function IdentityForm({}) {
   const path = router.pathname.replace(/\//g, '')
 
   const isOnboarding = path === 'onboarding'
-  const createUser = async (url: string, newUser: any) => {
-    let user: User = await axios.post(url, newUser).then((res) => {
-      console.log(res.data)
-      return res.data
-    })
-    return user;
-  }
-
-  const updateUser = async (url: string, updatedUser: any) => {
-    let user: User = await axios.put(url, updatedUser).then((res) => {
-      console.log(res.data)
-      return res.data
-    })
-  }
 
   const [value, setValue] = useState<string>('')
 
@@ -53,12 +39,11 @@ export default function IdentityForm({}) {
     setValue(targetValue)
   }
 
-  const onSubmit: SubmitHandler<Identity> = (data) => {
+  const onSubmit: SubmitHandler<Identity> = async (data) => {
     setIdentity(data)
 
     if (isOnboarding) {
-      const url = `https://minefm-server.herokuapp.com/user/create`
-      const newUser = {
+      const user = {
         miner_tag: data.m_tag,
         email: data.email,
         phone: data.phone,
@@ -70,48 +55,24 @@ export default function IdentityForm({}) {
         direction: aura.direction,
         bio: data.bio,
       }
-      try {
-        createUser(url, newUser)
-          .then((user) => {
-            if(user){
-              alert('user created')
-              console.log(user)
-            }
-          })
-          .catch((e) => {
-            console.log('error creating a new user', e)
-            alert('creation failed')
-
-          })
-
-      } catch (e) {
-        console.log('error creating a new user', e)
-        return
-      }
+      await createUser(address as string, user as User)
     } else {
-      const url = `https://minefm-server.herokuapp.com/user`
       const updatedUser = {
         miner_tag: data.m_tag,
         email: data.email,
         phone: data.phone,
         walletAddress: address,
         name: data.name,
-        colorOne: aura.colorOne,
-        colorTwo: aura.colorTwo,
-        colorThree: aura.colorThree,
-        direction: aura.direction,
         id: id,
         bio: data.bio,
       }
-      try {
-        console.log('update user', updatedUser)
-        updateUser(url, updatedUser).then(() => {
-          router.push(`/profile/${address}`)
-        })
-      } catch (e) {
-        alert('error updating account')
-        return
+      const { error, user, isLoading  } = updateUser(address as string, updatedUser)
+      if (user !== undefined){
+        router.push(`/profile/${address}`)
+      } else if (error){
+        console.log('error updating user')
       }
+
     }
   }
 

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { User } from '../../types/User'
 import { useState, useEffect } from 'react'
-export default async function updateUser(address: string, updatedUser: User) {
+export default function updateUser(address: string, updatedUser: any) {
   const [user, setUser] = useState<User>()
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
