@@ -1,20 +1,12 @@
 import React from 'react'
 import Head from 'next/head'
-import { FormHandler } from 'components/Layout/FormHandler'
 import { useRouter } from 'next/router'
 import { useLayoutStore } from 'stores'
 import LivestreamForm from "../../../components/Forms/LivestreamForm";
 
 const CreateLiveStream: React.FC = () => {
   const { signerAddress } = useLayoutStore((state) => state)
-  const { query } = useRouter()
-
-  const forms = [
-    {
-      title: 'Livestream',
-      component: [<LivestreamForm key={'livestream-form'} />],
-    }
-  ]
+  
 
   return (
     <div className="flex flex-col justify-center p-4 w-full mt-24 mb-12">
@@ -26,11 +18,7 @@ const CreateLiveStream: React.FC = () => {
   <link rel="icon" href="/favicon.ico" />
     </Head>
 
-    <FormHandler
-  forms={forms}
-  signerAddress={signerAddress ? signerAddress : undefined}
-  activeTab={query?.tab ? (query.tab as string) : undefined}
-  />
+   <LivestreamForm/>
   </div>
 )
 }

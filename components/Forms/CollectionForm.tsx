@@ -2,9 +2,9 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Image from 'next/image'
 import styles from '../../pages/create/create-sound/styles.module.css'
+import SingleImageUpload from "../SingleImageUpload/SingleImageUpload";
 
 type CollectionInputs = {
-
     title: string,
     producer: string,
     writers: [string],
@@ -12,7 +12,8 @@ type CollectionInputs = {
     featured: [string],
     mixMaster: string,
     mDescription: string,
-    nameRequired: string
+    nameRequired: string,
+    collectionArt: string,
 };
 
 
@@ -125,26 +126,7 @@ export default function CollectionForm({ }){
                                 <div>
                                     <label> Artwork </label>
 
-                                    <div className='flex justify-center items-center border border-solid w-80 h-80 rounded-md border-zinc-500'>
-                                    <label htmlFor="file-input">
-                                        <Image
-                                            src={"/plus-icon.png"}
-                                            alt='add-art'
-                                            width={42}
-                                            height={42}
-                                            className='cursor-pointer'
-                                        />
-                                        </label>
-                                        <input 
-                                        type="file" 
-                                        id="file-input"
-                                        className='hidden' 
-                                        name="file" 
-                                        multiple={true} 
-                                        onChange={(event) => {
-                                            handleFileUpload(event.currentTarget.files)
-                                        }} />
-                                    </div>
+                                   <SingleImageUpload id={'Collection Art'} alt={'collection art'} name={'collectionArt'} register={register}/>
                                 </div>
                                 <div>
                                     <label htmlFor="file-input"> Upload Song </label>
@@ -161,13 +143,9 @@ export default function CollectionForm({ }){
                                         </label>
                                         <input 
                                         type="file" 
-                                        id="file-input"
-                                        className='hidden' 
+                                        className='hidden'
                                         name="file" 
-                                        multiple={true} 
-                                        onChange={(event) => {
-                                            handleFileUpload(event.currentTarget.files)
-                                        }} />
+                                        multiple={true} />
                                     </div>
                                    <p className='text-xs '> AIF, WAV, M4A, MP4, MP3, or FLAC. <br/> Max 100mb.</p>
                                     

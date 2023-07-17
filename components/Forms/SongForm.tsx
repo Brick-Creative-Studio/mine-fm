@@ -2,10 +2,12 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Image from 'next/image'
 import styles from '../../pages/create/create-sound/styles.module.css'
+import SingleImageUpload from "../SingleImageUpload/SingleImageUpload";
 
 type SongInputs = {
 
     title: string,
+    artWork: string,
     producer: string,
     writers: [string],
     artist: string,
@@ -22,48 +24,7 @@ export default function SongForm({ }){
 
     const { register, handleSubmit, formState: { errors } } = useForm<SongInputs>();
     const onSubmit: SubmitHandler<SongInputs> = data => console.log(data);
-    const [uploadArtworkError, setUploadArtworkError] = React.useState<any>()
-    const [isUploading, setIsUploading] = React.useState<boolean>(false)
 
-    const acceptableMIME = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']
-
-
-    const handleFileUpload = React.useCallback(
-        async (_input: FileList | null) => {
-
-            console.log("click test")
-            if (!_input) return
-            const input = _input[0]
-
-            setUploadArtworkError(false)
-
-            if (input?.type?.length && !acceptableMIME.includes(input.type)) {
-                setUploadArtworkError({
-                    message: `Sorry, ${input.type} is an unsupported file type`,
-                })
-                return
-            }
-
-            try {
-                setIsUploading(true)
-
-                //     const { cid } = await upload(_input[0], { cache: true })
-
-                // formik.setFieldValue(id, normalizeIPFSUrl(cid))
-                setIsUploading(false)
-                setUploadArtworkError(null)
-            } catch (err: any) {
-                setIsUploading(false)
-                setUploadArtworkError({
-                    ...err,
-                    message: `Sorry, there was an error with our file uploading service. ${err?.message}`,
-                })
-            }
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        []
-    )
- 
     
     return (            
            
@@ -125,26 +86,7 @@ export default function SongForm({ }){
                                 <div>
                                     <label> Artwork </label>
 
-                                    <div className='flex justify-center items-center border border-solid w-80 h-80 rounded-md border-zinc-500'>
-                                    <label htmlFor="file-input">
-                                        <Image
-                                            src={"/plus-icon.png"}
-                                            alt='add-art'
-                                            width={42}
-                                            height={42}
-                                            className='cursor-pointer'
-                                        />
-                                        </label>
-                                        <input 
-                                        type="file" 
-                                        id="file-input"
-                                        className='hidden' 
-                                        name="file" 
-                                        multiple={true} 
-                                        onChange={(event) => {
-                                            handleFileUpload(event.currentTarget.files)
-                                        }} />
-                                    </div>
+                              <SingleImageUpload id={'Song Artwork'} alt={'song artwork'} name={'artWork'} register={register}/>
                                 </div>
                                 <div>
                                     <label htmlFor="file-input"> Upload Song </label>
@@ -161,13 +103,9 @@ export default function SongForm({ }){
                                         </label>
                                         <input 
                                         type="file" 
-                                        id="file-input"
-                                        className='hidden' 
+                                        className='hidden'
                                         name="file" 
-                                        multiple={true} 
-                                        onChange={(event) => {
-                                            handleFileUpload(event.currentTarget.files)
-                                        }} />
+                                        />
                                     </div>
                                    <p className='text-xs '> AIF, WAV, M4A, MP4, MP3, or FLAC. <br/> Max 100mb.</p>
                                     

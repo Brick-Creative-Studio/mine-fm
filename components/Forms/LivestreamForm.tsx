@@ -337,30 +337,7 @@ export default function LivestreamForm({}) {
               <div className="flex flex-col space-y-12 ">
                 <div>
                   <label className="mb-4"> Artwork </label>
-                  <div className="flex justify-center items-center border border-solid w-96 h-96 relative cursor-pointer rounded-md border-zinc-500 mt-4">
-                    <label htmlFor="poster-file-input">
-                      {fileUrl ? (
-                        <Image src={getFetchableUrl(fileUrl) || ''} alt="mood-poster" fill />
-                      ) : (
-                        <Image
-                          src={'/plus-icon.png'}
-                          alt="add-art"
-                          width={42}
-                          height={42}
-                          className={fileUrl.length ? 'hidden' : 'cursor-pointer'}
-                        />
-                      )}
-                    </label>
-                    <input
-                      type="file"
-                      id="poster-file-input"
-                      className={fileUrl.length ? '' : 'hidden'}
-                      {...register('posterUrl')}
-                      onChange={(event) => {
-                        handleFileUpload(event.currentTarget.files)
-                      }}
-                    />
-                  </div>
+                  <SingleImageUpload id={'livestream-poster'} alt={'upload image'} name={'posterUrl'} register={register}/>
                 </div>
 
                 <div className="flex flex-col justify-center items-center">

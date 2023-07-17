@@ -18,7 +18,7 @@ interface activeFormProps {
   component: React.ReactElement[]
 }
 
-export const FormHandler: React.FC<FormHandlerProps> = ({
+export const SoundFormHandler: React.FC<FormHandlerProps> = ({
   forms,
   signerAddress,
   activeTab,
@@ -38,14 +38,16 @@ export const FormHandler: React.FC<FormHandlerProps> = ({
   )
 
   const activeForm: activeFormProps | undefined = React.useMemo(() => {
-    const livestream = tab('Livestream')
+    const moodForm = tab('mood')
+    const songForm = tab('song')
+    const collectionForm = tab('collection')
 
 
     if (!activeTab) {
-      return livestream
+      return moodForm
     }
 
-    return tab(unslugify(activeTab)) ?? livestream
+    return tab(unslugify(activeTab)) ?? moodForm
   }, [activeTab, tab])
 
   return (
@@ -60,7 +62,7 @@ export const FormHandler: React.FC<FormHandlerProps> = ({
               return (
                 <Link
                   href={{
-                    pathname: `/create/livstream`,
+                    pathname: `/create/create-sound`,
                     query: {
                       tab: slugify(form.title),
                     },
