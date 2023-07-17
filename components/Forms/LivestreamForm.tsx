@@ -33,54 +33,12 @@ export default function LivestreamForm({}) {
 
   const { isMobile } = useLayoutStore()
 
-  const [fileUrl, updateFileUrl] = useState('')
-
   const onSubmit: SubmitHandler<LivestreamInput> = (data) => console.log(data)
-
-  const [uploadArtworkError, setUploadArtworkError] = React.useState<any>()
-  const [isUploading, setIsUploading] = React.useState<boolean>(false)
-
-  const acceptableMIME = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']
 
   useEffect(() => {
     setIsMounted(true)
   }, [])
 
-  const handleFileUpload = async (_input: FileList | null) => {
-    console.log('click test')
-    if (!_input) return
-    const input = _input[0]
-
-    setUploadArtworkError(false)
-
-    if (input?.type?.length && !acceptableMIME.includes(input.type)) {
-      setUploadArtworkError({
-        message: `Sorry, ${input.type} is an unsupported file type`,
-      })
-      console.log(`Sorry, ${input.type} is an unsupported file type`)
-
-      return
-    }
-
-    try {
-      setIsUploading(true)
-
-      const { cid } = await uploadFile(_input[0], { cache: true })
-
-      // formik.setFieldValue(id, normalizeIPFSUrl(cid))
-      const url = normalizeIPFSUrl(cid)?.toString()
-      updateFileUrl(url ? url : '')
-      console.log('mood poster', url)
-      setIsUploading(false)
-      setUploadArtworkError(null)
-    } catch (err: any) {
-      setIsUploading(false)
-      setUploadArtworkError({
-        ...err,
-        message: `Sorry, there was an error with our file uploading service. ${err?.message}`,
-      })
-    }
-  }
 
   return (
     <div className="flex flex-col">
@@ -97,31 +55,8 @@ export default function LivestreamForm({}) {
               <div className="flex flex-col space-y-8">
                 <div className={'flex flex-col items-center justify-center'}>
                   <label className="mb-4 self-start"> Artwork </label>
-                  <div className="flex justify-center items-center border border-solid w-48 h-48 relative cursor-pointer rounded-md border-zinc-500 mt-4">
-                    <label htmlFor="poster-file-input">
-                      {fileUrl ? (
-                        <Image src={getFetchableUrl(fileUrl) || ''} alt="mood-poster" fill />
-                      ) : (
-                        <Image
-                          src={'/plus-icon.png'}
-                          alt="add-art"
-                          width={42}
-                          height={42}
-                          className={fileUrl.length ? 'hidden' : 'cursor-pointer'}
-                        />
+                  <SingleImageUpload id={'livestream-poster'} alt={'upload image'} name={'posterUrl'} register={register}/>
 
-                      )}
-                    </label>
-                    <input
-                      type="file"
-                      id="poster-file-input"
-                      className={fileUrl.length ? '' : 'hidden'}
-                      {...register('posterUrl')}
-                      onChange={(event) => {
-                        handleFileUpload(event.currentTarget.files)
-                      }}
-                    />
-                  </div>
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="song title"> Title </label>
