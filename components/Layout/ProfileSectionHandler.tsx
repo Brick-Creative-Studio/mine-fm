@@ -49,7 +49,7 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
   }, [activeTab, tab])
 
   return (
-    <>
+    <div className={'mx-8'}>
       {sections && sections.length > 1 && (
         <div className="flex flex-row space-x-6">
           {sections?.map((section, index) => {
@@ -102,6 +102,6 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
           </motion.div>
         </AnimatePresence>
       </div>
-    </>
+    </div>
   )
 }

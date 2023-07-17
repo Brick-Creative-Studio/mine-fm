@@ -41,7 +41,7 @@ export const MSSectionHandler: React.FC<SectionHandlerProps> = ({
     
     const moods = tab('DJs')
     const comments = tab('Comments')
-    const miniMoods = tab('Mini')
+    const miniMoods = tab('Moodys')
     const personal = tab('Personal')
 
     if (!activeTab) {

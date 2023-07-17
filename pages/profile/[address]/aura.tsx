@@ -184,7 +184,7 @@ export default function Aura({})  {
             <button
               type="button"
               onClick={() => onGenerateColor()}
-              className=" flex justify-center bg-[#0E4749] items-center mb-4 h-12 rounded-full p-2 border-none cursor-pointer"
+              className=" flex justify-center bg-[#0E4749] items-center mb-4 h-12 rounded-lg p-2 border-none cursor-pointer"
             >
               <h2> Generate Aura </h2>
             </button>
@@ -192,7 +192,7 @@ export default function Aura({})  {
               type="submit"
               title="next"
               value={'Save & Exit'}
-              className="not-italic bg-black h-12 rounded-full font-mono font-bold text-lg p-2 px-4 border-none mt-2 cursor-pointer"
+              className="not-italic bg-black h-12 rounded-lg font-mono font-bold text-lg p-2 px-4 border-none mt-2 cursor-pointer"
             />
           </div>
         </form>

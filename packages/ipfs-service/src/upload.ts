@@ -18,10 +18,10 @@ const ipfs = createIpfsClient({
   host: 'ipfs.infura.io',
   port: 5001,
   protocol: 'https',
-  apiPath: '/graphql/v0',
+  apiPath: '/api/v0',
   headers: {
     authorization: auth,
-  }
+}
 })
 
 const defaultOptions = {
@@ -43,6 +43,7 @@ const uploadCache = {
     try {
       const cid = localStorage.getItem(`${this.prefix}/${digest}`)
       console.log('ipfs-service/uploadCache', cid ? 'HIT' : 'MISS', digest, cid)
+      console.log('user agent: ', navigator.userAgent)
       if (cid) {
         return { cid, uri: `ipfs://${cid}` }
       }

@@ -32,10 +32,6 @@ export default function MoodscapePage({}) {
     },
   ]
 
-  useEffect(() => {
-    console.log('viewport check', isMobile)
-  })
-
   //
   return (
     <div className="flex flex-col mt-24 items-center justify-center w-full">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect} from 'react'
 import { NavBar, navActions, navCreate, navLogo } from './styles.css'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -6,16 +6,14 @@ import NavMenu from './NavMenu'
 import { useIsMounted } from '../../hooks/useMounted'
 import { useAccount } from 'wagmi'
 import { useProfileStore } from 'stores'
-import useSWR from 'swr'
-import axios from 'axios'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useLayoutStore } from 'stores'
-import { Miner } from 'types/Miner'
+import fetchUser from "../../data/rest/fetchUser";
 
 const Nav = () => {
   const isMounted = useIsMounted()
   const { setSignerAddress } = useLayoutStore((state) => state)
-  const { hasAccount, setHasAccount, setId, id } = useProfileStore((state) => state)
+  const { hasAccount, setHasAccount, setIdentity, id } = useProfileStore((state) => state)
 
   const { address } = useAccount({
     onDisconnect() {
@@ -31,34 +29,24 @@ const Nav = () => {
       }
     },
   })
-
-  const getMiner = async (url: string, address: string) => {
-    let miner: Miner = await axios
-      .post(url, {
-        walletAddress: address,
-      })
-      .then((res) => {
-        setId(res.data.id)
-
-        return res.data
-      })
-    return miner
-  }
+  const { error, isLoading, user } = fetchUser(address as string)
 
   useEffect(() => {
-    const url = `https://minefm-server.herokuapp.com/miner/miner`
+    if (user){
+      setIdentity({
+        id: user.id,
+        m_tag: user.miner_tag,
+        instagram: user.instagram,
+        twitter: user.twitter,
+        email: user.email,
+        bio: user.bio,
+        phone: user.phone,
+        name: user.name
+      })
+    }
 
-    const miner = getMiner(url, address as string).then((data) => {
-      if (data) {
-        if (hasAccount) {
-          setHasAccount(true)
-        } else {
-          setHasAccount(false)
-        }
-      }
-      return data
-    })
-  }, [])
+
+  }, [user, error, isLoading])
 
   return isMounted && address ? (
     <div className={NavBar}>
@@ -76,8 +64,8 @@ const Nav = () => {
 
       <div className={navActions}>
         <Link
-          key={hasAccount ? 'create' : 'make-account'}
-          href={hasAccount ? '/create' : '/make-account'}
+          key={'create'}
+          href={'/create'}
         >
           <button className={navCreate}>
             <h3> Create </h3>

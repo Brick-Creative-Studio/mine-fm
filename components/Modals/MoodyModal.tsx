@@ -137,6 +137,7 @@ export default function MoodyModal() {
     } else{
       const server = `https://minefm-server.herokuapp.com/moodys/create`
 
+      // @ts-ignore
       await createMoody(server, id, songs, "7e6142cb-a3cd-4ef3-aa93-66f675ef2929")
       closeModal()
     }

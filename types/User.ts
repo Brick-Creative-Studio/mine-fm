@@ -1,4 +1,4 @@
-export type Miner = {
+export type User = {
     id: string | null;
     miner_tag: string | null;
     email: string | null;

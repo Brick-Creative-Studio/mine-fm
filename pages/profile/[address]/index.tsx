@@ -10,20 +10,26 @@ import MscapeSection from 'components/Sections/MsSection'
 import InstaModal from 'components/Modals/InstaModal'
 import { useProfileStore } from 'stores'
 import TwitterModal from 'components/Modals/TwitterModal'
-import { Miner } from '../../../types/Miner'
-import axios from 'axios'
+import { User } from '../../../types/User'
+import fetchUser from '../../../data/rest/fetchUser'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import CopyButton from '../../../components/CopyButton/CopyButton'
-import useSWR from 'swr'
-interface MinerProps {
-  miner: Miner
+import axios from 'axios'
+import FollowerModal from "../../../components/Modals/FollowerModal";
+import FollowingModal from "../../../components/Modals/FollowingModal";
+interface UserProps {
+  user: User | undefined
 }
 
-export default function Profile({ miner }: MinerProps) {
+export default function Profile({ user }: UserProps) {
   const { signerAddress } = useLayoutStore((state) => state)
   const { aura } = useProfileStore((state) => state)
   const [gradient, setGradient] = useState(``)
   const { query } = useRouter()
+  const pathAddress = query?.address?.toString()
+  const isUserPage = () => {
+    return signerAddress === pathAddress;
+  }
 
   const sections = [
     {
@@ -41,10 +47,9 @@ export default function Profile({ miner }: MinerProps) {
     )
   }, [aura])
 
-  console.log('bio', miner.bio)
   return (
-    <div className="flex flex-col mt-24 mb-auto p-12">
-      <div className="flex">
+    <div className="flex flex-col mt-24 mb-auto w-full">
+      <div className="flex mx-8">
         <div className="px-2 pt-1">
           <div
             style={{
@@ -56,18 +61,31 @@ export default function Profile({ miner }: MinerProps) {
           />
         </div>
         <div className=" mx-8 w-full">
-          <h1> {miner?.name}</h1>
-          <p className="-mt-4"> @{miner?.miner_tag} </p>
+          <h1> {user?.name}</h1>
+          <p className="-mt-4"> {user?.miner_tag} </p>
           <div className="flex flex-col w-full justify-between">
             <div className="flex flex-col">
               <div className="flex justify-center w-40 h-fit items-center mr-8 bg-white drop-shadow-lg text-black border-1 rounded-full px-2 ">
-                <p className="text-ellipsis overflow-hidden"> {miner?.walletAddress}</p>
-                <CopyButton text={miner?.walletAddress as string} />
+                <p className="text-ellipsis overflow-hidden"> {user?.walletAddress}</p>
+                <CopyButton text={user?.walletAddress as string} />
               </div>
+              {
+                isUserPage() ? null : (
+                  <div
+                    className={
+                      'w-40 h-12 flex items-center justify-center bg-fuchsia-700 rounded-full mt-4'
+                    }
+                  >
+                    {' '}
+                    <h3>Follow</h3>{' '}
+                  </div>
+                )
+              }
             </div>
+
             <div className="flex w-fit justify-around	mt-4 bg-black/50 rounded-xl">
-              <TwitterModal twitterUrl={miner.twitter} />
-              <InstaModal instaUrl={miner.instagram} />
+              <TwitterModal twitterUrl={user?.twitter} />
+              <InstaModal instaUrl={user?.instagram} />
 
               <Link href={`${signerAddress}/identity`}>
                 <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent">
@@ -84,24 +102,19 @@ export default function Profile({ miner }: MinerProps) {
           </div>
         </div>
       </div>
-      <div className="flex justify-center my-6 flex-row space-x-12 > * + *	md:justify-start">
-        <div className="flex flex-col items-center">
+      <div className="flex justify-center m-6 flex-row items-baseline lg:space-x-12 > * + *	md:justify-start">
+        <div className="flex flex-col items-center mx-4">
           <p> Moodscapes </p>
           <p className="-mt-2"> 1 </p>
         </div>
-        <div className="flex w-fit flex-col items-center">
-          <p> MemCards </p>
-          <p className="-mt-2"> 1 </p>
-        </div>
-        <div className="flex flex-col items-center">
-          <p> Moodys </p>
-          <p className="-mt-2"> 0 </p>
-        </div>
+
+        <FollowerModal/>
+        <FollowingModal/>
       </div>
-      <div className="flex-col">
+      <div className="flex-col mx-8">
         <h2> Bio </h2>
-        {miner.bio ? (
-          <p className="text-ellipsis	"> {miner.bio} </p>
+        {user?.bio ? (
+          <p className="text-ellipsis	"> {user.bio} </p>
         ) : (
           <p className="text-ellipsis	">
             Contrary to popular belief, Lorem Ipsum is not simply random text. It has
@@ -119,20 +132,20 @@ export default function Profile({ miner }: MinerProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps<{ miner: Miner }> = async (
+export const getServerSideProps: GetServerSideProps<{ user: User }> = async (
   context: GetServerSidePropsContext
 ) => {
-  const url = `https://minefm-server.herokuapp.com/miner/miner`
+  const url = `https://minefm-server.herokuapp.com/user/user`
   const signerAddress = context.params?.address as string
-  let miner: Miner = await axios
+
+  let user: User = await axios
     .post(url, {
       walletAddress: signerAddress,
     })
     .then((res) => {
       return res.data
     })
-
   return {
-    props: { miner }, // will be passed to the page component as props
+    props: { user }, // will be passed to the page component as props
   }
 }
