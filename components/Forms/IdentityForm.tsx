@@ -8,6 +8,8 @@ import createUser from "../../data/rest/createUser";
 import updateUser from "../../data/rest/updateUser";
 import { phoneNumberAutoFormat } from '../../utils/phoneNumberAutoFormat'
 import { User } from "../../types/User";
+import NewUserModal from '../Modals/NewUserModal';
+import UploadFailModal from "../Modals/UploadFailModal";
 
 type Identity = {
   id: string | null
@@ -26,6 +28,8 @@ export default function IdentityForm({}) {
     (state) => state
   )
   const { signerAddress: address } = useLayoutStore()
+  let [isOpen, setSuccessIsOpen] = useState(false)
+  let [isFailOpen, setFailureIsOpen] = useState(false)
 
   const router = useRouter()
   const path = router.pathname.replace(/\//g, '')
@@ -55,7 +59,14 @@ export default function IdentityForm({}) {
         direction: aura.direction,
         bio: data.bio,
       }
-      await createUser(address as string, user as User)
+      const newUser = await createUser(address as string, user as User)
+      if (newUser){
+        setSuccessIsOpen(true)
+      }else {
+        setFailureIsOpen(true)
+        console.log('create user failure')
+      }
+
     } else {
       const updatedUser = {
         miner_tag: data.m_tag,
@@ -63,11 +74,11 @@ export default function IdentityForm({}) {
         phone: data.phone,
         walletAddress: address,
         name: data.name,
-        id: id,
         bio: data.bio,
       }
-      const { error, user, isLoading  } = updateUser(address as string, updatedUser)
-      if (user !== undefined){
+      const user = await useUpdateUser(address as string, updatedUser)
+      if (user){
+        console.log('updating user')
         router.push(`/profile/${address}`)
       } else if (error){
         console.log('error updating user')
@@ -129,9 +140,7 @@ export default function IdentityForm({}) {
             {/* include validation with required or other standard HTML validation rules */}
             <input
               type="tel"
-              defaultValue={isOnboarding ? undefined : (phone as string)}
-              placeholder={phone ? phone : "555-456-6780"}
-              value={value}
+              value={value ? value : phone}
               className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
               {...register('phone', {
                 required: false,
@@ -174,6 +183,9 @@ export default function IdentityForm({}) {
             <Image src={'/color-wheel.svg'} height={32} width={32} alt="aura button" />
           </button>
         </Link>
+        { isOnboarding ? <NewUserModal isOpen={isOpen}/> : null }
+
+        <UploadFailModal isOpen={isFailOpen} />
         <input
           type="submit"
           title="next"

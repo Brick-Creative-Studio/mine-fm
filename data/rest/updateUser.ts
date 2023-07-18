@@ -1,27 +1,17 @@
 import axios from 'axios'
-import { User } from '../../types/User'
-import { useState, useEffect } from 'react'
-export default function updateUser(address: string, updatedUser: any) {
-  const [user, setUser] = useState<User>()
-  const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
-  const url = `https://minefm-server.herokuapp.com/user`
+import { User } from "../../types/User";
 
-  useEffect(() => {
-    const updateRequest = async () => {
-      let req = await axios
-        .put(url, updatedUser)
-        .then((res) => {
-          setUser(res.data)
-        })
-        .catch((err) => {
-          setError(err)
-        })
-        .finally(() => {
-          setIsLoading(false)
-        })
-    }
-    updateRequest()
-  }, [address, updatedUser])
-  return { user, error, isLoading }
+
+export default async function updateUser(user: User) {
+  const url = `https://minefm-server.herokuapp.com/user/`
+  try {
+    await axios.put(url, user).then((res) => {
+      console.log(res.data)
+      return res.data
+    })
+  } catch (error) {
+    console.log('create event error:', error)
+    return
+  }
+
 }
