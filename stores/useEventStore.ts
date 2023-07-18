@@ -7,6 +7,7 @@ interface EventStoreProps {
   setId: (id: string) => void
   title: string | null
   setTitle: (id: string) => void
+  setEvent: (initialState: any) => void
 
 }
 
@@ -20,6 +21,7 @@ export const useEventStore = create(
       ...initialState,
       setId: (id: string) => set({ id }),
       setTitle: (title: string) => set({ title }),
+      setEvent: (initialState: any) => set({...initialState})
 
     }),
     {
