@@ -139,7 +139,7 @@ export default function IdentityForm({}) {
             <input
               type="tel"
               value={value}
-              placeholder={phoneNumberAutoFormat(phone as string)}
+              placeholder={phone as string}
               className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
               {...register('phone', {
                 required: false,
