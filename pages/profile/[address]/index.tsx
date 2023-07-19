@@ -11,7 +11,8 @@ import InstaModal from 'components/Modals/InstaModal'
 import { useProfileStore } from 'stores'
 import TwitterModal from 'components/Modals/TwitterModal'
 import { User } from '../../../types/User'
-import fetchUser from '../../../data/rest/fetchUser'
+import MemoryCardSection from "../../../components/Sections/MemoryCardSection";
+import OreSection from "../../../components/Sections/OresSection";
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import CopyButton from '../../../components/CopyButton/CopyButton'
 import axios from 'axios'
@@ -33,12 +34,12 @@ export default function Profile({ user }: UserProps) {
 
   const sections = [
     {
-      title: 'Moodscapes',
-      component: [<MscapeSection key={'moodscape'} />],
+      title: 'Memory Cards',
+      component: [<MemoryCardSection key={'MemoryCards'} />],
     },
     {
-      title: 'Moodys',
-      component: [<MoodsSection key={'moodys'} />],
+      title: 'Ores',
+      component: [<OreSection key={'Ores'} />],
     },
   ]
   useEffect(() => {

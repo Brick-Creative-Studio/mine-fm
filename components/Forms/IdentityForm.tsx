@@ -76,14 +76,13 @@ export default function IdentityForm({}) {
         name: data.name,
         bio: data.bio,
       }
-      const user = await useUpdateUser(address as string, updatedUser)
+      const user = await updateUser(updatedUser)
       if (user){
         console.log('updating user')
         router.push(`/profile/${address}`)
-      } else if (error){
+      } else {
         console.log('error updating user')
       }
-
     }
   }
 
@@ -116,7 +115,6 @@ export default function IdentityForm({}) {
             {/* include validation with required or other standard HTML validation rules */}
             <input
               type="text"
-              placeholder="@lilMiner"
               required
               defaultValue={isOnboarding ? '@' : (m_tag as string)}
               className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
@@ -140,7 +138,8 @@ export default function IdentityForm({}) {
             {/* include validation with required or other standard HTML validation rules */}
             <input
               type="tel"
-              value={value ? value : phone}
+              value={value}
+              placeholder={phoneNumberAutoFormat(phone as string)}
               className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
               {...register('phone', {
                 required: false,
@@ -183,7 +182,7 @@ export default function IdentityForm({}) {
             <Image src={'/color-wheel.svg'} height={32} width={32} alt="aura button" />
           </button>
         </Link>
-        { isOnboarding ? <NewUserModal isOpen={isOpen}/> : null }
+        { isOnboarding ? <NewUserModal isOpen={isOpen}/> : null}
 
         <UploadFailModal isOpen={isFailOpen} />
         <input
