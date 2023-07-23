@@ -53,7 +53,7 @@ export default function LivestreamPage({}) {
   ]
 
   return (
-    <div className="flex flex-col mt-24 h-full w-full">
+    <div className="flex flex-col mt-24 w-full">
       <div className={'flex justify-between'}>
         <Link href={'/explore?tab=livestream'}>
         <div className="flex flex-row cursor-pointer mx-6">

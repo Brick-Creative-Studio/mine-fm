@@ -70,10 +70,12 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
         setUploadArtworkError(null)
 
         /** set form field value in parent **/
+        // @ts-ignore
         setValue(name as string, url)
 
         console.log('file url:', url)
 
+        // @ts-ignore
         console.log('form check:', getValues(name as string))
       } catch (err: any) {
         setIsUploading(false)
@@ -113,7 +115,8 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
         data-testid="file-upload"
         type="file"
         multiple={false}
-        {...register(name)}
+        // @ts-ignore
+        {...register(name as string)}
         onChange={(event) => {
           handleFileUpload(event.currentTarget.files)
         }}

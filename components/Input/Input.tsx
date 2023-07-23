@@ -12,11 +12,11 @@ export default function Input({}) {
   const { register, handleSubmit, getValues, resetField } = useForm<Comment>()
 
   return (
-    <div className="flex flex-row h-12 w-full">
+    <div className="flex flex-row w-full h-fit">
       <input
         type={'text'}
         placeholder="leave a comment here"
-        className="w-full px-2 border-t-0"
+        className="w-full px-2 py-4 border-1"
         {...register('comment', { required: true })}
       ></input>
       <button type="button" className="bg-green-800 h-full w-12 ">

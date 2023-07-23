@@ -11,7 +11,7 @@ export default function StreamInfo({}) {
   const eventTime = '5-7pm EST'
 
   return (
-    <div className={'flex flex-col h-full px-4 overflow-scroll'}>
+    <div className={'flex flex-col h-96 px-4 overflow-scroll'}>
       <div className={'flex-row flex items-center w-full'}>
         <h3 className={'w-5/12'}> HOST DETAILS </h3>
         <div className={'h-0.5 w-2/3 bg-sky-500/75'} />

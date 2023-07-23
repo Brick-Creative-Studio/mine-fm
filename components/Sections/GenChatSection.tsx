@@ -5,8 +5,8 @@ import Input from '../Input/Input'
 export default function GeneralChatSection({}){
 
   return(
-    <div className={'flex flex-col w-full  mb-2'}>
-      <div className={'hover:scroll-auto h-64 overflow-scroll flex flex-col-reverse'}>
+    <div className={'flex flex-col w-full h-96'}>
+      <div className={'hover:scroll-auto overflow-scroll flex flex-col-reverse'}>
         {/*//TODO:add map function*/}
         <MessageCell />
         <MessageCell />
