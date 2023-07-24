@@ -11,6 +11,7 @@ export default function StreamSection({}) {
   const [events, setEvents] = useState<Event[] | undefined>(undefined)
 
 
+
   useEffect( () => {
     const fetchEvents = async () => {
       const newEvents = await getAllEvents().then((res) => {
@@ -32,8 +33,9 @@ export default function StreamSection({}) {
         console.log('component check: ', event)
         return (
           <div className={'m-4'}>
-          <LivestreamCard streamEvent={event}/>
+            <LivestreamCard streamEvent={event}/>
           </div>
+
         )
       }) : <p className={'text-center'}> No Live Events are available </p>}
 

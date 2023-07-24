@@ -3,8 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useLayoutStore, useProfileStore, useMCStore } from 'stores'
 import { useRouter } from 'next/router'
+import RsvpModal from "../Modals/RsvpModal";
 import { Event } from "../../types/Event";
-import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from 'packages/ipfs-service'
+import { getFetchableUrl } from 'packages/ipfs-service'
 
 
 interface CardProps {
@@ -20,7 +21,7 @@ export const LivestreamCard: React.FC<CardProps> = ({ streamEvent }) => {
 
 
   return (
-    <Link href={`/livestream/${streamEvent}`} key={streamEvent.id}>
+    // <Link href={`/livestream/${streamEvent}`} key={streamEvent.id}>
       <div className='flex flex-col w-72 h-fit rounded-lg bg-[#463850]/75'>
 
         <div className="flex h-auto rounded-lg cursor-pointer relative aspect-square w-full">
@@ -32,12 +33,17 @@ export const LivestreamCard: React.FC<CardProps> = ({ streamEvent }) => {
             className="rounded-lg"
           />
         </div>
+        <div className={'flex justify-between'}>
         <div className="flex flex-col px-2">
           <p className={'text-xl my-auto'}>{streamEvent.title}</p>
           <p className="text-lg my-1">Hosted by {streamEvent.organizer}</p>
           <p className="text-[#00FF00] font-thin mt-2 my-2"> {formatDate} </p>
 
         </div>
+          <RsvpModal streamEvent={streamEvent} />
+
+        </div>
+
         <div className="mt-2 w-full h-0.5 bg-gray-500/75" />
 
         <div className="flex flex-row justify-between my-2">
@@ -53,6 +59,6 @@ export const LivestreamCard: React.FC<CardProps> = ({ streamEvent }) => {
         </div>
 
       </div>
-    </Link>
+    // </Link>
   )
 }
