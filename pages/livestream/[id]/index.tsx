@@ -4,7 +4,7 @@ import { useLayoutStore } from '../../../stores'
 import Image from 'next/image'
 import AudienceGrid from '../../../components/Layout/AudienceGrid'
 import { StreamSectionHandler as SectionHandler } from '../../../components/Layout/StreamSectionHandler'
-import AdminSection from "../../../components/Sections/AdminSection";
+import AdminSection from '../../../components/Sections/AdminSection'
 import { ChatSectionHandler } from '../../../components/Layout/ChatSectionHandler'
 import GeneralChatSection from '../../../components/Sections/GenChatSection'
 import GroupChatSection from '../../../components/Sections/GroupChatSection'
@@ -51,6 +51,27 @@ export default function LivestreamPage({}) {
     },
   ]
 
+  const desktopSections = [
+    {
+      title: 'Chat',
+      component: [
+        <ChatSectionHandler
+          sections={chatSections}
+          key={'chat'}
+          activeTab={query?.tab ? (query.tab as string) : undefined}
+        />,
+      ],
+    },
+    {
+      title: 'Audience',
+      component: [<AudienceGrid key={'audience'} />],
+    },
+    {
+      title: 'Section',
+      component: [<SectionsGrid key={'section'} />],
+    },
+  ]
+
   const adminSections = [
     {
       title: 'Chat',
@@ -77,7 +98,6 @@ export default function LivestreamPage({}) {
   ]
   return (
     <div className="flex flex-col mt-24 w-full ">
-
       <div className={'flex justify-between'}>
         <Link href={'/explore?tab=livestream'}>
           <div className="flex flex-row cursor-pointer mx-6">
@@ -96,24 +116,27 @@ export default function LivestreamPage({}) {
         </div>
       </div>
       <div className={'md:flex md:flex-row '}>
-      <div
-        className={
-          'flex justify-center items-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% w-full h-64 md:w-3/4 md:h-[600px] md:ml-4 z-0'
-        }
-      >
-        <Image
-          src={'/stock/keithcharles-headshot.jpeg'}
-          width={120}
-          height={120}
-          alt={'artist-avatar'}
-          className={' z-10 rounded-full '}
-        />
-      </div>
+        <div className={'flex flex-col w-full h-64 md:h-full md:w-3/4 md:ml-4'}>
+          <div
+            className={
+              'flex justify-center items-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% w-full h-64 md:h-[600px]'
+            }
+          >
+            <Image
+              src={'/stock/bloomin_poster_square.png'}
+              width={240}
+              height={240}
+              alt={'artist-avatar'}
+              className={' z-10 '}
+            />
+          </div>
+          <StreamInfo />
+        </div>
 
-      <SectionHandler
-        sections={adminSections}
-        activeTab={query?.tab ? (query.tab as string) : undefined}
-      />
+        <SectionHandler
+          sections={adminSections}
+          activeTab={query?.tab ? (query.tab as string) : undefined}
+        />
       </div>
     </div>
   )
