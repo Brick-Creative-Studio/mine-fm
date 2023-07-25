@@ -2,8 +2,15 @@ import axios from 'axios'
 
 export default async function createUser(address: string, newUser: any) {
   const url = `https://minefm-server.herokuapp.com/user/create`
-      try {
-        await axios.post(url, newUser).then((res) => {
+  let axiosConfig = {
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      "Access-Control-Allow-Origin": "*",
+    }
+  };
+
+  try {
+        await axios.post(url, newUser, axiosConfig).then((res) => {
           console.log(res.data)
           return res.data
           }).catch((error) => {

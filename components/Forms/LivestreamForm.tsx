@@ -2,12 +2,13 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm, SubmitHandler, FormProvider, useFormContext } from "react-hook-form";
 import Image from 'next/future/image'
 import styles from '../../pages/create/create-sound/styles.module.css'
-import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from 'packages/ipfs-service'
+import { getFetchableUrl } from 'packages/ipfs-service'
 import { useLayoutStore } from '../../stores'
 import SingleImageUpload from '../SingleImageUpload/SingleImageUpload'
 import { useEventStore } from '../../stores/useEventStore'
 import createEvent from '../../data/rest/createEvent'
 import { Event } from '../../types/Event'
+import SuccessEventModal from "../Modals/SuccessEventModal";
 
 type LivestreamInput = {
   title: string
@@ -36,25 +37,31 @@ export default function LivestreamForm({}) {
   const [isMounted, setIsMounted] = useState(false)
   const { setEvent } = useEventStore((state) => state)
   const { isMobile, signerAddress } = useLayoutStore()
+  let [isOpen, setIsOpen] = useState(false)
+
 
 
   const onSubmit: SubmitHandler<LivestreamInput> = async (data) => {
     console.log('onsubmit',data.posterUrl)
     const event: Event = {
-      id: undefined,
+      id: '',
       title: data.title,
       address: signerAddress as string,
       organizer: data.organizer,
       artist: data.artist,
       isOnline: true,
-      posterURL: data.posterUrl,
+      posterURL: getFetchableUrl(data.posterUrl)!!,
       mood: data.mood,
       startDate: data.date,
       description: data.description,
     }
-    await createEvent(event).then((res) => {
+    const newEvent = await createEvent(event).then((res) => {
       console.log('create event: ', res)
     })
+
+    if(event){
+      setIsOpen(true)
+    }
     //TODO: Date and time formatter
   }
 
@@ -63,7 +70,7 @@ export default function LivestreamForm({}) {
   }, [])
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <div>
         <h2> Livestream Information </h2>
         <p className="opacity-40 -mt-4"> Required* </p>
@@ -182,7 +189,7 @@ export default function LivestreamForm({}) {
 
               {/* errors will return when field validation fails  */}
               {errors.titleRequired && <span>This field is required</span>}
-
+              <SuccessEventModal isOpen={isOpen} eventId={"33121"}/>
               <input
                 type="submit"
                 className="bg-[#5971ED] border-transparent h-12 rounded-lg font-mono font-bold text-lg"
@@ -284,6 +291,7 @@ export default function LivestreamForm({}) {
 
                 {/* errors will return when field validation fails  */}
                 {errors.titleRequired && <span>This field is required</span>}
+                <SuccessEventModal isOpen={isOpen} eventId={"33121"}/>
 
                 <input
                   type="submit"

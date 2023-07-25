@@ -11,7 +11,7 @@ export default function SectionBox() {
   const attendanceCount = 231
 
   return (
-    <Popover className={'relative w-screen'}>
+    <Popover className={'relative w-screen md:w-96 md:h-96'}>
       <Popover.Button className={'bg-transparent focus:outline-none'}>
         <div className={'flex flex-col items-center'}>
           <div

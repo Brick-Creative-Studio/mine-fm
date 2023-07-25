@@ -1,5 +1,5 @@
 export type Event = {
-  id: string | undefined
+  id: string
 
   title: string
 

@@ -13,7 +13,7 @@ import fetchUser from "../../data/rest/fetchUser";
 const Nav = () => {
   const isMounted = useIsMounted()
   const { setSignerAddress } = useLayoutStore((state) => state)
-  const { hasAccount, setHasAccount, setIdentity, id } = useProfileStore((state) => state)
+  const { hasAccount, setHasAccount, setAura, setIdentity, id } = useProfileStore((state) => state)
 
   const { address } = useAccount({
     onDisconnect() {
@@ -41,8 +41,15 @@ const Nav = () => {
         email: user.email,
         bio: user.bio,
         phone: user.phone,
-        name: user.name
+        name: user.name,
       })
+      setAura({
+        colorOne: user.colorOne!!,
+        colorTwo: user.colorTwo!!,
+        colorThree: user.colorThree!!,
+        direction: user.direction!!
+      })
+
     }
 
 
