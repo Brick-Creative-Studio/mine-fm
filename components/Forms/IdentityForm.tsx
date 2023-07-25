@@ -59,13 +59,15 @@ export default function IdentityForm({}) {
         direction: aura.direction,
         bio: data.bio,
       }
-      const newUser = await createUser(address as string, user as User)
-      if (newUser){
-        setSuccessIsOpen(true)
-      }else {
-        setFailureIsOpen(true)
-        console.log('create user failure')
-      }
+      const newUser = await createUser(address as string, user as User).finally(() => {
+        if (newUser){
+          setSuccessIsOpen(true)
+        }else {
+          setFailureIsOpen(true)
+          console.log('create user failure')
+        }
+      })
+
 
     } else {
       const updatedUser = {
