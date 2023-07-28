@@ -18,16 +18,9 @@ import { publicProvider } from 'wagmi/providers/public'
 function MyApp({ Component, pageProps }: AppProps) {
   const { chains, publicClient, webSocketPublicClient } = configureChains(
     [optimism, goerli],
-    [
-      alchemyProvider({
-        apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID
-          ? process.env.NEXT_PUBLIC_ALCHEMY_ID
-          : '',
-      }),
-    ],
-
-  )
-  const projectId = '4fe03bd3764f7528d95b9ebed65f5035'
+    [publicProvider()]
+  );
+  const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID!!;
 
   const { wallets } = getDefaultWallets({
     appName: 'MINE.FM',
@@ -35,7 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     chains,
   })
 
-  const connectors =connectorsForWallets([
+  const connectors = connectorsForWallets([
       ...wallets,
     {
       groupName: 'Other',
