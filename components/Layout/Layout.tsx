@@ -1,6 +1,6 @@
 import React from 'react'
 import { useLayoutStore } from "../../stores"
-import { useSigner } from 'wagmi'
+import { useWalletClient } from 'wagmi'
 import Nav from './Nav'
 import Footer from './Footer'
 import { bodyGradient } from 'styles/gradient.css'
@@ -13,23 +13,23 @@ type Props = {
 }
 
 const Layout = ({ children }: Props) => {
-  const { data: signer, status } = useSigner()
+  const { data: walletClient, status } = useWalletClient()
   const { setSigner, setSignerAddress, signerAddress } = useLayoutStore()
   const { setIsMobile, isMobile } = useLayoutStore()
   /*
 
-    store signer, signerAddress and provider is store
+    store walletClient, signerAddress and provider is store
 
    */
 
   React.useEffect(() => {
     if (status === 'success') {
-      // setProvider(signer?.provider ?? getProvider())
-      setSigner(signer)
+      // setProvider(walletClient?.provider ?? getProvider())
+      setSigner(walletClient)
       //@ts-ignore
-      setSignerAddress(signer?._address)
+      setSignerAddress(walletClient?._address)
     }
-  }, [status, signer, signerAddress])
+  }, [status, walletClient, signerAddress])
 
   /*
 

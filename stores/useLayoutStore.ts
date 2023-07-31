@@ -1,14 +1,14 @@
 import { Provider } from '@ethersproject/abstract-provider'
-import { FetchSignerResult } from '@wagmi/core'
+import { GetWalletClientResult } from '@wagmi/core'
 import {create} from 'zustand'
 
 interface LayoutStoreProps {
   isMobile: boolean
   setIsMobile: (isMobile: boolean) => void
-  signer: FetchSignerResult | undefined
+  signer: GetWalletClientResult | undefined
   signerAddress: string | null
   setSignerAddress: (address: string | null) => void
-  setSigner: (signer: FetchSignerResult | undefined) => void
+  setSigner: (signer: GetWalletClientResult | undefined) => void
   provider: Provider | undefined
   setProvider: (provider: Provider) => void
 }
@@ -18,7 +18,7 @@ export const useLayoutStore = create<LayoutStoreProps>((set) => ({
   setIsMobile: (isMobile: boolean) => set( {isMobile }),
 
   signer: undefined,
-  setSigner: (signer: FetchSignerResult | undefined) => set({ signer }),
+  setSigner: (signer: GetWalletClientResult | undefined) => set({ signer }),
 
   signerAddress: null,
   setSignerAddress: (signerAddress: string | null) => set({ signerAddress }),
