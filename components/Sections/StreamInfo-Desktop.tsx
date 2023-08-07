@@ -8,7 +8,11 @@ const StreamInfoDesktop = () => {
   const treasury = 3.287
 
   return (
-    <div className={'flex flex-row px-4 overflow-scroll w-full bg-[#B999FA]'}>
+    <div
+      className={
+        'grid lg:grid-cols-6 grid-cols-3 grid-rows-2 lg:grid-rows-1 w-full bg-[#B999FA]'
+      }
+    >
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
         <div
           className={
@@ -26,12 +30,12 @@ const StreamInfoDesktop = () => {
 
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
         <Image width={24} height={24} src={'/ETHIcon.svg'} alt="share button" />
-        <p className={'text-[#1D0045]'}>{`${entryFee} eth`}</p>
+        <p className={'text-[#1D0045]'}>{`${entryFee}ETH`}</p>
       </div>
 
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
         <Image width={24} height={24} src={'/CubeIcon.svg'} alt="share button" />
-        <p className={'text-[#1D0045]'}>{`${treasury} eth`}</p>
+        <p className={'text-[#1D0045]'}>{`${treasury}ETH`}</p>
       </div>
 
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
