@@ -8,7 +8,6 @@ import AdminSection from '../../../components/Sections/AdminSection'
 import { ChatSectionHandler } from '../../../components/Layout/ChatSectionHandler'
 import GeneralChatSection from '../../../components/Sections/GenChatSection'
 import GroupChatSection from '../../../components/Sections/GroupChatSection'
-import StreamInfo from '../../../components/Sections/StreamInfo-Section'
 import StreamInfoDesktop from 'components/Sections/StreamInfo-Desktop'
 import SectionsGrid from '../../../components/Sections/SectionGrid'
 import Link from 'next/link'
@@ -48,7 +47,7 @@ export default function LivestreamPage({}) {
     },
     {
       title: 'Info',
-      component: [<StreamInfo key={'info'} />],
+      component: [<StreamInfoDesktop key={'info'} />],
     },
   ]
 
@@ -130,11 +129,6 @@ export default function LivestreamPage({}) {
               alt={'artist-avatar'}
               className={' z-10 '}
             />
-          </div>
-
-          {/* not displayed at all on mobile */}
-          <div className="hidden">
-            <StreamInfo />
           </div>
 
           <div className="hidden md:flex">
