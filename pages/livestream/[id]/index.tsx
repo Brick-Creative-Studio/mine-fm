@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useLayoutStore } from '../../../stores'
 import Image from 'next/image'
@@ -12,9 +12,19 @@ import StreamInfoDesktop from 'components/Sections/StreamInfo-Desktop'
 import SectionsGrid from '../../../components/Sections/SectionGrid'
 import Link from 'next/link'
 
+import { SpectrumVisualizer, SpectrumVisualizerTheme } from 'react-audio-visualizers'
+
 export default function LivestreamPage({}) {
   const { query } = useRouter()
   const { isMobile } = useLayoutStore()
+
+  // AudioContext useState
+  const [audioContext, setAudioContext] = useState<AudioContext | null>(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setAudioContext(new AudioContext())
+    }
+  }, [])
 
   const chatSections = [
     {
@@ -122,13 +132,17 @@ export default function LivestreamPage({}) {
               'flex justify-center items-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% w-full h-64 md:h-[600px]'
             }
           >
-            <Image
-              src={'/stock/bloomin_poster_square.png'}
-              width={240}
-              height={240}
-              alt={'artist-avatar'}
-              className={' z-10 '}
-            />
+            {audioContext && (
+              <SpectrumVisualizer
+                audio={'/bloom.mp3'}
+                theme={SpectrumVisualizerTheme.radialSquaredBars}
+                colors={['#009688', '#26a69a']}
+                iconsColor={'#26a69a'}
+                showMainActionIcon
+                showLoaderIcon
+                highFrequency={8000}
+              />
+            )}
           </div>
 
           <div className="hidden md:flex">
