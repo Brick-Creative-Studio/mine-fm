@@ -86,7 +86,7 @@ export default function SongForm({ }){
                                 <div>
                                     <label> Artwork </label>
 
-                              <SingleImageUpload id={'Song Artwork'} alt={'song artwork'} name={'artWork'} register={register}/>
+                              <SingleImageUpload id={'Song Artwork'} alt={'song artwork'} name={'artWork'}/>
                                 </div>
                                 <div>
                                     <label htmlFor="file-input"> Upload Song </label>

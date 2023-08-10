@@ -56,11 +56,16 @@ export default function LivestreamForm({}) {
       description: data.description,
     }
 
-    const response = await createEvent(event);
+    await createEvent(event).then((event) => {
+      if(event !== undefined){
+        setIsOpen(true)
+        console.log('form set open check:', event)
+        return event;
+      }
+      console.log('form set open check:', event)
 
-    if(response){
-      setIsOpen(true)
-    }
+    });
+
     //TODO: Date and time formatter
   }
 

@@ -14,6 +14,7 @@ interface SingleImageUploadProps {
   name: string
 }
 
+
 type LivestreamInput = {
   title: string
   address: string
