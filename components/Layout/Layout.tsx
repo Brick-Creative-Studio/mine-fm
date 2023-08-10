@@ -27,7 +27,7 @@ const Layout = ({ children }: Props) => {
       // setProvider(walletClient?.provider ?? getProvider())
       setSigner(walletClient)
       //@ts-ignore
-      setSignerAddress(walletClient?._address)
+      setSignerAddress(walletClient?.account.address)
     }
   }, [status, walletClient, signerAddress])
 

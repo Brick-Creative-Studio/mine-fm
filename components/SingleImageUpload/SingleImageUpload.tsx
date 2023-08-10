@@ -1,6 +1,6 @@
 import Image from 'next/future/image'
 import { useFormContext } from 'react-hook-form'
-
+import { useEventStore } from "../../stores";
 import React, { ReactElement, useEffect, useState } from 'react'
 import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from 'packages/ipfs-service'
 
@@ -31,7 +31,7 @@ type LivestreamInput = {
 
 const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) => {
   const acceptableMIME = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']
-
+  const { posterUrl, setPosterUrl} = useEventStore((state) => state)
   const [isMounted, setIsMounted] = useState(false)
   const [fileUrl, updateFileUrl] = useState('')
   const { register, setValue, getValues } = useFormContext<LivestreamInput>() // retrieve all hook methods
@@ -42,6 +42,13 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
   useEffect(() => {
     setIsMounted(true)
   }, [])
+
+  useEffect(() => {
+    if(fileUrl.length > 0){
+      const url = getFetchableUrl(fileUrl)
+      setPosterUrl(url!)
+    }
+  }, [fileUrl])
 
   const handleFileUpload = React.useCallback(
     async (_input: FileList | null) => {
@@ -99,7 +106,8 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
         <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="24 24 24 24" />
       )}
 
-      {fileUrl && (
+      {fileUrl &&  (
+
         <Image
           src={getFetchableUrl(fileUrl)!!}
           fill
