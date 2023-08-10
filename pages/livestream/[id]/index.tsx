@@ -136,8 +136,8 @@ export default function LivestreamPage({}) {
               <SpectrumVisualizer
                 audio={'/bloom.mp3'}
                 theme={SpectrumVisualizerTheme.radialSquaredBars}
-                colors={['#009688', '#26a69a']}
-                iconsColor={'#26a69a'}
+                colors={['#6aacfa', '#78ff64']}
+                iconsColor={'#467be8'}
                 showMainActionIcon
                 showLoaderIcon
                 highFrequency={8000}
