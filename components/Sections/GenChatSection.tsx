@@ -8,14 +8,7 @@ export default function GeneralChatSection({}){
     <div className={'flex flex-col w-full h-96 md:h-[561.5px] '}>
       <div className={'hover:scroll-auto overflow-scroll flex flex-col-reverse'}>
         {/*//TODO:add map function*/}
-        <MessageCell />
-        <MessageCell />
-        <MessageCell />
-        <MessageCell />
-        <MessageCell />
-        <MessageCell />
-        <MessageCell />
-        <MessageCell />
+
       </div>
       <Input />
     </div>
