@@ -35,33 +35,37 @@ export default function LivestreamForm({}) {
 
   } = methods
   const [isMounted, setIsMounted] = useState(false)
-  const { setEvent } = useEventStore((state) => state)
+  const { posterUrl, setPosterUrl} = useEventStore((state) => state)
   const { isMobile, signerAddress } = useLayoutStore()
   let [isOpen, setIsOpen] = useState(false)
 
 
 
   const onSubmit: SubmitHandler<LivestreamInput> = async (data) => {
-    console.log('onsubmit',data.posterUrl)
+
+
     const event: Event = {
-      id: '',
       title: data.title,
       address: signerAddress as string,
       organizer: data.organizer,
       artist: data.artist,
       isOnline: true,
-      posterURL: getFetchableUrl(data.posterUrl)!!,
+      posterURL: posterUrl ? posterUrl : '',
       mood: data.mood,
       startDate: data.date,
       description: data.description,
     }
-    const newEvent = await createEvent(event).then((res) => {
-      console.log('create event: ', res)
-    })
 
-    if(event){
-      setIsOpen(true)
-    }
+    await createEvent(event).then((event) => {
+      if(event !== undefined){
+        setIsOpen(true)
+        console.log('form set open check:', event)
+        return event;
+      }
+      console.log('form set open check:', event)
+
+    });
+
     //TODO: Date and time formatter
   }
 

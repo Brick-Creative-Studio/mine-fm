@@ -166,7 +166,7 @@ export default function MoodForm({}) {
           <div className="flex flex-col space-y-12 ">
             <div>
               <label className='mb-4'> Artwork </label>
-              <SingleImageUpload id={'Mood Poster'} alt={'poster upload'} name={'posterUrl'} register={register}/>
+              <SingleImageUpload id={'Mood Poster'} alt={'poster upload'} name={'posterUrl'} />
             </div>
            
              
