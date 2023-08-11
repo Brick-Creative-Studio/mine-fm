@@ -11,8 +11,7 @@ import GroupChatSection from '../../../components/Sections/GroupChatSection'
 import StreamInfoDesktop from 'components/Sections/StreamInfo-Desktop'
 import SectionsGrid from '../../../components/Sections/SectionGrid'
 import Link from 'next/link'
-
-import { SpectrumVisualizer, SpectrumVisualizerTheme } from 'react-audio-visualizers'
+import Visualizer from '../../../components/Visualizer'
 
 export default function LivestreamPage({}) {
   const { query } = useRouter()
@@ -106,6 +105,7 @@ export default function LivestreamPage({}) {
       component: [<AdminSection key={'Admin'} />],
     },
   ]
+
   return (
     <div className="flex flex-col w-full mt-24 ">
       <div className={'flex justify-between'}>
@@ -132,17 +132,7 @@ export default function LivestreamPage({}) {
               'flex justify-center items-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% w-full h-64 md:h-[600px]'
             }
           >
-            {audioContext && (
-              <SpectrumVisualizer
-                audio={'/bloom.mp3'}
-                theme={SpectrumVisualizerTheme.radialSquaredBars}
-                colors={['#6aacfa', '#78ff64']}
-                iconsColor={'#467be8'}
-                showMainActionIcon
-                showLoaderIcon
-                highFrequency={8000}
-              />
-            )}
+            {audioContext && <Visualizer />}
           </div>
 
           <div className="hidden md:flex">
