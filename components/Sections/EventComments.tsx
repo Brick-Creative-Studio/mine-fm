@@ -45,34 +45,21 @@ export default function EventComments({}) {
     return myMoody;
   }
   async function handleSubmitNewMessage (){
-    const message: Message = {
-      message: getValues('comment'),
-      mTag: m_tag as string,
-      aura: '',
-    }
+    // const message: Message = {
+    //   message: getValues('comment'),
+    //   mTag: m_tag as string,
+    //   aura: '',
+    // }
 
-    socket.emit('message', message)
-    const server = `https://minefm-server.herokuapp.com/comments/create`
+    // socket.emit('message', message)
 
-    await createComment(server, id as string, getValues('comment'))
+    // await createComment(server, id as string, getValues('comment'))
     // resetField('comment')
 
 
   }
 
-  const createComment = async(url: string, id: string, message: string) => {
-    console.log('modal id check: ',id)
-    let newMoody: string = await axios.post(url, {
-      minerId: id,
-      message: message,
-      moodscapeId: '1'
-    }).then((res) => {
-      console.log('updated twitter!', res.data)
-      return res.data
-    })
 
-    return newMoody;
-  }
 
   async function create(){
   }

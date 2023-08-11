@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import Image from 'next/image'
+import { Message } from "../../types/Message";
+import axios from "axios";
+import { useProfileStore } from "../../stores";
+import io from 'socket.io-client'
+import createComment from "../../data/rest/createComment";
 
 type Comment = {
   comment: string
@@ -10,6 +15,26 @@ type Comment = {
 
 export default function Input({}) {
   const { register, handleSubmit, getValues, resetField } = useForm<Comment>()
+  const socket = io('https://minefm-server.herokuapp.com/')
+  const { aura, m_tag, id } = useProfileStore((state) => state) ;
+  async function handleSubmitNewMessage (){
+    const message: Message = {
+      message: getValues('comment'),
+      aura: aura,
+      minerTag: m_tag!,
+      time: Date.now().toString()
+    }
+
+    socket.emit('message', message)
+    const server = `https://minefm-server.herokuapp.com/comments/create`
+
+    const eventMessage = {}
+    await createComment(eventMessage)
+    resetField('comment')
+
+  }
+
+
 
   return (
     <div className="flex flex-row w-full h-fit">

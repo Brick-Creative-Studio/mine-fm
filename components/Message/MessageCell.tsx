@@ -4,7 +4,6 @@ export default function MessageCell({
   message,
   aura,
   minerTag,
-  time,
 }: {
   message: string
   aura: {
@@ -14,7 +13,6 @@ export default function MessageCell({
     colorThree : string,
   }
   minerTag: string
-  time: string
 }) {
   const gradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
@@ -31,7 +29,7 @@ export default function MessageCell({
           <p> { message }</p>
         </div>
       </div>
-      <p className={'flex justify-end my-0 -mt-2 text-xs'}> { time } </p>
+      <p className={'flex justify-end my-0 -mt-2 text-xs'}> { Date.now() } </p>
     </div>
   )
 }

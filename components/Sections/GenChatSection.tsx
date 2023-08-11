@@ -30,7 +30,18 @@ export default function GeneralChatSection({}){
     <div className={'flex flex-col w-full h-96 md:h-[561.5px] '}>
       <div className={'hover:scroll-auto overflow-scroll flex flex-col-reverse'}>
         {/*//TODO:add map function*/}
+        {messages.length ? (
+          messages.map(({ message, minerTag, aura }, index) => {
+            return (
+              <MessageCell key={index} message={message} aura={aura} minerTag={minerTag}/>
+            )
+          })
+        ) : (
+          <div className={'flex items-center justify-center h-full w-full'}>
+            <p> No messages added yet </p>
 
+          </div>
+          )}
       </div>
       <Input />
     </div>
