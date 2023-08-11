@@ -92,9 +92,6 @@ export default function EventComments({}) {
     }
   }, [socket])
 
-  useEffect(() => {
-
-  })
 
   return (
     <form>
