@@ -8,7 +8,7 @@ import AdminSection from '../../../components/Sections/AdminSection'
 import { ChatSectionHandler } from '../../../components/Layout/ChatSectionHandler'
 import GeneralChatSection from '../../../components/Sections/GenChatSection'
 import GroupChatSection from '../../../components/Sections/GroupChatSection'
-import StreamInfo from '../../../components/Sections/StreamInfo-Section'
+import StreamInfoDesktop from 'components/Sections/StreamInfo-Desktop'
 import SectionsGrid from '../../../components/Sections/SectionGrid'
 import Link from 'next/link'
 
@@ -47,7 +47,7 @@ export default function LivestreamPage({}) {
     },
     {
       title: 'Info',
-      component: [<StreamInfo key={'info'} />],
+      component: [<StreamInfoDesktop key={'info'} />],
     },
   ]
 
@@ -97,10 +97,10 @@ export default function LivestreamPage({}) {
     },
   ]
   return (
-    <div className="flex flex-col mt-24 w-full ">
+    <div className="flex flex-col w-full mt-24 ">
       <div className={'flex justify-between'}>
         <Link href={'/explore?tab=livestream'}>
-          <div className="flex flex-row cursor-pointer mx-6">
+          <div className="flex flex-row mx-6 cursor-pointer">
             <Image
               src={'/chevron-left.svg'}
               width={28}
@@ -110,7 +110,7 @@ export default function LivestreamPage({}) {
             <p> Exit </p>
           </div>
         </Link>
-        <div className="flex flex-row items-center justify-around rounded-md bg-zinc-800 w-20 h-10 mx-6">
+        <div className="flex flex-row items-center justify-around w-20 h-10 mx-6 rounded-md bg-zinc-800">
           <div className={'rounded-full w-4 h-4 bg-red-700'} />
           <p>LIVE</p>
         </div>
@@ -130,7 +130,10 @@ export default function LivestreamPage({}) {
               className={' z-10 '}
             />
           </div>
-          <StreamInfo />
+
+          <div className="hidden md:flex">
+            <StreamInfoDesktop />
+          </div>
         </div>
 
         <SectionHandler
