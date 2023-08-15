@@ -17,16 +17,17 @@ export default function Input({}) {
   const { register, handleSubmit, getValues, resetField } = useForm<Comment>()
   const socket = io('https://minefm-server.herokuapp.com/')
   const { aura, m_tag, id } = useProfileStore((state) => state) ;
+
+  const time = new Date(Date.now()).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
   async function handleSubmitNewMessage (){
     const message: Message = {
       message: getValues('comment'),
       aura: aura,
       minerTag: m_tag!,
-      time: Date.now().toString()
+      time: time
     }
 
     socket.emit('chat', message)
-    console.log('emit chat:', message)
     const server = `https://minefm-server.herokuapp.com/comments/create`
 
     const eventMessage = {}

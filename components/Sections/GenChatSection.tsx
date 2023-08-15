@@ -33,9 +33,9 @@ export default function GeneralChatSection({}){
       <div className={'hover:scroll-auto overflow-scroll flex flex-col-reverse'}>
         {/*//TODO:add map function*/}
         {messages.length ? (
-          messages.map(({ message, minerTag, aura }, index) => {
+          messages.map(({ message, time, minerTag, aura }, index) => {
             return (
-              <MessageCell key={index} message={message} aura={aura} minerTag={minerTag}/>
+              <MessageCell key={index} time={time} message={message} aura={aura} minerTag={minerTag}/>
             )
           })
         ) : (
