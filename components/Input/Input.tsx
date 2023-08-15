@@ -25,11 +25,12 @@ export default function Input({}) {
       time: Date.now().toString()
     }
 
-    socket.emit('message', message)
+    socket.emit('chat', message)
+    console.log('emit chat:', message)
     const server = `https://minefm-server.herokuapp.com/comments/create`
 
     const eventMessage = {}
-    await createComment(eventMessage)
+    //await createComment(eventMessage)
     resetField('comment')
 
   }
@@ -44,7 +45,7 @@ export default function Input({}) {
         className="w-full px-2 py-4 border-1"
         {...register('comment', { required: true })}
       ></input>
-      <button type="button" className="bg-green-800 h-full w-12 ">
+      <button onClick={handleSubmitNewMessage} type="button" className="bg-green-800 h-full w-12 ">
         <Image src={'/paper-plane.svg'} width={18} height={18} alt="submit comment" />
       </button>
     </div>

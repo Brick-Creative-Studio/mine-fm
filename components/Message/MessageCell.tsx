@@ -14,9 +14,9 @@ export default function MessageCell({
   }
   minerTag: string
 }) {
-  const gradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
+  const gradient = `linear-gradient(to ${aura?.direction}, ${aura?.colorOne}, ${aura?.colorTwo}, ${aura?.colorThree})`
 
-
+  console.log('message cell:', message)
   return (
     <div
       // className={'flex-col h-32 p-2 border-y-2 border-x-0 border-solid border-white/50 bg-[#463850]/75'}

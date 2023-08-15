@@ -18,14 +18,3 @@ export default async function createComment(comment: any) {
     return
   }
 }
-// const createComment = async(url: string, id: string, message: string) => {
-//   console.log('modal id check: ', id)
-//   let message: string = await axios.post(url, {
-//     minerId: id,
-//     message: message,
-//     moodscapeId: '1'
-//   }).then((res) => {
-//     console.log('updated twitter!', res.data)
-//     return res.data
-//   })
-// }

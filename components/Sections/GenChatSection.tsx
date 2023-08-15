@@ -14,16 +14,18 @@ export default function GeneralChatSection({}){
   useEffect(() => {
     const server = `https://minefm-server.herokuapp.com/comments/create`
 
-    socket.on('message', (message: Message) => {
+    socket.on('chat', (message: Message) => {
       setMessages((messages) => [...messages, message])
       console.log('msgs obj', ...messages)
-      //handleNewMessage(message.message)
+      console.log('msg', message)
+
     })
     return () => {
-      socket.off('message')
+      socket.off('chat')
     }
   }, [socket])
 
+  console.log('jsx check:', messages)
 
 
   return(
