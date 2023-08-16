@@ -17,24 +17,6 @@ export default function LivestreamPage({}) {
   const { query } = useRouter()
   const { isMobile } = useLayoutStore()
 
-  // AudioContext useState
-  const [audioContext, setAudioContext] = useState<AudioContext | null>(null)
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setAudioContext(new AudioContext())
-    }
-  }, [])
-
-  const [playing, setPlaying] = useState(false)
-  const playControl = () => {
-    if (!audioContext) return
-    if (playing) {
-      setPlaying(false)
-    } else {
-      setPlaying(true)
-    }
-  }
-
   const chatSections = [
     {
       title: 'General',
@@ -142,11 +124,7 @@ export default function LivestreamPage({}) {
               'flex justify-center items-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% w-full h-64 md:h-[600px]'
             }
           >
-            {audioContext && playing ? (
-              <Visualizer />
-            ) : (
-              <button onClick={playControl}>Play</button>
-            )}
+            <Visualizer />
           </div>
 
           <div className="hidden md:flex">

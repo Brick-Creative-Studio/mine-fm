@@ -16,7 +16,7 @@ const Visualizer = () => {
     //   highFrequency={8000}
     // />
     <>
-      <audio controls autoPlay>
+      <audio controls>
         <source src="https://stream-relay-geo.ntslive.net/stream/64.aac?client=NTSWebApp&t=1691770293785" />
       </audio>
     </>
