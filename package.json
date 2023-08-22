@@ -31,7 +31,6 @@
     "prettier": "^2.7.1",
     "randomcolor": "^0.6.2",
     "react": "18.2.0",
-    "react-audio-visualizers": "^0.1.1",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.42.1",
     "sharp": "^0.32.4",
