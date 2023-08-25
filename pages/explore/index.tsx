@@ -10,8 +10,6 @@ import { ExploreSectionHandler } from '../../components/Layout/ExploreSectionHan
 
 export default function Explore({}) {
   const { signerAddress } = useLayoutStore((state) => state)
-  const router = useRouter()
-  const { isConnected } = useAccount()
   const { hasAccount } = useProfileStore((state) => state)
   const { query } = useRouter()
 
@@ -25,12 +23,6 @@ export default function Explore({}) {
       component: [<IRLSection key={'irl'} />],
     },
   ]
-
-  useEffect(() => {
-    const server = `https://minefm-server.herokuapp.com/comments`
-
-    //getComments(server, 1)
-  }, [signerAddress, isConnected])
 
   return (
     <div className="flex flex-col mt-28 w-full">

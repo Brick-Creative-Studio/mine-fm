@@ -19,7 +19,7 @@ export default function MessageCell({
   const gradient = `linear-gradient(to ${aura?.direction}, ${aura?.colorOne}, ${aura?.colorTwo}, ${aura?.colorThree})`
 
   return (
-    <div className={'flex-col h-32 p-2 border-y-2 border-x-0 border-solid border-white/50 bg-[#463850]/75'}>
+    <div className={'flex-col h-fit p-2 border-y-2 border-x-0 border-solid border-white/50 bg-[#463850]/75'}>
 
       <div className={' w-full flex items-center mx-2'}>
         <div className={'rounded-full w-[48px] h-[40px]'} style={{ background: `${gradient}` }} />

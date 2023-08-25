@@ -44,9 +44,10 @@ export default function LivestreamForm({}) {
   const onSubmit: SubmitHandler<LivestreamInput> = async (data) => {
 
 
-    const event: Event = {
+    const event = {
       title: data.title,
       address: signerAddress as string,
+      ownerAddress: signerAddress as string,
       organizer: data.organizer,
       artist: data.artist,
       isOnline: true,
@@ -56,7 +57,7 @@ export default function LivestreamForm({}) {
       description: data.description,
     }
 
-    await createEvent(event).then((event) => {
+    const response = await createEvent(event).then((event) => {
       if(event !== undefined){
         setIsOpen(true)
         console.log('form set open check:', event)
@@ -313,16 +314,6 @@ export default function LivestreamForm({}) {
                   />
                 </div>
 
-                <div className="flex flex-col justify-center items-center">
-                  <label htmlFor="description"> Add a Color to Match the Mood </label>
-                  <div className="flex justify-center self-center mt-4 w-40 h-40">
-                    <input
-                      type="color"
-                      className={styles.style2}
-                      {...register('color')}
-                    />
-                  </div>
-                </div>
               </div>
             </div>
           )}

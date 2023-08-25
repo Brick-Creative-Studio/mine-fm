@@ -3,6 +3,7 @@ import React, { Fragment, useState } from 'react'
 import { getFetchableUrl } from '../../packages/ipfs-service'
 import Image from 'next/image'
 import { Event } from '../../types/Event'
+import Link from "next/link";
 
 interface ModalProps {
   streamEvent: Event
@@ -121,13 +122,15 @@ export default function RsvpModal({ streamEvent }: ModalProps) {
                         className=" bg-gray-400/25 border p-2 border-solid rounded-md text-white "
                       />                    </div>
                     <div className="mt-4">
+                      <Link href={`/livestream/${streamEvent.id}?tab=chat?tab=general`}>
                       <button
                         type="button"
                         className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                         onClick={closeModal}
                       >
-                        {`Entry Fee: .01 eth`}
+                        {`Enter Livestream`}
                       </button>
+                      </Link>
                     </div>
                   </div>
                 </Dialog.Panel>

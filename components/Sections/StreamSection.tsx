@@ -30,7 +30,6 @@ export default function StreamSection({}) {
 <>
     <div className="lg:grid lg:grid-cols-4 md:grid-cols-3 md:gap-x-12 flex flex-col items-center justify-center p-4 overflow-scroll">
       { events ? events?.map((event, index) => {
-        console.log('component check: ', event)
         return (
           <div className={'m-4'}>
             <LivestreamCard streamEvent={event}/>
