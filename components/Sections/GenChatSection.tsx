@@ -22,8 +22,10 @@ export default function GeneralChatSection({}) {
   }, [socket])
 
   return (
-    <div className={'md:h-[493px] h-52 flex-col justify-end'}>
-      <div className={'flex flex-col-reverse justify-end h-full w-full'}>
+    <div className={'md:h-[493px] h-52  justify-end'}>
+
+      <div className={'flex flex-col-reverse h-full w-full scroll-smooth overflow-scroll'}>
+        <div className={''}>
         {messages.length ? (
           messages.map(({ message, time, minerTag, aura }, index) => {
             return (
@@ -41,6 +43,7 @@ export default function GeneralChatSection({}) {
             <p> No messages added yet </p>
           </div>
         )}
+        </div>
       </div>
       <Input />
     </div>
