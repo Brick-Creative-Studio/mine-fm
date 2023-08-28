@@ -8,7 +8,8 @@ import { Message } from '../../types/Message'
 
 export default function GeneralChatSection({}) {
   const [messages, setMessages] = useState<Message[]>([])
-  const socket = io('https://minefm-server.herokuapp.com/')
+  // const socket = io('https://minefm-server.herokuapp.com/')
+  const socket = io('http://localhost:3002')
 
   useEffect(() => {
     const server = `https://minefm-server.herokuapp.com/comments/create`

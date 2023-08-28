@@ -15,7 +15,8 @@ type Comment = {
 
 export default function Input({}) {
   const { register, handleSubmit, getValues, resetField } = useForm<Comment>()
-  const socket = io('https://minefm-server.herokuapp.com/')
+  // const socket = io('https://minefm-server.herokuapp.com/livestream_chatroom')
+  const socket = io('http://localhost:3002')
   const { aura, m_tag, id } = useProfileStore((state) => state) ;
 
   const time = new Date(Date.now()).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
@@ -28,6 +29,7 @@ export default function Input({}) {
     }
 
     socket.emit('chat', message)
+    console.log('emitted', message)
     const server = `https://minefm-server.herokuapp.com/comments/create`
 
     const eventMessage = {}
@@ -37,11 +39,23 @@ export default function Input({}) {
   }
 
 
+  async function handleCreateNewRoom (){
+    const data = {
+      roomName: 'newRoom'
+    }
+
+    socket.emit('create_room', data)
+    console.log('emitted', data)
+
+  }
+
+
 
   return (
     <div className="flex flex-row justify-between bg-[#12002C] p-4 w-full h-fit items-center">
+      <button className={'bg-transparent'} onClick={handleCreateNewRoom}>
       <div className={'rounded-full bg-red-600 w-[40px] h-[40px]'}/>
-
+      </button>
       <input
         type={'text'}
         placeholder="send chat"
