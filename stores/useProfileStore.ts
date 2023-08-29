@@ -24,6 +24,8 @@ interface ProfileStoreProps {
   aura: AuraType
   setAura: (aura: AuraType) => void
   setIdentity: (identity: Identity) => void
+  reset: () => void
+
 
 }
 
@@ -40,9 +42,9 @@ const initialState = {
   bio: null,
   aura: {
     direction: 'top',
-    colorOne: '#000',
+    colorOne: '#FFF',
     colorTwo: '#FFF',
-    colorThree: '#240045'
+    colorThree: '#FFF'
   },
 }
 
@@ -79,6 +81,9 @@ export const useProfileStore = create(
       setBio: (bio: string) => set({ bio }),
       setInstagram: (instagram: string) => set({ instagram }),
       setTwitter: (twitter: string) => set({ twitter }),
+      reset: () => {
+        set(initialState)
+      },
     }),
     {
       name: `mine-fm-profile`,

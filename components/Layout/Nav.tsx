@@ -31,6 +31,8 @@ const Nav = () => {
   })
   const { error, isLoading, user } = useGetUser(address as string)
 
+  console.log('nav user:', error)
+
   useEffect(() => {
     if (user){
       setIdentity({
@@ -49,10 +51,7 @@ const Nav = () => {
         colorThree: user.colorThree!!,
         direction: user.direction!!
       })
-
     }
-
-
   }, [user, error, isLoading])
 
   return isMounted && address ? (
