@@ -1,7 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
+// import { LiveAudioVisualizer } from 'react-audio-visualize'
 
 const PageAudioPlayer = () => {
+  // const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>()
+
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playable, setPlayable]: [null | boolean, Function] = useState(null)
   const [isPlaying, setIsPlaying]: [boolean, Function] = useState(false)
@@ -10,12 +13,16 @@ const PageAudioPlayer = () => {
   // will need a way to communicate from the server to the client
   // when a stream goes live, and when it ends
   // for when a user is on the page before the stream goes live
+  console.log(audioRef)
   useEffect(() => {
     const audio = audioRef.current?.currentSrc
     fetch(audio as string)
       .then((res) => {
         if (res.ok) {
           setPlayable(true)
+          // here we'll set the audioRef to the mediaRecorder
+          // so that we can record the stream
+          // setMediaRecorder(new MediaRecorder(audioRef.current?.srcObject))
         } else {
           setPlayable(false)
         }
