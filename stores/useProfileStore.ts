@@ -24,7 +24,7 @@ interface ProfileStoreProps {
   aura: AuraType
   setAura: (aura: AuraType) => void
   setIdentity: (identity: Identity) => void
-  reset: () => void
+  resetProfileState: () => void
 
 
 }
@@ -81,7 +81,7 @@ export const useProfileStore = create(
       setBio: (bio: string) => set({ bio }),
       setInstagram: (instagram: string) => set({ instagram }),
       setTwitter: (twitter: string) => set({ twitter }),
-      reset: () => {
+      resetProfileState: () => {
         set(initialState)
       },
     }),
