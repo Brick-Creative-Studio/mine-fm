@@ -1,9 +1,12 @@
 import axios from 'axios'
 import { Event } from "../../types/Event";
+import process from "process";
 
 
 export default async function createEvent(event: any) : Promise<Event | undefined> {
-  const url = `https://minefm-server.herokuapp.com/event/create`
+  const endpoint = 'event/create'
+  const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+
   let data : Event
   try {
     data = await axios.post(url, event).then((res) => {

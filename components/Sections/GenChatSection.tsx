@@ -13,15 +13,16 @@ export default function GeneralChatSection({}) {
   const socket = io('http://localhost:3002')
 
   useEffect(() => {
-    const server = `https://minefm-server.herokuapp.com/comments/create`
-
     socket.on('chat', (message: Message) => {
       setMessages((messages) => [...messages, message])
     })
     return () => {
+      //TODO: Verify if this is proper socket clean up
       socket.off('chat')
     }
   }, [socket])
+
+  //TODO: On connection load messages into array
 
   return (
     <div className={'md:h-[533px] h-52  justify-end'}>

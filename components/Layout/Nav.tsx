@@ -8,7 +8,7 @@ import { useAccount } from 'wagmi'
 import { useProfileStore } from 'stores'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useLayoutStore } from 'stores'
-import fetchUser from "../../data/rest/fetchUser";
+import useGetUser from "../../hooks/useGetUser";
 
 const Nav = () => {
   const isMounted = useIsMounted()
@@ -29,7 +29,7 @@ const Nav = () => {
       }
     },
   })
-  const { error, isLoading, user } = fetchUser(address as string)
+  const { error, isLoading, user } = useGetUser(address as string)
 
   useEffect(() => {
     if (user){

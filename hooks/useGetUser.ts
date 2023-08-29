@@ -1,12 +1,14 @@
 import axios from 'axios'
-import { User } from '../../types/User'
+import { User } from '../types/User'
 import { useState, useEffect } from 'react'
+import process from "process";
 
-export default function fetchUser(address: string) {
+export default function useGetUser(address: string) {
   const [user, setUser] = useState<User>()
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
-  const url = 'https://minefm-server.herokuapp.com/user/user'
+  const endpoint = 'user/user'
+  const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
 
   useEffect(() => {
     const fetch = async () => {

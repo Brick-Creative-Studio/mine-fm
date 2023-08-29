@@ -1,16 +1,12 @@
 import axios from "axios";
 import { Message } from "../../types/Message";
+import * as process from "process";
 
 
 export default async function createComment(comment: any) {
-  const url = `https://minefm-server.herokuapp.com/comments/create`
   let data = undefined;
-
-  const customConfig = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
+  const endpoint = 'comments/create'
+  const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
 
   try {
     data = await axios.post(url, comment).then((res) => {
