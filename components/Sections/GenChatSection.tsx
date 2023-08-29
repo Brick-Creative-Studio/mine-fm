@@ -6,6 +6,7 @@ import axios from 'axios'
 
 import { Message } from '../../types/Message'
 
+
 export default function GeneralChatSection({}) {
   const [messages, setMessages] = useState<Message[]>([])
   // const socket = io('https://minefm-server.herokuapp.com/')

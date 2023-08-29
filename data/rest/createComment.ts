@@ -6,6 +6,12 @@ export default async function createComment(comment: any) {
   const url = `https://minefm-server.herokuapp.com/comments/create`
   let data = undefined;
 
+  const customConfig = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
   try {
     data = await axios.post(url, comment).then((res) => {
       console.log(res.data)
@@ -17,4 +23,5 @@ export default async function createComment(comment: any) {
     console.log('create comment error:', error)
     return
   }
+  return data;
 }
