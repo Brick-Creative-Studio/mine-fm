@@ -36,21 +36,15 @@ export default function LivestreamPage({ eventId }: Props) {
   const guestSections = [
     {
       title: 'Chat',
-      component: [
-        <ChatSectionHandler
-          sections={chatSections}
-          key={'chat'}
-          activeTab={query?.tab ? (query.tab as string) : undefined}
-        />,
-      ],
+      component: [<GeneralChatSection key={'chat'} />],
     },
     {
       title: 'Audience',
       component: [<AudienceGrid key={'audience'} />],
     },
     {
-      title: 'Section',
-      component: [<SectionsGrid key={'section'} />],
+      title: 'Admin',
+      component: [<AdminSection key={'Admin'} />],
     },
     {
       title: 'Info',
@@ -127,7 +121,7 @@ export default function LivestreamPage({ eventId }: Props) {
         <div className={'flex flex-col w-full md:h-full md:w-3/4 md:ml-4'}>
           <div
             className={
-              'flex justify-center items-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% w-full h-64 md:h-[600px]'
+              'flex justify-center items-center bg-black/75 w-full h-64 md:h-[600px]'
             }
           >
             <PageAudioPlayer />

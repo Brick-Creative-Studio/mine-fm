@@ -23,7 +23,7 @@ export default function GeneralChatSection({}) {
   }, [socket])
 
   return (
-    <div className={'md:h-[493px] h-52  justify-end'}>
+    <div className={'md:h-[533px] h-52  justify-end'}>
 
       <div className={'flex flex-col-reverse h-full w-full scroll-smooth overflow-scroll'}>
         <div className={''}>
