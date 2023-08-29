@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
-// import { LiveAudioVisualizer } from 'react-audio-visualize'
+import { LiveAudioVisualizer } from 'react-audio-visualize'
 
 const PageAudioPlayer = () => {
-  // const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>()
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>()
+  console.log(mediaRecorder)
 
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playable, setPlayable]: [null | boolean, Function] = useState(null)
@@ -13,16 +14,12 @@ const PageAudioPlayer = () => {
   // will need a way to communicate from the server to the client
   // when a stream goes live, and when it ends
   // for when a user is on the page before the stream goes live
-  console.log(audioRef)
   useEffect(() => {
     const audio = audioRef.current?.currentSrc
     fetch(audio as string)
       .then((res) => {
         if (res.ok) {
           setPlayable(true)
-          // here we'll set the audioRef to the mediaRecorder
-          // so that we can record the stream
-          // setMediaRecorder(new MediaRecorder(audioRef.current?.srcObject))
         } else {
           setPlayable(false)
         }
@@ -31,6 +28,21 @@ const PageAudioPlayer = () => {
         console.log(err)
       })
   }, [])
+
+  // useEffect to create and set MediaRecorder instance
+  useEffect(() => {
+    if (!audioRef.current) return
+    const audioCtx = new AudioContext()
+    const source = audioCtx.createMediaStreamSource(audioRef.current?.captureStream())
+
+    setMediaRecorder(new MediaRecorder(source.mediaStream))
+  }, [audioRef])
+
+  // useEffect to start MediaRecorder
+  useEffect(() => {
+    if (!mediaRecorder) return
+    // mediaRecorder?.start()
+  }, [mediaRecorder])
 
   const handlePlayPause = () => {
     if (!playable) return
@@ -66,10 +78,13 @@ const PageAudioPlayer = () => {
       ) : playable === false ? (
         <div>Stream is not Live</div>
       ) : null}
-      <audio ref={audioRef}>
+      <audio crossOrigin="anonymous" ref={audioRef}>
         <source src="https://stream-relay-geo.ntslive.net/stream/64.aac?client=NTSWebApp&t=1691770293785" />
         {/* <source src="https://s1.evenings.co/s/mine.fm" /> */}
       </audio>
+      {mediaRecorder && (
+        <LiveAudioVisualizer mediaRecorder={mediaRecorder} width={200} height={75} />
+      )}
     </>
   )
 }
