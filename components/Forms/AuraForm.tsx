@@ -11,6 +11,8 @@ import {
   crossTop,
 } from '../../styles/controlPad.css'
 import auraCircle from '../../styles/aura.css'
+import { useAccount} from "wagmi";
+import useGetUser from "../../hooks/useGetUser";
 
 interface AuraInputs {
   colorOne: string
@@ -22,22 +24,22 @@ interface AuraInputs {
 const AuraForm: React.FC = ({}) => {
   const router = useRouter()
   const path = router.pathname.replace(/\//g, '')
+  const { address, isConnecting, isDisconnected } = useAccount()
 
-  const { signerAddress: address } = useLayoutStore()
 
   //form handlers
   const { register, handleSubmit } = useForm<AuraInputs>()
 
-  const { aura, setAura } = useProfileStore((state) => state)
-  const [colorOne, setOne] = useState(aura.colorOne)
-  const [colorTwo, setTwo] = useState(aura.colorTwo)
-  const [colorThree, setThree] = useState(aura.colorThree)
+  const { setAura } = useProfileStore((state) => state)
+  const [colorOne, setOne] = useState<string>('')
+  const [colorTwo, setTwo] = useState<string>('')
+  const [colorThree, setThree] = useState<string>('')
 
-  const [direction, setDirection] = useState(aura.direction)
-  const [gradient, setGradient] = useState('')
+  const [direction, setDirection] = useState('')
+  const { error, isLoading, user } = useGetUser(address as string)
 
-  const initialGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
-
+  const initialGradient = `linear-gradient(to ${user?.direction}, ${user?.colorOne}, ${user?.colorTwo}, ${user?.colorThree})`
+  const [gradient, setGradient] = useState<string>('')
   const cardinalMap = new Map<string, string>([
     ['left', 'West'],
     ['right', 'East'],
@@ -62,8 +64,7 @@ const AuraForm: React.FC = ({}) => {
 
   const onChangeColorOne = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOne(event.target?.value.toString())
-    const formatColor = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`
-    setGradient(formatColor)
+    setGradient(`linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`)
   }
 
   const onChangeColorTwo = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,17 +86,27 @@ const AuraForm: React.FC = ({}) => {
     setGradient(formatColor)
   }
 
-  const onGenerateColor = () => {
-    const formatColor = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`
-    setGradient(formatColor)
-  }
 
   useEffect(() => {
-    aura?.colorOne && setOne(aura.colorOne)
-    aura?.colorTwo && setTwo(aura.colorTwo)
-    aura?.colorThree && setThree(aura.colorThree)
-    aura?.direction && setDirection(aura?.direction)
-  }, [])
+    if(colorOne === undefined || !colorOne.length){
+      user?.colorOne && setOne(user.colorOne)
+      user?.colorTwo && setTwo(user.colorTwo)
+      user?.colorThree && setThree(user.colorThree)
+      user?.direction && setDirection(user?.direction)
+      const formatColor = `linear-gradient(to ${user?.direction}, ${user?.colorOne}, ${user?.colorTwo}, ${user?.colorThree})`
+      setGradient(formatColor)
+      return
+    }
+  })
+
+  useEffect(() => {
+    if (colorOne.length){
+      const formatColor = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`
+      setGradient(formatColor)
+    }
+
+  }, [gradient])
+
 
   return (
     <>
@@ -110,32 +121,32 @@ const AuraForm: React.FC = ({}) => {
               <div className="flex flex-col justify-center items-center">
                 <input
                   type="color"
-                  value={colorOne}
+                  value={colorOne ? colorOne : user?.colorOne!}
                   {...register('colorOne')}
                   onChange={(event) => onChangeColorOne(event)}
                   className="w-24 h-12 border-none bg-transparent	"
                 />
-                <p>{colorOne}</p>
+                <p>{colorOne ? colorOne : user?.colorOne!}</p>
               </div>
               <div className="flex flex-col justify-center items-center">
                 <input
                   type="color"
-                  value={colorTwo}
+                  value={colorTwo ? colorTwo : user?.colorTwo!}
                   {...register('colorTwo')}
                   onChange={(event) => onChangeColorTwo(event)}
                   className="w-24 h-12 border-none bg-transparent"
                 />
-                <p>{colorTwo}</p>
+                <p>{colorTwo ? colorTwo : user?.colorTwo}</p>
               </div>
               <div className="flex flex-col justify-center items-center">
                 <input
                   type="color"
-                  value={colorThree}
+                  value={colorThree ? colorThree : user?.colorThree!}
                   {...register('colorThree')}
                   onChange={(event) => onChangeColorThree(event)}
                   className="w-24 h-12 border-none bg-transparent"
                 />
-                <p>{colorThree}</p>
+                <p>{colorThree ? colorThree : user?.colorThree}</p>
               </div>
             </div>
             <div className="flex justify-center m-8">
@@ -167,7 +178,7 @@ const AuraForm: React.FC = ({}) => {
                 <div className={crossCircle} />
               </div>
             </div>
-            <h3 className="self-center my-8"> Direction: {cardinalMap.get(direction)} </h3>
+            <h3 className="self-center my-8"> Direction: {cardinalMap.get(direction ? direction : user?.direction!)} </h3>
             <input
               type="submit"
               title="next"

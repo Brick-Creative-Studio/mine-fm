@@ -47,12 +47,12 @@ export default function Profile() {
   }, [aura])
 
   useEffect(() => {
-    if(address as string !== pathAddress){
+     if(address as string !== pathAddress){
       setPageType(false)
-    } else {
+    }else {
       setPageType(true)
     }
-  }, [address])
+  }, )
 
   return (
     <div className="flex flex-col mt-24 mb-auto w-full">
