@@ -9,6 +9,7 @@ import { useProfileStore } from 'stores'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useLayoutStore } from 'stores'
 import useGetUser from "../../hooks/useGetUser";
+import { User } from "../../types/User";
 
 const Nav = () => {
   const isMounted = useIsMounted()
@@ -28,7 +29,6 @@ const Nav = () => {
   const { error, isLoading, user } = useGetUser(address as string)
 
   useEffect(() => {
-    console.log('user:', user)
     if (user){
       setIdentity({
         id: user.id,

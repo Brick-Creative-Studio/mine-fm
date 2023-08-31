@@ -13,6 +13,7 @@ import {
 import auraCircle from '../../styles/aura.css'
 import { useAccount} from "wagmi";
 import useGetUser from "../../hooks/useGetUser";
+import axios from "axios";
 
 interface AuraInputs {
   colorOne: string
@@ -47,35 +48,57 @@ const AuraForm: React.FC = ({}) => {
     ['bottom', 'South'],
   ])
 
-  const onSubmit: SubmitHandler<AuraInputs> = (data) => {
+  const onSubmit: SubmitHandler<AuraInputs> = async (data) => {
     data.direction = direction
     setAura(data)
 
     if(path === 'onboarding'){
-      router.push('/onboarding?tab=identity')
+      await router.push('/onboarding?tab=identity')
       return
     }
 
     if (path.includes('profile')){
-      router.push(`/profile/${address}/identity`)
+      const updateEndpoint = 'user'
+      const url = process.env.NEXT_PUBLIC_BASE_URL + updateEndpoint
 
+      const updateData = {
+        colorOne: colorOne,
+        colorTwo: colorTwo,
+        colorThree: colorThree,
+        direction: direction,
+        walletAddress: address,
+        id: user?.id
+      }
+
+      const res = await axios.put(url, updateData).then((res) => {
+        setAura({
+          colorOne: colorOne,
+          colorTwo: colorTwo,
+          colorThree: colorThree,
+          direction: direction,
+        })
+        router.push(`/profile/${address}`)
+      }).catch((error) => {
+        console.log('error updating user:', error)
+        return error
+      })
     }
   }
 
   const onChangeColorOne = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOne(event.target?.value.toString())
-    setGradient(`linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`)
+    setGradient(`linear-gradient(to ${direction}, ${event.target?.value.toString()}, ${colorTwo}, ${colorThree})`)
   }
 
   const onChangeColorTwo = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTwo(event.target.value.toString())
-    const formatColor = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`
+    setTwo(event.target?.value.toString())
+    const formatColor = `linear-gradient(to ${direction}, ${colorOne}, ${event.target?.value.toString()}, ${colorThree})`
     setGradient(formatColor)
   }
 
   const onChangeColorThree = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setThree(event.target.value.toString())
-    const formatColor = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`
+    setThree(event.target?.value.toString())
+    const formatColor = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${event.target?.value.toString()})`
     setGradient(formatColor)
   }
 
@@ -121,7 +144,7 @@ const AuraForm: React.FC = ({}) => {
               <div className="flex flex-col justify-center items-center">
                 <input
                   type="color"
-                  value={colorOne ? colorOne : user?.colorOne!}
+                  value={colorOne ? colorOne : "#000000"}
                   {...register('colorOne')}
                   onChange={(event) => onChangeColorOne(event)}
                   className="w-24 h-12 border-none bg-transparent	"
@@ -131,17 +154,17 @@ const AuraForm: React.FC = ({}) => {
               <div className="flex flex-col justify-center items-center">
                 <input
                   type="color"
-                  value={colorTwo ? colorTwo : user?.colorTwo!}
+                  value={colorTwo ? colorTwo : "#000000"}
                   {...register('colorTwo')}
                   onChange={(event) => onChangeColorTwo(event)}
                   className="w-24 h-12 border-none bg-transparent"
                 />
-                <p>{colorTwo ? colorTwo : user?.colorTwo}</p>
+                <p>{colorTwo ? colorTwo : "#000000"}</p>
               </div>
               <div className="flex flex-col justify-center items-center">
                 <input
                   type="color"
-                  value={colorThree ? colorThree : user?.colorThree!}
+                  value={colorThree ? colorThree : "#000000"}
                   {...register('colorThree')}
                   onChange={(event) => onChangeColorThree(event)}
                   className="w-24 h-12 border-none bg-transparent"

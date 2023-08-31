@@ -171,22 +171,6 @@ export default function IdentityForm({}) {
             />
           </div>
         </div>
-        <Link
-          href={{
-            pathname: `/profile/${address}/aura`,
-          }}
-        >
-          <button
-            type="button"
-            onClick={() => onAuraSubmit()}
-            className={`flex flex-row rounded-lg ${
-              path === 'onboarding' ? 'collapse -mb-12' : 'visible mb-4'
-            }  items-center justify-evenly w-32 h-12 mt-8 bg-gradient-to-r from-teal-700 to-indigo-500 cursor-pointer`}
-          >
-            <h2> Aura </h2>
-            <Image src={'/color-wheel.svg'} height={32} width={32} alt="aura button" />
-          </button>
-        </Link>
         { isOnboarding ? <NewUserModal isOpen={isOpen}/> : null}
 
         <UploadFailModal isOpen={isFailOpen} />
@@ -194,7 +178,7 @@ export default function IdentityForm({}) {
           type="submit"
           title="next"
           value={path === 'onboarding' ? 'Create Account' : 'Save & Exit'}
-          className="not-italic bg-black h-12 rounded-lg font-mono font-bold text-lg p-2 px-4 border-none cursor-pointer mb-8"
+          className="not-italic bg-black h-12 rounded-lg font-mono font-bold text-lg p-2 px-4 border-none cursor-pointer my-8"
         />
       </form>
     </div>

@@ -22,7 +22,7 @@ export default function Aura({})  {
         <div className="">
           <Link
             href={{
-              pathname: `/profile/${address}/identity`,
+              pathname: `/profile/${address}`,
             }}
           >
             <div className="flex flex-row cursor-pointer">
