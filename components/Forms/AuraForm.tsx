@@ -48,23 +48,41 @@ const AuraForm: React.FC = ({}) => {
   const onSubmit: SubmitHandler<AuraInputs> = (data) => {
     data.direction = direction
     setAura(data)
-    router.push('/onboarding?tab=identity')
+
+    if(path === 'onboarding'){
+      router.push('/onboarding?tab=identity')
+      return
+    }
+
+    if (path.includes('profile')){
+      router.push(`/profile/${address}/identity`)
+
+    }
   }
 
   const onChangeColorOne = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOne(event.target?.value.toString())
+    const formatColor = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`
+    setGradient(formatColor)
   }
 
   const onChangeColorTwo = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTwo(event.target.value.toString())
+    const formatColor = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`
+    setGradient(formatColor)
   }
 
   const onChangeColorThree = (event: React.ChangeEvent<HTMLInputElement>) => {
     setThree(event.target.value.toString())
+    const formatColor = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`
+    setGradient(formatColor)
   }
 
   const changeDirection = (event: React.MouseEvent<HTMLInputElement>) => {
     setDirection(event.currentTarget.id)
+
+    const formatColor = `linear-gradient(to ${event.currentTarget.id}, ${colorOne}, ${colorTwo}, ${colorThree})`
+    setGradient(formatColor)
   }
 
   const onGenerateColor = () => {
@@ -150,18 +168,11 @@ const AuraForm: React.FC = ({}) => {
               </div>
             </div>
             <h3 className="self-center my-8"> Direction: {cardinalMap.get(direction)} </h3>
-            <button
-              type="button"
-              onClick={() => onGenerateColor()}
-              className=" flex justify-center bg-[#0E4749] items-center mb-4 h-12 rounded-lg p-2 border-none cursor-pointer"
-            >
-              <h2> Generate Aura </h2>{' '}
-            </button>
             <input
               type="submit"
               title="next"
-              value={path === 'onboarding' ? 'Create Idenity' : 'Save and Exit'}
-              className="not-italic bg-black h-12 rounded-lg font-mono font-bold text-lg p-2 px-4 border-none mt-2 cursor-pointer"
+              value={'Generate Aura'}
+              className="not-italic bg-[#0E4749] h-12 rounded-lg font-mono font-bold text-lg p-2 px-4 border-none mt-2 cursor-pointer"
             />
           </div>
         </form>

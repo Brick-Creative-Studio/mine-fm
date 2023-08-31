@@ -13,7 +13,7 @@ import useGetUser from "../../hooks/useGetUser";
 const Nav = () => {
   const isMounted = useIsMounted()
   const { setSignerAddress } = useLayoutStore((state) => state)
-  const { hasAccount, setAura, setIdentity, id, resetProfileState } = useProfileStore((state) => state)
+  const { hasAccount, setAura, setIdentity, id, resetProfileState, setHasAccount } = useProfileStore((state) => state)
 
   const { address } = useAccount({
     onDisconnect() {
@@ -22,17 +22,13 @@ const Nav = () => {
     },
     onConnect({ address, connector, isReconnected }) {
       address && setSignerAddress(address)
-
-      if (id) {
-      } else {
-      }
     },
   })
+
   const { error, isLoading, user } = useGetUser(address as string)
 
-  console.log('nav user:', error)
-
   useEffect(() => {
+    console.log('user:', user)
     if (user){
       setIdentity({
         id: user.id,
@@ -50,7 +46,15 @@ const Nav = () => {
         colorThree: user.colorThree!!,
         direction: user.direction!!
       })
+      setHasAccount(true)
+      return
     }
+
+    if(error || !user) {
+      resetProfileState()
+      return
+    }
+
   }, [user, error, isLoading])
 
   return isMounted && address ? (

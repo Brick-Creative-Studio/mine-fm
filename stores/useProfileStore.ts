@@ -5,8 +5,6 @@ interface ProfileStoreProps {
   id: string | null
   setId: (id: string) => void
   name: string | null
-  hasMoody: boolean
-  setHasMoody: (status: boolean) => void
   setName: (name: string) => void
   m_tag: string | null
   email: string | null
@@ -32,7 +30,6 @@ interface ProfileStoreProps {
 const initialState = {
   name: null,
   id: null,
-  hasMoody: false,
   m_tag: null,
   phone: null,
   email: null,
@@ -72,7 +69,6 @@ export const useProfileStore = create(
       ...initialState,
       setName: (name: string) => set({ name }),
       setId: (id: string) => set({ id }),
-      setHasMoody: (hasMoody: boolean) => set({ hasMoody }),
       setTag: (m_tag: string) => set({ m_tag }),
       setPhone: (phone: string) => set({ phone }),
       setAura: (aura: AuraType) => set({ aura }),

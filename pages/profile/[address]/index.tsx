@@ -2,35 +2,33 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { bgGradient } from '../../../styles/background.css'
 import { ProfileSectionHandler as SectionHandler } from 'components/Layout/ProfileSectionHandler'
 import { useLayoutStore } from 'stores'
-import MoodsSection from 'components/Sections/MoodsSection'
-import MscapeSection from 'components/Sections/MsSection'
 import InstaModal from 'components/Modals/InstaModal'
-import { useProfileStore } from 'stores'
 import TwitterModal from 'components/Modals/TwitterModal'
-import { User } from '../../../types/User'
 import MemoryCardSection from "../../../components/Sections/MemoryCardSection";
 import OreSection from "../../../components/Sections/OresSection";
-import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import CopyButton from '../../../components/CopyButton/CopyButton'
-import axios from 'axios'
 import FollowerModal from "../../../components/Modals/FollowerModal";
 import FollowingModal from "../../../components/Modals/FollowingModal";
-interface UserProps {
-  user: User | undefined
-}
+import useGetUser from "../../../hooks/useGetUser";
+import { useAccount} from "wagmi";
 
-export default function Profile({ user }: UserProps) {
-  const { signerAddress } = useLayoutStore((state) => state)
-  const { aura } = useProfileStore((state) => state)
+
+export default function Profile() {
+  const { address, isConnecting, isDisconnected } = useAccount()
   const [gradient, setGradient] = useState(``)
+  const [isUserPage, setPageType] = useState(true)
   const { query } = useRouter()
   const pathAddress = query?.address?.toString()
-  const isUserPage = () => {
-    return signerAddress === pathAddress;
+  const { error, isLoading, user } = useGetUser(pathAddress as string)
+  const aura = {
+    direction: user?.direction,
+    colorOne: user?.colorOne,
+    colorTwo: user?.colorTwo,
+    colorThree: user?.colorThree
   }
+
 
   const sections = [
     {
@@ -47,6 +45,14 @@ export default function Profile({ user }: UserProps) {
       `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     )
   }, [aura])
+
+  useEffect(() => {
+    if(address as string !== pathAddress){
+      setPageType(false)
+    } else {
+      setPageType(true)
+    }
+  }, [address])
 
   return (
     <div className="flex flex-col mt-24 mb-auto w-full">
@@ -71,7 +77,7 @@ export default function Profile({ user }: UserProps) {
                 <CopyButton text={user?.walletAddress as string} />
               </div>
               {
-                isUserPage() ? null : (
+                isUserPage  ? null : (
                   <div
                     className={
                       'w-40 h-12 flex items-center justify-center bg-fuchsia-700 rounded-full mt-4'
@@ -87,8 +93,8 @@ export default function Profile({ user }: UserProps) {
             <div className="flex w-fit justify-around	mt-4 bg-black/50 rounded-xl">
               <TwitterModal twitterUrl={user?.twitter} />
               <InstaModal instaUrl={user?.instagram} />
-
-              <Link href={`${signerAddress}/identity`}>
+              {
+                isUserPage ?     <Link href={`${address}/identity`}>
                 <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent">
                   <Image
                     width={24}
@@ -98,7 +104,9 @@ export default function Profile({ user }: UserProps) {
                     className="justify-self-center self-center"
                   />
                 </button>
-              </Link>
+              </Link> : null
+              }
+
             </div>
           </div>
         </div>
@@ -126,27 +134,10 @@ export default function Profile({ user }: UserProps) {
       </div>
       <SectionHandler
         sections={sections}
-        signerAddress={signerAddress ? signerAddress : undefined}
+        signerAddress={user?.walletAddress ? user.walletAddress : undefined}
         activeTab={query?.tab ? (query.tab as string) : undefined}
       />
     </div>
   )
 }
 
-export const getServerSideProps: GetServerSideProps<{ user: User }> = async (
-  context: GetServerSidePropsContext
-) => {
-  const url = `https://minefm-server.herokuapp.com/user/user`
-  const signerAddress = context.params?.address as string
-
-  let user: User = await axios
-    .post(url, {
-      walletAddress: signerAddress,
-    })
-    .then((res) => {
-      return res.data
-    })
-  return {
-    props: { user }, // will be passed to the page component as props
-  }
-}

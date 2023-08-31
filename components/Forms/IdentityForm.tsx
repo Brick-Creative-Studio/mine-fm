@@ -10,6 +10,7 @@ import { phoneNumberAutoFormat } from '../../utils/phoneNumberAutoFormat'
 import { User } from "../../types/User";
 import NewUserModal from '../Modals/NewUserModal';
 import UploadFailModal from "../Modals/UploadFailModal";
+import axios from "axios";
 
 type Identity = {
   id: string | null
@@ -46,42 +47,46 @@ export default function IdentityForm({}) {
   const onSubmit: SubmitHandler<Identity> = async (data) => {
     setIdentity(data)
 
+    const user = {
+      miner_tag: data.m_tag,
+      email: data.email,
+      phone: data.phone,
+      walletAddress: address,
+      name: data.name,
+      colorOne: aura.colorOne,
+      colorTwo: aura.colorTwo,
+      colorThree: aura.colorThree,
+      direction: aura.direction,
+      bio: data.bio,
+    }
     if (isOnboarding) {
-      const user = {
-        miner_tag: data.m_tag,
-        email: data.email,
-        phone: data.phone,
-        walletAddress: address,
-        name: data.name,
-        colorOne: aura.colorOne,
-        colorTwo: aura.colorTwo,
-        colorThree: aura.colorThree,
-        direction: aura.direction,
-        bio: data.bio,
-      }
-      const newUser = await createUser(address as string, user as User).then(() => {
-          setSuccessIsOpen(true)
-        }).catch(() => {
+
+
+      const endpoint = 'user/create'
+      const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+
+      const newMiner = await axios.post(url, user).then((res) => {
+        setSuccessIsOpen(true)
+        return res.data
+      }).catch((error) => {
+        console.log('fetch user error:', error)
         setFailureIsOpen(true)
-        console.log('create user failure')
+
+        return error
       })
 
     } else {
-      const updatedUser = {
-        miner_tag: data.m_tag,
-        email: data.email,
-        phone: data.phone,
-        walletAddress: address,
-        name: data.name,
-        bio: data.bio,
-      }
-      const user = await updateUser(updatedUser)
-      if (user){
-        console.log('updating user')
-        router.push(`/profile/${address}`)
-      } else {
-        console.log('error updating user')
-      }
+      const endpoint = 'user/'
+      const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+
+      const updatedUser = await axios.put(url, user).then((res) => {
+        console.log(res.data)
+        return res.data
+      }).catch((error) => {
+        console.log('error updating user:', error)
+        return error
+      })
+
     }
   }
 
@@ -90,6 +95,7 @@ export default function IdentityForm({}) {
     onSubmit(identityValues)
     setIdentity(identityValues)
   }
+
   return (
     <div className="flex flex-col mt-8  justify-center items-center">
       <form
