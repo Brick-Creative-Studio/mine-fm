@@ -38,6 +38,7 @@ export default function LivestreamForm({}) {
   const { posterUrl, setPosterUrl} = useEventStore((state) => state)
   const { isMobile, signerAddress } = useLayoutStore()
   let [isOpen, setIsOpen] = useState(false)
+  const [eventID, setEventId] = useState<string>()
 
 
 
@@ -59,6 +60,7 @@ export default function LivestreamForm({}) {
 
     const response = await createEvent(event).then((event) => {
       if(event !== undefined){
+        setEventId(event.id!)
         setIsOpen(true)
         console.log('form set open check:', event)
         return event;
@@ -194,7 +196,7 @@ export default function LivestreamForm({}) {
 
               {/* errors will return when field validation fails  */}
               {errors.titleRequired && <span>This field is required</span>}
-              <SuccessEventModal isOpen={isOpen} eventId={"33121"}/>
+              <SuccessEventModal isOpen={isOpen} eventId={eventID}/>
               <input
                 type="submit"
                 className="bg-[#5971ED] border-transparent h-12 rounded-lg font-mono font-bold text-lg"
@@ -288,7 +290,7 @@ export default function LivestreamForm({}) {
 
                   {/* register your input into the hook by invoking the "register" function */}
                   <textarea
-                    defaultValue="feels like summer"
+                    placeholder="A livestream for your mood"
                     className=" bg-transparent  h-44 border p-2 border-solid  rounded-md text-white "
                     {...register('description')}
                   />
@@ -296,7 +298,7 @@ export default function LivestreamForm({}) {
 
                 {/* errors will return when field validation fails  */}
                 {errors.titleRequired && <span>This field is required</span>}
-                <SuccessEventModal isOpen={isOpen} eventId={"33121"}/>
+                <SuccessEventModal isOpen={isOpen} eventId={eventID}/>
 
                 <input
                   type="submit"

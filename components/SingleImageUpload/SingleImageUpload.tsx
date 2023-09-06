@@ -82,9 +82,6 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
         setValue(name as string, url)
 
         console.log('file url:', url)
-
-        // @ts-ignore
-        console.log('form check:', getValues(name as string))
       } catch (err: any) {
         setIsUploading(false)
         setUploadArtworkError({
@@ -119,10 +116,11 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
       )}
 
       <input
-        className={defaultUploadStyle}
+        className={'hidden'}
         id="file-upload"
         data-testid="file-upload"
         type="file"
+
         multiple={false}
         // @ts-ignore
         {...register(name as string)}

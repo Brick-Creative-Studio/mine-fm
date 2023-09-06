@@ -6,7 +6,7 @@ import Link from "next/link";
 
 interface ModalProps {
   isOpen: boolean,
-  eventId: string
+  eventId: string | undefined
 }
 
 
@@ -64,14 +64,23 @@ export default function SuccessEventModal({ isOpen, eventId } : ModalProps) {
                   <Image src={'/gif/mine-cube.gif'} alt={'mine cube gif'} height={64} width={64}/>
 
                   <div className="mt-4">
-                    <Link href={`/livestream/${eventId}`}>
+                    { eventId ?
+                      <Link href={`/livestream/${eventId}`}>
                       <button
                         type="submit"
                         className="not-italic bg-black/40 h-12 rounded-lg font-mono font-bold text-green-200 text-lg p-2 px-4 border-none cursor-pointer mb-8"
                       >
                         Head to your livestream page
                       </button>
-                    </Link>
+                    </Link> :
+                      <button
+                        type="submit"
+                        className="not-italic bg-black/40 h-12 rounded-lg font-mono font-bold text-green-200 text-lg p-2 px-4 border-none cursor-pointer mb-8"
+                      >
+                        Fetching Event Data
+                      </button>
+                    }
+
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

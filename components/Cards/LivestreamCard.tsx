@@ -1,8 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
-import { useLayoutStore, useProfileStore, useMCStore } from 'stores'
-import { useRouter } from 'next/router'
+import { useProfileStore } from "../../stores";
 import RsvpModal from "../Modals/RsvpModal";
 import { Event } from "../../types/Event";
 import { getFetchableUrl } from 'packages/ipfs-service'
@@ -16,6 +14,7 @@ interface CardProps {
 export const LivestreamCard: React.FC<CardProps> = ({ streamEvent }) => {
   const baseURL = 'https://mine-fm.infura-ipfs.io/'
   const posterUrl =  baseURL + streamEvent.posterURL
+
   const formatDate = new Date(streamEvent.startDate).toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(0, 16)
   let f = formatDate
 
