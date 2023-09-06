@@ -48,14 +48,14 @@ export const ChatSectionHandler: React.FC<SectionHandlerProps> = ({
   }, [activeTab, tab])
 
   return (
-    <div className="w-full h-max">
+    <div className="w-full h-full ">
       {sections && sections.length > 1 && (
         <div className="flex flex-row space-x-6 justify-around">
           {sections?.map((section, index) => {
             return (
               <Link
                 href={{
-                  pathname: `/livestream/1${'?'}tab=chat`,
+                  pathname: `/livestream/${'?'}tab=chat`,
                   query: {
                     tab: slugify(section.title),
                   },
@@ -79,7 +79,7 @@ export const ChatSectionHandler: React.FC<SectionHandlerProps> = ({
       )}
       <div className="w-full border border-white opacity-10 border-solid -mt-3" />
 
-      <div>
+      <div >
         <AnimatePresence mode={'wait'}>
           <motion.div
             key={activeSection?.title}

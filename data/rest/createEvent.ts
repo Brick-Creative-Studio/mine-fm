@@ -1,10 +1,13 @@
 import axios from 'axios'
 import { Event } from "../../types/Event";
+import process from "process";
 
 
-export default async function createEvent(event: Event) : Promise<Event | undefined> {
-  const url = `https://minefm-server.herokuapp.com/event/create`
-  let data = undefined
+export default async function createEvent(event: any) : Promise<Event | undefined> {
+  const endpoint = 'event/create'
+  const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+
+  let data : Event
   try {
     data = await axios.post(url, event).then((res) => {
       console.log(res.data)

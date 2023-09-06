@@ -12,8 +12,8 @@ export default function SettingsPage({}) {
   return (
     <div className="flex flex-col w-full mt-24 ">
       
-      <div className="flex flex-row justify-around w-full items-center">
-        <div className="">
+      <div className="flex flex-row w-full items-center">
+        <div className="absolute ml-12">
           <Link
             href={{
               pathname: `/profile/${address}`,
@@ -25,25 +25,8 @@ export default function SettingsPage({}) {
             </div>
           </Link>
         </div>
-
-        <h2> Identity </h2>
-
-        <div className="">
-          <Link
-            href={{
-              pathname: `/profile/${address}/aura`,
-            }}
-          >
-            <div className="flex flex-row cursor-pointer">
-              <h3>Aura</h3>
-              <Image
-                src={'/chevron-right.svg'}
-                width={32}
-                height={32}
-                alt="gallery button"
-              />
-            </div>
-          </Link>
+        <div className={'mx-auto'}>
+        <h2 > Identity </h2>
         </div>
       </div>
       <div className="w-full border border-white opacity-10 border-solid bg-white" />

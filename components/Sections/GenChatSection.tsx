@@ -1,24 +1,54 @@
 import React, { useEffect, useRef, useState } from 'react'
-import MessageCell from "../Message/MessageCell";
+import MessageCell from '../Message/MessageCell'
 import Input from '../Input/Input'
+import io from 'socket.io-client'
+import axios from 'axios'
 
-export default function GeneralChatSection({}){
+import { Message } from '../../types/Message'
 
-  return(
-    <div className={'flex flex-col w-full h-96 md:h-[561.5px] '}>
-      <div className={'hover:scroll-auto overflow-scroll flex flex-col-reverse'}>
-        {/*//TODO:add map function*/}
-        <MessageCell />
-        <MessageCell />
-        <MessageCell />
-        <MessageCell />
-        <MessageCell />
-        <MessageCell />
-        <MessageCell />
-        <MessageCell />
+
+export default function GeneralChatSection({}) {
+  const [messages, setMessages] = useState<Message[]>([])
+  // const socket = io('https://minefm-server.herokuapp.com/')
+  const socket = io('http://localhost:3002')
+
+  useEffect(() => {
+    socket.on('chat', (message: Message) => {
+      setMessages((messages) => [...messages, message])
+    })
+    return () => {
+      //TODO: Verify if this is proper socket clean up
+      socket.off('chat')
+    }
+  }, [socket])
+
+  //TODO: On connection load messages into array
+
+  return (
+    <div className={'md:h-[533px] h-52  justify-end'}>
+
+      <div className={'flex flex-col-reverse h-full w-full scroll-smooth overflow-scroll'}>
+        <div className={''}>
+        {messages.length ? (
+          messages.map(({ message, time, minerTag, aura }, index) => {
+            return (
+              <MessageCell
+                key={index}
+                time={time}
+                message={message}
+                aura={aura}
+                minerTag={minerTag}
+              />
+            )
+          })
+        ) : (
+          <div className={'flex items-center justify-center h-full w-full'}>
+            <p> No messages added yet </p>
+          </div>
+        )}
+        </div>
       </div>
       <Input />
     </div>
-    )
-
+  )
 }

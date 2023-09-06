@@ -5,8 +5,6 @@ interface ProfileStoreProps {
   id: string | null
   setId: (id: string) => void
   name: string | null
-  hasMoody: boolean
-  setHasMoody: (status: boolean) => void
   setName: (name: string) => void
   m_tag: string | null
   email: string | null
@@ -24,13 +22,14 @@ interface ProfileStoreProps {
   aura: AuraType
   setAura: (aura: AuraType) => void
   setIdentity: (identity: Identity) => void
+  resetProfileState: () => void
+
 
 }
 
 const initialState = {
   name: null,
   id: null,
-  hasMoody: false,
   m_tag: null,
   phone: null,
   email: null,
@@ -40,9 +39,9 @@ const initialState = {
   bio: null,
   aura: {
     direction: 'top',
-    colorOne: '#000',
+    colorOne: '#FFF',
     colorTwo: '#FFF',
-    colorThree: '#240045'
+    colorThree: '#FFF'
   },
 }
 
@@ -70,7 +69,6 @@ export const useProfileStore = create(
       ...initialState,
       setName: (name: string) => set({ name }),
       setId: (id: string) => set({ id }),
-      setHasMoody: (hasMoody: boolean) => set({ hasMoody }),
       setTag: (m_tag: string) => set({ m_tag }),
       setPhone: (phone: string) => set({ phone }),
       setAura: (aura: AuraType) => set({ aura }),
@@ -79,6 +77,9 @@ export const useProfileStore = create(
       setBio: (bio: string) => set({ bio }),
       setInstagram: (instagram: string) => set({ instagram }),
       setTwitter: (twitter: string) => set({ twitter }),
+      resetProfileState: () => {
+        set(initialState)
+      },
     }),
     {
       name: `mine-fm-profile`,

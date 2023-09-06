@@ -3,15 +3,43 @@ import React, { Fragment, useState } from 'react'
 import { getFetchableUrl } from '../../packages/ipfs-service'
 import Image from 'next/image'
 import { Event } from '../../types/Event'
+import Link from "next/link";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { useProfileStore } from "../../stores";
+import process from "process";
 
 interface ModalProps {
-  streamEvent: Event
+  streamEvent: Event,
 }
 
 export default function RsvpModal({ streamEvent }: ModalProps) {
   let [isOpen, setIsOpen] = useState(false)
   const formatDate = new Date(streamEvent.startDate).toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(0, 16)
+  const router = useRouter();
+  const { id: userId } = useProfileStore((state) => state)
 
+
+
+  async function handleRSVP() {
+    const endpoint = 'attendee/create'
+    const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+    const attendee = {
+      eventID: streamEvent.id,
+      userID: userId
+    }
+    try {
+       await axios.post(url, attendee).then((res) => {
+        console.log(res.data)
+        return res.data
+      }).catch((error) => {
+        console.log('fetch user error:', error)
+      })
+    } catch (error) {
+      console.log('create event error:', error)
+      return
+    }
+  }
 
   function closeModal() {
     setIsOpen(false)
@@ -112,22 +140,16 @@ export default function RsvpModal({ streamEvent }: ModalProps) {
                       </div>
                     </div>
                     <div className="mt-2 w-full h-0.5 bg-[#F25C54]" />
-                    <p> Do you want to create a section? </p>
-                    <div className={'flex items-center'}>
-                      <label className={'mr-2'}> Section Name</label>
-                      <input
-                        type="text"
-                        placeholder={'section name'}
-                        className=" bg-gray-400/25 border p-2 border-solid rounded-md text-white "
-                      />                    </div>
                     <div className="mt-4">
+                      {/*<Link href={`/livestream/${streamEvent.id}?tab=chat`}>*/}
                       <button
                         type="button"
                         className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={closeModal}
+                        onClick={handleRSVP}
                       >
-                        {`Entry Fee: .01 eth`}
+                        {`Enter Livestream`}
                       </button>
+                      {/*</Link>*/}
                     </div>
                   </div>
                 </Dialog.Panel>

@@ -9,11 +9,17 @@ import { ChatSectionHandler } from '../../../components/Layout/ChatSectionHandle
 import GeneralChatSection from '../../../components/Sections/GenChatSection'
 import GroupChatSection from '../../../components/Sections/GroupChatSection'
 import StreamInfoDesktop from 'components/Sections/StreamInfo-Desktop'
+import StreamInfo from "../../../components/Sections/StreamInfo-Section";
 import SectionsGrid from '../../../components/Sections/SectionGrid'
 import Link from 'next/link'
 import PageAudioPlayer from '../../../components/PageAudioPlayer.tsx'
+import { GetServerSideProps } from "next";
 
-export default function LivestreamPage({}) {
+interface Props {
+  eventId: string
+}
+
+export default function LivestreamPage({ eventId }: Props) {
   const { query } = useRouter()
   const { isMobile } = useLayoutStore()
 
@@ -30,25 +36,19 @@ export default function LivestreamPage({}) {
   const guestSections = [
     {
       title: 'Chat',
-      component: [
-        <ChatSectionHandler
-          sections={chatSections}
-          key={'chat'}
-          activeTab={query?.tab ? (query.tab as string) : undefined}
-        />,
-      ],
+      component: [<GeneralChatSection key={'chat'} />],
     },
     {
       title: 'Audience',
       component: [<AudienceGrid key={'audience'} />],
     },
     {
-      title: 'Section',
-      component: [<SectionsGrid key={'section'} />],
+      title: 'Admin',
+      component: [<AdminSection key={'Admin'} />],
     },
     {
       title: 'Info',
-      component: [<StreamInfoDesktop key={'info'} />],
+      component: [<StreamInfo key={'info'} />],
     },
   ]
 
@@ -99,8 +99,8 @@ export default function LivestreamPage({}) {
   ]
 
   return (
-    <div className="flex flex-col w-full mt-24 ">
-      <div className={'flex justify-between'}>
+    <div className="flex flex-col w-full mt-24">
+      <div className={'flex justify-between mb-4'}>
         <Link href={'/explore?tab=livestream'}>
           <div className="flex flex-row mx-6 cursor-pointer">
             <Image
@@ -118,10 +118,10 @@ export default function LivestreamPage({}) {
         </div>
       </div>
       <div className={'md:flex md:flex-row '}>
-        <div className={'flex flex-col w-full h-64 md:h-full md:w-3/4 md:ml-4'}>
+        <div className={'flex flex-col w-full md:h-full md:w-3/4 md:ml-4'}>
           <div
             className={
-              'flex justify-center items-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% w-full h-64 md:h-[600px]'
+              'flex justify-center items-center bg-black/75 w-full h-64 md:h-[600px]'
             }
           >
             <PageAudioPlayer />
@@ -133,10 +133,24 @@ export default function LivestreamPage({}) {
         </div>
 
         <SectionHandler
-          sections={adminSections}
+          sections={guestSections}
           activeTab={query?.tab ? (query.tab as string) : undefined}
+          eventId={ eventId }
         />
       </div>
     </div>
   )
+}
+
+export const getServerSideProps : GetServerSideProps = async ({
+  params
+}) => {
+  const eventId = params?.id?.toString()!
+  const props : Props = {
+    eventId
+  }
+  return {
+    props,
+  }
+
 }

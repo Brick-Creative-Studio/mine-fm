@@ -11,6 +11,7 @@ interface SectionHandlerProps {
   }[]
   signerAddress?: string
   activeTab?: string
+  eventId: string
 }
 
 interface activeSectionProps {
@@ -22,6 +23,7 @@ export const StreamSectionHandler: React.FC<SectionHandlerProps> = ({
                                                                        sections,
                                                                        signerAddress,
                                                                        activeTab,
+                                                                      eventId
                                                                      }) => {
   /*
 
@@ -61,7 +63,7 @@ export const StreamSectionHandler: React.FC<SectionHandlerProps> = ({
             return (
               <Link
                 href={{
-                  pathname: `/livestream/1`,
+                  pathname: `/livestream/${eventId}`,
                   query: {
                     tab: slugify(section.title),
                   },

@@ -38,15 +38,17 @@ export default function LivestreamForm({}) {
   const { posterUrl, setPosterUrl} = useEventStore((state) => state)
   const { isMobile, signerAddress } = useLayoutStore()
   let [isOpen, setIsOpen] = useState(false)
+  const [eventID, setEventId] = useState<string>()
 
 
 
   const onSubmit: SubmitHandler<LivestreamInput> = async (data) => {
 
 
-    const event: Event = {
+    const event = {
       title: data.title,
       address: signerAddress as string,
+      ownerAddress: signerAddress as string,
       organizer: data.organizer,
       artist: data.artist,
       isOnline: true,
@@ -56,8 +58,9 @@ export default function LivestreamForm({}) {
       description: data.description,
     }
 
-    await createEvent(event).then((event) => {
+    const response = await createEvent(event).then((event) => {
       if(event !== undefined){
+        setEventId(event.id!)
         setIsOpen(true)
         console.log('form set open check:', event)
         return event;
@@ -193,7 +196,7 @@ export default function LivestreamForm({}) {
 
               {/* errors will return when field validation fails  */}
               {errors.titleRequired && <span>This field is required</span>}
-              <SuccessEventModal isOpen={isOpen} eventId={"33121"}/>
+              <SuccessEventModal isOpen={isOpen} eventId={eventID}/>
               <input
                 type="submit"
                 className="bg-[#5971ED] border-transparent h-12 rounded-lg font-mono font-bold text-lg"
@@ -287,7 +290,7 @@ export default function LivestreamForm({}) {
 
                   {/* register your input into the hook by invoking the "register" function */}
                   <textarea
-                    defaultValue="feels like summer"
+                    placeholder="A livestream for your mood"
                     className=" bg-transparent  h-44 border p-2 border-solid  rounded-md text-white "
                     {...register('description')}
                   />
@@ -295,7 +298,7 @@ export default function LivestreamForm({}) {
 
                 {/* errors will return when field validation fails  */}
                 {errors.titleRequired && <span>This field is required</span>}
-                <SuccessEventModal isOpen={isOpen} eventId={"33121"}/>
+                <SuccessEventModal isOpen={isOpen} eventId={eventID}/>
 
                 <input
                   type="submit"
@@ -313,16 +316,6 @@ export default function LivestreamForm({}) {
                   />
                 </div>
 
-                <div className="flex flex-col justify-center items-center">
-                  <label htmlFor="description"> Add a Color to Match the Mood </label>
-                  <div className="flex justify-center self-center mt-4 w-40 h-40">
-                    <input
-                      type="color"
-                      className={styles.style2}
-                      {...register('color')}
-                    />
-                  </div>
-                </div>
               </div>
             </div>
           )}

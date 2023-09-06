@@ -8,28 +8,25 @@ import { useAccount } from 'wagmi'
 import { useProfileStore } from 'stores'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useLayoutStore } from 'stores'
-import fetchUser from "../../data/rest/fetchUser";
+import useGetUser from "../../hooks/useGetUser";
+import { User } from "../../types/User";
 
 const Nav = () => {
   const isMounted = useIsMounted()
   const { setSignerAddress } = useLayoutStore((state) => state)
-  const { hasAccount, setHasAccount, setAura, setIdentity, id } = useProfileStore((state) => state)
+  const { hasAccount, setAura, setIdentity, id, resetProfileState, setHasAccount } = useProfileStore((state) => state)
 
   const { address } = useAccount({
     onDisconnect() {
       setSignerAddress(null)
-      setHasAccount(false)
+      resetProfileState()
     },
     onConnect({ address, connector, isReconnected }) {
       address && setSignerAddress(address)
-      if (id) {
-        setHasAccount(true)
-      } else {
-        setHasAccount(false)
-      }
     },
   })
-  const { error, isLoading, user } = fetchUser(address as string)
+
+  const { error, isLoading, user } = useGetUser(address as string)
 
   useEffect(() => {
     if (user){
@@ -49,9 +46,14 @@ const Nav = () => {
         colorThree: user.colorThree!!,
         direction: user.direction!!
       })
-
+      setHasAccount(true)
+      return
     }
 
+    if(error || !user) {
+      resetProfileState()
+      return
+    }
 
   }, [user, error, isLoading])
 

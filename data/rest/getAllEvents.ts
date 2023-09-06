@@ -1,8 +1,11 @@
 import axios from 'axios'
 import { Event } from "../../types/Event";
+import process from "process";
 
 export default async function getAllEvents(): Promise<Event[] | undefined>{
-  const url = `https://minefm-server.herokuapp.com/event`;
+  const endpoint = 'event'
+  const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+
   let data;
   try {
     await axios.get(url).then((res) => {
