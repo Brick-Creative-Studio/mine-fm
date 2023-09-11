@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLayoutStore } from "../../stores"
+import { useLayoutStore } from '../../stores'
 import { useWalletClient } from 'wagmi'
 import Nav from './Nav'
 import Footer from './Footer'
@@ -7,9 +7,8 @@ import { bodyGradient } from 'styles/gradient.css'
 
 import { flexContainer } from './styles.css'
 
-
 type Props = {
-  children: JSX.Element | null 
+  children: JSX.Element | null
 }
 
 const Layout = ({ children }: Props) => {
@@ -48,13 +47,13 @@ const Layout = ({ children }: Props) => {
 
   return (
     <div className={flexContainer}>
-    <Nav /> 
-    <>
-    <div className={bodyGradient} />
+      <Nav />
+      <>
+        <div className={bodyGradient} />
 
-    {children}
-    </>
-    <Footer />
+        {children}
+      </>
+      <Footer />
     </div>
   )
 }
