@@ -72,14 +72,14 @@ const Nav = () => {
       </div>
 
       <div className={navActions}>
-        <Link
-          key={'create'}
-          href={'/create'}
-        >
-          <button className={navCreate}>
-            <h3> Create </h3>
-          </button>
-        </Link>
+        {/*<Link*/}
+        {/*  key={'create'}*/}
+        {/*  href={'/create'}*/}
+        {/*>*/}
+        {/*  <button className={navCreate}>*/}
+        {/*    <h3> Create </h3>*/}
+        {/*  </button>*/}
+        {/*</Link>*/}
         {address && <NavMenu hasAccount={hasAccount} signerAddress={address} />}
       </div>
     </div>
