@@ -50,16 +50,21 @@ export default function HomePage({}) {
               </Link>
             
             </div>
-            <div className={'border border-[#984DDF] rounded-md border-solid ml-8 mt-8 md:ml-40 w-full h-1/2 px-2 md:px-24 pb-16'}>
+            <div className={'overflow-x-scroll ml-8 mt-8 w-full'}>
+            <div className={'border border-[#984DDF]  rounded-md border-solid  md:ml-40 w-max md:w-full h-1/2 px-2 md:px-24 pb-16'}>
                 <div className={'flex justify-between'}>
-                  <h3 className={'text-[#B999FA]'}> LATEST </h3>
-                  <Link href={'/explore?tab=livestream'}>
-                  <p className={'mr-8 md:mr-24 text-[#B999FA] md:text-lg cursor-pointer'}> {`All Moods >`} </p>
-                  </Link>
+                  <h3 className={'text-[#B999FA]'}> LATEST MOODs </h3>
+
                 </div>
-              <div className={'flex space-x-4 > * + * md:space-x-24 > * + *'}>
+              <div className={'flex space-x-4 > * + * md:space-x-24 > * + * pr-4'}>
                   <div className={'flex flex-col p-2 px-4 mb-4 rounded-md drop-shadow-lg w-72 bg-[#1D0045]'}>
-                    <img alt={'Mood artwork'} className={'self-center w-64 h-48 border-solid  rounded-md border-[#B999FA]'} src={'/stock/stonie-test-poster.jpeg'} />
+                    <div className={styles.overlay}>
+                      <div className={'md:opacity-0 md:hover:opacity-100 w-full h-full fixed bg-transparent '}>
+                        <img alt={'play-icon'} src={'/play.svg'} className={'z-20 w-20 h-20 absolute top-28'} />
+                      </div>
+                      <img alt={'Mood artwork'} className={'self-center w-64 h-48 border-solid  rounded-md border-[#B999FA]'} src={'/stock/stonie-test-poster.jpeg'} />
+
+                    </div>
                     <div className={'flex justify-between'}>
                       <p className={'text-[#B999FA]'}>Bad Bunny </p>
                       <p className={'text-[#B999FA]'}> 08-07-23 </p>
@@ -73,11 +78,17 @@ export default function HomePage({}) {
                       <div className={' border-solid border border-[#984DDF] px-2'}> <h3 className={'text-sm text-[#984DDF]'}> AMBIENT </h3>  </div>
 
                     </div>
+
                   </div>
 
 
                 <div className={'flex flex-col p-2 px-4 mb-4 rounded-md drop-shadow-lg w-72 bg-[#1D0045]'}>
-                  <img alt={'Mood artwork'} className={'self-center w-64 h-48 border-solid  rounded-md border-[#B999FA]'} src={'/stock/stonie-test-poster.jpeg'} />
+                  <div className={styles.overlay}>
+                    <div className={'md:opacity-0 md:hover:opacity-100 w-full h-full fixed bg-transparent '}>
+                  <img alt={'play-icon'} src={'/play.svg'} className={'z-20 w-20 h-20 absolute top-28'} />
+                    </div>
+                  <img alt={'Mood artwork'} className={'-z-10 self-center w-64 h-48 border-solid rounded-md border-[#B999FA]'} src={'/stock/stonie-test-poster.jpeg'} />
+                  </div>
                   <div className={'flex justify-between'}>
                     <p className={'text-[#B999FA]'}>Bad Bunny </p>
                     <p className={'text-[#B999FA]'}> 08-07-23 </p>
@@ -92,8 +103,19 @@ export default function HomePage({}) {
 
                   </div>
                 </div>
+                <Link href={'/explore?tab=livestream'}>
+                  <div className={'self-center flex items-center'}>
+                  <div className={'w-26 h-26 p-2 bg-[#B999FA] rounded-full self-center flex justify-center items-center cursor-pointer'}>
+                    <img className={'h-12 w-12'} alt={'explore button'} src={'/arrow-right.svg'}/>
+                  </div>
 
+                  </div>
+
+                </Link>
               </div>
+
+
+            </div>
             </div>
             <div className={'border border-[#984DDF] rounded-md border-solid mr-8 mt-8 md:mr-40 w-full h-1/2 px-2 md:p-24 mb-12'}>
               <div className={'ml-24 py-8 md:py-2'}>
