@@ -112,10 +112,22 @@ export const navAvatar = style ([
         width: 40,
         height: 40,
         display: 'flex', 
-        background: 'linear-gradient(180deg, #FFB200 0%, #FF2313 100%)',
         cursor: 'pointer'
 
     
+    }
+])
+
+export const miniAvatar = style ([
+    {
+        margin: 8,
+        borderRadius: '50%',
+        width: 32,
+        height: 32,
+        display: 'flex',
+        cursor: 'pointer'
+
+
     }
 ])
 
