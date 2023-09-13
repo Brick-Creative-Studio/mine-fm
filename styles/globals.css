@@ -91,6 +91,13 @@
   src: url('../fonts/carbon/CARBONThinItalic.woff') format('woff');
 }
 
+@font-face {
+  font-family: 'Sublima';
+  font-weight: bold;
+  font-style: normal;
+  src: url('../fonts/Sublima-SemiBold/Sublima-SemiBold.otf') format('otf');
+}
+
 
 
 
@@ -101,11 +108,15 @@ body {
 
 
 h2 {
-  font-family: EllographCF, 'Helvetica', 'sans-serif'
+  font-family: Sublima, 'Helvetica', 'sans-serif'
 }
 
 h1 {
-  font-family: EllographCF, 'Helvetica', 'sans-serif'
+  font-family: Sublima, 'Helvetica', 'sans-serif'
+}
+
+h3 {
+  font-family: Sublima, 'Helvetica', 'sans-serif'
 }
 
 a {

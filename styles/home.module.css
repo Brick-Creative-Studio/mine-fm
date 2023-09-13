@@ -10,12 +10,41 @@
 
 .headerLogo {
   align-self: center;
-  margin: 24px;
-  width: 515px;
-  height: 232px;
-  filter: drop-shadow(2px 6px 31px rgba(0, 0, 0, 0.46));
- 
+  margin: 12rem 0 0 48px;
+  filter: drop-shadow(2px 24px 31px rgba(0, 0, 0, 0.46));
+
 }
+
+
+@media (max-width: 720px) {
+  .headerLogo {
+    align-self: center;
+    margin: 12rem 0 0 48px;
+    filter: drop-shadow(2px 6px 31px rgba(0, 0, 0, 0.46));
+  }
+
+}
+
+.overlay {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 1;
+  padding: 0;
+  margin: 0;
+  transition: .5s ease;
+}
+
+.overlay:hover {
+  opacity: .5;
+}
+
+
+
 
 .main {
   min-height: 100vh;
@@ -24,6 +53,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow-x: clip;
 }
 
 
@@ -96,7 +126,7 @@
   line-height: 1.5;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 720px) {
   .grid {
     width: 100%;
     flex-direction: column;
@@ -105,7 +135,6 @@
   .headerLogo {
     align-self: center;
     margin: 32px;
-    margin-top: 6em;
     width: 340px;
     height: 180px;
     filter: drop-shadow(2px 6px 31px rgba(0, 0, 0, 0.46));
@@ -130,19 +159,64 @@
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+
 }
+
+@media only screen and (max-width: 600px) {
+  .exploreAndCreate {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+  }
+
+
+
+  .createButton{
+    margin: 12px;
+    background-color: transparent;
+    border: 2px solid #B999FA;
+    border-radius: 24px;
+    color: white;
+    display: flex;
+    flex-direction: row-reverse;
+    width: 190px;
+    height: 52px;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+  }
+
+  .exploreButton{
+    margin: 12px;
+    background-color: transparent;
+    border: 2px solid #B999FA;
+    border-radius: 24px;
+    color: white;
+    display: flex;
+    flex-direction: row-reverse;
+    width: 150px;
+    height: 52px;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+  }
+}
+
 
 .createButton{
   margin: 12px;
-  background-color: rgba( 255, 153, 0, 0.7)	;
-  border: none;
-  border-radius: 12px;
+  background-color: transparent;
+  border: 2px solid #B999FA;
+  border-radius: 24px;
   color: white;
   display: flex;
   flex-direction: row-reverse;
-  width: 140px;
-  height: 48px;
-  justify-content: center;
+  width: 170px;
+  height: 52px;
+  justify-content: space-between;
   align-items: center;
   cursor: pointer;
 
@@ -150,15 +224,15 @@
 
 .exploreButton{
   margin: 12px;
-  background-color: rgba( 62, 92, 118, 0.7)	;
-  border: none;
-  border-radius: 12px;
+  background-color: transparent;
+  border: 2px solid #B999FA;
+  border-radius: 24px;
   color: white;
   display: flex;
   flex-direction: row-reverse;
-  width: 140px;
-  height: 48px;
-  justify-content: center;
+  width: 170px;
+  height: 52px;
+  justify-content: space-between;
   align-items: center;
   cursor: pointer;
 
