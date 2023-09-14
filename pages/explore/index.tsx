@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
 import StreamSection from '../../components/Sections/StreamSection'
 import IRLSection from '../../components/Sections/IRLSection'
+import MoodsSection from "../../components/Sections/MoodsSection";
 import { ExploreSectionHandler } from '../../components/Layout/ExploreSectionHandler'
 
 export default function Explore({}) {
@@ -22,12 +23,16 @@ export default function Explore({}) {
       title: 'I R L',
       component: [<IRLSection key={'irl'} />],
     },
+    {
+      title: 'Moods',
+      component: [<MoodsSection key={'moods'} />],
+    },
   ]
 
   return (
     <div className="flex flex-col mt-28 w-full">
-      <div className={' mx-32'}>
-        <h2> Explore Moodscapes </h2>
+      <div className={'ml-12'}>
+        <h3 className={'text-[14px] md:invisible font-light text-[#B999FA]'}> Explore {query?.tab} </h3>
       </div>
 
       <div className="flex flex-col items-center justify-center w-full">

@@ -53,10 +53,12 @@ export default function RsvpModal({ streamEvent }: ModalProps) {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className={'rounded-lg h-8 w-20 bg-[#F25C54] self-end'}
+        className={'flex justify-center items-center rounded-tl-lg h-10 w-24 bg-[#FF8500] self-end'}
       >
-        {' '}
-        RSVP{' '}
+
+        <h3 className={'text-sm  text-[#1D0045] my-0 mr-1'}>ENTER</h3>
+        <img alt={'enter icon'} src={'/exit-dark.svg'}/>
+
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>

@@ -40,7 +40,7 @@ export const ExploreSectionHandler: React.FC<SectionHandlerProps> = ({
   const activeSection: activeSectionProps | undefined = React.useMemo(() => {
     const livestream = tab('livestream')
     const irl = tab('I R L')
-    // const memoryCard = tab('MemoryCard')
+    const moods = tab('moods')
 
 
     if (!activeTab) {
@@ -68,11 +68,14 @@ export const ExploreSectionHandler: React.FC<SectionHandlerProps> = ({
                 key={section.title}
               >
                 <div className="flex flex-col cursor-pointer ">
-                  <p>{section.title}</p>
                   {activeSection?.title === section.title ? (
-                    <div key={index} className="w-auto h-0.5 -mt-4 bg-sky-500/75" />
+                    <div className={'border border-solid rounded-full border-[#984DDF] px-4 py-0 my-0 h-fit'}>
+                      <h3 className={'text-[#984DDF] my-2'}>{section.title.toUpperCase()}</h3>
+                    </div>
                   ) : (
-                    <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
+                    <>
+                    <h3 className={' my-2'}>{section.title.toUpperCase()}</h3>
+                    </>
                   )}
                 </div>
               </Link>
@@ -80,7 +83,7 @@ export const ExploreSectionHandler: React.FC<SectionHandlerProps> = ({
           })}
         </div>
       )}
-      <div className="w-full border border-white opacity-10 border-solid -mt-3" />
+      <div className="w-full border-[#B999FA] border-solid border-2 invisible md:visible mt-4" />
 
       <div >
         <AnimatePresence mode={'wait'}>
