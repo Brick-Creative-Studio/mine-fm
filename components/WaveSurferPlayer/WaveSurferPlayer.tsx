@@ -1,10 +1,11 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react'
 import useWavesurfer from '../../hooks/useWaveSurfer'
+import Image from 'next/image'
 
 const WaveSurferPlayer = (props: any) => {
   const containerRef = useRef<any>()
   const [isPlaying, setIsPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
+
   const wavesurfer: any = useWavesurfer(containerRef, props)
 
   const onPlayClick = useCallback(() => {
@@ -15,13 +16,11 @@ const WaveSurferPlayer = (props: any) => {
   useEffect(() => {
     if (!wavesurfer) return
 
-    setCurrentTime(0)
     setIsPlaying(false)
 
     const subscriptions = [
       wavesurfer.on('play', () => setIsPlaying(true)),
       wavesurfer.on('pause', () => setIsPlaying(false)),
-      wavesurfer.on('timeupdate', (currentTime: any) => setCurrentTime(currentTime)),
     ]
 
     return () => {
@@ -30,13 +29,19 @@ const WaveSurferPlayer = (props: any) => {
   }, [wavesurfer])
 
   return (
-    <>
-      <div ref={containerRef} />
-      <button onClick={onPlayClick} className="bg-blue-500 w-fit">
-        {isPlaying ? 'Pause' : 'Play'}
+    <div className="flex flex-row">
+      <button onClick={onPlayClick} className="bg-transparent w-fit">
+        {isPlaying ? (
+          <Image src="/Pause.svg" alt="Play" width={40} height={40} />
+        ) : (
+          <Image src="/play.svg" alt="Play" width={40} height={40} />
+        )}
       </button>
-      <div>{currentTime}</div>
-    </>
+      <button className="bg-transparent">
+        <Image src="/Speaker_Loud.svg" alt="Play" width={40} height={40} />
+      </button>
+      <div ref={containerRef} className="w-full" />
+    </div>
   )
 }
 
