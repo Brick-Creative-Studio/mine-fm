@@ -12,7 +12,10 @@ const WaveSurferPlayer = (props: any) => {
     wavesurfer.isPlaying() ? wavesurfer.pause() : wavesurfer.play()
   }, [wavesurfer])
 
-  // Initialize wavesurfer when the container mounts or any of the props change
+  const onVolumeClick = useCallback(() => {
+    wavesurfer.getMuted() ? wavesurfer.setMuted(false) : wavesurfer.setMuted(true)
+  }, [wavesurfer])
+
   useEffect(() => {
     if (!wavesurfer) return
 
@@ -21,6 +24,7 @@ const WaveSurferPlayer = (props: any) => {
     const subscriptions = [
       wavesurfer.on('play', () => setIsPlaying(true)),
       wavesurfer.on('pause', () => setIsPlaying(false)),
+      wavesurfer.on('finish', () => setIsPlaying(false)),
     ]
 
     return () => {
@@ -29,16 +33,16 @@ const WaveSurferPlayer = (props: any) => {
   }, [wavesurfer])
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row space-x-1.5 md:space-x-3">
       <button onClick={onPlayClick} className="bg-transparent w-fit">
         {isPlaying ? (
-          <Image src="/Pause.svg" alt="Play" width={40} height={40} />
+          <Image src="/pause.svg" alt="Play" width={40} height={40} />
         ) : (
           <Image src="/play.svg" alt="Play" width={40} height={40} />
         )}
       </button>
-      <button className="bg-transparent">
-        <Image src="/Speaker_Loud.svg" alt="Play" width={40} height={40} />
+      <button className="bg-transparent" onClick={onVolumeClick}>
+        <Image src="/speaker-loud.svg" alt="Play" width={40} height={40} />
       </button>
       <div ref={containerRef} className="w-full" />
     </div>
