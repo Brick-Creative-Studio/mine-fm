@@ -64,8 +64,8 @@
 }
 
 @font-face {
-  font-family: 'T.26 Carbon Light';
-  font-weight: lighter;
+  font-family: 'T.26 Carbon Thin';
+  font-weight: normal;
   font-style: normal;
   src: url('../fonts/carbon/CARBONThin.woff') format('woff');
 }
@@ -86,7 +86,7 @@
 
 @font-face {
   font-family: 'T.26 Carbon Light-Italic';
-  font-weight: lighter;
+  font-weight: normal;
   font-style: italic;
   src: url('../fonts/carbon/CARBONThinItalic.woff') format('woff');
 }

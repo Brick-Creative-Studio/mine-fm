@@ -21,6 +21,8 @@ export default function HomePage({}) {
 
       <main className={styles.main}>
         <div className={'self-center drop-shadow-2xl mt-32 mb-4'}>
+          <p className={'text-center text-[24px] text-[#B999FA]'}> STREAM, GATHER, EARN.  </p>
+
           <img className={'w-[360px] h-[150px] mx-auto mb-0  md:w-full lg:h-full'} src='/mineHEADER_v3.png' alt='mine-header-logo'/>
         </div>
         {isMounted && (
