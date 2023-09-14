@@ -32,7 +32,7 @@ export default function Explore({}) {
   return (
     <div className="flex flex-col mt-28 w-full">
       <div className={'ml-12'}>
-        <h3 className={'text-[14px] font-light text-[#B999FA]'}> Explore {query?.tab} </h3>
+        <h3 className={'text-[14px] md:invisible font-light text-[#B999FA]'}> Explore {query?.tab} </h3>
       </div>
 
       <div className="flex flex-col items-center justify-center w-full">
