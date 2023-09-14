@@ -10,8 +10,6 @@ export default async function getAllEvents(): Promise<Event[] | undefined>{
   try {
     await axios.get(url).then((res) => {
       data = res.data;
-      console.log('onSuccess', data)
-
       return data;
     }).catch((error) => {
       console.log('get all events error:', error)

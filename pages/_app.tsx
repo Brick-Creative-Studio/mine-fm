@@ -15,47 +15,13 @@ import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { chains } from '../data/contract/chains'
 import { config } from '../data/contract/config'
 import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
+import Footer from "../components/Layout/Footer";
+import React from "react";
 
 
 
 function MyApp({ Component, pageProps }: AppProps) {
 
-  // const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID!!;
-  //
-  //
-  // const { chains, publicClient } = configureChains(
-  //   [
-  //     zora,
-  //     zoraTestnet
-  //   ],
-  //   [
-  //   alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID ? process.env.NEXT_PUBLIC_ALCHEMY_ID : ""})
-  //   ]
-  // )
-  //
-  // const { wallets } = getDefaultWallets({
-  //   appName: 'MINE.FM',
-  //   chains,
-  //   projectId,
-  // })
-  //
-  // const connectors = connectorsForWallets([
-  //   ...wallets,
-  //   {
-  //     groupName: 'Other',
-  //     wallets: [
-  //       argentWallet({ projectId, chains }),
-  //       trustWallet({ projectId, chains }),
-  //       ledgerWallet({ projectId, chains }),
-  //     ],
-  //   },
-  // ]);
-  //
-  // const wagmiConfig = createConfig({
-  //   autoConnect: true,
-  //   connectors,
-  //   publicClient,
-  // })
 
   return (
     <WagmiConfig config={config}>
@@ -63,7 +29,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
-      <Analytics />
+        <Footer />
+
+        <Analytics />
       </RainbowKitProvider>
     </WagmiConfig>
   )

@@ -32,6 +32,18 @@ const WaveSurferPlayer = (props: any) => {
     }
   }, [wavesurfer])
 
+  // Use useEffect to add an event listener for the pageChange event
+  useEffect(() => {
+    window.addEventListener("pageChange", () => {
+      // Check the current playback state of the audio
+      if (isPlaying) {
+        containerRef.current.play();
+      } else {
+        containerRef.current.pause();
+      }
+    });
+  }, []);
+
   return (
     <div className="flex flex-row space-x-1.5 md:space-x-3">
       <button onClick={onPlayClick} className="bg-transparent w-fit">

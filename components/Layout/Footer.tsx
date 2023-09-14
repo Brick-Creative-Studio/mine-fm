@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from "react";
 import Image from 'next/image'
 import WaveSurferPlayer from 'components/WaveSurferPlayer/WaveSurferPlayer'
 
@@ -12,8 +12,8 @@ const Footer = () => {
         barWidth="3"
         barGap="2"
         barRadius="3"
-        url={'https://cdn.freesound.org/previews/702/702367_1089955-lq.mp3'}
       />
+
       <a href="https://brickxstudio.com" target="_blank" rel="noopener noreferrer">
         A Brick Studio Product{' '}
         <span>
