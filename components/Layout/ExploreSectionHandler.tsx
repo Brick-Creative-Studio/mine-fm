@@ -83,6 +83,7 @@ export const ExploreSectionHandler: React.FC<SectionHandlerProps> = ({
           })}
         </div>
       )}
+      <div className="w-full border-[#B999FA] border-solid border-2 invisible md:visible mt-4" />
 
       <div >
         <AnimatePresence mode={'wait'}>
