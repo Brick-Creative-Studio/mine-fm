@@ -6,7 +6,7 @@ export default function CreatePage() {
   return (
     <div className="flex flex-col justify-center items-center mt-24 h-full">
       <div className={'flex flex-col w-full'}>
-        <p className={'my-1 ml-12 self-start text-[64px] text-[#B999FA]'}> CREATE </p>
+        <p className={'my-1 ml-12 self-start md:text-[64px] text-[32px] text-[#B999FA]'}> CREATE </p>
         <div className={'w-full border-2 border-solid border-[#B999FA]'} />
       </div>
       <div
