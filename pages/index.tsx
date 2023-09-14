@@ -50,7 +50,7 @@ export default function HomePage({}) {
               </Link>
             
             </div>
-            <div className={'overflow-x-scroll ml-8 mt-8 w-full'}>
+            <div className={'overflow-x-scroll ml-8 mt-8 w-full '}>
             <div className={'border border-[#984DDF]  rounded-md border-solid  md:ml-40 w-max md:w-full h-1/2 px-2 md:px-24 pb-16'}>
                 <div className={'flex justify-between'}>
                   <h3 className={'text-[#B999FA]'}> LATEST MOODs </h3>
