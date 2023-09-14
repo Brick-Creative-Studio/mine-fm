@@ -26,7 +26,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                 <Menu.Button as={React.Fragment}>
                     <button style={{ background: `${userGradient}`}} className={navAvatar} />
                 </Menu.Button>
-                <Menu.Items className='absolute top-0 right-0 flex flex-col w-full  bg-[#1D0045] rounded-md'>
+                <Menu.Items className='absolute top-2 md:top-0 right-0 flex flex-col w-full border-solid border-[#B999FA] bg-[#1D0045] rounded-md'>
                     <Menu.Item as="div" className={'self-end'} >
                         {({ active }) => (
                           <div style={{ background: `${userGradient}`}} className={miniAvatar} />
@@ -102,10 +102,10 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                         )}
                     </Menu.Item>
 
-                    <Menu.Item as="div" className={`flex border-white border-solid border-x-0 my-4`}>
+                    <Menu.Item as="div" className={`flex border-white border-solid border-x-0 my-4 `}>
                         {({ active }) => (
                           <button
-                            className={`${active && 'bg-blue-500'} hover:bg-red-500 bg-transparent flex items-center justify-center w-full`}
+                            className={`${active && 'bg-blue-500'} hover:bg-red-500 bg-transparent flex items-center justify-center w-full cursor-pointer`}
                             onClick={() => {disconnect()}}
 
                           >
@@ -120,7 +120,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                     <Menu.Item as="div" className={`w-full flex items-end justify-end  p-4`}>
                         {({ active, close }) => (
                           <button
-                            className={`${active && 'bg-blue-500'}  bg-[#B999FA] flex items-center justify-center  rounded-full w-20 h-20`}
+                            className={`${active && 'bg-blue-500'}  bg-[#B999FA] flex items-center justify-center  rounded-full w-20 h-20 cursor-pointer`}
                             onClick={() => {close()}}
 
                           >

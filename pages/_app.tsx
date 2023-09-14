@@ -9,54 +9,57 @@ import {
   ledgerWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
-import { mainnet, goerli, optimism, optimismGoerli } from "wagmi/chains";
+import { mainnet, goerli, optimism, optimismGoerli, zora, zoraTestnet } from "wagmi/chains";
 import Layout  from '../components/Layout/Layout'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
-import * as process from "process";
+import { chains } from '../data/contract/chains'
+import { config } from '../data/contract/config'
+import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
+
 
 
 function MyApp({ Component, pageProps }: AppProps) {
 
-  const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID!!;
-
-
-  const { chains, publicClient } = configureChains(
-    [
-      optimism,
-      optimismGoerli
-    ],
-    [
-    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID ? process.env.NEXT_PUBLIC_ALCHEMY_ID : ""})
-    ]
-  )
-
-  const { wallets } = getDefaultWallets({
-    appName: 'MINE.FM',
-    chains,
-    projectId,
-  })
-
-  const connectors = connectorsForWallets([
-    ...wallets,
-    {
-      groupName: 'Other',
-      wallets: [
-        argentWallet({ projectId, chains }),
-        trustWallet({ projectId, chains }),
-        ledgerWallet({ projectId, chains }),
-      ],
-    },
-  ]);
-
-  const wagmiConfig = createConfig({
-    autoConnect: true,
-    connectors,
-    publicClient,
-  })
+  // const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID!!;
+  //
+  //
+  // const { chains, publicClient } = configureChains(
+  //   [
+  //     zora,
+  //     zoraTestnet
+  //   ],
+  //   [
+  //   alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID ? process.env.NEXT_PUBLIC_ALCHEMY_ID : ""})
+  //   ]
+  // )
+  //
+  // const { wallets } = getDefaultWallets({
+  //   appName: 'MINE.FM',
+  //   chains,
+  //   projectId,
+  // })
+  //
+  // const connectors = connectorsForWallets([
+  //   ...wallets,
+  //   {
+  //     groupName: 'Other',
+  //     wallets: [
+  //       argentWallet({ projectId, chains }),
+  //       trustWallet({ projectId, chains }),
+  //       ledgerWallet({ projectId, chains }),
+  //     ],
+  //   },
+  // ]);
+  //
+  // const wagmiConfig = createConfig({
+  //   autoConnect: true,
+  //   connectors,
+  //   publicClient,
+  // })
 
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitProvider chains={chains} initialChain={optimism}>
+    <WagmiConfig config={config}>
+      <RainbowKitProvider chains={chains} initialChain={zora}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
