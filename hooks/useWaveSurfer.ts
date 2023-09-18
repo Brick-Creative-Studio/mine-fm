@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import WaveSurfer from 'wavesurfer.js'
+import { useMoodPlayerStore } from "../stores";
 
 const useWavesurfer = (containerRef: any, options: any) => {
   const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null)
-
+  const { src } = useMoodPlayerStore((state) => state)
   // Initialize wavesurfer when the container mounts
   // or any of the props change
   useEffect(() => {
@@ -14,7 +15,7 @@ const useWavesurfer = (containerRef: any, options: any) => {
         ...options,
         container: containerRef.current,
         autoplay: false,
-        url: 'https://mfm-audio-bucket.s3.us-east-2.amazonaws.com/because_of_winn_dixie.m4a'
+        url: src,
       })
       setWavesurfer(ws as any)
 
@@ -24,7 +25,7 @@ const useWavesurfer = (containerRef: any, options: any) => {
       // }
     }
 
-  }, [])
+  }, [src])
 
   return wavesurfer
 }

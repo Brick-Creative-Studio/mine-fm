@@ -19,7 +19,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
     },[aura])
 
     return (
-        <div className='z-40'>
+        <nav className='z-40'>
 
             <Menu as='div' className="" >
                 <Menu.Button as={React.Fragment}>
@@ -116,10 +116,10 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                         )}
                     </Menu.Item>
 
-                    <Menu.Item as="div" className={`w-full flex items-end justify-end  p-4`}>
+                    <Menu.Item disabled={true} as="div" className={`w-full flex items-end justify-end  p-4`}>
                         {({ active, close }) => (
                           <button
-                            className={`${active && 'bg-blue-500'}  bg-[#B999FA] flex items-center justify-center  rounded-full w-20 h-20 cursor-pointer`}
+                            className={`hover:bg-blue-500 focus:bg-blue-500  bg-[#B999FA] flex items-center justify-center  rounded-full w-20 h-20 cursor-pointer`}
                             onClick={() => {close()}}
 
                           >
@@ -133,7 +133,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                 </Menu.Items>
             </Menu>
 
-        </div>
+        </nav>
     )
 }
 
