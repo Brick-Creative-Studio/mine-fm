@@ -58,7 +58,7 @@ const Nav = () => {
   }, [user, error, isLoading])
 
   return isMounted && address ? (
-    <div className={NavBar}>
+    <nav className={NavBar}>
       <div className={navLogo}>
         <Link key={'home'} href={'/'}>
           <Image
@@ -82,7 +82,7 @@ const Nav = () => {
         {/*</Link>*/}
         {address && <NavMenu hasAccount={hasAccount} signerAddress={address} />}
       </div>
-    </div>
+    </nav>
   ) : (
     <div className={NavBar}>
       <div className={navLogo}>
