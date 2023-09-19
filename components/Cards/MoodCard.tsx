@@ -43,13 +43,13 @@ export const MoodCard = (props: CardProps) => {
 
     if(isPlaying){
       return (
-        <div onClick={() => pause()} className={'md:opacity-0 md:hover:opacity-100 w-64 h-48 fixed bg-transparent cursor-pointer'}>
+        <div onClick={() => pause()} className={'md:opacity-0 md:hover:opacity-100 w-64 h-48 absolute bg-transparent cursor-pointer'}>
           <img alt={'pause-icon'} src={'/w-pause-icon.svg'} className={'z-20 w-20 h-20 absolute md:top-16 md:left-24 top-28'} />
         </div>
       )
     } else {
       return (
-        <div onClick={() => play()} className={'md:opacity-0 md:hover:opacity-100 w-64 h-48 fixed bg-transparent cursor-pointer'}>
+        <div onClick={() => play()} className={'md:opacity-0 md:hover:opacity-100 w-64 h-48 absolute bg-transparent cursor-pointer'}>
           <img alt={'play-icon'} src={'/play-icon.svg'} className={'z-20 w-20 h-20 absolute md:top-16 md:left-24 top-28'} />
         </div>
       )
