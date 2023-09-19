@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import Image from 'next/image'
-import WaveSurferPlayer from 'components/WaveSurferPlayer/WaveSurferPlayer'
+import WaveSurferPlayer from '../WaveSurferPlayer/WaveSurferPlayer'
 import { useMoodPlayerStore } from "../../stores";
 
 const Footer = () => {

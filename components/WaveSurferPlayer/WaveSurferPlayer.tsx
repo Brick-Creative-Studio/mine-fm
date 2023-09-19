@@ -82,7 +82,7 @@ const WaveSurferPlayer = (props: any) => {
 
     if(isPlaying){
       return (
-        <Image src="/pause.svg" alt="Play" width={40} height={40} />
+        <Image src="/Pause.svg" alt="Play" width={40} height={40} />
 
       )
     } else {
