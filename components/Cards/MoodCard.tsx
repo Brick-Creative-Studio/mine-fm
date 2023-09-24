@@ -72,7 +72,7 @@ export const MoodCard = (props: CardProps) => {
 
           { audioState() }
 
-          <img alt={'Mood artwork'} className={'-z-10 self-center w-64 h-48 border-solid rounded-md border-[#B999FA]'} src={`${props.mood.artworkURL ?  props.mood.artworkURL : '/stock/stonie-test-poster.jpeg'}`} />
+          <img alt={'Mood artwork'} className={'-z-10 object-cover self-center w-64 h-48 border-solid rounded-md border-[#B999FA]'} src={`${props.mood.artworkURL ?  props.mood.artworkURL : '/stock/stonie-test-poster.jpeg'}`} />
         </div>
         <div className={'flex justify-between'}>
           <p className={'text-[#B999FA]'}> { props.mood.artist } </p>
@@ -83,8 +83,8 @@ export const MoodCard = (props: CardProps) => {
         <p className={'my-0 text-sm'}> { props.mood.description }</p>
         </div>
         <div className={'flex my-2'}>
-          <div className={'border-solid border border-[#984DDF] px-2 py-0 mr-6'}> <h3 className={'text-sm text-[#984DDF]'}> { props.mood.tags[0].toUpperCase() } </h3>  </div>
-          <div className={' border-solid border border-[#984DDF] px-2'}> <h3 className={'text-sm text-[#984DDF]'}> {props.mood.tags.length > 1 ? props.mood.tags[1].toUpperCase()!! : ''} </h3>  </div>
+          <div className={'border-solid border border-[#984DDF] px-2 mr-6 h-10 rounded-sm flex items-center'}> <h3 className={'text-[13px] text-[#984DDF]'}> { props.mood.tags[0].toUpperCase() } </h3>  </div>
+          <div className={' border-solid border border-[#984DDF] px-2 rounded-sm h-10 flex items-center'}> <h3 className={'text-[13px] text-[#984DDF]'}> {props.mood.tags.length > 1 ? props.mood.tags[1].toUpperCase()!! : ''} </h3>  </div>
 
         </div>
       </div>

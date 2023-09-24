@@ -94,14 +94,14 @@ const WaveSurferPlayer = (props: any) => {
   }
 
   return (
-    <div className={`flex flex-row space-x-1.5 md:space-x-3 ${ isVisible ? null : `invisible hidden`}`}>
+    <div className={`flex flex-row space-x-1.5 md:space-x-3 ${ isVisible ? null : `invisible hidden`} pl-4`}>
       <button onClick={onPlayPause} className="bg-transparent w-fit">
         { audioState() }
       </button>
       <button className="bg-transparent" onClick={onVolumeClick}>
         <Image src="/speaker-loud.svg" alt="Play" width={40} height={40} />
       </button>
-      <div ref={containerRef} className="w-full" />
+      <div ref={containerRef} className="w-full px-4" />
     </div>
   )
 }

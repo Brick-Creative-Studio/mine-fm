@@ -133,7 +133,8 @@ export const miniAvatar = style ([
 
 export const navLogo = style ([
     {
-        alignSelf: 'center'
+        alignSelf: 'center',
+        cursor: 'pointer'
     }
 ])
 
