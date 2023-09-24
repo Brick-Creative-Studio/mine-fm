@@ -11,59 +11,59 @@ export default function StreamInfo({}) {
   const eventTime = '5-7pm EST'
 
   return (
-    <div className={'flex flex-col h-96 px-4 overflow-scroll md:h-[610px] md:w-full md:bg-gray-400/25'}>
+    <div className={'flex flex-col h-96 px-4 overflow-scroll md:h-[604px] md:w-full md:bg-gray-400/25'}>
       <div className={'flex-row flex items-center w-full'}>
-        <h3 className={'w-5/12'}> HOST DETAILS </h3>
-        <div className={'h-0.5 w-2/3 bg-sky-500/75'} />
+        <h3 className={'w-5/12 text-[#984DDF]'}> HOST DETAILS </h3>
+        <div className={'h-0.5 w-2/3 bg-[#984DDF]'} />
       </div>
       <div className={'flex-row flex items-center w-full'}>
-        <p className={'mr-2'}> Host: </p>
-        <p className={'text-[#F25C54]'}> {`${hostTitle}`} </p>
+        <p className={'mr-2 '}> Host: </p>
+        <p className={'text-[#7DD934]'}> {`${hostTitle}`} </p>
       </div>
       <div className={'flex-row flex items-center w-full'}>
         <p className={'mr-2'}> Attendance: </p>
-        <p className={'text-[#F25C54]'}> {`${attendanceCount}`} </p>
+        <p className={'text-[#7DD934]'}> {`${attendanceCount}`} </p>
       </div>
       <div className={'flex-row flex items-center w-full'}>
         <p className={'mr-2'}> Current Entry Fee: </p>
-        <p className={'text-[#F25C54]'}> {`${entryFee} eth`} </p>
+        <p className={'text-[#7DD934]'}> {`${entryFee} eth`} </p>
       </div>
 
       <div className={'flex-row flex items-center w-full'}>
         <p className={'mr-2'}> Treasury: </p>
-        <p className={'text-[#F25C54]'}> {`${treasury} eth`} </p>
+        <p className={'text-[#7DD934]'}> {`${treasury} eth`} </p>
       </div>
 
       <div className={'flex-row flex items-center w-full'}>
-        <h3 className={'w-1/2'}> CHANNEL DETAILS </h3>
-        <div className={'h-0.5 w-1/2 bg-sky-500/75'} />
+        <h3 className={'w-1/2 text-[#984DDF]'}> CHANNEL DETAILS </h3>
+        <div className={'h-0.5 w-1/2 bg-[#984DDF]'} />
       </div>
 
       <div className={'flex-row flex items-center w-full'}>
         <p className={'mr-2'}> Channel Name: </p>
-        <p className={'text-[#F25C54]'}> {`${channelName}`} </p>
+        <p className={'text-[#7DD934]'}> {`${channelName}`} </p>
       </div>
       <div className={'flex-row flex items-center w-full'}>
         <p className={'mr-2'}> Event Time: </p>
-        <p className={'text-[#F25C54] mr-2'}> {`${eventDate}`} </p>
-        <p className={'text-[#F25C54]'}> {`${eventTime}`} </p>
+        <p className={'text-[#7DD934] mr-2'}> {`${eventDate}`} </p>
+        <p className={'text-[#7DD934]'}> {`${eventTime}`} </p>
       </div>
 
       <div className={'flex-row flex items-center w-full'}>
-        <h3 className={'w-1/2'}> SHARE DETAILS </h3>
-        <div className={'h-0.5 w-2/3 bg-sky-500/75'} />
+        <h3 className={'w-1/2 text-[#984DDF]'}> SHARE DETAILS </h3>
+        <div className={'h-0.5 w-2/3 bg-[#984DDF]'} />
       </div>
       <div className={'flex-row flex items-center w-full'}>
         <button className={'bg-transparent'}>
           <Image width={24} height={24} src={'/share.svg'} alt="share button" />
         </button>
-        <p className={'text-[#F25C54] ml-2'}> Share </p>
+        <p className={'text-[#7DD934] ml-2'}> Share </p>
       </div>
       <div className={'flex-row flex items-center w-full'}>
         <button className={'bg-transparent'}>
           <Image width={24} height={24} src={'/globe.svg'} alt="share button" />
         </button>
-        <p className={'text-[#F25C54] ml-2'}> Socials / Website  </p>
+        <p className={'text-[#7DD934] ml-2'}> Socials / Website  </p>
       </div>
     </div>
   )

@@ -25,7 +25,7 @@ export default function GeneralChatSection({}) {
   //TODO: On connection load messages into array
 
   return (
-    <div className={'md:h-[533px] h-52  justify-end'}>
+    <div className={'md:h-[525px] h-72  justify-end'}>
 
       <div className={'flex flex-col-reverse h-full w-full scroll-smooth overflow-scroll'}>
         <div className={''}>

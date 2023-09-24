@@ -19,6 +19,7 @@ export default function Input({}) {
   const socket = io('http://localhost:3002')
   const { aura, m_tag, id: userId } = useProfileStore((state) => state)
   const { id: eventId, title, posterUrl } = useEventStore((state) => state)
+  const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
   const time = new Date(Date.now()).toLocaleTimeString([], {
     hour: '2-digit',
@@ -32,7 +33,6 @@ export default function Input({}) {
       time: time,
     }
 
-    const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
     socket.emit('chat', message)
     console.log('emitted', message)
@@ -60,7 +60,7 @@ export default function Input({}) {
   return (
     <div className="flex flex-row justify-between bg-[#12002C] p-4 w-full h-fit items-center">
       <button className={'bg-transparent'} onClick={handleCreateNewRoom}>
-        <div className={'rounded-full bg-red-600 w-[40px] h-[40px]'} />
+        <div style={{ background: `${auraCode}`}} className={'rounded-full w-[40px] h-[40px]'} />
       </button>
       <input
         type={'text'}
@@ -71,7 +71,7 @@ export default function Input({}) {
       <button
         onClick={handleSubmitNewMessage}
         type="button"
-        className="bg-[#7DD934] h-[36px] w-[36px] rounded-full "
+        className={`bg-[#7DD934] h-[36px] w-[36px] rounded-full` }
       >
         <Image src={'/arrow-up.svg'} width={24} height={24} alt="submit comment" />
       </button>

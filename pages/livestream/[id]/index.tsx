@@ -21,18 +21,7 @@ interface Props {
 
 export default function LivestreamPage({ eventId }: Props) {
   const { query } = useRouter()
-  const { isMobile } = useLayoutStore()
 
-  const chatSections = [
-    {
-      title: 'General',
-      component: [<GeneralChatSection key={'general'} />],
-    },
-    {
-      title: 'Private',
-      component: [<GroupChatSection key={'section'} />],
-    },
-  ]
   const guestSections = [
     {
       title: 'Chat',
@@ -43,46 +32,16 @@ export default function LivestreamPage({ eventId }: Props) {
       component: [<AudienceGrid key={'audience'} />],
     },
     {
-      title: 'Admin',
-      component: [<AdminSection key={'Admin'} />],
-    },
-    {
       title: 'Info',
       component: [<StreamInfo key={'info'} />],
     },
   ]
 
-  const desktopSections = [
-    {
-      title: 'Chat',
-      component: [
-        <ChatSectionHandler
-          sections={chatSections}
-          key={'chat'}
-          activeTab={query?.tab ? (query.tab as string) : undefined}
-        />,
-      ],
-    },
-    {
-      title: 'Audience',
-      component: [<AudienceGrid key={'audience'} />],
-    },
-    {
-      title: 'Section',
-      component: [<SectionsGrid key={'section'} />],
-    },
-  ]
 
   const adminSections = [
     {
       title: 'Chat',
-      component: [
-        <ChatSectionHandler
-          sections={chatSections}
-          key={'chat'}
-          activeTab={query?.tab ? (query.tab as string) : undefined}
-        />,
-      ],
+      component: [<GeneralChatSection key={'chat'} />],
     },
     {
       title: 'Audience',
@@ -113,7 +72,7 @@ export default function LivestreamPage({ eventId }: Props) {
           </div>
         </Link>
         <div className="flex flex-row items-center justify-around w-20 h-10 mx-6 rounded-md bg-zinc-800">
-          <div className={'rounded-full w-4 h-4 bg-red-700'} />
+          <div className={'rounded-full w-4 h-4 bg-red-700 animate-pulse'} />
           <p>LIVE</p>
         </div>
       </div>
