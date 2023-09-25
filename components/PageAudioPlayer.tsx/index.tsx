@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
+import styles from '/Player.module.css'
 
 const PageAudioPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null)
@@ -47,6 +48,8 @@ const PageAudioPlayer = () => {
           width={150}
           height={150}
           onClick={handlePlayPause}
+          className={'cursor-pointer'}
+
         />
       ) : isPlaying && playable ? (
         <Image
@@ -55,6 +58,7 @@ const PageAudioPlayer = () => {
           width={150}
           height={150}
           onClick={handlePlayPause}
+          className={'cursor-pointer'}
         />
       ) : playable === false ? (
         <div>Stream is not Live</div>

@@ -71,7 +71,7 @@ export default function Input({}) {
       <button
         onClick={handleSubmitNewMessage}
         type="button"
-        className={`bg-[#7DD934] h-[36px] w-[36px] rounded-full` }
+        className={`bg-[#7DD934] h-[36px] w-[36px] rounded-full cursor-pointer` }
       >
         <Image src={'/arrow-up.svg'} width={24} height={24} alt="submit comment" />
       </button>
