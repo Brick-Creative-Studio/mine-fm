@@ -5,8 +5,7 @@ import { useMoodPlayerStore } from "../../stores";
 
 const WaveSurferPlayer = (props: any) => {
   const containerRef = useRef<any>()
-  const { isVisible, isPlaying, setIsPlaying, isLoading, setIsLoading} = useMoodPlayerStore((state) => state)
-  // const [isPlaying, setIsPlaying] = useState(false)
+  const { isVisible, isPlaying, setIsPlaying, isLoading, setIsLoading, isMuted, setIsMuted} = useMoodPlayerStore((state) => state)
 
   const wavesurfer: any = useWavesurfer(containerRef, props)
 
@@ -15,7 +14,14 @@ const WaveSurferPlayer = (props: any) => {
   }, [wavesurfer])
 
   const onVolumeClick = useCallback(() => {
-    wavesurfer.getMuted() ? wavesurfer.setMuted(false) : wavesurfer.setMuted(true)
+    if(wavesurfer.getMuted()) {
+      setIsMuted(false)
+      wavesurfer.setMuted(false)
+    } else {
+      wavesurfer.setMuted(true)
+      setIsMuted(true)
+    }
+
   }, [wavesurfer])
 
   //init wavsurfer
@@ -63,17 +69,16 @@ const WaveSurferPlayer = (props: any) => {
 
   }, [isPlaying])
 
-  // Use useEffect to add an event listener for the pageChange event
-  // useEffect(() => {
-  //   window.addEventListener("pageChange", () => {
-  //     // Check the current playback state of the audio
-  //     if (isPlaying) {
-  //       containerRef.current.play();
-  //     } else {
-  //       containerRef.current.pause();
-  //     }
-  //   });
-  // }, []);
+  const volumeState = () => {
+    if (!wavesurfer) return
+
+    if(wavesurfer.getMuted()){
+      return <Image src="/speaker-mute.svg" alt="Mute" width={40} height={40} />
+    } else {
+      return <Image src="/speaker-loud.svg" alt="Volume" width={40} height={40} />
+
+    }
+  }
 
   const audioState = () => {
     if (isLoading){
@@ -82,12 +87,12 @@ const WaveSurferPlayer = (props: any) => {
 
     if(isPlaying){
       return (
-        <Image src="/Pause.svg" alt="Play" width={40} height={40} />
+        <Image src="/Pause.svg" className={'cursor-pointer'} alt="Play" width={40} height={40} />
 
       )
     } else {
       return (
-        <Image src="/play.svg" alt="Play" width={40} height={40} />
+        <Image src="/play.svg" className={'cursor-pointer'} alt="Play" width={40} height={40} />
 
       )
     }
@@ -95,13 +100,13 @@ const WaveSurferPlayer = (props: any) => {
 
   return (
     <div className={`flex flex-row space-x-1.5 md:space-x-3 ${ isVisible ? null : `invisible hidden`} pl-4`}>
-      <button onClick={onPlayPause} className="bg-transparent w-fit">
+      <button onClick={onPlayPause} className="bg-transparent w-fit ">
         { audioState() }
       </button>
-      <button className="bg-transparent" onClick={onVolumeClick}>
-        <Image src="/speaker-loud.svg" alt="Play" width={40} height={40} />
+      <button className="bg-transparent cursor-pointer" onClick={onVolumeClick}>
+        {volumeState()}
       </button>
-      <div ref={containerRef} className="w-full px-4" />
+      <div ref={containerRef} className="w-full px-4 cursor-pointer" />
     </div>
   )
 }

@@ -5,7 +5,7 @@ import { Message } from '../../types/Message'
 import axios from 'axios'
 import { useEventStore, useProfileStore } from '../../stores'
 import io from 'socket.io-client'
-import createComment from '../../data/rest/createComment'
+import process from "process";
 
 type Comment = {
   comment: string
@@ -13,38 +13,58 @@ type Comment = {
   time: string
 }
 
-export default function Input({}) {
+interface Props {
+  eventId: string
+}
+
+export default function Input({ eventId }: Props) {
   const { register, handleSubmit, getValues, resetField } = useForm<Comment>()
   // const socket = io('https://minefm-server.herokuapp.com/livestream_chatroom')
   const socket = io('http://localhost:3002')
   const { aura, m_tag, id: userId } = useProfileStore((state) => state)
-  const { id: eventId, title, posterUrl } = useEventStore((state) => state)
+  const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
   const time = new Date(Date.now()).toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit',
   })
+  async function createMessage(msg: Message) {
+    const endpoint = 'comments/create'
+    const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint;
+
+    const messages: Message = await axios.post(url, {
+      userId,
+      eventId,
+      auraCode,
+      message: msg.message,
+      miner_tag: m_tag as string,
+      time
+
+    }).then((res) => {
+      console.log(res.data)
+      return res.data
+    })
+
+    return messages
+  }
+
+
   async function handleSubmitNewMessage() {
     const message: Message = {
       message: getValues('comment'),
-      aura: aura,
-      minerTag: m_tag!,
+      auraCode,
+      eventId: eventId as string,
+      userId: userId as string,
+      miner_tag: m_tag as string,
       time: time,
     }
 
-    const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
     socket.emit('chat', message)
     console.log('emitted', message)
-    const server = `https://minefm-server.herokuapp.com/comments/create`
 
-    const eventMessage = {
-      userId: 'd0b91814-560b-4075-82a5-a2366649b383',
-      eventId: '41037306-8a64-4ea4-a1e8-25fac50195d8',
-      auraCode,
-      message: message.message,
-    }
-    await createComment(eventMessage)
+
+    await createMessage(message)
     resetField('comment')
   }
 
@@ -60,7 +80,7 @@ export default function Input({}) {
   return (
     <div className="flex flex-row justify-between bg-[#12002C] p-4 w-full h-fit items-center">
       <button className={'bg-transparent'} onClick={handleCreateNewRoom}>
-        <div className={'rounded-full bg-red-600 w-[40px] h-[40px]'} />
+        <div style={{ background: `${auraCode}`}} className={'rounded-full w-[40px] h-[40px]'} />
       </button>
       <input
         type={'text'}
@@ -71,7 +91,7 @@ export default function Input({}) {
       <button
         onClick={handleSubmitNewMessage}
         type="button"
-        className="bg-[#7DD934] h-[36px] w-[36px] rounded-full "
+        className={`bg-[#7DD934] h-[36px] w-[36px] rounded-full cursor-pointer` }
       >
         <Image src={'/arrow-up.svg'} width={24} height={24} alt="submit comment" />
       </button>

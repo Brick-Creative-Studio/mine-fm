@@ -56,9 +56,9 @@ export const StreamSectionHandler: React.FC<SectionHandlerProps> = ({
   }, [activeTab, tab])
 
   return (
-    <div className='w-full md:w-1/3 md:h-full '>
+    <div className='w-full md:w-1/3 md:h-full bg-[#12002C]'>
       {sections && sections.length > 1 && (
-        <div className="flex flex-row space-x-6 justify-around">
+        <div className="flex flex-row space-x-6 justify-around py-4 pb-5 items-center">
           {sections?.map((section, index) => {
             return (
               <Link
@@ -73,11 +73,14 @@ export const StreamSectionHandler: React.FC<SectionHandlerProps> = ({
                 key={section.title}
               >
                 <div className="flex flex-col cursor-pointer ">
-                  <p>{section.title}</p>
                   {activeSection?.title === section.title ? (
-                    <div key={index} className="w-auto h-0.5 -mt-4 bg-sky-500/75" />
+                    <div className={'border border-solid rounded-full border-[#7DD934] px-4 py-0 my-0 h-fit'}>
+                      <h3 className={'text-[#7DD934] text-[14px] my-2'}>{section.title.toUpperCase()}</h3>
+                    </div>
                   ) : (
-                    <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
+                    <>
+                      <h3 className={' text-[14px] my-2'}>{section.title.toUpperCase()}</h3>
+                    </>
                   )}
                 </div>
               </Link>

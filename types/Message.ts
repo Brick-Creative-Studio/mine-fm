@@ -1,11 +1,8 @@
 export type Message = {
   message: string
-  aura: {
-    direction : string,
-    colorOne : string,
-    colorTwo : string,
-    colorThree : string,
-  }
-  minerTag: string
+  miner_tag: string
   time: string
+  userId: string;
+  auraCode: string;
+  eventId: string;
 }
