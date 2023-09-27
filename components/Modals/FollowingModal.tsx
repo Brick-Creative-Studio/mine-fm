@@ -1,11 +1,9 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { Fragment, useState } from 'react'
 
-interface FollowingList {
-
-}
-export const UserListItem: React.FC<FollowingList> = ({}) =>{
-  return(
+interface FollowingList {}
+export const UserListItem: React.FC<FollowingList> = ({}) => {
+  return (
     <div className={'w-full flex items-center justify-between my-2'}>
       <div className={'flex'}>
         <div className={'h-12 w-12 bg-orange-500 rounded-full mr-4'} />
@@ -14,9 +12,7 @@ export const UserListItem: React.FC<FollowingList> = ({}) =>{
           <p className={'my-1 text-gray-500'}>Name</p>
         </div>
       </div>
-      <button className={'bg-white text-black rounded-md'}>
-        Following
-      </button>
+      <button className={'bg-white text-black rounded-md'}>Following</button>
     </div>
   )
 }
@@ -34,9 +30,13 @@ export default function FollowingModal() {
 
   return (
     <>
-      <div className="flex w-fit flex-col items-center mx-4">
-        <button type="button" onClick={openModal} className={'bg-transparent cursor-pointer'}>
-          <p> Following </p>
+      <div className="flex flex-col items-center mx-4 w-fit">
+        <button
+          type="button"
+          onClick={openModal}
+          className={'bg-transparent cursor-pointer'}
+        >
+          <p className="text-lg">Following</p>
           <p className="-mt-2"> {followingCount} </p>
         </button>
       </div>
@@ -56,7 +56,7 @@ export default function FollowingModal() {
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <div className="flex items-center justify-center min-h-full p-4 text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -69,28 +69,25 @@ export default function FollowingModal() {
                 <Dialog.Panel className="w-full h-1/2 max-w-md transform overflow-scroll rounded-2xl bg-[#240045] p-4 align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg text-center font-medium leading-6"
+                    className="text-lg font-medium leading-6 text-center"
                   >
                     {`Following - ${followingCount} Miners`}
                   </Dialog.Title>
-                  <div className="mt-2 flex flex-col w-full h-96 overflow-scroll">
-                   <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-
+                  <div className="flex flex-col w-full mt-2 overflow-scroll h-96">
+                    <UserListItem />
+                    <UserListItem />
+                    <UserListItem />
+                    <UserListItem />
+                    <UserListItem />
+                    <UserListItem />
+                    <UserListItem />
+                    <UserListItem />
+                    <UserListItem />
+                    <UserListItem />
+                    <UserListItem />
+                    <UserListItem />
+                    <UserListItem />
                   </div>
-
-
                 </Dialog.Panel>
               </Transition.Child>
             </div>
