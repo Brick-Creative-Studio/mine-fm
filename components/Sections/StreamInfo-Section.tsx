@@ -1,7 +1,12 @@
 import React from 'react'
 import Image from 'next/image'
+import { Event } from "../../types/Event";
 
-export default function StreamInfo({}) {
+interface Props {
+  eventInfo : Event
+}
+
+export default function StreamInfo({ eventInfo } : Props) {
   const hostTitle = 'Brick Studio'
   const attendanceCount = 210
   const entryFee = 0.013
@@ -18,7 +23,7 @@ export default function StreamInfo({}) {
       </div>
       <div className={'flex-row flex items-center w-full'}>
         <p className={'mr-2 '}> Host: </p>
-        <p className={'text-[#7DD934]'}> {`${hostTitle}`} </p>
+        <p className={'text-[#7DD934]'}> {`${eventInfo.artist}`} </p>
       </div>
       <div className={'flex-row flex items-center w-full'}>
         <p className={'mr-2'}> Attendance: </p>
@@ -41,12 +46,12 @@ export default function StreamInfo({}) {
 
       <div className={'flex-row flex items-center w-full'}>
         <p className={'mr-2'}> Channel Name: </p>
-        <p className={'text-[#7DD934]'}> {`${channelName}`} </p>
+        <p className={'text-[#7DD934]'}> {`${eventInfo.title}`} </p>
       </div>
       <div className={'flex-row flex items-center w-full'}>
         <p className={'mr-2'}> Event Time: </p>
-        <p className={'text-[#7DD934] mr-2'}> {`${eventDate}`} </p>
-        <p className={'text-[#7DD934]'}> {`${eventTime}`} </p>
+        <p className={'text-[#7DD934] mr-2'}> {`${eventInfo.startDate}`} </p>
+        <p className={'text-[#7DD934]'}> {`${eventInfo.startDate}`} </p>
       </div>
 
       <div className={'flex-row flex items-center w-full'}>

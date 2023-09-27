@@ -70,6 +70,8 @@ const WaveSurferPlayer = (props: any) => {
   }, [isPlaying])
 
   const volumeState = () => {
+    if (!wavesurfer) return
+
     if(wavesurfer.getMuted()){
       return <Image src="/speaker-mute.svg" alt="Mute" width={40} height={40} />
     } else {

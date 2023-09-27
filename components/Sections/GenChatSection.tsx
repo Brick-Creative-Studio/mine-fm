@@ -5,12 +5,35 @@ import io from 'socket.io-client'
 import axios from 'axios'
 
 import { Message } from '../../types/Message'
+import process from "process";
+import { loader } from "next/dist/build/webpack/config/helpers";
 
-
-export default function GeneralChatSection({}) {
+interface Props {
+  eventId: string;
+}
+export default function GeneralChatSection({ eventId } : Props) {
   const [messages, setMessages] = useState<Message[]>([])
-  // const socket = io('https://minefm-server.herokuapp.com/')
-  const socket = io('http://localhost:3002')
+  const socket = io(process.env.NEXT_PUBLIC_BASE_URL!)
+  const [isLoading, setLoading] = useState(true)
+
+
+
+  async function loadMessages(){
+    const endpoint = 'comments/where'
+    const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint;
+    console.log('url')
+
+    const messages : Message[] = await axios.post(url, {
+        eventId
+    }).then((res) => {
+      console.log('msgs', res.data)
+      return res.data
+    }).catch((error) => {
+      console.log('comment load error:', error)
+    })
+
+    return messages;
+  }
 
   useEffect(() => {
     socket.on('chat', (message: Message) => {
@@ -22,6 +45,16 @@ export default function GeneralChatSection({}) {
     }
   }, [socket])
 
+  useEffect(() => {
+    async function loader(){
+      const eventComments = await loadMessages()
+      setMessages(eventComments)
+    }
+
+    loader()
+  },[])
+
+
   //TODO: On connection load messages into array
 
   return (
@@ -30,14 +63,14 @@ export default function GeneralChatSection({}) {
       <div className={'flex flex-col-reverse h-full w-full scroll-smooth overflow-scroll'}>
         <div className={''}>
         {messages.length ? (
-          messages.map(({ message, time, minerTag, aura }, index) => {
+          messages.map(({ message, time, miner_tag, auraCode }, index) => {
             return (
               <MessageCell
                 key={index}
                 time={time}
                 message={message}
-                aura={aura}
-                minerTag={minerTag}
+                auraCode={auraCode}
+                minerTag={miner_tag}
               />
             )
           })
@@ -48,7 +81,7 @@ export default function GeneralChatSection({}) {
         )}
         </div>
       </div>
-      <Input />
+      <Input eventId={eventId} />
     </div>
   )
 }
