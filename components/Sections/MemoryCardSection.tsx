@@ -5,7 +5,7 @@ export default function MemoryCardSection({}) {
     <div className="m-8">
       <p>
         {' '}
-        You currently don't have any memory cards yet. RSVP to a livestream event to
+        You currently don&apos;t have any memory cards yet. RSVP to a livestream event to
         retrieve a memory card{' '}
       </p>
     </div>

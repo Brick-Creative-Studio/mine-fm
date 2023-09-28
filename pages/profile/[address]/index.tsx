@@ -2,6 +2,7 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import { ProfileSectionHandler as SectionHandler } from 'components/Layout/ProfileSectionHandler'
 import MemoryCardSection from '../../../components/Sections/MemoryCardSection'
+import MoodsSection from 'components/Sections/MoodsSection'
 import OreSection from '../../../components/Sections/OresSection'
 import FollowerModal from '../../../components/Modals/FollowerModal'
 import FollowingModal from '../../../components/Modals/FollowingModal'
@@ -14,11 +15,27 @@ export default function Profile() {
 
   const sections = [
     {
-      title: 'Memory Cards',
+      title: 'Livestreams',
       component: [<MemoryCardSection key={'MemoryCards'} />],
     },
     {
-      title: 'Ores',
+      title: 'IRL',
+      component: [<MemoryCardSection key={'MemoryCards'} />],
+    },
+    {
+      title: 'Moods',
+      component: [<MoodsSection key={'Moods'} />],
+    },
+    {
+      title: 'Upcoming',
+      component: [<OreSection key={'Ores'} />],
+    },
+    {
+      title: 'History',
+      component: [<MemoryCardSection key={'MemoryCards'} />],
+    },
+    {
+      title: 'Mine',
       component: [<OreSection key={'Ores'} />],
     },
   ]
@@ -27,7 +44,7 @@ export default function Profile() {
     <div className="flex flex-col w-full mt-24 mb-auto">
       <div className="flex flex-row mx-4">
         <div className="flex flex-col w-1/2">
-          <div className="text-lg">@Blobbity</div>
+          <div className="text-lg text-orange-500">@Blobbity</div>
           <div className="text-3xl">Blobbity Blah</div>
           <p className="text-ellipsis">
             Contrary to popular belief, Lorem Ipsum is not simply random text. It has

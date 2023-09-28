@@ -39,7 +39,6 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
 
   const activeSection: activeSectionProps | undefined = React.useMemo(() => {
     const memoryCards = tab('Memory Cards')
-    const ores = tab('Ores')
 
     if (!activeTab) {
       return memoryCards
@@ -49,9 +48,9 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
   }, [activeTab, tab])
 
   return (
-    <div className={'mx-8'}>
+    <div className="mx-4">
       {sections && sections.length > 1 && (
-        <div className="flex flex-row space-x-6">
+        <div className="flex flex-row justify-around">
           {sections?.map((section, index) => {
             return (
               <Link
@@ -65,20 +64,22 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
                 shallow={true}
                 key={section.title}
               >
-                <div className="flex flex-col cursor-pointer ">
-                  <p>{section.title}</p>
-                  {activeSection?.title === section.title ? (
-                    <div key={index} className="w-auto h-0.5 -mt-4 bg-sky-500/75" />
-                  ) : (
-                    <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
-                  )}
+                <div className="flex flex-col items-center cursor-pointer ">
+                  <div
+                    className={`text-lg p-2 ${
+                      activeSection?.title === section.title
+                        ? 'border-4 border-solid border-orange-500 rounded-lg'
+                        : 'border-4 border-solid border-transparent rounded-lg'
+                    }`}
+                  >
+                    {section.title}
+                  </div>
                 </div>
               </Link>
             )
           })}
         </div>
       )}
-      <div className="w-inherite border border-white opacity-10 border-solid -mt-3" />
 
       <div>
         <AnimatePresence mode={'wait'}>
