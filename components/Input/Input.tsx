@@ -91,7 +91,7 @@ export default function Input({ eventId }: Props) {
       <button
         onClick={handleSubmitNewMessage}
         type="button"
-        className={`bg-[#7DD934] h-[36px] w-[36px] rounded-full cursor-pointer` }
+        className={`bg-[#7DD934] ml-2 h-[36px] w-[36px] rounded-full cursor-pointer` }
       >
         <Image src={'/arrow-up.svg'} width={24} height={24} alt="submit comment" />
       </button>

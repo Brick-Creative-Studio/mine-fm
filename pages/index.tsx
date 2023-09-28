@@ -3,8 +3,10 @@ import Image from 'next/image'
 import styles from '../styles/home.module.css'
 import Link from 'next/link'
 import { useIsMounted } from 'hooks/useMounted'
+import { AnimatePresence, motion } from 'framer-motion'
 import { MoodCard } from "../components/Cards/MoodCard";
 import { mood001, mood002 } from "../constants/moods";
+import React from "react";
 
 
 export default function HomePage({}) {
@@ -22,13 +24,38 @@ export default function HomePage({}) {
       </Head>
 
       <main className={styles.main}>
-        <div className={'self-center drop-shadow-2xl mt-32 mb-4'}>
-          <p className={'text-center text-[24px] text-[#B999FA]'}> STREAM, GATHER, EARN.  </p>
+        <AnimatePresence mode={'wait'}>
+          <motion.div
+            key={'home'}
+            variants={{
+              closed: {
+                y: 20,
+                opacity: 0,
+                transition: {ease: "easeIn"}
 
-          <img className={'w-[360px] h-[150px] mx-auto mb-0  md:w-full lg:h-full'} src='/mineHEADER_v3.png' alt='mine-header-logo'/>
-        </div>
+              },
+              open: {
+                y: 0,
+                opacity: 1,
+                transition: { duration: 2.5 },
+
+              },
+            }}
+            initial="closed"
+            animate="open"
+            exit="closed"
+          >
+            <div className={'self-center drop-shadow-2xl mt-32 mb-4'}>
+              <p className={'text-center text-[24px] text-[#B999FA]'}> STREAM, DISCOVER, EARN.  </p>
+
+              <img className={'w-[360px] h-[150px] mx-auto mb-0  md:w-full lg:h-full'} src='/mineHEADER_v3.png' alt='mine-header-logo'/>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
         {isMounted && (
           <>
+
             <div className={'flex justify-evenly md:w-full'}>
               <Link
               href={'/create'}
@@ -52,7 +79,7 @@ export default function HomePage({}) {
                 <h2 className='mx-auto text-[#B999FA]'> Explore </h2>
               </button>
               </Link>
-            
+
             </div>
             <div className={'overflow-x-scroll ml-8 mt-8 w-full '}>
             <div className={'border border-[#984DDF]  rounded-md border-solid  md:ml-40 w-max md:w-full h-1/2 px-2 md:px-24 pb-16'}>

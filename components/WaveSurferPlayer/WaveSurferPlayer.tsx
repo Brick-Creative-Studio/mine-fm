@@ -5,7 +5,7 @@ import { useMoodPlayerStore } from "../../stores";
 
 const WaveSurferPlayer = (props: any) => {
   const containerRef = useRef<any>()
-  const { isVisible, isPlaying, setIsPlaying, isLoading, setIsLoading, isMuted, setIsMuted} = useMoodPlayerStore((state) => state)
+  const { isVisible, isPlaying, setIsPlaying, isLoading, setIsLoading, isMuted, setIsMuted, setVisibility} = useMoodPlayerStore((state) => state)
 
   const wavesurfer: any = useWavesurfer(containerRef, props)
 
@@ -106,7 +106,10 @@ const WaveSurferPlayer = (props: any) => {
       <button className="bg-transparent cursor-pointer" onClick={onVolumeClick}>
         {volumeState()}
       </button>
-      <div ref={containerRef} className="w-full px-4 cursor-pointer" />
+      <div ref={containerRef} className="w-full px-2 cursor-pointer" />
+      <button className="bg-transparent cursor-pointer" onClick={() => setVisibility(false)}>
+        <img src={'/cross-white.svg'} alt={'close audio button'} className={'w-10 h-10 '}/>
+      </button>
     </div>
   )
 }

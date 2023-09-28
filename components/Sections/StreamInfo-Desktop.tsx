@@ -1,9 +1,13 @@
 import React from 'react'
 import Image from 'next/image'
+import { Event } from "../../types/Event";
 
-const StreamInfoDesktop = () => {
+interface Props {
+  event : Event,
+  attendanceCount: number
+}
+const StreamInfoDesktop = ({ event, attendanceCount } : Props) => {
   const hostTitle = 'Bad Bunny'
-  const attendanceCount = 200
   const entryFee = 0.013
   const treasury = 3.287
 
@@ -26,14 +30,14 @@ const StreamInfoDesktop = () => {
 
       </div>
 
-      <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
+      <div className={'flex-row gap-2 flex items-center ml-2 w-full'}>
         <div
           className={
             'flex-row flex items-center justify-center w-8 h-8 bg-red-200 rounded-full'
           }
         />
 
-        <p className={'text-[#7DD934]'}>{`${hostTitle}`}</p>
+        <p className={'text-[#7DD934]'}>{`${event.artist}`}</p>
 
       </div>
 
@@ -47,12 +51,12 @@ const StreamInfoDesktop = () => {
 
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
         <Image width={24} height={24} src={'/ticket-icon.svg'} alt="share button" />
-        <p className={'text-[#7DD934]'}>{`${entryFee}ETH`}</p>
+        <p className={'text-[#7DD934]'}>{`N/A ETH`}</p>
       </div>
 
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
         <Image width={24} height={24} src={'/CubeIcon.svg'} alt="share button" />
-        <p className={'text-[#7DD934]'}>{`${treasury}ETH`}</p>
+        <p className={'text-[#7DD934]'}>{`N/A ETH`}</p>
       </div>
 
 

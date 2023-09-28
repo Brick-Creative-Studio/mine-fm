@@ -1,16 +1,11 @@
 
 .overlay {
     position: relative;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 12rem;
-    width: 16rem;
+    height: inherit;
+    width: inherit;
     opacity: 1;
-    padding: 0;
-    margin: 0;
     transition: .5s ease;
+    background-color: black;
 }
 
 .overlay:hover {

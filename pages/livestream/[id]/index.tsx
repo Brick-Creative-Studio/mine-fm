@@ -18,18 +18,19 @@ import { User } from "../../../types/User";
 import { Event } from "../../../types/Event";
 
 interface Props {
-  attendees: User[],
-  eventInfo: Event
+  attendees: User[] | null,
+  eventInfo: Event | null
 }
 
 export default function LivestreamPage({ attendees, eventInfo }: Props) {
+
   const { query } = useRouter()
 
   // console.log('attendance size: ', attendees)
   const guestSections = [
     {
       title: 'Chat',
-      component: [<GeneralChatSection eventId={eventInfo.id!} key={'chat'} />],
+      component: [<GeneralChatSection eventId={eventInfo?.id!} key={'chat'} />],
     },
     {
       title: 'Audience',
@@ -37,7 +38,7 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
     },
     {
       title: 'Info',
-      component: [<StreamInfo eventInfo={eventInfo} key={'info'} />],
+      component: [<StreamInfo attendanceCount={attendees?.length!} eventInfo={eventInfo!} key={'info'} />],
     },
   ]
 
@@ -45,7 +46,7 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
   const adminSections = [
     {
       title: 'Chat',
-      component: [<GeneralChatSection eventId={eventInfo.id!} key={'chat'} />],
+      component: [<GeneralChatSection eventId={eventInfo?.id!} key={'chat'} />],
     },
     {
       title: 'Audience',
@@ -53,7 +54,7 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
     },
     {
       title: 'Section',
-      component: [<StreamInfo eventInfo={eventInfo} key={'info'} />],
+      component: [<StreamInfo eventInfo={eventInfo!} attendanceCount={attendees?.length!} key={'info'} />],
     },
     {
       title: 'Admin',
@@ -75,6 +76,9 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
             <p> Exit </p>
           </div>
         </Link>
+        <div>
+          <h2 className={'m-0 text-[#B999FA]'}> "{eventInfo?.title}" </h2>
+        </div>
         <div className="flex flex-row items-center justify-around w-20 h-10 mx-6 rounded-md bg-zinc-800">
           <div className={'rounded-full w-4 h-4 bg-red-700 animate-pulse'} />
           <p>LIVE</p>
@@ -91,14 +95,14 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
           </div>
 
           <div className="hidden md:flex">
-            <StreamInfoDesktop />
+            <StreamInfoDesktop attendanceCount={attendees?.length!} event={eventInfo!}/>
           </div>
         </div>
 
         <SectionHandler
           sections={guestSections}
           activeTab={query?.tab ? (query.tab as string) : undefined}
-          eventId={ eventInfo.id as string }
+          eventId={ eventInfo?.id as string }
         />
       </div>
     </div>
@@ -108,25 +112,23 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
 export const getServerSideProps : GetServerSideProps = async ({
   params
 }) => {
-  const eventID = params?.id?.toString()!
-  const attendeeEndpoint = `attendee?${eventID}`
+  const eventID = params?.id?.toString()
+  const attendeeEndpoint = `attendee/${eventID}`
   const url = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
   const userEndpoint = 'user/user'
   const userURL = process.env.NEXT_PUBLIC_BASE_URL + userEndpoint
   const eventEndpoint = 'event/event'
   const eventURL = process.env.NEXT_PUBLIC_BASE_URL + eventEndpoint
 
+  const attendeesList : Attendee[] | null = eventID ? await axios.get(url).then((res) => {
 
-
-  const attendeesList : Attendee[] = await axios.get(url).then((res) => {
     return res.data
   }).catch((error) => {
     console.log('error fetching stream data:', error)
-  })
+  }) : null
 
-  const attendees : User[] = await Promise.all(
+  const attendees : User[] | null = attendeesList ?  await Promise.all(
     attendeesList.map(async (attendee) => {
-
       return await axios.post(userURL, {
         id: attendee.userID
       }).then((res) => {
@@ -135,26 +137,35 @@ export const getServerSideProps : GetServerSideProps = async ({
         console.log('error fetching stream data:', error)
       })
     })
-  )
+  ) : null
 
-  const eventInfo: Event = await axios.post(eventURL, {
+
+  const eventInfo: Event | null = eventID ? await axios.post(eventURL, {
     id: eventID
   }).then((res) => {
-    console.log('fetching event info', res.data)
     return res.data;
   }).catch((error) => {
     console.log('error fetching event info', error)
-  })
+  }) : null
 
+  if (!eventID) {
+    return {
+      notFound: true,
+    }
+  }
+
+  if (!eventInfo) {
+    return {
+      notFound: true,
+    }
+  }
 
   const props : Props = {
     attendees,
     eventInfo
-
   }
   return {
     props,
-
   }
 
 }
