@@ -15,7 +15,8 @@ interface ModalProps {
 
 export default function RsvpModal({ streamEvent }: ModalProps) {
   let [isOpen, setIsOpen] = useState(false)
-  const formatDate = new Date(streamEvent.startDate).toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(0, 16)
+  const formatDate = new Date(streamEvent.startDate).toLocaleDateString("en-US", { weekday: "long",year: "numeric", month: "long", day: "numeric",})
+  const formatTime = new Date(streamEvent.startDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
   const router = useRouter();
   const { id: userId } = useProfileStore((state) => state)
 
@@ -86,72 +87,73 @@ export default function RsvpModal({ streamEvent }: ModalProps) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-[#240045] text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-[#1D0045] text-left align-middle shadow-xl transition-all">
                   <div className="flex h-auto rounded-lg cursor-pointer  w-full">
                     <Image
                       objectFit={'cover'}
                       objectPosition={'50% 25%'}
                       width={460}
                       quality={100}
-                      height={140}
+                      height={200}
                       src={getFetchableUrl(streamEvent.posterURL)!!}
                       alt="cover art"
                       className="rounded-lg"
                     />
                   </div>
-                  <div className={'p-4'}>
+                  <div className={'px-8 py-4'}>
                     <Dialog.Title
-                      as="h2"
-                      className="text-lg font-medium leading-6 text-[#F25C54]"
+                      as="p"
+                      className="text-[22px] font-medium leading-6 mb-2 text-[#F25C54]"
                     >
-                      RSVP:{' '}
+
                       <span
                         className={'text-white'}
-                      >{` ${streamEvent.title} by ${streamEvent.artist}`}</span>
-                      <button className={'bg-transparent absolute right-5 top-28 rounded-full'}>
-                        <Image alt={'notify'} src={'/bell.svg'} width={24} height={24} />
-                      </button>
-                    </Dialog.Title>
-                    <div className="mt-2 w-full h-0.5 bg-[#F25C54]" />
+                      >{` ${streamEvent.title}`}</span>
 
-                    <div className="mt-2 flex flex-col">
+                    </Dialog.Title>
+                    <p className={'text-[16px] text-[#FF8500] my-0'}>{streamEvent.artist}</p>
+
+                    <div className="mt-2 flex flex-col ">
+                      <div className={'flex'}>
+                        <Image src={'/user-icon-orange.svg'}  width={18} height={18}/>
+                        <p className={'ml-2'}> {`${streamEvent.organizer}`}</p>
+                      </div>
                       <div className={'flex'}>
                         <Image src={'/calendar.svg'}  width={18} height={18}/>
-                        <p className={'ml-2'}> {'July 12, 2023 - Wednesday'}</p>
+                        <p className={'ml-2'}> {formatDate}</p>
                       </div>
                       <div className={'flex'}>
                         <Image src={'/clock.svg'}  width={18} height={18}/>
-                        <p className={'ml-2'}> {'7:30PM - 12AM'}</p>
+                        <p className={'ml-2'}> {formatTime}</p>
                       </div>
 
-                      <div className={'flex'}>
-                        <Image src={'/sewing-pin.svg'}  width={18} height={18}/>
-                        <p className={'ml-2'}> {'Online'}</p>
-                      </div>
-                      <p className={'m-0'}> Access to the livestream will be available 10 minutes before the start date </p>
+                      <p className={'mt-4'}> {streamEvent.description} </p>
                     </div>
-                    <div className="mt-2 w-full h-0.5 bg-[#F25C54]" />
-                    <div className="mt-2 w-full flex flex-col">
-                      <div className={'flex'}>
-                        <p className={'text-[#F25C54]'}> Organized By:  </p>
-                        <p className={'ml-2'}> {streamEvent.organizer}</p>
-                      </div>
-                      <div className={'flex'}>
-                        <p className={'text-[#F25C54]'}> RSVP's:  </p>
-                        <p className={'ml-2'}> {streamEvent.organizer}</p>
-                      </div>
-                    </div>
-                    <div className="mt-2 w-full h-0.5 bg-[#F25C54]" />
-                    <div className="mt-4">
+
+                    <div className={'flex justify-around'}>
+
+                    <div className="mt-4 w-1/3 ">
                       {/*<Link href={`/livestream/${streamEvent.id}?tab=chat`}>*/}
                       <button
                         type="button"
-                        className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={handleRSVP}
+                        className="w-full bg-[#1D0045] rounded-sm border-solid border border-[#FF8500]"
                       >
-                        {`Enter Livestream`}
+                        <h3 className={'text-[#FF8500]'}>{`SEE MORE`}</h3>
                       </button>
                       {/*</Link>*/}
+                    </div>
+                      <div className="mt-4 w-1/3">
+                        {/*<Link href={`/livestream/${streamEvent.id}?tab=chat`}>*/}
+                        <button
+                          type="button"
+                          className="bg-[#FF8500] w-full rounded-sm"
+                          onClick={handleRSVP}
+                        >
+                          <h3 className={'text-[#1D0045]'}>{`ENTER`}</h3>
+                        </button>
+                        {/*</Link>*/}
+                      </div>
+
                     </div>
                   </div>
                 </Dialog.Panel>
