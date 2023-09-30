@@ -17,6 +17,7 @@ import process from "process";
 import { User } from "../../../types/User";
 import { Event } from "../../../types/Event";
 import ExitModal from "../../../components/Modals/ConfirmExitModal";
+import { useProfileStore } from "../../../stores";
 interface Props {
   attendees: User[] | null,
   eventInfo: Event | null
@@ -24,6 +25,7 @@ interface Props {
 
 export default function LivestreamPage({ attendees, eventInfo }: Props) {
 
+  const { id: userId } = useProfileStore(state => state)
   const { query } = useRouter()
 
   // console.log('attendance size: ', attendees)
@@ -65,7 +67,7 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
   return (
     <div className="flex flex-col w-full mt-24">
       <div className={'flex justify-between mb-4'}>
-        <ExitModal/>
+        <ExitModal eventId={eventInfo?.id!} userId={userId!} ownerAddress={eventInfo?.ownerAddress!}/>
         <div>
           <h2 className={'m-0 w-full text-center text-[#B999FA]'}> "{eventInfo?.title}" </h2>
         </div>

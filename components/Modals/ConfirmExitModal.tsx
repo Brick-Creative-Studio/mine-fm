@@ -1,13 +1,43 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { Fragment, useState } from 'react'
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image'
+import Link from 'next/link'
+import process from 'process'
+import axios from 'axios'
+import { useAccount } from "wagmi";
 
-export default function ExitModal() {
+interface Props {
+  ownerAddress: string
+  userId: string
+  eventId: string
+}
+export default function ExitModal({ ownerAddress, eventId, userId }: Props) {
   let [isOpen, setIsOpen] = useState(false)
+  const { address } = useAccount()
 
   function closeModal() {
     setIsOpen(false)
+  }
+
+  async function leaveStream() {
+    const endpoint = `attendee/delete`
+
+    const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+
+    if (ownerAddress !== address) {
+      await axios
+        .post(url, {
+          eventID: eventId,
+          userID: userId,
+        })
+        .then((res) => {
+          return res.data
+        })
+        .catch((error) => {
+          console.log('error fetching stream data:', error)
+        })
+    }
+    closeModal()
   }
 
   function openModal() {
@@ -16,19 +46,13 @@ export default function ExitModal() {
 
   return (
     <>
-        {/*<Link href={'/explore?tab=livestream'}>*/}
-        <button className={'bg-transparent'} onClick={openModal}>
-          <div className="flex flex-row mx-6 cursor-pointer">
-            <Image
-              src={'/chevron-left.svg'}
-              width={28}
-              height={28}
-              alt="gallery button"
-            />
-            <p> Exit </p>
-          </div>
-        </button>
-
+      {/*<Link href={'/explore?tab=livestream'}>*/}
+      <button className={'bg-transparent'} onClick={openModal}>
+        <div className="flex flex-row mx-6 cursor-pointer">
+          <Image src={'/chevron-left.svg'} width={28} height={28} alt="gallery button" />
+          <p> Exit </p>
+        </div>
+      </button>
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -64,8 +88,8 @@ export default function ExitModal() {
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      Your payment has been successfully submitted. We’ve sent
-                      you an email with all of the details of your order.
+                      Your payment has been successfully submitted. We’ve sent you an
+                      email with all of the details of your order.
                     </p>
                   </div>
 
@@ -78,16 +102,14 @@ export default function ExitModal() {
                       I'm staying
                     </button>
                     <Link href={'/explore?tab=livestream'}>
-
-                    <button
-                      type="button"
-                      className="cursor-pointer inline-flex justify-center border-solid border-[#B999FA] rounded-md bg-[#B999FA] px-4 py-2 text-sm font-medium text-[#12002C] hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
-                    >
-                      Leave Stream
-                    </button>
+                      <button
+                        type="button"
+                        className="cursor-pointer inline-flex justify-center border-solid border-[#B999FA] rounded-md bg-[#B999FA] px-4 py-2 text-sm font-medium text-[#12002C] hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={() => leaveStream()}
+                      >
+                        Leave Stream
+                      </button>
                     </Link>
-
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
