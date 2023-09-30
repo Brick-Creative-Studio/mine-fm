@@ -16,7 +16,8 @@ import { GetServerSideProps } from "next";
 import process from "process";
 import { User } from "../../../types/User";
 import { Event } from "../../../types/Event";
-
+import ExitModal from "../../../components/Modals/ConfirmExitModal";
+import { useProfileStore } from "../../../stores";
 interface Props {
   attendees: User[] | null,
   eventInfo: Event | null
@@ -24,6 +25,7 @@ interface Props {
 
 export default function LivestreamPage({ attendees, eventInfo }: Props) {
 
+  const { id: userId } = useProfileStore(state => state)
   const { query } = useRouter()
 
   // console.log('attendance size: ', attendees)
@@ -65,19 +67,9 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
   return (
     <div className="flex flex-col w-full mt-24">
       <div className={'flex justify-between mb-4'}>
-        <Link href={'/explore?tab=livestream'}>
-          <div className="flex flex-row mx-6 cursor-pointer">
-            <Image
-              src={'/chevron-left.svg'}
-              width={28}
-              height={28}
-              alt="gallery button"
-            />
-            <p> Exit </p>
-          </div>
-        </Link>
+        <ExitModal eventId={eventInfo?.id!} userId={userId!} ownerAddress={eventInfo?.ownerAddress!}/>
         <div>
-          <h2 className={'m-0 text-[#B999FA]'}> "{eventInfo?.title}" </h2>
+          <h2 className={'m-0 w-full text-center text-[#B999FA]'}> "{eventInfo?.title}" </h2>
         </div>
         <div className="flex flex-row items-center justify-around w-20 h-10 mx-6 rounded-md bg-zinc-800">
           <div className={'rounded-full w-4 h-4 bg-red-700 animate-pulse'} />

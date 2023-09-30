@@ -7,9 +7,6 @@ interface Props {
   attendanceCount: number
 }
 const StreamInfoDesktop = ({ event, attendanceCount } : Props) => {
-  const hostTitle = 'Bad Bunny'
-  const entryFee = 0.013
-  const treasury = 3.287
 
   return (
     <div
@@ -18,17 +15,7 @@ const StreamInfoDesktop = ({ event, attendanceCount } : Props) => {
       }
     >
 
-      <div className={'flex-row gap-2 flex items-center justify-around w-full'}>
-        <button className={'bg-transparent cursor-pointer'}>
-        <Image width={24} height={24} src={'/play-icon-green.svg'} alt="share button" />
-        </button>
-        <button className={'bg-transparent cursor-pointer'}>
-        <Image width={24} height={24} src={'/speaker-loud-green.svg'} alt="share button" />
-        </button>
 
-        <div className={'h-full w-1 border-2 border-solid'}/>
-
-      </div>
 
       <div className={'flex-row gap-2 flex items-center ml-2 w-full'}>
         <div
@@ -41,12 +28,9 @@ const StreamInfoDesktop = ({ event, attendanceCount } : Props) => {
 
       </div>
 
-
-
-
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
         <Image width={24} height={24} src={'/UserIcon.svg'} alt="share button" />
-        <p className={'text-[#7DD934]'}>{`${attendanceCount} attendees`}</p>
+        <p className={'text-[#7DD934] overflow-clip'}>{`${attendanceCount} miners`}</p>
       </div>
 
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
@@ -57,6 +41,11 @@ const StreamInfoDesktop = ({ event, attendanceCount } : Props) => {
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
         <Image width={24} height={24} src={'/CubeIcon.svg'} alt="share button" />
         <p className={'text-[#7DD934]'}>{`N/A ETH`}</p>
+      </div>
+
+      <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
+        <Image width={24} height={24} src={'/TimerIcon.svg'} alt="share button" />
+        <p className={'mr-2 text-[#7DD934]'}>∞</p>
       </div>
 
 

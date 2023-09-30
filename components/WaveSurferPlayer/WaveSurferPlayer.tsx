@@ -82,7 +82,7 @@ const WaveSurferPlayer = (props: any) => {
 
   const audioState = () => {
     if (isLoading){
-      return <p> Loading... </p>
+      return <p className={'animate-pulse'}> Loading... </p>
     }
 
     if(isPlaying){

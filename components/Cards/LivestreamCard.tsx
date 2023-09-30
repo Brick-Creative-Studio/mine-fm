@@ -4,6 +4,11 @@ import { useProfileStore } from "../../stores";
 import RsvpModal from "../Modals/RsvpModal";
 import { Event } from "../../types/Event";
 import { getFetchableUrl } from 'packages/ipfs-service'
+import useSWR, { Fetcher } from 'swr'
+import axios from 'axios'
+import process from "process";
+
+import { Attendee } from "../../types/Attendee";
 
 
 interface CardProps {
@@ -12,8 +17,20 @@ interface CardProps {
 
 
 export const LivestreamCard: React.FC<CardProps> = ({ streamEvent }) => {
-  const baseURL = 'https://mine-fm.infura-ipfs.io/'
-  const posterUrl =  baseURL + streamEvent.posterURL
+  const attendeeEndpoint = `attendee/${streamEvent.id}`
+  const url = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
+
+  const listFetcher : Fetcher<Attendee[], string>  = api => axios.get(api).then((res) => {
+    return res.data
+  }).catch((error) => {
+    console.log('error fetching stream data:', error)
+  })
+
+  const { data, error } = useSWR(url, listFetcher)
+
+
+
+
 
   const formatDate = new Date(streamEvent.startDate).toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(0, 16)
   let f = formatDate
@@ -39,7 +56,7 @@ export const LivestreamCard: React.FC<CardProps> = ({ streamEvent }) => {
           <p className="text-[#B999FA] font-thin mt-2 my-2"> {formatDate} </p>
 
           </div>
-          <RsvpModal streamEvent={streamEvent} />
+          <RsvpModal streamEvent={streamEvent} rsvpList={data!} />
 
         </div>
 
@@ -49,11 +66,11 @@ export const LivestreamCard: React.FC<CardProps> = ({ streamEvent }) => {
           <div className="flex flex-col justify-center mx-2">
             <p className="m-0 text-[#B999FA] font-light "> # of Attendees </p>
             {/*seperate api call to get event size*/}
-            <p className="m-0 mt-1 self-start text-[#B999FA] "> Unknown </p>
+            <p className="m-0 mt-1 self-start text-[#B999FA] "> {data?.length} </p>
           </div>
           <div className="flex flex-col justify-center mx-2">
             <p className="m-0 text-[#B999FA] font-light"> Entrance Fee </p>
-            <p className="m-0 mt-1 self-start text-[#B999FA]"> .01 eth </p>
+            <p className="m-0 mt-1 self-start text-[#B999FA]"> N/A eth </p>
           </div>
         </div>
 

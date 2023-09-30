@@ -112,7 +112,7 @@ export default function AttendeeModal({ user }: Props) {
                     as="h3"
                     className="text-lg font-bold text-white my-0 py-0"
                     >
-                    Name
+                      {user.name}
                     </Dialog.Title>
                       <button onClick={closeModal} className={'bg-transparent'}>
                         <img className={'w-6 h-6 cursor-pointer'} src={'/cross-white.svg'} alt={'close button'}/>
@@ -120,12 +120,12 @@ export default function AttendeeModal({ user }: Props) {
 
                     </div>
                     <p className={'text-[#C0C0C0] mt-1'}>
-                      @miner_tag
+                      {user.miner_tag}
                     </p>
                   </div>
                   <div className="mb-8 mt-2 mx-4">
                     <p className="text-sm text-white">
-                      Just a blurb about things related to music, love, and happiness
+                      { user.bio }
                     </p>
                   </div>
 

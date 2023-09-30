@@ -1,9 +1,14 @@
 import React, { useEffect } from 'react'
 import { miniAvatar, navAvatar } from "./styles.css";
-import { useDisconnect } from 'wagmi'
+import { useDisconnect, useBalance } from 'wagmi'
 import { Menu } from '@headlessui/react'
 import {useProfileStore} from "../../stores";
 import Link from "next/link";
+import { parseEther, formatEther } from "ethers/lib/utils";
+import { BigNumber } from "ethers";
+
+
+
 interface NavMenuProps {
     signerAddress: string,
     hasAccount: boolean
@@ -13,11 +18,22 @@ interface NavMenuProps {
 const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
     const { aura } = useProfileStore((state) => state)
     const { disconnect } = useDisconnect()
+    const { data } = useBalance({
+        address: signerAddress as  `0x${string}`,
+        formatUnits: 'ether',
+    })
+
+    const balance = BigNumber.from(data?.value.toString()).mod(1e14)
+    const formattedBalance = formatEther(BigNumber.from(data?.value.toString()).sub(balance));
+
+
     let userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     useEffect(() => {
         userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     },[aura])
 
+
+    console.log('use balance:',data)
     return (
         <nav className='z-40'>
 
@@ -25,7 +41,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                 <Menu.Button as={React.Fragment}>
                     <button style={{ background: `${userGradient}`}} className={navAvatar} />
                 </Menu.Button>
-                <Menu.Items className='absolute top-2 md:top-0 right-0 flex flex-col w-full border-solid border-[#B999FA] bg-[#1D0045] rounded-md'>
+                <Menu.Items className='absolute top-2 md:top-0 right-0 flex flex-col w-full md:w-1/3 border-solid border-[#B999FA] bg-[#1D0045] rounded-md'>
                     <Menu.Item as="div" className={'self-end'} >
                         {({ active }) => (
                           <div style={{ background: `${userGradient}`}} className={miniAvatar} />
@@ -35,10 +51,10 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                      <Menu.Item>
                         {({ active }) => (
 
-                               <h2 className={'text-center'}>1.03 ETH</h2>
+                               <h2 className={'text-center'}> { formattedBalance } ETH </h2>
                         )}
                     </Menu.Item>
-                    <Menu.Item as="div" className={'w-full'} >
+                    <Menu.Item as="div" className={'w-full '} >
                         {({ active, close }) => (
                           <div className={'w-full flex justify-center items-center'}>
                               <Link href={'/create'}>
@@ -119,11 +135,11 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                     <Menu.Item disabled={true} as="div" className={`w-full flex items-end justify-end  p-4`}>
                         {({ active, close }) => (
                           <button
-                            className={`hover:bg-blue-500 focus:bg-blue-500  bg-[#B999FA] flex items-center justify-center  rounded-full w-20 h-20 cursor-pointer`}
+                            className={`hover:bg-blue-500 focus:bg-blue-500  bg-[#B999FA] flex items-center justify-center  rounded-full w-12 h-12 cursor-pointer`}
                             onClick={() => {close()}}
 
                           >
-                              <img src={'/cross.svg'} className={'w-16 h-16'}/>
+                              <img src={'/cross.svg'} className={'w-10 h-10'}/>
 
                           </button>
 
