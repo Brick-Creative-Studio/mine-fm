@@ -51,7 +51,7 @@ const PageAudioPlayer = () => {
               width={150}
               height={150}
               onClick={handlePlayPause}
-              className={'cursor-pointer relative left-1/3 top-1/4 md:absolute  md:left-[28rem] md:bottom-1/3  '}
+              className={'cursor-pointer relative left-1/3 top-1/4 md:absolute  md:left-[28rem] md:top-[12rem]  '}
             />
           </div>
           <img src={'/gif/mineCUBE-bw.jpeg'} alt={'mine-cube gif'} className={'m-auto w-full h-full object-contain'}/>
@@ -66,7 +66,7 @@ const PageAudioPlayer = () => {
               width={150}
               height={150}
               onClick={handlePlayPause}
-              className={'cursor-pointer relative left-1/3 opacity-0 active:opacity-100 md:opacity-100 top-1/4 md:relative  md:left-[28rem] md:bottom-[42rem]'}
+              className={'cursor-pointer relative left-1/3 opacity-0 active:opacity-100 md:opacity-100 top-1/4 md:relative  md:left-[28rem] md:top-[12rem]'}
             />
           </div>
           <img src={'/gif/mine-cube.gif'} alt={'mine-cube gif'} className={' w-full h-full object-contain'}/>

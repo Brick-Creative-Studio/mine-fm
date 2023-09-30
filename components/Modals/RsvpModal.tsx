@@ -8,18 +8,28 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { useProfileStore } from "../../stores";
 import process from "process";
+import { useAccount } from 'wagmi';
+
+import {
+  useConnectModal,
+} from '@rainbow-me/rainbowkit';
+import { Attendee } from "../../types/Attendee";
 
 interface ModalProps {
   streamEvent: Event,
+  rsvpList : Attendee[]
 }
 
-export default function RsvpModal({ streamEvent }: ModalProps) {
+export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
   let [isOpen, setIsOpen] = useState(false)
+
   const formatDate = new Date(streamEvent.startDate).toLocaleDateString("en-US", { weekday: "long",year: "numeric", month: "long", day: "numeric",})
   const formatTime = new Date(streamEvent.startDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-  const router = useRouter();
-  const { id: userId } = useProfileStore((state) => state)
+  const { openConnectModal } = useConnectModal();
+  const { hasAccount, id: userId } = useProfileStore((state) => state);
+  const { isConnected, address } = useAccount()
 
+  const router = useRouter();
 
 
   async function handleRSVP() {
@@ -29,6 +39,34 @@ export default function RsvpModal({ streamEvent }: ModalProps) {
       eventID: streamEvent.id,
       userID: userId
     }
+
+    //check wallet connection
+    if(!isConnected && openConnectModal){
+      openConnectModal()
+      return
+    }
+    //check for mine account
+    if(!hasAccount){
+      return
+    }
+
+    //check if owner
+    if(streamEvent.ownerAddress === address as string){
+      await router.push(`/livestream/${streamEvent.id}`)
+      return
+    }
+
+
+    if(rsvpList && rsvpList.length > 1) {
+      //if already in list send to page.
+      rsvpList.map((attendee) => {
+        if(attendee.userID === userId as string) {
+          router.push(`/livestream/${streamEvent.id}`)
+          return
+        }
+      })
+    }
+    //otherwise, rsvp to stream
     try {
        await axios.post(url, attendee).then((res) => {
         console.log(res.data)
@@ -54,7 +92,7 @@ export default function RsvpModal({ streamEvent }: ModalProps) {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className={'flex justify-center items-center rounded-tl-lg h-10 w-24 bg-[#FF8500] self-end'}
+        className={'flex justify-center items-center cursor-pointer rounded-tl-lg h-10 w-24 bg-[#FF8500] self-end'}
       >
 
         <h3 className={'text-sm  text-[#1D0045] my-0 mr-1'}>ENTER</h3>
@@ -136,25 +174,31 @@ export default function RsvpModal({ streamEvent }: ModalProps) {
                       {/*<Link href={`/livestream/${streamEvent.id}?tab=chat`}>*/}
                       <button
                         type="button"
-                        className="w-full bg-[#1D0045] rounded-sm border-solid border border-[#FF8500]"
+                        className="w-full bg-[#1D0045] rounded-sm border-solid border border-[#FF8500] cursor-pointer"
+                        onClick={() => router.push(`/stream-info?id=${streamEvent.id}`)}
                       >
                         <h3 className={'text-[#FF8500]'}>{`SEE MORE`}</h3>
                       </button>
                       {/*</Link>*/}
                     </div>
                       <div className="mt-4 w-1/3">
-                        {/*<Link href={`/livestream/${streamEvent.id}?tab=chat`}>*/}
                         <button
                           type="button"
-                          className="bg-[#FF8500] w-full rounded-sm"
+                          className={`bg-[#FF8500] w-full rounded-sm cursor-pointer`}
                           onClick={handleRSVP}
+                          disabled={!hasAccount}
+
                         >
                           <h3 className={'text-[#1D0045]'}>{`ENTER`}</h3>
                         </button>
-                        {/*</Link>*/}
                       </div>
 
                     </div>
+                    {
+                      <p className={`pt-2 text-sm text-red-600 animate-bounce ${hasAccount ? 'hidden': null}`}>
+                      You need to create an account to enter a livestream!
+                    </p>
+                    }
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

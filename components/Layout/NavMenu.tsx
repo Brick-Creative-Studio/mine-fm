@@ -1,9 +1,14 @@
 import React, { useEffect } from 'react'
 import { miniAvatar, navAvatar } from "./styles.css";
-import { useDisconnect } from 'wagmi'
+import { useDisconnect, useBalance } from 'wagmi'
 import { Menu } from '@headlessui/react'
 import {useProfileStore} from "../../stores";
 import Link from "next/link";
+import { parseEther, formatEther } from "ethers/lib/utils";
+import { BigNumber } from "ethers";
+
+
+
 interface NavMenuProps {
     signerAddress: string,
     hasAccount: boolean
@@ -13,11 +18,22 @@ interface NavMenuProps {
 const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
     const { aura } = useProfileStore((state) => state)
     const { disconnect } = useDisconnect()
+    const { data } = useBalance({
+        address: signerAddress as  `0x${string}`,
+        formatUnits: 'ether',
+    })
+
+    const balance = BigNumber.from(data?.value.toString()).mod(1e14)
+    const formattedBalance = formatEther(BigNumber.from(data?.value.toString()).sub(balance));
+
+
     let userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     useEffect(() => {
         userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     },[aura])
 
+
+    console.log('use balance:',data)
     return (
         <nav className='z-40'>
 
@@ -35,7 +51,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                      <Menu.Item>
                         {({ active }) => (
 
-                               <h2 className={'text-center'}>1.03 ETH</h2>
+                               <h2 className={'text-center'}> { formattedBalance } ETH </h2>
                         )}
                     </Menu.Item>
                     <Menu.Item as="div" className={'w-full '} >
