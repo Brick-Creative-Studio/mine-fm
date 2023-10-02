@@ -2,8 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import MessageCell from '../Message/MessageCell'
 import Input from '../Input/Input'
 import { Message } from "../../types/Message";
+import { Event } from "../../types/Event";
 
-export default function GroupChatSection({}) {
+interface Props {
+  event : Event
+}
+export default function GroupChatSection({ event } : Props) {
 
   const [messages, setMessages] = useState<Message[]>([])
 
@@ -13,14 +17,14 @@ export default function GroupChatSection({}) {
       <div className={'flex flex-col-reverse h-full w-full scroll-smooth overflow-scroll'}>
         <div className={''}>
           {messages.length ? (
-            messages.map(({ message, time, minerTag, aura }, index) => {
+            messages.map(({ message, time, miner_tag, auraCode }, index) => {
               return (
                 <MessageCell
                   key={index}
                   time={time}
                   message={message}
-                  aura={aura}
-                  minerTag={minerTag}
+                  auraCode={auraCode}
+                  minerTag={miner_tag}
                 />
               )
             })
@@ -31,7 +35,7 @@ export default function GroupChatSection({}) {
           )}
         </div>
       </div>
-      <Input />
+      <Input eventId={event.id!} />
     </div>
   )
 }

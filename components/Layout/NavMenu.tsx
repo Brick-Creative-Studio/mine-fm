@@ -50,6 +50,8 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                         {({ active }) => (
 
                                <h2 className={'text-center'}> { formattedBalance ? formattedBalance : 0 } ETH </h2>
+                          // <h2 className={'text-center'}> { 0 } ETH </h2>
+
                         )}
                     </Menu.Item>
                     <Menu.Item as="div" className={'w-full '} >
