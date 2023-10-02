@@ -20,7 +20,8 @@ interface Props {
 export default function Input({ eventId }: Props) {
   const { register, handleSubmit, getValues, resetField } = useForm<Comment>()
   // const socket = io('https://minefm-server.herokuapp.com/livestream_chatroom')
-  const socket = io('http://localhost:3002')
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL
+  const socket = io(baseURL!)
   const { aura, m_tag, id: userId } = useProfileStore((state) => state)
   const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
