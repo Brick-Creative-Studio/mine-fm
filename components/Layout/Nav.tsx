@@ -19,6 +19,7 @@ const Nav = () => {
   const { address } = useAccount({
     onDisconnect() {
       setSignerAddress(null)
+      setHasAccount(false)
       resetProfileState()
     },
     onConnect({ address, connector, isReconnected }) {
@@ -37,7 +38,6 @@ const Nav = () => {
         twitter: user.twitter,
         email: user.email,
         bio: user.bio,
-        phone: user.phone,
         name: user.name,
       })
       setAura({

@@ -1,22 +1,18 @@
 import React from 'react'
 import Image from 'next/image'
-import { Event } from "../../types/Event";
+import { Event } from '../../types/Event'
 
 interface Props {
-  event : Event,
+  event: Event
   attendanceCount: number
 }
-const StreamInfoDesktop = ({ event, attendanceCount } : Props) => {
-
+const StreamInfoDesktop = ({ event, attendanceCount }: Props) => {
   return (
     <div
       className={
         'grid lg:grid-cols-6 grid-cols-3 grid-rows-2 lg:grid-rows-1 w-full  self-center mx-auto bg-[#12002C] p-2'
       }
     >
-
-
-
       <div className={'flex-row gap-2 flex items-center ml-2 w-full'}>
         <div
           className={
@@ -25,7 +21,6 @@ const StreamInfoDesktop = ({ event, attendanceCount } : Props) => {
         />
 
         <p className={'text-[#7DD934]'}>{`${event.artist}`}</p>
-
       </div>
 
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
@@ -47,7 +42,6 @@ const StreamInfoDesktop = ({ event, attendanceCount } : Props) => {
         <Image width={24} height={24} src={'/TimerIcon.svg'} alt="share button" />
         <p className={'mr-2 text-[#7DD934]'}>∞</p>
       </div>
-
 
       <button
         className={

@@ -26,20 +26,20 @@ const AuraForm: React.FC = ({}) => {
   const router = useRouter()
   const path = router.pathname.replace(/\//g, '')
   const { address, isConnecting, isDisconnected } = useAccount()
+  const { error, isLoading, user } = useGetUser(address as string)
 
 
   //form handlers
   const { register, handleSubmit } = useForm<AuraInputs>()
 
-  const { setAura } = useProfileStore((state) => state)
-  const [colorOne, setOne] = useState<string>('')
-  const [colorTwo, setTwo] = useState<string>('')
-  const [colorThree, setThree] = useState<string>('')
+  const { setAura, hasAccount } = useProfileStore((state) => state)
 
-  const [direction, setDirection] = useState('')
-  const { error, isLoading, user } = useGetUser(address as string)
+  const [colorOne, setOne] = useState<string>(hasAccount ? user?.colorOne! : "#FFFFFF")
+  const [colorTwo, setTwo] = useState<string>(hasAccount ? user?.colorTwo! : "#FFFFFF")
+  const [colorThree, setThree] = useState<string>(hasAccount ? user?.colorThree! : "#FFFFFF")
+  const [direction, setDirection] = useState(hasAccount ? user?.direction! : "top")
 
-  const initialGradient = `linear-gradient(to ${user?.direction}, ${user?.colorOne}, ${user?.colorTwo}, ${user?.colorThree})`
+  const initialGradient = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`
   const [gradient, setGradient] = useState<string>('')
   const cardinalMap = new Map<string, string>([
     ['left', 'West'],
@@ -144,32 +144,32 @@ const AuraForm: React.FC = ({}) => {
               <div className="flex flex-col justify-center items-center">
                 <input
                   type="color"
-                  value={colorOne ? colorOne : "#000000"}
+                  value={colorOne}
                   {...register('colorOne')}
                   onChange={(event) => onChangeColorOne(event)}
                   className="w-24 h-12 border-none bg-transparent	"
                 />
-                <p>{colorOne ? colorOne : user?.colorOne!}</p>
+                <p>{colorOne}</p>
               </div>
               <div className="flex flex-col justify-center items-center">
                 <input
                   type="color"
-                  value={colorTwo ? colorTwo : "#000000"}
+                  value={colorTwo}
                   {...register('colorTwo')}
                   onChange={(event) => onChangeColorTwo(event)}
                   className="w-24 h-12 border-none bg-transparent"
                 />
-                <p>{colorTwo ? colorTwo : "#000000"}</p>
+                <p>{colorTwo}</p>
               </div>
               <div className="flex flex-col justify-center items-center">
                 <input
                   type="color"
-                  value={colorThree ? colorThree : "#000000"}
+                  value={colorThree }
                   {...register('colorThree')}
                   onChange={(event) => onChangeColorThree(event)}
                   className="w-24 h-12 border-none bg-transparent"
                 />
-                <p>{colorThree ? colorThree : user?.colorThree}</p>
+                <p>{colorThree}</p>
               </div>
             </div>
             <div className="flex justify-center m-8">
@@ -201,7 +201,7 @@ const AuraForm: React.FC = ({}) => {
                 <div className={crossCircle} />
               </div>
             </div>
-            <h3 className="self-center my-8"> Direction: {cardinalMap.get(direction ? direction : user?.direction!)} </h3>
+            <h3 className="self-center my-8"> Direction: {cardinalMap.get(direction)} </h3>
             <input
               type="submit"
               title="next"

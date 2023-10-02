@@ -10,7 +10,7 @@ export default function SettingsPage({}) {
 
 
   return (
-    <div className="flex flex-col w-full mt-24 ">
+    <div className="flex flex-col w-full mt-24 h-full">
       
       <div className="flex flex-row w-full items-center">
         <div className="absolute ml-12">

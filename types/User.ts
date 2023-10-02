@@ -2,7 +2,6 @@ export type User = {
     id: string | null;
     miner_tag: string | null;
     email: string | null;
-    phone: string | null;
     walletAddress: string | null;
     name: string;
     profilePicture: string| null;

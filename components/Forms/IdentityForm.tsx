@@ -16,7 +16,6 @@ type Identity = {
   id: string | null
   name: string
   m_tag: string
-  phone: string
   email: string
   bio: string
   twitter: string | null
@@ -25,7 +24,7 @@ type Identity = {
 
 export default function IdentityForm({}) {
   const { register, handleSubmit, getValues } = useForm<Identity>()
-  const { setIdentity, name, aura, m_tag, email, phone, bio, id } = useProfileStore(
+  const { setIdentity, name, aura, m_tag, email, bio, setHasAccount, id } = useProfileStore(
     (state) => state
   )
   const { signerAddress: address } = useLayoutStore()
@@ -50,7 +49,6 @@ export default function IdentityForm({}) {
     const user = {
       miner_tag: data.m_tag,
       email: data.email,
-      phone: data.phone,
       walletAddress: address,
       name: data.name,
       colorOne: aura.colorOne,
@@ -67,6 +65,7 @@ export default function IdentityForm({}) {
 
       const newMiner = await axios.post(url, user).then((res) => {
         setSuccessIsOpen(true)
+          setHasAccount(true)
         return res.data
       }).catch((error) => {
         console.log('fetch user error:', error)
@@ -97,7 +96,7 @@ export default function IdentityForm({}) {
   }
 
   return (
-    <div className="flex flex-col mt-8  justify-center items-center">
+    <div className="flex flex-col mt-24  h-full my-auto  justify-center items-center">
       <form
         className="flex flex-col w-3/4 md:w-1/3  items-center"
         onSubmit={handleSubmit(onSubmit)}
@@ -121,7 +120,8 @@ export default function IdentityForm({}) {
             <input
               type="text"
               required
-              defaultValue={isOnboarding ? '@' : (m_tag as string)}
+              placeholder="@miner_b"
+              defaultValue={isOnboarding ? '' : (m_tag as string)}
               className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
               {...register('m_tag', { required: true })}
             />
@@ -136,27 +136,6 @@ export default function IdentityForm({}) {
               required
               className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
               {...register('email', { required: false })}
-            />
-          </div>
-          <div className="flex flex-col w-full">
-            <label htmlFor="phone"> Phone # </label>
-            {/* include validation with required or other standard HTML validation rules */}
-            <input
-              type="tel"
-              value={value}
-              placeholder={phone as string}
-              className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
-              {...register('phone', {
-                required: false,
-                minLength: 7,
-                maxLength: 14,
-                onChange: (e) => {
-                  const targetValue = phoneNumberAutoFormat(e.target.value)
-                  if (targetValue.length < 14) {
-                    setValue(targetValue)
-                  }
-                },
-              })}
             />
           </div>
           <div className="flex flex-col w-full">

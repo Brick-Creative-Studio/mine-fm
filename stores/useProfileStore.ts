@@ -9,8 +9,6 @@ interface ProfileStoreProps {
   m_tag: string | null
   email: string | null
   setTag: (m_tag: string) => void
-  phone: string | null
-  setPhone: (phone: string) => void
   bio: string | null
   setBio: (vibe: string) => void
   instagram: string | null
@@ -31,7 +29,6 @@ const initialState = {
   name: null,
   id: null,
   m_tag: null,
-  phone: null,
   email: null,
   hasAccount: false,
   instagram: null,
@@ -56,7 +53,6 @@ type Identity = {
   id: string | null
   name: string | null
   m_tag: string | null
-  phone: string | null
   email: string | null
   bio: string | null
   instagram: string | null,
@@ -70,7 +66,6 @@ export const useProfileStore = create(
       setName: (name: string) => set({ name }),
       setId: (id: string) => set({ id }),
       setTag: (m_tag: string) => set({ m_tag }),
-      setPhone: (phone: string) => set({ phone }),
       setAura: (aura: AuraType) => set({ aura }),
       setHasAccount: (condition: boolean) => set((state) => ({ hasAccount: condition })),
       setIdentity: (identity: Identity) => set({ ...identity }),

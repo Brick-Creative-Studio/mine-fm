@@ -5,6 +5,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import axios from 'axios';
 import { useProfileStore} from "../../stores";
+import Link from "next/link";
 
 interface Props {
   user: User
@@ -36,6 +37,8 @@ export default function AttendeeModal({ user }: Props) {
       return res.data
     }).catch((error) => {
       console.log('error fetching relationship', error)
+      setFollowing(false)
+
     })
   }
 
@@ -48,12 +51,43 @@ export default function AttendeeModal({ user }: Props) {
   }
 
   async function mutateRelation(){
+    const deleteEndpoint = 'follower/delete'
+    const createEndpoint = 'follower/create'
+
+    const deleteURL = process.env.NEXT_PUBLIC_BASE_URL + deleteEndpoint
+    const createURL = process.env.NEXT_PUBLIC_BASE_URL + createEndpoint
 
     setIsLoading(true)
 
-    const relation = await fetchRelationship()
+    if(isFollowing){
 
-    setFollowing((prev) => !prev)
+      console.log('deleting follow.....')
+      return await axios.post(deleteURL, {
+        followerID: id,
+        userID: user.id
+      }).then((res) => {
+        //if relation found user is following viewed account
+        setFollowing(false)
+        setIsLoading(false)
+        return res.data
+      }).catch((error) => {
+        console.log('error removing relationship', error)
+
+      })
+
+    }else{
+      console.log('creating follow.....')
+      return await axios.post(createURL, {
+        followerID: id,
+        userID: user.id
+      }).then((res) => {
+        //if relation found user is following viewed account
+        setFollowing(true)
+        return res.data
+      }).catch((error) => {
+        console.log('error removing relationship', error)
+      })
+    }
 
   }
 
@@ -63,7 +97,7 @@ export default function AttendeeModal({ user }: Props) {
       return
     }
 
-     fetchRelationship()
+    const relation = fetchRelationship()
 
   }, [])
 
@@ -142,12 +176,14 @@ export default function AttendeeModal({ user }: Props) {
 
                     {
                       isSelf ? (
+                        <Link href={`/profile/${user.walletAddress}`}>
                           <button className={'flex items-center justify-between w-32 h-8 ml-8 bg-transparent border border-solid border-[#B999FA] rounded-full cursor-pointer'}>
                             <h3 className={'text-sm font-light mx-auto text-[#B999FA]'}> { 'PROFILE' } </h3>
                             <div className={'rounded-full bg-[#B999FA] w-6 h-6 items-center justify-center flex'}>
                               <img className={'h-4 w-4 '} alt={'create button'}  src={'/arrow-right.svg'}/>
                             </div>
                           </button>
+                        </Link>
                         ) :
                         (
                       <button onClick={() => mutateRelation()} className={'flex items-center justify-between w-32 h-8 ml-8 bg-transparent border border-solid border-[#B999FA] rounded-full cursor-pointer'}>

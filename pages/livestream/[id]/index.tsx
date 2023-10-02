@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Image from 'next/image'
 import { Attendee } from "../../../types/Attendee";
 import AudienceGrid from '../../../components/Layout/AudienceGrid'
 import { StreamSectionHandler as SectionHandler } from '../../../components/Layout/StreamSectionHandler'

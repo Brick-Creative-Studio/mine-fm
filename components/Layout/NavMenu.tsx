@@ -23,8 +23,8 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
         formatUnits: 'ether',
     })
 
-    const balance = BigNumber.from(data?.value.toString()).mod(1e14)
-    const formattedBalance = formatEther(BigNumber.from(data?.value.toString()).sub(balance));
+    const balance = hasAccount ?  BigNumber.from(data?.value.toString()).mod(1e14) : null
+    const formattedBalance = balance ? formatEther(BigNumber.from(data?.value.toString()).sub(balance)) : null;
 
 
     let userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
@@ -32,8 +32,6 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
         userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     },[aura])
 
-
-    console.log('use balance:',data)
     return (
         <nav className='z-40'>
 
@@ -51,7 +49,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                      <Menu.Item>
                         {({ active }) => (
 
-                               <h2 className={'text-center'}> { formattedBalance } ETH </h2>
+                               <h2 className={'text-center'}> { formattedBalance ? formattedBalance : 0 } ETH </h2>
                         )}
                     </Menu.Item>
                     <Menu.Item as="div" className={'w-full '} >
@@ -87,7 +85,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                                 className={`${active && 'bg-blue-500'} flex items-center justify-between w-full`}
                                 href={ hasAccount ? `/profile/${signerAddress}` : '/onboarding?tab=aura'}
                             >
-                              {hasAccount ? <h3 className={'text-sm mx-8'}>Profile</h3> : <h3 className={'text-md'}>Create Account</h3>}
+                              {hasAccount ? <h3 className={'text-sm mx-8'}>Profile</h3> : <h3 className={'text-sm mx-8'}>Create Account</h3>}
 
 
                                 <div className={'rounded-full bg-transparent border-white border-solid rounded-full w-12 h-6 items-center justify-center flex mx-8'}>
@@ -99,7 +97,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                         )}
                     </Menu.Item>
 
-                    <Menu.Item as="div" className="flex border-white border-solid border-x-0 my-4 ">
+                    <Menu.Item as="div" className={`flex border-white border-solid border-x-0 my-4 ${hasAccount ? null : 'hidden'}`}>
                         {({ active }) => (
                           <a
                             className={`${active && 'bg-blue-500'} flex items-center justify-between w-full`}

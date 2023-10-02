@@ -31,7 +31,7 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
 
   const router = useRouter();
 
-
+  console.log('has acct:', hasAccount)
   async function handleRSVP() {
     const endpoint = 'attendee/create'
     const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
@@ -56,28 +56,35 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
       return
     }
 
+    let isAttending = false
 
-    if(rsvpList && rsvpList.length > 1) {
-      //if already in list send to page.
+    if(rsvpList && rsvpList.length >= 1) {
+      //check if already in rsvp list.
       rsvpList.map((attendee) => {
         if(attendee.userID === userId as string) {
-          router.push(`/livestream/${streamEvent.id}`)
-          return
+          isAttending = true
         }
       })
     }
+
     //otherwise, rsvp to stream
-    try {
-       await axios.post(url, attendee).then((res) => {
-        console.log(res.data)
-        return res.data
-      }).catch((error) => {
-        console.log('fetch user error:', error)
-      })
-    } catch (error) {
-      console.log('create event error:', error)
-      return
+    if(isAttending){
+      await router.push(`/livestream/${streamEvent.id}`)
+    } else {
+      try {
+        await axios.post(url, attendee).then((res) => {
+          console.log(res.data)
+           router.push(`/livestream/${streamEvent.id}`)
+          return res.data
+        }).catch((error) => {
+          console.log('fetch user error:', error)
+        })
+      } catch (error) {
+        console.log('create event error:', error)
+        return
+      }
     }
+
   }
 
   function closeModal() {
