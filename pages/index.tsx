@@ -17,10 +17,27 @@ export default function HomePage({}) {
   
   return (
     <div >
+
       <Head>
         <title>Mine.FM</title>
-        <meta name="description" content="Discover Music with a Community" />
+        <meta
+          name="description"
+          content="Discover Music with a Community"
+          key="description"
+        />
         <link rel="icon" href="/favicon.ico" />
+
+        <meta property="og:title" content="MINE.FM" key="og_title" />
+        <meta
+          property="og:description"
+          content="Discover Music with a Community"
+          key="og_description"
+        />
+        <meta
+          property="og:url"
+          content={process.env.NEXT_PUBLIC_CLIENT_URL}
+          key="og_url"
+        />
       </Head>
 
       <main className={styles.main}>

@@ -30,6 +30,7 @@ export default function IdentityForm({}) {
   const { signerAddress: address } = useLayoutStore()
   let [isOpen, setSuccessIsOpen] = useState(false)
   let [isFailOpen, setFailureIsOpen] = useState(false)
+  let [user, setUser] = useState<Identity | null>(null)
 
   const router = useRouter()
   const path = router.pathname.replace(/\//g, '')
@@ -66,6 +67,8 @@ export default function IdentityForm({}) {
       const newMiner = await axios.post(url, user).then((res) => {
         setSuccessIsOpen(true)
           setHasAccount(true)
+        setUser(data)
+        router.push(`/livestream/${address}/aura`)
         return res.data
       }).catch((error) => {
         console.log('fetch user error:', error)
@@ -80,9 +83,11 @@ export default function IdentityForm({}) {
 
       const updatedUser = await axios.put(url, user).then((res) => {
         console.log(res.data)
+        setUser(data)
         return res.data
       }).catch((error) => {
         console.log('error updating user:', error)
+        router.push(`/livestream/${address}/aura`)
         return error
       })
 
