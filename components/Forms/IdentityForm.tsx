@@ -60,7 +60,6 @@ export default function IdentityForm({}) {
     }
     if (isOnboarding) {
 
-
       const endpoint = 'user/create'
       const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
 
@@ -68,7 +67,7 @@ export default function IdentityForm({}) {
         setSuccessIsOpen(true)
           setHasAccount(true)
         setUser(data)
-        router.push(`/livestream/${address}/aura`)
+        router.push(`/profile/${address}`)
         return res.data
       }).catch((error) => {
         console.log('fetch user error:', error)
@@ -87,7 +86,7 @@ export default function IdentityForm({}) {
         return res.data
       }).catch((error) => {
         console.log('error updating user:', error)
-        router.push(`/livestream/${address}/aura`)
+        router.push(`/profile/${address}/aura`)
         return error
       })
 

@@ -87,6 +87,8 @@ const AuraForm: React.FC = ({}) => {
 
   const onChangeColorOne = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOne(event.target?.value.toString())
+    const formatColor = `linear-gradient(to ${direction}, ${event.target?.value.toString()}, ${colorTwo}, ${colorThree})`
+    setGradient(formatColor)
   }
 
   const onChangeColorTwo = (event: React.ChangeEvent<HTMLInputElement>) => {
