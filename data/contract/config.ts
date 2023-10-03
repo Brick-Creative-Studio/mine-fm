@@ -33,6 +33,5 @@ export const connectors = connectorsForWallets([
 export const config = createConfig({
   autoConnect: true,
   connectors,
-  publicClient,
-  webSocketPublicClient
+  publicClient
 })
