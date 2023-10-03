@@ -6,7 +6,7 @@ import {
   trustWallet,
   ledgerWallet,
 } from '@rainbow-me/rainbowkit/wallets';
-import { chains, publicClient } from './chains'
+import { chains, publicClient, webSocketPublicClient } from './chains'
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID!!;
 
 const { wallets,  } = getDefaultWallets({
@@ -33,5 +33,6 @@ export const connectors = connectorsForWallets([
 export const config = createConfig({
   autoConnect: true,
   connectors,
-  publicClient
+  publicClient,
+  webSocketPublicClient
 })
