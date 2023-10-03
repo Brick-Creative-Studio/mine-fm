@@ -87,7 +87,6 @@ const AuraForm: React.FC = ({}) => {
 
   const onChangeColorOne = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOne(event.target?.value.toString())
-    setGradient(`linear-gradient(to ${direction}, ${event.target?.value.toString()}, ${colorTwo}, ${colorThree})`)
   }
 
   const onChangeColorTwo = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,10 +122,7 @@ const AuraForm: React.FC = ({}) => {
   })
 
   useEffect(() => {
-    if (colorOne.length){
-      const formatColor = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`
-      setGradient(formatColor)
-    }
+    setGradient(`linear-gradient(to ${user?.direction}, ${user?.colorOne}, ${user?.colorTwo}, ${user?.colorThree})`)
 
   }, [gradient])
 

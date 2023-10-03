@@ -3,7 +3,6 @@ import { AddressType, CHAIN_ID } from '../types/chainTyping'
 export type L2ChainType =
   | CHAIN_ID.OPTIMISM
   | CHAIN_ID.OPTIMISM_GOERLI
-  | CHAIN_ID.BASE
   | CHAIN_ID.BASE_GOERLI
   | CHAIN_ID.ZORA
   | CHAIN_ID.ZORA_GOERLI

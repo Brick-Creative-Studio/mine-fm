@@ -23,7 +23,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
         formatUnits: 'ether',
     })
 
-    const balance = hasAccount ?  BigNumber.from(data?.value.toString()).mod(1e14) : null
+    const balance = hasAccount && data ?  BigNumber.from(data?.value.toString()).mod(1e14) : null
     const formattedBalance = balance ? formatEther(BigNumber.from(data?.value.toString()).sub(balance)) : null;
 
 
