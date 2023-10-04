@@ -1,28 +1,78 @@
 import { Dialog, Transition } from '@headlessui/react'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from "react";
+import { Attendee } from "../../types/Attendee";
+import { User } from "../../types/User";
+import axios from "axios";
+import { Relation } from "../../types/Relation";
+import { list } from "postcss";
+import { useProfileStore } from "../../stores";
 
 interface FollowingList {
-
+  followingList: Relation[] | null
 }
-export const UserListItem: React.FC<FollowingList> = ({}) =>{
+
+
+interface Props {
+  user: User
+}
+export const UserListItem: React.FC<Props> = ({ user}) =>{
+  const auraCode = `linear-gradient(to ${user?.direction}, ${user?.colorOne}, ${user?.colorTwo}, ${user?.colorThree})`
+  const [isFollowing, setFollowing] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const {id } = useProfileStore(state => state)
+  async function mutateRelation(){
+    const deleteEndpoint = 'follower/delete'
+    const createEndpoint = 'follower/create'
+
+    const deleteURL = process.env.NEXT_PUBLIC_BASE_URL + deleteEndpoint
+    const createURL = process.env.NEXT_PUBLIC_BASE_URL + createEndpoint
+
+    if(isFollowing){
+      return await axios.post(deleteURL, {
+        followerID: id,
+        userID: user.id
+      }).then((res) => {
+        //if relation found user is following viewed account
+        setFollowing(false)
+        return res.data
+      }).catch((error) => {
+        console.log('error removing relationship', error)
+
+      })
+
+    }else{
+      return await axios.post(createURL, {
+        followerID: id,
+        userID: user.id
+      }).then((res) => {
+        //if relation found user is following viewed account
+        setFollowing(true)
+        return res.data
+      }).catch((error) => {
+        console.log('error removing relationship', error)
+      })
+    }
+
+  }
+
   return(
     <div className={'w-full flex items-center justify-between my-2'}>
       <div className={'flex'}>
-        <div className={'h-12 w-12 bg-orange-500 rounded-full mr-4'} />
+        <div style={{ background: `${auraCode}`}} className={`h-12 w-12 rounded-full mr-4`} />
         <div className={'flex-col flex items-start justify-center'}>
-          <p className={'my-0 text-ove text-ellipsis'}>@minerTag</p>
-          <p className={'my-1 text-gray-500'}>Name</p>
+          <p className={'my-0 text-ove text-ellipsis'}>{ user?.miner_tag }</p>
+          <p className={'my-1 text-gray-500'}>{ user?.name }</p>
         </div>
       </div>
-      <button className={'bg-white text-black rounded-md'}>
-        Following
+      <button onClick={() => mutateRelation()} className={'bg-white text-black rounded-md'}>
+        { isFollowing ? 'FOLLOWING' : 'FOLLOW'}
       </button>
     </div>
   )
 }
-export default function FollowingModal() {
+export default function FollowingModal({ followingList } : FollowingList) {
   let [isOpen, setIsOpen] = useState(false)
-  const followingCount = 234
+  const [ userList, setUserList] = useState<User[]>([])
 
   function closeModal() {
     setIsOpen(false)
@@ -32,12 +82,36 @@ export default function FollowingModal() {
     setIsOpen(true)
   }
 
+  useEffect(() => {
+    let list : User[] = [];
+    function fetchList(){
+      followingList?.map((follow) => {
+        const endpoint = 'user/user'
+        const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+        axios.post(url, {
+          id: follow.userID
+        }).then((user) => {
+          list.push(user.data)
+          setUserList([...userList, ...list])
+        }).catch((error) => {
+          console.log('error fetching user list', error)
+        })
+      })
+
+    }
+    if (followingList && followingList.length > 0){
+      fetchList()
+    }else {
+      setUserList([])
+    }
+  }, [followingList])
+
   return (
     <>
       <div className="flex w-fit flex-col items-center mx-4">
         <button type="button" onClick={openModal} className={'bg-transparent cursor-pointer'}>
           <p> Following </p>
-          <p className="-mt-2"> {followingCount} </p>
+          <p className="-mt-2"> {followingList?.length} </p>
         </button>
       </div>
 
@@ -71,23 +145,16 @@ export default function FollowingModal() {
                     as="h3"
                     className="text-lg text-center font-medium leading-6"
                   >
-                    {`Following - ${followingCount} Miners`}
+                    {`Following - ${followingList?.length} Miners`}
                   </Dialog.Title>
                   <div className="mt-2 flex flex-col w-full h-96 overflow-scroll">
-                   <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-
+                    {
+                      userList && userList.length > 0 ? ( userList.map((user) =>{
+                        return <UserListItem user={user}/>
+                      })) : (
+                        'You have not followed anyone yet'
+                      )
+                    }
                   </div>
 
 

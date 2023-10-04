@@ -23,7 +23,7 @@ export const UserListItem: React.FC<FollowerList> = ({}) =>{
 }
 export default function FollowingModal() {
   let [isOpen, setIsOpen] = useState(false)
-  const followerCount = 433
+  const followerCount = 0
 
   function closeModal() {
     setIsOpen(false)
@@ -75,18 +75,6 @@ export default function FollowingModal() {
                     {`Followers - ${followerCount} Miners`}
                   </Dialog.Title>
                   <div className="mt-2 flex flex-col w-full h-96 overflow-scroll">
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
                     <UserListItem/>
 
                   </div>

@@ -3,7 +3,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { ProfileSectionHandler as SectionHandler } from 'components/Layout/ProfileSectionHandler'
-import { useLayoutStore } from 'stores'
 import InstaModal from 'components/Modals/InstaModal'
 import TwitterModal from 'components/Modals/TwitterModal'
 import MemoryCardSection from "../../../components/Sections/MemoryCardSection";
@@ -13,22 +12,27 @@ import FollowerModal from "../../../components/Modals/FollowerModal";
 import FollowingModal from "../../../components/Modals/FollowingModal";
 import useGetUser from "../../../hooks/useGetUser";
 import { useAccount} from "wagmi";
+import { Attendee } from "../../../types/Attendee";
+import axios from "axios";
+import { Relation } from "../../../types/Relation";
 
 
 export default function Profile() {
   const { address, isConnecting, isDisconnected } = useAccount()
   const [gradient, setGradient] = useState(``)
   const [isUserPage, setPageType] = useState(true)
+  const [ following, setFollowing] = useState<Relation[] | null>(null)
+  const [ follower, setFollower] = useState<Relation[] | null>(null)
+
   const { query } = useRouter()
   const pathAddress = query?.address?.toString()
-  const { error, isLoading, user } = useGetUser(pathAddress as string)
+  const { error, user, isLoading } = useGetUser(pathAddress as string)
   const aura = {
     direction: user?.direction,
     colorOne: user?.colorOne,
     colorTwo: user?.colorTwo,
     colorThree: user?.colorThree
   }
-
 
   const sections = [
     {
@@ -54,6 +58,40 @@ export default function Profile() {
     }
   }, )
 
+  useEffect(() => {
+
+    async function fetchRelations(){
+      const endpoint = 'follower/where'
+      const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+      console.log(user?.id)
+      //fetch followers
+      await axios.post(url, {
+        userID: user?.id!
+      }).then((res) => {
+        console.log('followers',res.data)
+
+        setFollower(res.data)
+      }).catch((error) => {
+        console.log(error, 'error fetching followers')
+      })
+
+      //fetch following
+      await axios.post(url, {
+        followerID: user?.id!
+      }).then((res) => {
+        console.log('following',res.data)
+
+        setFollowing(res.data)
+      }).catch((error) => {
+        console.log(error, 'error fetching following')
+      })
+
+    }
+
+    fetchRelations()
+  }, [user, isLoading])
+
+  console.log('end', following)
   return (
     <div className="flex flex-col mt-24 mb-auto w-full">
       <div className="flex mx-8">
@@ -94,7 +132,7 @@ export default function Profile() {
               <TwitterModal twitterUrl={user?.twitter} />
               <InstaModal instaUrl={user?.instagram} />
               {
-                isUserPage ?     <Link href={`${address}/identity`}>
+                isUserPage ?  <Link href={`${address}/aura`}>
                 <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent">
                   <Image
                     width={24}
@@ -113,12 +151,12 @@ export default function Profile() {
       </div>
       <div className="flex justify-center m-6 flex-row items-baseline lg:space-x-12 > * + *	md:justify-start">
         <div className="flex flex-col items-center mx-4">
-          <p> Moodscapes </p>
-          <p className="-mt-2"> 1 </p>
+          <p> Memory Cards </p>
+          <p className="-mt-2"> 0 </p>
         </div>
 
-        <FollowerModal/>
-        <FollowingModal/>
+        <FollowerModal />
+        <FollowingModal followingList={following}/>
       </div>
       <div className="flex-col mx-8">
         <h2> Bio </h2>
