@@ -17,6 +17,8 @@ import { User } from "../../../types/User";
 import { Event } from "../../../types/Event";
 import ExitModal from "../../../components/Modals/ConfirmExitModal";
 import { useProfileStore } from "../../../stores";
+import { socket} from "../../../utils/socket-client";
+
 interface Props {
   attendees: User[] | null,
   eventInfo: Event | null
@@ -24,14 +26,16 @@ interface Props {
 
 export default function LivestreamPage({ attendees, eventInfo }: Props) {
 
-  const { id: userId } = useProfileStore(state => state)
-  const { query } = useRouter()
+  const { id: userId, m_tag, aura } = useProfileStore(state => state)
+  const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
-  // console.log('attendance size: ', attendees)
+  const { query } = useRouter()
+  const [isConnected, setIsConnected] = useState(socket.connected)
+
   const guestSections = [
     {
       title: 'Chat',
-      component: [<GeneralChatSection eventId={eventInfo?.id!} key={'chat'} />],
+      component: [<GeneralChatSection socket={socket} eventId={eventInfo?.id!} key={'chat'} />],
     },
     {
       title: 'Audience',
@@ -47,7 +51,7 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
   const adminSections = [
     {
       title: 'Chat',
-      component: [<GeneralChatSection eventId={eventInfo?.id!} key={'chat'} />],
+      component: [<GeneralChatSection socket={socket} eventId={eventInfo?.id!} key={'chat'} />],
     },
     {
       title: 'Audience',
@@ -62,6 +66,29 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
       component: [<AdminSection key={'Admin'} />],
     },
   ]
+
+  useEffect(() => {
+
+    if (eventInfo){
+      socket.on('connect', () => {
+        socket.emit('join_room', {
+          roomName: eventInfo.id,
+          messenger: {
+            userId: userId,
+            miner_tag: m_tag,
+            socketId: socket.id,
+            auraCode: auraCode,
+          }
+        })
+      })
+    }
+
+    return () => {
+      socket.off('connect')
+      socket.off('disconnect')
+      // socket.off('chat')
+    }
+  }, [])
 
   return (
     <div className="flex flex-col w-full mt-24">

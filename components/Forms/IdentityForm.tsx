@@ -1,13 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import Link from 'next/link'
-import Image from 'next/image'
 import { useLayoutStore, useProfileStore, useMCStore } from 'stores'
 import { useRouter } from 'next/router'
-import createUser from "../../data/rest/createUser";
-import updateUser from "../../data/rest/updateUser";
 import { phoneNumberAutoFormat } from '../../utils/phoneNumberAutoFormat'
-import { User } from "../../types/User";
 import NewUserModal from '../Modals/NewUserModal';
 import UploadFailModal from "../Modals/UploadFailModal";
 import axios from "axios";
@@ -60,7 +55,6 @@ export default function IdentityForm({}) {
     }
     if (isOnboarding) {
 
-
       const endpoint = 'user/create'
       const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
 
@@ -68,7 +62,7 @@ export default function IdentityForm({}) {
         setSuccessIsOpen(true)
           setHasAccount(true)
         setUser(data)
-        router.push(`/livestream/${address}/aura`)
+        router.push(`/profile/${address}`)
         return res.data
       }).catch((error) => {
         console.log('fetch user error:', error)
@@ -87,7 +81,7 @@ export default function IdentityForm({}) {
         return res.data
       }).catch((error) => {
         console.log('error updating user:', error)
-        router.push(`/livestream/${address}/aura`)
+        router.push(`/profile/${address}/aura`)
         return error
       })
 
@@ -139,7 +133,7 @@ export default function IdentityForm({}) {
               defaultValue={isOnboarding ? undefined : (email as string)}
               placeholder="miner@mine.fm"
               required
-              className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
+              className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white  "
               {...register('email', { required: false })}
             />
           </div>

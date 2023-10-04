@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import Image from 'next/image'
-import {useLayoutStore, useProfileStore} from 'stores'
+import {useLayoutStore } from 'stores'
 import Link from "next/link";
 
 interface ModalProps {

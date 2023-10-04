@@ -1,29 +1,77 @@
 import { Dialog, Transition } from '@headlessui/react'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from "react";
+import { Relation } from "../../types/Relation";
+import { User } from "../../types/User";
+import { useProfileStore } from "../../stores";
+import axios from "axios";
 
 interface FollowerList {
+  followerList: Relation[] | null
 
 }
 
-export const UserListItem: React.FC<FollowerList> = ({}) =>{
+interface Props {
+  user: User
+}
+
+export const UserListItem: React.FC<Props> = ({ user }) =>{
+
+  const auraCode = `linear-gradient(to ${user?.direction}, ${user?.colorOne}, ${user?.colorTwo}, ${user?.colorThree})`
+  const [isFollower, setFollower] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const {id } = useProfileStore(state => state)
+
+  async function mutateRelation(){
+    const deleteEndpoint = 'follower/delete'
+    const createEndpoint = 'follower/create'
+
+    const deleteURL = process.env.NEXT_PUBLIC_BASE_URL + deleteEndpoint
+    const createURL = process.env.NEXT_PUBLIC_BASE_URL + createEndpoint
+
+    if(isFollower){
+      return await axios.post(deleteURL, {
+        followerID: user.id,
+        userID: id
+      }).then((res) => {
+        //if relation found user is following viewed account
+        setFollower(false)
+        return res.data
+      }).catch((error) => {
+        console.log('error removing relationship', error)
+
+      })
+
+    }else{
+      return await axios.post(createURL, {
+        followerID: user.id,
+        userID: id
+      }).then((res) => {
+        //if relation found user is following viewed account
+        setFollower(true)
+        return res.data
+      }).catch((error) => {
+        console.log('error removing relationship', error)
+      })
+    }
+
+  }
+
   return(
     <div className={'w-full flex items-center justify-between my-2'}>
       <div className={'flex'}>
-        <div className={'h-12 w-12 bg-orange-500 rounded-full mr-4'} />
+        <div style={{ background: `${auraCode}`}} className={`h-12 w-12 rounded-full mr-4`} />
         <div className={'flex-col flex items-start justify-center'}>
-          <p className={'my-0 text-ove text-ellipsis'}>@minerTag</p>
-          <p className={'my-1 text-gray-500'}>Name</p>
+          <p className={'my-0 text-ove text-ellipsis'}>{ user?.miner_tag }</p>
+          <p className={'my-1 text-gray-500'}>{ user?.name }</p>
         </div>
       </div>
-      <button className={'bg-white text-black rounded-md'}>
-        Follow
-      </button>
+
     </div>
   )
 }
-export default function FollowingModal() {
+export default function FollowerModal({ followerList } : FollowerList) {
   let [isOpen, setIsOpen] = useState(false)
-  const followerCount = 433
+  const [ userList, setUserList] = useState<User[]>([])
 
   function closeModal() {
     setIsOpen(false)
@@ -33,12 +81,38 @@ export default function FollowingModal() {
     setIsOpen(true)
   }
 
+  useEffect(() => {
+    function fetchList(){
+      const list : User[] = [];
+
+      followerList?.map((follower) => {
+        const endpoint = 'user/user'
+        const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+        axios.post(url, {
+          id: follower.userID
+        }).then((res) => {
+          list.push(res.data)
+        }).catch((error) => {
+          console.log('error fetching user list', error)
+        })
+      })
+      if(followerList){
+        setUserList(list)
+      }
+    }
+    if (followerList?.length ){
+      fetchList()
+    }else {
+      setUserList([])
+    }
+  }, [followerList])
+
   return (
     <>
       <div className="flex w-fit flex-col items-center mx-4">
         <button type="button" onClick={openModal} className={'bg-transparent cursor-pointer'}>
           <p> Followers </p>
-          <p className="-mt-2"> {followerCount} </p>
+          <p className="-mt-2"> {followerList?.length} </p>
         </button>
       </div>
 
@@ -72,23 +146,16 @@ export default function FollowingModal() {
                     as="h3"
                     className="text-lg text-center font-medium leading-6"
                   >
-                    {`Followers - ${followerCount} Miners`}
+                    {`Followers - ${followerList?.length} Miner(s)`}
                   </Dialog.Title>
                   <div className="mt-2 flex flex-col w-full h-96 overflow-scroll">
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-                    <UserListItem/>
-
+                    {
+                      userList && userList.length > 0 ? ( userList.map((user) =>{
+                        return <UserListItem user={user}/>
+                      })) : (
+                        'You have no followers yest'
+                      )
+                    }
                   </div>
 
 

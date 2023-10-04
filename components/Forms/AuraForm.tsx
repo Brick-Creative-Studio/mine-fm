@@ -38,9 +38,9 @@ const AuraForm: React.FC = ({}) => {
   const [colorTwo, setTwo] = useState<string>(hasAccount ? user?.colorTwo! : "#FFFFFF")
   const [colorThree, setThree] = useState<string>(hasAccount ? user?.colorThree! : "#FFFFFF")
   const [direction, setDirection] = useState(hasAccount ? user?.direction! : "top")
-
   const initialGradient = `linear-gradient(to ${direction}, ${colorOne}, ${colorTwo}, ${colorThree})`
-  const [gradient, setGradient] = useState<string>('')
+  const [gradient, setGradient] = useState<string>(initialGradient)
+
   const cardinalMap = new Map<string, string>([
     ['left', 'West'],
     ['right', 'East'],
@@ -77,7 +77,7 @@ const AuraForm: React.FC = ({}) => {
           colorThree: colorThree,
           direction: direction,
         })
-        router.push(`/profile/${address}`)
+        router.push(`/profile/${address}/identity`)
       }).catch((error) => {
         console.log('error updating user:', error)
         return error
@@ -87,6 +87,8 @@ const AuraForm: React.FC = ({}) => {
 
   const onChangeColorOne = (event: React.ChangeEvent<HTMLInputElement>) => {
     setOne(event.target?.value.toString())
+    const formatColor = `linear-gradient(to ${direction}, ${event.target?.value.toString()}, ${colorTwo}, ${colorThree})`
+    setGradient(formatColor)
   }
 
   const onChangeColorTwo = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,105 +110,102 @@ const AuraForm: React.FC = ({}) => {
     setGradient(formatColor)
   }
 
-
   useEffect(() => {
-    if(colorOne === undefined || !colorOne.length){
-      user?.colorOne && setOne(user.colorOne)
-      user?.colorTwo && setTwo(user.colorTwo)
-      user?.colorThree && setThree(user.colorThree)
-      user?.direction && setDirection(user?.direction)
-      const formatColor = `linear-gradient(to ${user?.direction}, ${user?.colorOne}, ${user?.colorTwo}, ${user?.colorThree})`
-      setGradient(formatColor)
-      return
+    if(user){
+      setGradient(`linear-gradient(to ${user?.direction}, ${user?.colorOne}, ${user?.colorTwo}, ${user?.colorThree})`)
+      setOne(user.colorOne!)
+      setTwo(user.colorTwo!)
+      setThree(user.colorThree!)
+      setDirection(user.direction!)
     }
-  })
-
-  useEffect(() => {
-    setGradient(`linear-gradient(to ${user?.direction}, ${user?.colorOne}, ${user?.colorTwo}, ${user?.colorThree})`)
-
-  }, [gradient])
+  }, [isLoading, user])
 
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center my-12">
-        <div
-          className={auraCircle}
-          style={{ background: `${gradient ? gradient : initialGradient}` }}
-        />
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col my-12">
-            <div className="flex flex-row  justify-around" >
-              <div className="flex flex-col justify-center items-center">
-                <input
-                  type="color"
-                  value={colorOne}
-                  {...register('colorOne')}
-                  onChange={(event) => onChangeColorOne(event)}
-                  className="w-24 h-12 border-none bg-transparent	"
-                />
-                <p>{colorOne}</p>
-              </div>
-              <div className="flex flex-col justify-center items-center">
-                <input
-                  type="color"
-                  value={colorTwo}
-                  {...register('colorTwo')}
-                  onChange={(event) => onChangeColorTwo(event)}
-                  className="w-24 h-12 border-none bg-transparent"
-                />
-                <p>{colorTwo}</p>
-              </div>
-              <div className="flex flex-col justify-center items-center">
-                <input
-                  type="color"
-                  value={colorThree }
-                  {...register('colorThree')}
-                  onChange={(event) => onChangeColorThree(event)}
-                  className="w-24 h-12 border-none bg-transparent"
-                />
-                <p>{colorThree}</p>
-              </div>
-            </div>
-            <div className="flex justify-center m-8">
-              <div className={crossCenter}>
-                <input
-                  id={'top'}
-                  type="button"
-                  onClick={(event) => changeDirection(event)}
-                  className={crossTop}
-                />
-                <input
-                  id={'bottom'}
-                  type="button"
-                  onClick={(event) => changeDirection(event)}
-                  className={crossBottom}
-                />
-                <input
-                  id={'left'}
-                  type="button"
-                  onClick={(event) => changeDirection(event)}
-                  className={crossLeft}
-                />
-                <input
-                  id={'right'}
-                  type="button"
-                  onClick={(event) => changeDirection(event)}
-                  className={crossRight}
-                />
-                <div className={crossCircle} />
-              </div>
-            </div>
-            <h3 className="self-center my-8"> Direction: {cardinalMap.get(direction)} </h3>
-            <input
-              type="submit"
-              title="next"
-              value={'Generate Aura'}
-              className="not-italic bg-[#0E4749] h-12 rounded-lg font-mono font-bold text-lg p-2 px-4 border-none mt-2 cursor-pointer"
+      { isLoading ? <h3 className={'animate-pulse'}> LOADING...</h3> :
+        (
+          <div className="flex flex-col justify-center items-center my-12">
+            <div
+              className={'border-black w-64 h-64 mr-12 ml-12 border-solid rounded-full'}
+              style={{ background: `${gradient}` }}
             />
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="flex flex-col my-12">
+                <div className="flex flex-row  justify-around" >
+                  <div className="flex flex-col justify-center items-center">
+                    <input
+                      type="color"
+                      value={colorOne}
+                      {...register('colorOne')}
+                      onChange={(event) => onChangeColorOne(event)}
+                      className="w-24 h-12 border-none bg-transparent cursor-pointer	"
+                    />
+                    <p>{colorOne}</p>
+                  </div>
+                  <div className="flex flex-col justify-center items-center ">
+                    <input
+                      type="color"
+                      value={colorTwo}
+                      {...register('colorTwo')}
+                      onChange={(event) => onChangeColorTwo(event)}
+                      className="w-24 h-12 border-none bg-transparent cursor-pointer"
+                    />
+                    <p>{colorTwo}</p>
+                  </div>
+                  <div className="flex flex-col justify-center items-center">
+                    <input
+                      type="color"
+                      value={colorThree }
+                      {...register('colorThree')}
+                      onChange={(event) => onChangeColorThree(event)}
+                      className="w-24 h-12 border-none bg-transparent cursor-pointer"
+                    />
+                    <p>{colorThree}</p>
+                  </div>
+                </div>
+                <div className="flex justify-center m-8">
+                  <div className={'bg-gray-800 w-8 h-8 m-6'}>
+                    <input
+                      id={'top'}
+                      type="button"
+                      onClick={(event) => changeDirection(event)}
+                      className={'bg-gray-800 w-8 h-12 absolute -mt-12 cursor-pointer'}
+                    />
+                    <input
+                      id={'bottom'}
+                      type="button"
+                      onClick={(event) => changeDirection(event)}
+                      className={'bg-gray-800 w-8 h-12 absolute mt-8 cursor-pointer rounded-md'}
+                    />
+                    <input
+                      id={'left'}
+                      type="button"
+                      onClick={(event) => changeDirection(event)}
+                      className={'bg-gray-800 w-12 h-8 absolute -ml-12 cursor-pointer rounded-md'}
+                    />
+                    <input
+                      id={'right'}
+                      type="button"
+                      onClick={(event) => changeDirection(event)}
+                      className={'bg-gray-800 w-12 h-8 absolute ml-8 cursor-pointer rounded-md'}
+                    />
+                    <div className={'bg-gray-900 w-6 h-6 absolute mt-1 ml-1 rounded-full'} />
+                  </div>
+                </div>
+                <h3 className="self-center my-8"> Direction: {cardinalMap.get(direction)} </h3>
+                <input
+                  type="submit"
+                  title="next"
+                  value={'Generate Aura'}
+                  className="not-italic bg-[#0E4749] h-12 rounded-lg font-mono font-bold text-lg p-2 px-4 border-none mt-2 cursor-pointer"
+                />
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
+        )
+      }
+
     </>
   )
 }

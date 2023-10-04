@@ -103,7 +103,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                         {({ active }) => (
                           <a
                             className={`${active && 'bg-blue-500'} flex items-center justify-between w-full`}
-                            href={ hasAccount ? `/profile/${signerAddress}/identity` : undefined}
+                            href={ hasAccount ? `/profile/${signerAddress}/aura` : undefined}
                           >
                               {hasAccount ? <h3 className={'text-sm mx-8'}>Settings </h3> : null}
 
