@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { Message } from '../../types/Message'
 import axios from 'axios'
 import { useEventStore, useProfileStore } from '../../stores'
-import io from 'socket.io-client'
+import io, { Socket } from "socket.io-client";
 import process from "process";
 
 type Comment = {
@@ -14,16 +14,19 @@ type Comment = {
 }
 
 interface Props {
-  eventId: string
+  eventId: string,
+  socket: Socket
 }
 
-export default function Input({ eventId }: Props) {
+export default function Input({ eventId, socket }: Props) {
   const { register, handleSubmit, getValues, resetField } = useForm<Comment>()
-  // const socket = io('https://minefm-server.herokuapp.com/livestream_chatroom')
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL
-  const socket = io(baseURL!)
+  const [submitting, setSubmitting] = useState(false)
+  const [isConnected, setIsConnected] = useState(socket.connected)
+
   const { aura, m_tag, id: userId } = useProfileStore((state) => state)
   const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
+
 
   const time = new Date(Date.now()).toLocaleTimeString([], {
     hour: '2-digit',
@@ -51,13 +54,18 @@ export default function Input({ eventId }: Props) {
 
 
   async function handleSubmitNewMessage() {
+    setSubmitting(true)
+
     const message: Message = {
       message: getValues('comment'),
-      auraCode,
-      eventId: eventId as string,
-      userId: userId as string,
-      miner_tag: m_tag as string,
-      time: time,
+      messenger : {
+        auraCode : auraCode,
+        userId: userId as string,
+        miner_tag: m_tag as string,
+        socketId: socket.id
+      },
+      roomName: eventId as string,
+      timeSent: time,
     }
 
 
@@ -65,26 +73,27 @@ export default function Input({ eventId }: Props) {
     console.log('emitted', message)
 
 
-    await createMessage(message)
-    resetField('comment')
+    await createMessage(message).then(() => {
+      resetField('comment')
+      setSubmitting(false)
+    }).catch((error) => {
+      console.log('error posting message', error)
+    })
+
   }
 
-  async function handleCreateNewRoom() {
-    const data = {
-      roomName: 'newRoom',
-    }
-
-    socket.emit('create_room', data)
-    console.log('emitted', data)
-  }
 
   return (
     <div className="flex flex-row justify-between bg-[#12002C] p-4 w-full h-fit items-center">
-      <button className={'bg-transparent'} onClick={handleCreateNewRoom}>
         <div style={{ background: `${auraCode}`}} className={'rounded-full w-[40px] h-[40px]'} />
-      </button>
       <input
         type={'text'}
+        onKeyDown={(e) => {
+          if (e.code === "Enter") {
+            e.preventDefault();
+            handleSubmitNewMessage();
+          }
+        }}
         placeholder="send chat"
         className="w-3/4 px-2 py-4 border-0 rounded-md bg-fuchsia-950"
         {...register('comment', { required: true })}

@@ -1,32 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react'
 import MessageCell from '../Message/MessageCell'
 import Input from '../Input/Input'
-import io from 'socket.io-client'
+import io, { Socket } from "socket.io-client";
 import axios from 'axios'
-
 import { Message } from '../../types/Message'
 import process from "process";
-import { loader } from "next/dist/build/webpack/config/helpers";
+import { Comment } from "../../types/Comment";
 
 interface Props {
   eventId: string;
+  socket: Socket,
 }
-export default function GeneralChatSection({ eventId } : Props) {
-  const [messages, setMessages] = useState<Message[]>([])
-  const socket = io(process.env.NEXT_PUBLIC_BASE_URL!)
+export default function GeneralChatSection({ eventId, socket } : Props) {
+  const [comments, setComments] = useState<Comment[]>([])
   const [isLoading, setLoading] = useState(true)
+  const [isConnected, setIsConnected] = useState(socket.connected)
 
 
 
   async function loadMessages(){
     const endpoint = 'comments/where'
     const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint;
-    console.log('url')
 
-    const messages : Message[] = await axios.post(url, {
+    const messages : Comment[] = await axios.post(url, {
         eventId
     }).then((res) => {
-      console.log('msgs', res.data)
       return res.data
     }).catch((error) => {
       console.log('comment load error:', error)
@@ -36,11 +34,19 @@ export default function GeneralChatSection({ eventId } : Props) {
   }
 
   useEffect(() => {
+
     socket.on('chat', (message: Message) => {
-      setMessages((messages) => [...messages, message])
+      console.log('chatReceived', message)
+      const comment = {
+        message: message.message,
+        auraCode: message.messenger.auraCode,
+        eventId: message.roomName,
+        miner_tag: message.messenger.miner_tag,
+        time: message.timeSent
+      }
+      setComments((comments) => [...comments, comment])
     })
     return () => {
-      //TODO: Verify if this is proper socket clean up
       socket.off('chat')
     }
   }, [socket])
@@ -48,7 +54,7 @@ export default function GeneralChatSection({ eventId } : Props) {
   useEffect(() => {
     async function loader(){
       const eventComments = await loadMessages()
-      setMessages(eventComments)
+      setComments(eventComments)
     }
 
     loader()
@@ -62,8 +68,8 @@ export default function GeneralChatSection({ eventId } : Props) {
 
       <div className={'flex flex-col-reverse h-full w-full scroll-smooth overflow-scroll'}>
         <div className={''}>
-        {messages.length ? (
-          messages.map(({ message, time, miner_tag, auraCode }, index) => {
+        {comments.length ? (
+          comments.map(({ message, auraCode, time, miner_tag }, index) => {
             return (
               <MessageCell
                 key={index}
@@ -81,7 +87,7 @@ export default function GeneralChatSection({ eventId } : Props) {
         )}
         </div>
       </div>
-      <Input eventId={eventId} />
+      <Input socket={socket} eventId={eventId} />
     </div>
   )
 }

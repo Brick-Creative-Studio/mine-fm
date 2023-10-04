@@ -139,17 +139,17 @@ const AuraForm: React.FC = ({}) => {
                       value={colorOne}
                       {...register('colorOne')}
                       onChange={(event) => onChangeColorOne(event)}
-                      className="w-24 h-12 border-none bg-transparent	"
+                      className="w-24 h-12 border-none bg-transparent cursor-pointer	"
                     />
                     <p>{colorOne}</p>
                   </div>
-                  <div className="flex flex-col justify-center items-center">
+                  <div className="flex flex-col justify-center items-center ">
                     <input
                       type="color"
                       value={colorTwo}
                       {...register('colorTwo')}
                       onChange={(event) => onChangeColorTwo(event)}
-                      className="w-24 h-12 border-none bg-transparent"
+                      className="w-24 h-12 border-none bg-transparent cursor-pointer"
                     />
                     <p>{colorTwo}</p>
                   </div>
@@ -159,38 +159,38 @@ const AuraForm: React.FC = ({}) => {
                       value={colorThree }
                       {...register('colorThree')}
                       onChange={(event) => onChangeColorThree(event)}
-                      className="w-24 h-12 border-none bg-transparent"
+                      className="w-24 h-12 border-none bg-transparent cursor-pointer"
                     />
                     <p>{colorThree}</p>
                   </div>
                 </div>
                 <div className="flex justify-center m-8">
-                  <div className={crossCenter}>
+                  <div className={'bg-gray-800 w-8 h-8 m-6'}>
                     <input
                       id={'top'}
                       type="button"
                       onClick={(event) => changeDirection(event)}
-                      className={crossTop}
+                      className={'bg-gray-800 w-8 h-12 absolute -mt-12 cursor-pointer'}
                     />
                     <input
                       id={'bottom'}
                       type="button"
                       onClick={(event) => changeDirection(event)}
-                      className={crossBottom}
+                      className={'bg-gray-800 w-8 h-12 absolute mt-8 cursor-pointer rounded-md'}
                     />
                     <input
                       id={'left'}
                       type="button"
                       onClick={(event) => changeDirection(event)}
-                      className={crossLeft}
+                      className={'bg-gray-800 w-12 h-8 absolute -ml-12 cursor-pointer rounded-md'}
                     />
                     <input
                       id={'right'}
                       type="button"
                       onClick={(event) => changeDirection(event)}
-                      className={crossRight}
+                      className={'bg-gray-800 w-12 h-8 absolute ml-8 cursor-pointer rounded-md'}
                     />
-                    <div className={crossCircle} />
+                    <div className={'bg-gray-900 w-6 h-6 absolute mt-1 ml-1 rounded-full'} />
                   </div>
                 </div>
                 <h3 className="self-center my-8"> Direction: {cardinalMap.get(direction)} </h3>

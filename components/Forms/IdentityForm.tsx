@@ -133,7 +133,7 @@ export default function IdentityForm({}) {
               defaultValue={isOnboarding ? undefined : (email as string)}
               placeholder="miner@mine.fm"
               required
-              className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
+              className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white  "
               {...register('email', { required: false })}
             />
           </div>

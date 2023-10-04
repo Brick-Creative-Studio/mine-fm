@@ -11,7 +11,6 @@ interface FollowingList {
   followingList: Relation[] | null
 }
 
-
 interface Props {
   user: User
 }
@@ -83,23 +82,27 @@ export default function FollowingModal({ followingList } : FollowingList) {
   }
 
   useEffect(() => {
-    let list : User[] = [];
     function fetchList(){
+      const list : User[] = [];
+
       followingList?.map((follow) => {
         const endpoint = 'user/user'
         const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
         axios.post(url, {
           id: follow.userID
-        }).then((user) => {
-          list.push(user.data)
-          setUserList([...userList, ...list])
+        }).then((res) => {
+          console.log('f response', res.data)
+
+          list.push(res.data)
         }).catch((error) => {
-          console.log('error fetching user list', error)
+          console.log('error fetching user lists', error)
         })
       })
-
+      if(followingList){
+        setUserList(list)
+      }
     }
-    if (followingList && followingList.length > 0){
+    if (followingList?.length){
       fetchList()
     }else {
       setUserList([])
@@ -145,7 +148,7 @@ export default function FollowingModal({ followingList } : FollowingList) {
                     as="h3"
                     className="text-lg text-center font-medium leading-6"
                   >
-                    {`Following - ${followingList?.length} Miners`}
+                    {`Following - ${followingList?.length} Miner(s)`}
                   </Dialog.Title>
                   <div className="mt-2 flex flex-col w-full h-96 overflow-scroll">
                     {
