@@ -157,8 +157,8 @@ export default function Profile() {
           </div>
           <div className="flex justify-center md:m-6 flex-row items-baseline lg:space-x-12 > * + *	md:justify-start">
             <div className="flex flex-col items-center mx-4">
-              <p> Memory Cards </p>
-              <p className="-mt-2"> 0 </p>
+              <p className={'text-[13px] md:text-[16px] text-center'}> Memory Cards </p>
+              <p className="-mt-2 text-[13px] md:text-[16px]"> 0 </p>
             </div>
 
             <FollowerModal followerList={follower} />
