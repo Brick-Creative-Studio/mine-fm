@@ -98,7 +98,7 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
           <h2 className={'my-0 w-full text-center text-[#B999FA]'}> "{eventInfo?.title}" </h2>
         </div>
         <div className="flex flex-row items-center justify-around w-20 h-10 mx-6 rounded-md bg-zinc-800 p-2">
-          <div className={'rounded-full w-4 h-4 bg-red-700 animate-pulse'} />
+          <div className={'rounded-full w-4 h-4 bg-red-700 animate-pulse mx-1'} />
           <p>LIVE</p>
         </div>
       </div>
