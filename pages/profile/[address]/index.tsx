@@ -139,7 +139,7 @@ export default function Profile() {
                   <InstaModal instaUrl={user?.instagram} />
                   {
                     isUserPage ?  <Link href={`${address}/aura`}>
-                      <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent">
+                      <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent border-none">
                         <Image
                           width={24}
                           height={24}

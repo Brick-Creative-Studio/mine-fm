@@ -69,7 +69,7 @@ export default function InstaModal({ instaUrl } : SocialProps) {
   return (
     <>
       <button
-        className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent"
+        className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent border-none"
         onClick={openModal}
       >
         <Image

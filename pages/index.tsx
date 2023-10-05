@@ -110,7 +110,7 @@ export default function HomePage({}) {
 
 
                 <MoodCard mood={mood002}/>
-                <Link href={'/explore?tab=livestream'}>
+                <Link href={'/explore?tab=moods'}>
                   <div className={'self-center flex items-center'}>
                   <div className={'w-26 h-26 p-2 bg-[#B999FA] rounded-full self-center flex justify-center items-center cursor-pointer'}>
                     <img className={'h-12 w-12'} alt={'explore button'} src={'/arrow-right.svg'}/>

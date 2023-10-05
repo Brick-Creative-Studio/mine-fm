@@ -69,7 +69,7 @@ export default function TwitterModal({ twitterUrl }: SocialProps) {
     <>
       <button
         onClick={openModal}
-        className="hover:bg-sky-100 w-10 h-10 rounded-lg bg-transparent"
+        className="hover:bg-sky-100 w-10 h-10 rounded-lg bg-transparent border-none"
       >
         <Image
           width={24}
