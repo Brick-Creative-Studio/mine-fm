@@ -13,11 +13,11 @@ export default function MessageCell({
 }) {
 
   return (
-    <div className={'flex-col h-fit p-2 border-y-[.5px] border-x-0 border-solid border-[#808080] '}>
+    <div className={'flex-col h-fit py-0 border-y-[.5px] border-x-0 border-solid border-[#808080] '}>
 
-      <div className={' w-full flex items-center mx-2'}>
-        <div className={'rounded-full w-[48px] h-[40px]'} style={{ background: `${auraCode}` }} />
-        <div className={'container mx-2'}>
+      <div className={' w-full flex items-center'}>
+        <div className={'rounded-full w-[32px] h-[32px] p-4 mx-2'} style={{ background: `${auraCode}` }} />
+        <div className={'container'}>
           <p className={'text-blue-500 -mb-2'}> { minerTag } </p>
           <p> { message }</p>
         </div>

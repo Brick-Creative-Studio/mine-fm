@@ -127,7 +127,7 @@ const AuraForm: React.FC = ({}) => {
         (
           <div className="flex flex-col justify-center items-center my-12">
             <div
-              className={'border-black w-64 h-64 mr-12 ml-12 border-solid rounded-full'}
+              className={'border-black w-64 h-64 mr-12 ml-12 border-solid hover:animate-pulse rounded-full'}
               style={{ background: `${gradient}` }}
             />
             <form onSubmit={handleSubmit(onSubmit)}>

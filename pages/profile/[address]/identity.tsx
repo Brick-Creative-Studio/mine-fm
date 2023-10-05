@@ -16,7 +16,7 @@ export default function SettingsPage({}) {
         <div className="absolute ml-12">
           <Link
             href={{
-              pathname: `/profile/${address}`,
+              pathname: `/profile/${address}/aura`,
             }}
           >
             <div className="flex flex-row cursor-pointer">

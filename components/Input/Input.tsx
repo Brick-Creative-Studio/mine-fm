@@ -85,7 +85,7 @@ export default function Input({ eventId, socket }: Props) {
 
   return (
     <div className="flex flex-row justify-between bg-[#12002C] p-4 w-full h-fit items-center">
-        <div style={{ background: `${auraCode}`}} className={'rounded-full w-[40px] h-[40px]'} />
+        <div style={{ background: `${auraCode}`}} className={'rounded-full w-[32px] h-[32px]'} />
       <input
         type={'text'}
         onKeyDown={(e) => {
@@ -101,9 +101,9 @@ export default function Input({ eventId, socket }: Props) {
       <button
         onClick={handleSubmitNewMessage}
         type="button"
-        className={`bg-[#7DD934] ml-2 h-[36px] w-[36px] rounded-full cursor-pointer` }
+        className={`bg-[#7DD934] ml-2 h-[34px] w-[34px] rounded-full cursor-pointer` }
       >
-        <Image src={'/arrow-up.svg'} width={24} height={24} alt="submit comment" />
+        <Image src={'/arrow-up.svg'} width={22} height={22} alt="submit comment" />
       </button>
     </div>
   )

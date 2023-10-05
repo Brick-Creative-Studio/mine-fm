@@ -28,7 +28,7 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
 
   const { id: userId, m_tag, aura } = useProfileStore(state => state)
   const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
-
+  const router = useRouter()
   const { query } = useRouter()
   const [isConnected, setIsConnected] = useState(socket.connected)
 
@@ -71,6 +71,7 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
 
     if (eventInfo){
       socket.on('connect', () => {
+        setIsConnected(true)
         socket.emit('join_room', {
           roomName: eventInfo.id,
           messenger: {
@@ -82,6 +83,11 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
         })
       })
     }
+    socket.on('disconnect', () => {
+      setIsConnected(false)
+    })
+
+    socket.connect()
 
     return () => {
       socket.off('connect')
@@ -89,6 +95,19 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
       // socket.off('chat')
     }
   }, [])
+
+  useEffect(() => {
+    const exitingFunction = () => {
+      socket.disconnect()
+    };
+
+    router.events.on("routeChangeStart", exitingFunction);
+
+    return () => {
+      console.log("unmounting component...");
+      router.events.off("routeChangeStart", exitingFunction);
+    };
+  }, [router]);
 
   return (
     <div className="flex flex-col w-full mt-24">
