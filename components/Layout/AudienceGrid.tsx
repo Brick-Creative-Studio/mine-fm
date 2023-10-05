@@ -13,8 +13,8 @@ export default function AudienceGrid({ audienceList } : Props) {
         audienceList?.length ? (
           <div className={'grid grid-cols-4 gap-4 md:gap-2  md:p-2 md:gap-y-4 md:grid-cols-4 w-full'}>
             {
-              audienceList.map((user) => {
-                return <AttendeeBox user={user} />
+              audienceList.map((user, index) => {
+                return <AttendeeBox key={index} user={user} />
               })
             }
 

@@ -89,7 +89,7 @@ export default function FollowerModal({ followerList } : FollowerList) {
         const endpoint = 'user/user'
         const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
         axios.post(url, {
-          id: follower.userID
+          id: follower.followerID
         }).then((res) => {
           list.push(res.data)
         }).catch((error) => {

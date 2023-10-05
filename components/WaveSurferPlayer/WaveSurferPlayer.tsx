@@ -73,26 +73,28 @@ const WaveSurferPlayer = (props: any) => {
     if (!wavesurfer) return
 
     if(wavesurfer.getMuted()){
-      return <Image src="/speaker-mute.svg" alt="Mute" width={40} height={40} />
+      return <img src="/speaker-mute.svg" alt="Mute" className={'cursor-pointer w-10 h-10'} />
     } else {
-      return <Image src="/speaker-loud.svg" alt="Volume" width={40} height={40} />
+      return <img src="/speaker-loud.svg" alt="Volume" className={'cursor-pointer w-10 h-10'} />
 
     }
   }
 
   const audioState = () => {
     if (isLoading){
-      return <p className={'animate-pulse'}> Loading... </p>
+      // return <p className={'animate-pulse'}> Loading... </p>
+      return <img src={'/spinner-48.png'} alt={'loading icon'} className={'animate-spin  w-12 h-12'}/>
+
     }
 
     if(isPlaying){
       return (
-        <Image src="/Pause.svg" className={'cursor-pointer'} alt="Play" width={40} height={40} />
+        <img src="/Pause.svg" className={'cursor-pointer w-12 h-12'} alt="Play button" />
 
       )
     } else {
       return (
-        <Image src="/play.svg" className={'cursor-pointer'} alt="Play" width={40} height={40} />
+        <img src="/play.svg" className={'cursor-pointer w-12 h-12'} alt="Play" />
 
       )
     }
@@ -106,7 +108,7 @@ const WaveSurferPlayer = (props: any) => {
       <button className="bg-transparent cursor-pointer" onClick={onVolumeClick}>
         {volumeState()}
       </button>
-      <div ref={containerRef} className="w-full px-2 cursor-pointer" />
+      <div ref={containerRef} className="w-full p-2 cursor-pointer" />
       <button className="bg-transparent cursor-pointer" onClick={() => setVisibility(false)}>
         <img src={'/cross-white.svg'} alt={'close audio button'} className={'w-10 h-10 '}/>
       </button>

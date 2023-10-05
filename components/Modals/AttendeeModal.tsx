@@ -167,13 +167,20 @@ export default function AttendeeModal({ user }: Props) {
 
                   }
                   <div className={`mt-4 flex my-8 `}>
-                    <button onClick={() => close()} className={`flex items-center justify-between w-32 h-8 ml-8 bg-transparent border border-solid border-[#B999FA] rounded-full cursor-pointer ${isSelf ? 'invisible' : null}`}>
-                      <h3 className={'text-sm mx-auto font-light text-[#B999FA]'}> REPORT </h3>
-                      <div className={'rounded-full bg-transparent w-6 h-6 items-center justify-center flex'}>
-                        <img className={'h-6 w-6 '} alt={'create button'} src={'/report.svg'}/>
-                      </div>
-                    </button>
-
+                    {/*<button onClick={() => close()} className={`flex items-center justify-between w-32 h-8 ml-8 bg-transparent border border-solid border-[#B999FA] rounded-full cursor-pointer ${isSelf ? 'invisible' : null}`}>*/}
+                    {/*  <h3 className={'text-sm mx-auto font-light text-[#B999FA]'}> REPORT </h3>*/}
+                    {/*  <div className={'rounded-full bg-transparent w-6 h-6 items-center justify-center flex'}>*/}
+                    {/*    <img className={'h-6 w-6 '} alt={'create button'} src={'/report.svg'}/>*/}
+                    {/*  </div>*/}
+                    {/*</button>*/}
+                    <Link href={`/profile/${user.walletAddress}`}>
+                      <button className={'flex items-center justify-between w-32 h-8 ml-8 bg-transparent border border-solid border-[#B999FA] rounded-full cursor-pointer'}>
+                        <h3 className={'text-sm font-light mx-auto text-[#B999FA]'}> { 'PROFILE' } </h3>
+                        <div className={'rounded-full bg-[#B999FA] w-6 h-6 items-center justify-center flex'}>
+                          <img className={'h-4 w-4 '} alt={'create button'}  src={'/arrow-right.svg'}/>
+                        </div>
+                      </button>
+                    </Link>
                     {
                       isSelf ? (
                         <Link href={`/profile/${user.walletAddress}`}>

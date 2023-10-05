@@ -35,7 +35,7 @@ export const MoodCard = (props: CardProps) => {
     if (isLoading){
       return (
         <div className={'md:opacity-0 md:hover:opacity-100 w-64 h-48 fixed bg-transparent'}>
-        <p className={'animate-pulse text-center absolute md:top-16 md:left-24 top-28'}> Loading... </p>
+          <img src={'/spinner-48.png'} alt={'loading icon'} className={'animate-spin  w-12 h-12 absolute md:top-16 md:left-24 top-28'}/>
         </div>
 
       )
