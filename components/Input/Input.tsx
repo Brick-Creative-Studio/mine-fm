@@ -85,7 +85,7 @@ export default function Input({ eventId, socket }: Props) {
 
   return (
     <div className="flex flex-row justify-between bg-[#12002C] p-4 w-full h-fit items-center">
-        <div style={{ background: `${auraCode}`}} className={'rounded-full w-[40px] h-[40px]'} />
+        <div style={{ background: `${auraCode}`}} className={'rounded-full mx-2 w-[40px] h-[40px]'} />
       <input
         type={'text'}
         onKeyDown={(e) => {
