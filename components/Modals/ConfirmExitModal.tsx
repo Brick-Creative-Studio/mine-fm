@@ -50,7 +50,7 @@ export default function ExitModal({ ownerAddress, eventId, userId }: Props) {
       <button className={'bg-transparent'} onClick={openModal}>
         <div className="flex flex-row mx-6 cursor-pointer">
           <Image src={'/chevron-left.svg'} width={28} height={28} alt="gallery button" />
-          <p className={'text-white text-md'}> Exit </p>
+          <p className={'text-white text-[16px]'}> Exit </p>
         </div>
       </button>
 
