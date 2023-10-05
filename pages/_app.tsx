@@ -38,6 +38,8 @@ function MyApp({ Component, pageProps }: AppProps) {
           />
           <meta property="og:title" content="MINE.FM" key="og_title" />
           <meta property="og:type" content="website" key="og_type" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
           <meta
             property="og:description"
             content="Discover Music with a Community"
