@@ -112,7 +112,7 @@ export default function Profile() {
               />
             </div>
             <div className=" mx-8 w-full">
-              <h1> {user?.name}</h1>
+              <h2 className={ 'w-1/2'}> {user?.name}</h2>
               <p className="-mt-4"> {user?.miner_tag} </p>
               <div className="flex flex-col w-full justify-between">
                 <div className="flex flex-col">
