@@ -80,13 +80,16 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
             auraCode: auraCode,
           }
         })
+        setIsConnected(true)
+
       })
+      socket.connect()
     }
 
     return () => {
       socket.off('connect')
       socket.off('disconnect')
-      // socket.off('chat')
+      socket.off('chat')
     }
   }, [])
 

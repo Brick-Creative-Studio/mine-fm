@@ -46,9 +46,7 @@ export default function GeneralChatSection({ eventId, socket } : Props) {
       }
       setComments((comments) => [...comments, comment])
     })
-    return () => {
-      socket.off('chat')
-    }
+
   }, [socket])
 
   useEffect(() => {
