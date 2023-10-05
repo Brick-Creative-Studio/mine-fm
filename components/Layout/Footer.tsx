@@ -11,7 +11,7 @@ const Footer = () => {
   return (
     <>
       { isVisible ? (
-        <footer className="flex flex-col bg-[#1D0045] ml-0 justify-center fixed bottom-0 left-0 right-0  w-full h-16">
+        <footer className="flex flex-col bg-[#1D0045] mt-8 ml-0 justify-center fixed bottom-0 left-0 right-0  w-full h-16">
 
           <WaveSurferPlayer
             height={36}
@@ -24,7 +24,7 @@ const Footer = () => {
 
         </footer>
       ) : (
-        <footer className='flex h-16 mx-0'>
+        <footer className='flex h-16 mx-0 mt-8'>
           <a
             href="https://brickxstudio.com"
             target="_blank"
