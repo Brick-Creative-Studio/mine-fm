@@ -9,7 +9,7 @@ export default function useGetUser(address: string) {
   const [isLoading, setIsLoading] = useState(true)
   const endpoint = 'user/user'
   const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
-  console.log('addy', address)
+
   useEffect(() => {
     const fetch = async () => {
       try {

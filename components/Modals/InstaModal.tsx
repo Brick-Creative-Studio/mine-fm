@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import {useLayoutStore, useProfileStore} from 'stores'
 import axios from "axios";
+import process from "process";
 
 type InstaInput = {
   url: string | null | undefined
@@ -37,6 +38,7 @@ export default function InstaModal({ instaUrl } : SocialProps) {
       id: id,
       walletAddress: address
     }).then((res) => {
+      setInstagram(profile)
       return res.data
     })
 
@@ -46,11 +48,11 @@ export default function InstaModal({ instaUrl } : SocialProps) {
 
   async function closeAndSubmit(){
     const url = getValues('url')
-    const server = `https://minefm-server.herokuapp.com/miner`
+    const endpoint = 'user'
+    const server = process.env.NEXT_PUBLIC_BASE_URL + endpoint
 
     if(url !== instaUrl) {
       signerAddress && id && await updateInsta(server, signerAddress, id, url as string)
-      setInstagram(url as string)
     }
     closeModal()
     

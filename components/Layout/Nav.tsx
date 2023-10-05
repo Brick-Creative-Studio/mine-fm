@@ -1,5 +1,5 @@
 import React, { useEffect} from 'react'
-import { NavBar, navActions, navCreate, navLogo } from './styles.css'
+import { NavBar, navActions, navCreate, navLogo, marquee } from "./styles.css";
 import Image from 'next/image'
 import Link from 'next/link'
 import NavMenu from './NavMenu'
@@ -71,6 +71,11 @@ const Nav = () => {
         </Link>
       </div>
 
+      {/*<div className={marquee}>*/}
+      {/*  <div className={'rounded-full w-4 h-4 bg-red-700 animate-pulse float-left'} />*/}
+      {/*  <p className={'text-[#B999FA] text-[16px]'}> Our Current Radio Broadcasts </p>*/}
+      {/*</div>*/}
+
       <div className={navActions}>
         {/*<Link*/}
         {/*  key={'create'}*/}
@@ -96,8 +101,9 @@ const Nav = () => {
           />
         </Link>
       </div>
-
-      <div></div>
+      {/*<div className={marquee}>*/}
+      {/*  <h3 className={'float-left'}> MINE.FM Radio </h3>*/}
+      {/*</div>*/}
 
       <div className={navActions}>
         <ConnectButton />

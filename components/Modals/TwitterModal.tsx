@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import {useLayoutStore, useProfileStore} from 'stores'
 import axios from "axios";
+import process from "process";
 
 type TwitterInput = {
     url: string
@@ -32,6 +33,7 @@ export default function TwitterModal({ twitterUrl }: SocialProps) {
       id: id,
       walletAddress: address
     }).then((res) => {
+      setTwitter(url)
       return res.data
     })
 
@@ -42,11 +44,11 @@ export default function TwitterModal({ twitterUrl }: SocialProps) {
 
   async function closeAndSubmit(){
     const url = getValues('url')
-    const server = `https://minefm-server.herokuapp.com/miner`
+    const endpoint = 'user'
+    const server = process.env.NEXT_PUBLIC_BASE_URL + endpoint
 
     if(url !== twitterUrl){
       signerAddress && id && await updateTwitter(server, signerAddress, id, url)
-      setTwitter(url)
     }
 
     closeModal()
@@ -62,6 +64,7 @@ export default function TwitterModal({ twitterUrl }: SocialProps) {
     setIsOpen(true)
   }
 
+  console.log('twitter modal id check', id)
   return (
     <>
       <button

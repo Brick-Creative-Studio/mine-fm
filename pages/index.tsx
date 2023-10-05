@@ -79,9 +79,9 @@ export default function HomePage({}) {
               >
               <button className={'m-3 bg-transparent text-white flex flex-row-reverse w-40 h-12 md:w-48 md:h-12 justify-between items-center cursor-pointer rounded-3xl border-solid border-2 border-[#B999FA]'}>
                 <h2 className='mx-auto text-[#B999FA]'>Create</h2>
-                <div className={'w-8 h-8 bg-[#B999FA] rounded-full flex justify-center items-center'}>
-                  <img className={'h-6 w-6'} alt={'explore button'} src={'/arrow-left.svg'}/>
-                </div>
+                {/*<div className={'w-8 h-8 bg-[#B999FA] rounded-full flex justify-center items-center'}>*/}
+                {/*  <img className={'h-6 w-6'} alt={'explore button'} src={'/arrow-left.svg'}/>*/}
+                {/*</div>*/}
               </button>
 
               </Link>
@@ -90,9 +90,9 @@ export default function HomePage({}) {
               href={'/explore?tab=livestream'}
               >
                 <button className={'m-3 bg-transparent text-white flex flex-row-reverse w-40 h-12 md:w-48 md:h-12  justify-between items-center cursor-pointer rounded-3xl border-solid border-2 border-[#B999FA]'}>
-                <div className={'w-8 h-8 bg-[#B999FA] rounded-full flex justify-center items-center'}>
-                  <img className={'h-6 w-6'} alt={'explore button'} src={'/arrow-right.svg'}/>
-                </div>
+                {/*<div className={'w-8 h-8 bg-[#B999FA] rounded-full flex justify-center items-center'}>*/}
+                {/*  <img className={'h-6 w-6'} alt={'explore button'} src={'/arrow-right.svg'}/>*/}
+                {/*</div>*/}
                 <h2 className='mx-auto text-[#B999FA]'> Explore </h2>
               </button>
               </Link>

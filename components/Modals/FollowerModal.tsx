@@ -111,8 +111,8 @@ export default function FollowerModal({ followerList } : FollowerList) {
     <>
       <div className="flex w-fit flex-col items-center mx-4">
         <button type="button" onClick={openModal} className={'bg-transparent cursor-pointer'}>
-          <p> Followers </p>
-          <p className="-mt-2"> {followerList?.length} </p>
+          <p className={'text-white text-md'}> Followers </p>
+          <p className="-mt-2 text-white text-md"> {followerList?.length} </p>
         </button>
       </div>
 

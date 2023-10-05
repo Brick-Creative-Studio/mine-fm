@@ -59,20 +59,20 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                           <div className={'w-full flex justify-center items-center'}>
                               <Link href={'/create'}>
                               <button onClick={() => close()} className={'flex items-center justify-between w-32 h-8 mr-8 bg-transparent border border-solid border-white rounded-full cursor-pointer'}>
-                                  <div className={'rounded-full bg-white w-6 h-6 items-center justify-center flex'}>
-                                  <img className={'h-4 w-4 '} alt={'create button'} src={'/arrow-left.svg'}/>
-                                  </div>
+                                  {/*<div className={'rounded-full bg-white w-6 h-6 items-center justify-center flex'}>*/}
+                                  {/*<img className={'h-4 w-4 '} alt={'create button'} src={'/arrow-left.svg'}/>*/}
+                                  {/*</div>*/}
 
-                                  <h3 className={'text-sm mx-auto'}> CREATE </h3>
+                                  <h3 className={'text-sm mx-auto text-white'}> CREATE </h3>
                               </button>
                               </Link>
 
                               <Link href={'/explore?tab=livestream'}>
                               <button onClick={() => close()} className={'flex items-center justify-between w-32 h-8 ml-8 bg-transparent border border-solid border-white rounded-full cursor-pointer'}>
-                                  <h3 className={'text-sm mx-auto'}> EXPLORE </h3>
-                                  <div className={'rounded-full bg-white w-6 h-6 items-center justify-center flex'}>
-                                      <img className={'h-4 w-4 '} alt={'create button'} src={'/arrow-right.svg'}/>
-                                  </div>
+                                  <h3 className={'text-sm mx-auto text-white'}> EXPLORE </h3>
+                                  {/*<div className={'rounded-full bg-white w-6 h-6 items-center justify-center flex'}>*/}
+                                  {/*    <img className={'h-4 w-4 '} alt={'create button'} src={'/arrow-right.svg'}/>*/}
+                                  {/*</div>*/}
                               </button>
                               </Link>
                           </div>
@@ -90,7 +90,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                               {hasAccount ? <h3 className={'text-sm mx-8'}>Profile</h3> : <h3 className={'text-sm mx-8'}>Create Account</h3>}
 
 
-                                <div className={'rounded-full bg-transparent border-white border-solid rounded-full w-12 h-6 items-center justify-center flex mx-8'}>
+                                <div className={'rounded-full bg-transparent border-white border-solid w-12 h-6 items-center justify-center flex mx-8'}>
                                     <img className={'h-6 w-6 '} alt={'create button'} src={'/w-arrow-right.svg'}/>
                                 </div>
                             </a>
@@ -124,7 +124,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                             onClick={() => {disconnect()}}
 
                           >
-                              {<h3 className={'text-sm'}>Disconnect  </h3> }
+                              {<h3 className={'text-sm text-white'}>Disconnect  </h3> }
 
                           </button>
 

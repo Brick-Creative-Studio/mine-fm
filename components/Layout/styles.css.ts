@@ -1,4 +1,5 @@
-import { style } from '@vanilla-extract/css'
+import { style , keyframes} from '@vanilla-extract/css'
+import { animations } from "framer-motion";
 
 
 export const flexContainer = style([
@@ -138,7 +139,28 @@ export const navLogo = style ([
     }
 ])
 
+export const marqueeFrame = keyframes({
+    '0%' : {
+        left: 0,
+    },
+    '100%' : {
+        left: `-100%`
+    }
+})
 
+export const marquee = style([
+    {
+        animation: `${marqueeFrame} 5s linear infinite`,
+        borderColor: '#654A8F',
+        border: "solid",
+        display: 'flex',
+        alignItems: 'center',
+        paddingInline: '4px',
+        borderRadius:  `0.25rem`, /* 4px */
+        marginLeft: '0.75rem'
+
+}
+  ])
 
 export const inputFocus = style({
     outlineOffset: '-2px'
