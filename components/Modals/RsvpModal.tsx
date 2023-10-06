@@ -30,8 +30,6 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
   const { isConnected, address } = useAccount()
 
   const router = useRouter();
-
-  console.log('has acct:', hasAccount)
   async function handleRSVP() {
     const endpoint = 'attendee/create'
     const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint

@@ -86,7 +86,11 @@ export default function ExitModal({ ownerAddress, eventId, userId }: Props) {
                   >
                     Leave Livestream?
                   </Dialog.Title>
-
+                  <div className="mt-2">
+                    <p className="text-sm text-white">
+                      Are you sure you want to leave this page? Leaving will impact your listening stats.
+                    </p>
+                  </div>
 
                   <div className="mt-4 flex justify-around">
                     <button
