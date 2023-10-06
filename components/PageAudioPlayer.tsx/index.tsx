@@ -76,8 +76,8 @@ const PageAudioPlayer = () => {
         <div>Stream is not Live</div>
       ) : null}
       <audio ref={audioRef}>
-        <source src="https://stream-relay-geo.ntslive.net/stream/64.aac?client=NTSWebApp&t=1691770293785" />
-        {/* <source src="https://s1.evenings.co/s/mine.fm" /> */}
+        {/*<source src="https://stream-relay-geo.ntslive.net/stream/64.aac?client=NTSWebApp&t=1691770293785" />*/}
+         <source src="https://s1.evenings.co/s/mine.fm" />
       </audio>
     </>
   )

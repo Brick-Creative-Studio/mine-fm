@@ -10,7 +10,7 @@ const StreamInfoDesktop = ({ event, attendanceCount }: Props) => {
   return (
     <div
       className={
-        'grid lg:grid-cols-6 grid-cols-3 grid-rows-2 lg:grid-rows-1 w-full  self-center mx-auto bg-[#12002C] p-2'
+        'grid lg:grid-cols-6 grid-cols-3 grid-rows-2 lg:grid-rows-1 w-full  self-center mx-auto bg-[#12002C] p-2 pb-2.5'
       }
     >
       <div className={'flex-row gap-2 flex items-center ml-2 w-full'}>

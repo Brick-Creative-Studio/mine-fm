@@ -7,7 +7,6 @@ const Footer = () => {
 
   const { src, setSrc, setVisibility, isVisible} = useMoodPlayerStore((state) => state)
 
-
   return (
     <>
       { isVisible ? (

@@ -62,13 +62,13 @@ export const StreamSectionHandler: React.FC<SectionHandlerProps> = ({
   return (
     <div className="w-full md:w-1/3 md:h-full bg-[#12002C]">
       {sections && sections.length > 1 && (
-        <div className="flex flex-row space-x-6 justify-around py-4 pb-5 items-center">
+        <div className="flex flex-row space-x-6 justify-around py-4 mb-1   items-center">
           {sections?.map((section, index) => {
             return (
               <button
                 onClick={() => changeSection(slugify(section.title))}
                 key={section.title}
-                className={'bg-transparent'}
+                className={'bg-transparent '}
               >
                 <div className="flex flex-col cursor-pointer ">
                   {activeSection?.title === section.title ? (
