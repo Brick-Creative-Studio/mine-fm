@@ -83,18 +83,18 @@ const WaveSurferPlayer = (props: any) => {
   const audioState = () => {
     if (isLoading){
       // return <p className={'animate-pulse'}> Loading... </p>
-      return <img src={'/spinner-48.png'} alt={'loading icon'} className={'animate-spin  w-12 h-12'}/>
+      return <img src={'/spinner-48.png'} alt={'loading icon'} className={'animate-spin border-none w-12 h-12'}/>
 
     }
 
     if(isPlaying){
       return (
-        <img src="/Pause.svg" className={'cursor-pointer w-12 h-12'} alt="Play button" />
+        <img src="/Pause.svg" className={'cursor-pointer w-10 h-10 p-0'} alt="Play button" />
 
       )
     } else {
       return (
-        <img src="/play.svg" className={'cursor-pointer w-12 h-12'} alt="Play" />
+        <img src="/play.svg" className={'cursor-pointer w-12 h-12 p-0 border-none'} alt="Play" />
 
       )
     }
@@ -108,7 +108,7 @@ const WaveSurferPlayer = (props: any) => {
       <button className="bg-transparent cursor-pointer" onClick={onVolumeClick}>
         {volumeState()}
       </button>
-      <div ref={containerRef} className="w-full p-2 cursor-pointer" />
+      <div ref={containerRef} className="w-full p-2 cursor-pointer border-none" />
       <button className="bg-transparent cursor-pointer" onClick={() => setVisibility(false)}>
         <img src={'/cross-white.svg'} alt={'close audio button'} className={'w-10 h-10 '}/>
       </button>
