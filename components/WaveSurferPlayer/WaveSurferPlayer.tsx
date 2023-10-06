@@ -89,7 +89,7 @@ const WaveSurferPlayer = (props: any) => {
 
     if(isPlaying){
       return (
-        <img src="/Pause.svg" className={'cursor-pointer w-10 h-10 p-0'} alt="Play button" />
+        <img src="/Pause.svg" className={'cursor-pointer w-10 h-10 p-0 border-none'} alt="Play button" />
 
       )
     } else {
