@@ -45,7 +45,7 @@ export default function NewUserModal({ isOpen } : ModalProps) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="flex flex-col items-center w-full max-w-md transform overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900 via-30% via-black via-60% to-purple-900 via-15%  p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="flex flex-col items-center w-full max-w-md transform overflow-hidden rounded-2xl bg-black  p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
                     className="text-xl font-medium leading-6"
