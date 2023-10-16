@@ -18,10 +18,15 @@ import { User } from '../../../types/User'
 import { Event } from '../../../types/Event'
 import ExitModal from '../../../components/Modals/ConfirmExitModal'
 import { useProfileStore } from '../../../stores'
-import { socket } from '../../../utils/socket-client'
+// import { socket } from '../../../utils/socket-client'
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 
+import io from "socket.io-client";
+
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL
+
+export const socket = io(baseURL!, { autoConnect: false })
 interface Props {
   attendees: User[] | null
   eventInfo: Event | null
@@ -104,13 +109,13 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
     }
 
     return () => {
+      socket.disconnect()
       socket.off('connect')
       socket.off('disconnect')
       socket.off('chat')
     }
-  }, [])
+  }, [eventInfo?.id, socket])
 
-  const unsavedChanges = true
   const warningText =
     'Are you sure you want to leave this page? Leaving will impact your listening stats.'
 
@@ -119,23 +124,27 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
       // if (e.) return
       // e.preventDefault()
       // return (e.returnValue = 'test')
-      setPrompt(true)
+      socket.off('connect')
+      socket.off('disconnect')
+      socket.off('chat')
+      // setPrompt(true)
     }
-    const handleBrowseAway = (url: string , { shallow }: { shallow: boolean }) => {
-      if (!unsavedChanges) return
+    const handleBrowseAway = () => {
       // if (window.confirm(warningText)) return
       // router.events.emit('routeChangeError')
       // throw 'routeChange aborted.'
-      if(shallow) return
-      setPrompt(true)
+
+      // setPrompt(true)
     }
     window.addEventListener('beforeunload', handleWindowClose)
+
     router.events.on('routeChangeStart', handleBrowseAway)
     return () => {
       window.removeEventListener('beforeunload', handleWindowClose)
       router.events.off('routeChangeStart', handleBrowseAway)
+
     }
-  }, [unsavedChanges])
+  }, [socket])
 
   function closeModal() {
     setPrompt(false)
