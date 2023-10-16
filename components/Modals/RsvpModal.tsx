@@ -50,7 +50,7 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
 
     //check if owner
     if(streamEvent.ownerAddress === address as string){
-      await router.push(`/livestream/${streamEvent.id}`)
+      await router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`, { shallow: false})
       return
     }
 
@@ -67,12 +67,12 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
 
     //otherwise, rsvp to stream
     if(isAttending){
-      await router.push(`/livestream/${streamEvent.id}`)
+      await router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`, { shallow: false})
     } else {
       try {
         await axios.post(url, attendee).then((res) => {
           console.log(res.data)
-           router.push(`/livestream/${streamEvent.id}`)
+          router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`, { shallow: false})
           return res.data
         }).catch((error) => {
           console.log('fetch user error:', error)
@@ -180,7 +180,7 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
                       <button
                         type="button"
                         className="w-full bg-[#1D0045] rounded-sm border-solid border border-[#FF8500] cursor-pointer"
-                        onClick={() => router.push(`/stream-info?id=${streamEvent.id}`)}
+                        onClick={() => router.push(`/stream-info?id=${streamEvent.id}`, `/stream-info?id=${streamEvent.id}`, { shallow: false })}
                       >
                         <h3 className={'text-[#FF8500]'}>{`SEE MORE`}</h3>
                       </button>
@@ -189,7 +189,7 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
                       <div className="mt-4 w-1/3">
                         <button
                           type="button"
-                          className={`bg-[#FF8500] w-full rounded-sm cursor-pointer`}
+                          className={`bg-[#FF8500] border-[#FF8500] w-full rounded-sm cursor-pointer`}
                           onClick={handleRSVP}
                           disabled={!hasAccount}
 

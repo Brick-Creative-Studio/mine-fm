@@ -167,7 +167,7 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
   }
 
   return (
-    <div className="flex flex-col w-full mt-24 mb-12">
+    <div className="flex flex-col h-min	 w-full mt-8 md:my-auto">
       <div className={'flex justify-between mb-4'}>
         {/*<ExitModal*/}
         {/*  eventId={eventInfo?.id!}*/}
@@ -187,9 +187,9 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
             "{eventInfo?.title}"{' '}
           </h2>
         </div>
-        <div className="flex flex-row items-center justify-around w-24 h-10 mx-6 rounded-md bg-zinc-800 p-2">
+        <div className="flex flex-row items-center justify-around w-24 h-10 mx-6 rounded-md p-2">
           <div className={'rounded-full w-4 h-4 bg-red-700 animate-pulse '} />
-          <p className={'mx-2'}>LIVE</p>
+          <p className={'mx-2 text-[#B999FA]'}>LIVE</p>
         </div>
       </div>
       <div className={'md:flex md:flex-row '}>

@@ -48,7 +48,7 @@
 
 @font-face {
   font-family: EllographCF-Light;
-  font-weight: lighter;
+  font-weight: normal;
   font-style: normal;
   src: url('../fonts/ellograph/EllographCF-Thin.woff') format('woff');
 }
@@ -156,14 +156,13 @@ footer a {
 
   body {
     background: #000;
-    margin: 0%;
-    padding: 0%;
+    margin: 0;
+    padding: 0;
     
   }
 
 
   button {
-    font-family: EllographCF-Bold !important;
     border: none;
 
   }
