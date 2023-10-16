@@ -47,7 +47,7 @@ const Layout = ({ children }: Props) => {
 
   return (
     <div className={flexContainer}>
-      <meta name="color-scheme" content="dark only"/>
+      <meta name="color-scheme" className={'dark'} content="dark only"/>
       <Nav />
       <>
         <div className={bodyGradient} />

@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react'
+import React, { useEffect, useState } from "react";
 import { NavBar, navActions, navCreate, navLogo, marquee } from "./styles.css";
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,11 +10,14 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useLayoutStore } from 'stores'
 import useGetUser from "../../hooks/useGetUser";
 import { User } from "../../types/User";
+import { useRouter } from "next/router";
 
 const Nav = () => {
   const isMounted = useIsMounted()
   const { setSignerAddress } = useLayoutStore((state) => state)
+  const [ isHidden, setHidden ] = useState<boolean>( false )
   const { hasAccount, setAura, setIdentity, id, resetProfileState, setHasAccount } = useProfileStore((state) => state)
+  const router = useRouter()
 
   const { address } = useAccount({
     onDisconnect() {
@@ -57,7 +60,16 @@ const Nav = () => {
 
   }, [user, error, isLoading])
 
-  return isMounted && address ? (
+  useEffect(() => {
+    if(router.pathname.includes('livestream')){
+      setHidden(true)
+      return
+    }
+    setHidden(false)
+
+  }, [router])
+
+  return isHidden ? null : isMounted && address ? (
     <nav className={NavBar}>
       <div className={navLogo}>
         <Link key={'home'} href={'/'}>

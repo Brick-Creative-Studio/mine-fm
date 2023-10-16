@@ -62,7 +62,7 @@ export default function IdentityForm({}) {
         setSuccessIsOpen(true)
           setHasAccount(true)
         setUser(data)
-        router.push(`/profile/${address}`)
+        // router.push(`/profile/${address}`)
         return res.data
       }).catch((error) => {
         console.log('fetch user error:', error)

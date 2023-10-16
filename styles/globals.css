@@ -48,7 +48,7 @@
 
 @font-face {
   font-family: EllographCF-Light;
-  font-weight: lighter;
+  font-weight: normal;
   font-style: normal;
   src: url('../fonts/ellograph/EllographCF-Thin.woff') format('woff');
 }

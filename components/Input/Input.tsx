@@ -54,6 +54,12 @@ export default function Input({ eventId, socket }: Props) {
 
 
   async function handleSubmitNewMessage() {
+    if(!getValues('comment')){
+      return
+    }
+    if (getValues('comment').replace(/\s/g, '').length < 1){
+      return
+    }
     setSubmitting(true)
 
     const message: Message = {
@@ -85,7 +91,7 @@ export default function Input({ eventId, socket }: Props) {
 
   return (
     <div className="flex flex-row justify-between bg-[#12002C] p-4 w-full h-fit items-center">
-        <div style={{ background: `${auraCode}`}} className={'rounded-full mx-2 w-[40px] h-[40px]'} />
+        <div style={{ background: `${auraCode}`}} className={'rounded-full border-transparent  mx-2 w-[40px] h-[40px]'} />
       <input
         type={'text'}
         onKeyDown={(e) => {
@@ -103,7 +109,7 @@ export default function Input({ eventId, socket }: Props) {
         type="button"
         className={`bg-[#7DD934] ml-2 h-[36px] w-[36px] rounded-full cursor-pointer` }
       >
-        <Image src={'/arrow-up.svg'} width={24} height={24} alt="submit comment" />
+        <img src={'/arrow-up.svg'} className={'w-[24px] h-[24px] p-0'} alt="submit comment" />
       </button>
     </div>
   )

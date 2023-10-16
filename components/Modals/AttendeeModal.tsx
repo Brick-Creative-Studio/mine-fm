@@ -27,7 +27,6 @@ export default function AttendeeModal({ user }: Props) {
   async function fetchRelationship(){
     const endpoint = 'follower/follow'
     const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
-    console.log('fetching.....')
     return await axios.post(url, {
       followerID: id,
       userID: user.id
@@ -60,8 +59,6 @@ export default function AttendeeModal({ user }: Props) {
     setIsLoading(true)
 
     if(isFollowing){
-
-      console.log('deleting follow.....')
       return await axios.post(deleteURL, {
         followerID: id,
         userID: user.id
@@ -76,7 +73,6 @@ export default function AttendeeModal({ user }: Props) {
       })
 
     }else{
-      console.log('creating follow.....')
       return await axios.post(createURL, {
         followerID: id,
         userID: user.id

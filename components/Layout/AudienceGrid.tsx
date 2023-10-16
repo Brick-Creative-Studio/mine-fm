@@ -8,10 +8,10 @@ interface Props {
 
 export default function AudienceGrid({ audienceList } : Props) {
   return (
-    <div className="md:h-[604px] w-full h-96 max-h-screen p-2 overflow-scroll overflow-y-scroll	 ">
+    <div className="md:h-[604px] w-full h-[32rem] p-2 overflow-scroll overflow-y-scroll	 ">
       {
         audienceList?.length ? (
-          <div className={'grid grid-cols-4 gap-4 md:gap-2  md:p-2 md:gap-y-4 md:grid-cols-4 w-full'}>
+          <div className={' grid grid-cols-4 gap-4 md:gap-2  md:p-2 md:gap-y-4 md:grid-cols-4 w-full'}>
             {
               audienceList.map((user, index) => {
                 return <AttendeeBox key={index} user={user} />

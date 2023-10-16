@@ -62,9 +62,9 @@ export default function GeneralChatSection({ eventId, socket } : Props) {
   //TODO: On connection load messages into array
 
   return (
-    <div className={'md:h-[525px] h-72  justify-end'}>
+    <div className={'md:h-[525px] h-96  justify-end'}>
 
-      <div className={'flex flex-col-reverse h-full w-full scroll-smooth overflow-scroll'}>
+      <div className={'flex flex-col-reverse  h-full w-full scroll-smooth overflow-scroll'}>
         <div className={''}>
         {comments.length ? (
           comments.map(({ message, auraCode, time, miner_tag }, index) => {

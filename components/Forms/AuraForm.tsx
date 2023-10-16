@@ -197,7 +197,7 @@ const AuraForm: React.FC = ({}) => {
                 <input
                   type="submit"
                   title="next"
-                  value={'Generate Aura'}
+                  value={'Save Aura'}
                   className="not-italic bg-[#0E4749] h-12 rounded-lg font-mono font-bold text-lg p-2 px-4 border-none mt-2 cursor-pointer"
                 />
               </div>

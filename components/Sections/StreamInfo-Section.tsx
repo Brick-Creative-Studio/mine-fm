@@ -18,7 +18,7 @@ export default function StreamInfo({ eventInfo, attendanceCount } : Props) {
 
 
   return (
-    <div className={'flex flex-col h-96 px-4 overflow-scroll md:h-[604px] md:w-full '}>
+    <div className={'flex flex-col h-fit px-4 overflow-scroll md:h-[604px] md:w-full '}>
       <div className={'flex-row flex items-center w-full'}>
         <h3 className={'w-5/12 text-[#984DDF]'}> HOST DETAILS </h3>
         <div className={'h-0.5 w-2/3 bg-[#984DDF]'} />
