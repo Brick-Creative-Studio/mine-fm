@@ -72,6 +72,7 @@ export const UserListItem: React.FC<Props> = ({ user }) =>{
 export default function FollowerModal({ followerList } : FollowerList) {
   let [isOpen, setIsOpen] = useState(false)
   const [ userList, setUserList] = useState<User[]>([])
+  console.log('follower list from parent', followerList)
 
   function closeModal() {
     setIsOpen(false)
@@ -81,25 +82,28 @@ export default function FollowerModal({ followerList } : FollowerList) {
     setIsOpen(true)
   }
 
-  useEffect(() => {
-    function fetchList(){
-      const list : User[] = [];
+  function fetchList(){
+    const list : User[] = [];
 
-      followerList?.map((follower) => {
-        const endpoint = 'user/user'
-        const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
-        axios.post(url, {
-          id: follower.followerID
-        }).then((res) => {
-          list.push(res.data)
-        }).catch((error) => {
-          console.log('error fetching user list', error)
-        })
+    followerList?.map((follower) => {
+      const endpoint = 'user/user'
+      const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+      axios.post(url, {
+        id: follower.followerID
+      }).then((res) => {
+        console.log('follower response', res.data)
+        list.push(res.data)
+      }).catch((error) => {
+        console.log('error fetching user list', error)
       })
-      if(followerList){
-        setUserList(list)
-      }
+    })
+    if(followerList){
+      setUserList(list)
     }
+  }
+
+  useEffect(() => {
+
     if (followerList?.length ){
       fetchList()
     }else {

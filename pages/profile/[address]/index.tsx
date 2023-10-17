@@ -21,9 +21,9 @@ import { useProfileStore } from "../../../stores";
 export default function Profile() {
   const { address, isConnecting, isDisconnected } = useAccount()
   const [gradient, setGradient] = useState(``)
-  const [isUserPage, setPageType] = useState(true)
-  const [ following, setFollowing] = useState<Relation[]>([])
-  const [ follower, setFollower] = useState<Relation[]>([])
+  const [isUserPage, setIsUserPage] = useState(true)
+  const [ followingList, setFollowingList] = useState<Relation[]>([])
+  const [ followerList, setFollowerList] = useState<Relation[]>([])
   const [followProfile, setFollowProfile] = useState<boolean>(false)
   const { id : myID } = useProfileStore((state) => state)
   const { query } = useRouter()
@@ -48,22 +48,24 @@ export default function Profile() {
     },
   ]
 
+  //aura set up
   useEffect(() => {
     setGradient(
       `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     )
   }, [aura])
 
+  //check if event owner
   useEffect(() => {
      if(address as string !== pathAddress){
-      setPageType(false)
+      setIsUserPage(false)
     }else {
-      setPageType(true)
+      setIsUserPage(true)
     }
   }, )
 
+  //get users followers and following
   useEffect(() => {
-
     async function fetchRelations(){
       const endpoint = 'follower/where'
       const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
@@ -73,9 +75,9 @@ export default function Profile() {
         await axios.post(url, {
           userID: user.id!
         }).then((res) => {
-          setFollower((prevState) => res.data)
+          setFollowerList([...res.data])
         }).catch((error) => {
-          console.log(error, 'errorrr fetching followers')
+          console.log(error, 'error fetching followers')
           // setFollowProfile(false)
 
         })
@@ -84,7 +86,7 @@ export default function Profile() {
         await axios.post(url, {
           followerID: user.id!
         }).then((res) => {
-          setFollowing((prevState) => res.data)
+          setFollowingList([...res.data])
         }).catch((error) => {
           console.log(error, 'error fetching following')
         })
@@ -94,12 +96,12 @@ export default function Profile() {
       fetchRelations()
     }
 
-  })
+  }, [pathAddress, user])
 
-
+  //on first load check if user viewing the page is a follower or not
   useEffect(() => {
-    if (follower){
-      follower.map((relation) => {
+    if (followerList && !isUserPage){
+      followerList.map((relation) => {
         if(relation.followerID === myID){
           setFollowProfile(true)
         }
@@ -108,43 +110,44 @@ export default function Profile() {
 
   }, [])
 
-  async function mutateRelation() {
-    const deleteEndpoint = 'follower/delete'
-    const createEndpoint = 'follower/create'
 
-    const deleteURL = process.env.NEXT_PUBLIC_BASE_URL + deleteEndpoint
+  async function follow(){
+    const createEndpoint = 'follower/create'
     const createURL = process.env.NEXT_PUBLIC_BASE_URL + createEndpoint
 
+    return await axios
+      .post(createURL, {
+        followerID: myID,
+        userID: user?.id,
+      })
+      .then((res) => {
+        //if relation found user is following viewed account
+        setFollowProfile(true)
+        return res.data
+      })
+      .catch((error) => {
+        console.log('error removing relationship', error)
+      })
+  }
 
-    if (followProfile) {
-      return await axios
-        .post(deleteURL, {
-          followerID: myID,
-          userID: user?.id,
-        })
-        .then((res) => {
-          //if relation found user is following viewed account
-          setFollowProfile(false)
-          return res.data
-        })
-        .catch((error) => {
-          console.log('error removing relationship', error)
-        })
-    } else {
-      return await axios
-        .post(createURL, {
-          followerID: myID,
-          userID: user?.id,
-        })
-        .then((res) => {
-          //if relation found user is following viewed account
-          setFollowProfile(true)
-          return res.data
-        })
-        .catch((error) => {
-          console.log('error removing relationship', error)
-        })
-    }
+  async function unFollow(){
+    const deleteEndpoint = 'follower/delete'
+    const deleteURL = process.env.NEXT_PUBLIC_BASE_URL + deleteEndpoint
+
+
+    return await axios
+      .post(deleteURL, {
+        followerID: myID,
+        userID: user?.id,
+      })
+      .then((res) => {
+        //if relation found user is following viewed account
+        setFollowProfile(false)
+        return res.data
+      })
+      .catch((error) => {
+        console.log('error removing relationship', error)
+      })
   }
 
   function followUIState(){
@@ -153,7 +156,7 @@ export default function Profile() {
         className={
           'w-40 h-12 cursor-pointer flex items-center justify-center bg-fuchsia-700 rounded-full mt-4'
         }
-        onClick={() => mutateRelation()}
+        onClick={() => unFollow()}
       >
         {' '}
         <h3>Unfollow</h3>{' '}
@@ -163,13 +166,18 @@ export default function Profile() {
         className={
           'w-40 h-12 cursor-pointer flex items-center justify-center bg-fuchsia-700 rounded-full mt-4'
         }
-        onClick={() => mutateRelation()}
+        onClick={() => follow()}
       >
         {' '}
         <h3>Follow</h3>{' '}
       </button>
     )
   }
+
+
+
+
+
 
   return (
     <>
@@ -230,8 +238,8 @@ export default function Profile() {
               <p className="-mt-2 text-[13px] md:text-[16px]"> 0 </p>
             </div>
 
-            <FollowerModal followerList={follower} />
-            <FollowingModal followingList={following}/>
+            <FollowerModal followerList={followerList} />
+            <FollowingModal followingList={followingList}/>
           </div>
           <div className="flex-col mx-8">
             <h2> Bio </h2>
