@@ -24,7 +24,7 @@ export default function Profile() {
   const [isUserPage, setIsUserPage] = useState(true)
   const [ followingList, setFollowingList] = useState<Relation[]>([])
   const [ followerList, setFollowerList] = useState<Relation[]>([])
-  const [followProfile, setFollowProfile] = useState<boolean>(false)
+  const [isFollowing, setIsFollowing] = useState<boolean>(false)
   const { id : myID } = useProfileStore((state) => state)
   const { query } = useRouter()
   const pathAddress = query?.address?.toString()
@@ -64,34 +64,38 @@ export default function Profile() {
     }
   }, )
 
+  async function fetchRelations(){
+    const endpoint = 'follower/where'
+    const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+
+    if(pathAddress && user){
+      //fetch followers of user
+      await axios.post(url, {
+        userID: user.id!
+      }).then((res) => {
+        setFollowerList([...res.data])
+      }).catch((error) => {
+        console.log(error, 'error fetching followers')
+        setIsFollowing(false)
+
+      })
+
+      //fetch ppl user is following
+      await axios.post(url, {
+        followerID: user.id!
+      }).then((res) => {
+        setFollowingList([...res.data])
+      }).catch((error) => {
+        console.log(error, 'error fetching following')
+      }).then(() => {
+
+      })
+    }
+  }
+
   //get users followers and following
   useEffect(() => {
-    async function fetchRelations(){
-      const endpoint = 'follower/where'
-      const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
 
-      if(pathAddress && user){
-        //fetch followers of user
-        await axios.post(url, {
-          userID: user.id!
-        }).then((res) => {
-          setFollowerList([...res.data])
-        }).catch((error) => {
-          console.log(error, 'error fetching followers')
-          // setFollowProfile(false)
-
-        })
-
-        //fetch ppl user is following
-        await axios.post(url, {
-          followerID: user.id!
-        }).then((res) => {
-          setFollowingList([...res.data])
-        }).catch((error) => {
-          console.log(error, 'error fetching following')
-        })
-      }
-    }
     if(user && !isLoading && pathAddress){
       fetchRelations()
     }
@@ -103,12 +107,12 @@ export default function Profile() {
     if (followerList && !isUserPage){
       followerList.map((relation) => {
         if(relation.followerID === myID){
-          setFollowProfile(true)
+          setIsFollowing(true)
         }
       })
     }
 
-  }, [])
+  }, [followerList])
 
 
   async function follow(){
@@ -122,11 +126,13 @@ export default function Profile() {
       })
       .then((res) => {
         //if relation found user is following viewed account
-        setFollowProfile(true)
+        setIsFollowing(true)
         return res.data
       })
       .catch((error) => {
         console.log('error removing relationship', error)
+      }).then(() => {
+        fetchRelations()
       })
   }
 
@@ -142,16 +148,18 @@ export default function Profile() {
       })
       .then((res) => {
         //if relation found user is following viewed account
-        setFollowProfile(false)
+        setIsFollowing(false)
         return res.data
       })
       .catch((error) => {
         console.log('error removing relationship', error)
+      }).then(() => {
+        fetchRelations()
       })
   }
 
   function followUIState(){
-    return followProfile ? (
+    return isFollowing ? (
       <button
         className={
           'w-40 h-12 cursor-pointer flex items-center justify-center bg-fuchsia-700 rounded-full mt-4'
