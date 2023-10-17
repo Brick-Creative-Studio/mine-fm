@@ -15,15 +15,17 @@ import { useAccount} from "wagmi";
 import { Attendee } from "../../../types/Attendee";
 import axios from "axios";
 import { Relation } from "../../../types/Relation";
+import { useProfileStore } from "../../../stores";
 
 
 export default function Profile() {
   const { address, isConnecting, isDisconnected } = useAccount()
   const [gradient, setGradient] = useState(``)
-  const [isUserPage, setPageType] = useState(true)
-  const [ following, setFollowing] = useState<Relation[]>([])
-  const [ follower, setFollower] = useState<Relation[]>([])
-
+  const [isUserPage, setIsUserPage] = useState(true)
+  const [ followingList, setFollowingList] = useState<Relation[]>([])
+  const [ followerList, setFollowerList] = useState<Relation[]>([])
+  const [isFollowing, setIsFollowing] = useState<boolean>(false)
+  const { id : myID } = useProfileStore((state) => state)
   const { query } = useRouter()
   const pathAddress = query?.address?.toString()
   const { error, user, isLoading } = useGetUser(pathAddress as string)
@@ -45,55 +47,147 @@ export default function Profile() {
       component: [<OreSection key={'Ores'} />],
     },
   ]
+
+  //aura set up
   useEffect(() => {
     setGradient(
       `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
     )
   }, [aura])
 
+  //check if event owner
   useEffect(() => {
      if(address as string !== pathAddress){
-      setPageType(false)
+      setIsUserPage(false)
     }else {
-      setPageType(true)
+      setIsUserPage(true)
     }
   }, )
 
-  useEffect(() => {
+  async function fetchRelations(){
+    const endpoint = 'follower/where'
+    const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
 
-    async function fetchRelations(){
-      const endpoint = 'follower/where'
-      const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+    if(pathAddress && user){
+      //fetch followers of user
+      await axios.post(url, {
+        userID: user.id!
+      }).then((res) => {
+        setFollowerList([...res.data])
+      }).catch((error) => {
+        console.log(error, 'error fetching followers')
+        setIsFollowing(false)
 
-      console.log('pathy', pathAddress)
-      if(pathAddress){
-        //fetch followers
-        await axios.post(url, {
-          userID: user?.id!
-        }).then((res) => {
-          setFollower((prevState) => res.data)
-        }).catch((error) => {
-          console.log(error, 'error fetching followers')
-        })
+      })
 
-        //fetch following
-        await axios.post(url, {
-          followerID: user?.id!
-        }).then((res) => {
-          setFollowing((prevState) => res.data)
-        }).catch((error) => {
-          console.log(error, 'error fetching following')
-        })
-      }
+      //fetch ppl user is following
+      await axios.post(url, {
+        followerID: user.id!
+      }).then((res) => {
+        setFollowingList([...res.data])
+      }).catch((error) => {
+        console.log(error, 'error fetching following')
+      }).then(() => {
 
-
+      })
     }
+  }
 
+  //get users followers and following
+  useEffect(() => {
 
     if(user && !isLoading && pathAddress){
       fetchRelations()
     }
-  }, [user, isLoading, pathAddress])
+
+  }, [pathAddress, user])
+
+  //on first load check if user viewing the page is a follower or not
+  useEffect(() => {
+    if (followerList && !isUserPage){
+      followerList.map((relation) => {
+        if(relation.followerID === myID){
+          setIsFollowing(true)
+        }
+      })
+    }
+
+  }, [followerList])
+
+
+  async function follow(){
+    const createEndpoint = 'follower/create'
+    const createURL = process.env.NEXT_PUBLIC_BASE_URL + createEndpoint
+
+    return await axios
+      .post(createURL, {
+        followerID: myID,
+        userID: user?.id,
+      })
+      .then((res) => {
+        //if relation found user is following viewed account
+        setIsFollowing(true)
+        return res.data
+      })
+      .catch((error) => {
+        console.log('error removing relationship', error)
+      }).then(() => {
+        //update relationships
+        fetchRelations()
+      })
+  }
+
+  async function unFollow(){
+    const deleteEndpoint = 'follower/delete'
+    const deleteURL = process.env.NEXT_PUBLIC_BASE_URL + deleteEndpoint
+
+
+    return await axios
+      .post(deleteURL, {
+        followerID: myID,
+        userID: user?.id,
+      })
+      .then((res) => {
+        //if relation found user is following viewed account
+        setIsFollowing(false)
+        return res.data
+      })
+      .catch((error) => {
+        console.log('error removing relationship', error)
+      }).then(() => {
+        //update relationships
+        fetchRelations()
+      })
+  }
+
+  function followUIState(){
+    return isFollowing ? (
+      <button
+        className={
+          'w-40 h-12 cursor-pointer flex items-center justify-center bg-fuchsia-700 rounded-full mt-4'
+        }
+        onClick={() => unFollow()}
+      >
+        {' '}
+        <h3>Unfollow</h3>{' '}
+      </button>
+    ) : (
+      <button
+        className={
+          'w-40 h-12 cursor-pointer flex items-center justify-center bg-fuchsia-700 rounded-full mt-4'
+        }
+        onClick={() => follow()}
+      >
+        {' '}
+        <h3>Follow</h3>{' '}
+      </button>
+    )
+  }
+
+
+
+
+
 
   return (
     <>
@@ -122,21 +216,14 @@ export default function Profile() {
                   </div>
                   {
                     isUserPage  ? null : (
-                      <div
-                        className={
-                          'w-40 h-12 flex items-center justify-center bg-fuchsia-700 rounded-full mt-4'
-                        }
-                      >
-                        {' '}
-                        <h3>Follow</h3>{' '}
-                      </div>
+                      followUIState()
                     )
                   }
                 </div>
 
                 <div className="flex w-fit justify-around	mt-4 bg-black/50 rounded-xl">
-                  <TwitterModal twitterUrl={user?.twitter} />
-                  <InstaModal instaUrl={user?.instagram} />
+                  <TwitterModal isUserPage={isUserPage} twitterUrl={user?.twitter} />
+                  <InstaModal isUserPage={isUserPage} instaUrl={user?.instagram} />
                   {
                     isUserPage ?  <Link href={`${address}/aura`}>
                       <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent border-none">
@@ -161,8 +248,8 @@ export default function Profile() {
               <p className="-mt-2 text-[13px] md:text-[16px]"> 0 </p>
             </div>
 
-            <FollowerModal followerList={follower} />
-            <FollowingModal followingList={following}/>
+            <FollowerModal followerList={followerList} />
+            <FollowingModal followingList={followingList}/>
           </div>
           <div className="flex-col mx-8">
             <h2> Bio </h2>

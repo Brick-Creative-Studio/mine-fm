@@ -3,7 +3,6 @@ import React, { Fragment, useState } from 'react'
 import { getFetchableUrl } from '../../packages/ipfs-service'
 import Image from 'next/image'
 import { Event } from '../../types/Event'
-import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useProfileStore } from "../../stores";
@@ -22,6 +21,7 @@ interface ModalProps {
 
 export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
   let [isOpen, setIsOpen] = useState(false)
+  const [isLoading, setLoading] = useState<boolean>(false)
 
   const formatDate = new Date(streamEvent.startDate).toLocaleDateString("en-US", { weekday: "long",year: "numeric", month: "long", day: "numeric",})
   const formatTime = new Date(streamEvent.startDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
@@ -50,11 +50,12 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
 
     //check if owner
     if(streamEvent.ownerAddress === address as string){
-      await router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`, { shallow: false})
+      await router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`)
       return
     }
 
     let isAttending = false
+    setLoading(true)
 
     if(rsvpList && rsvpList.length >= 1) {
       //check if already in rsvp list.
@@ -67,12 +68,12 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
 
     //otherwise, rsvp to stream
     if(isAttending){
-      await router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`, { shallow: false})
+      await router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`)
     } else {
       try {
         await axios.post(url, attendee).then((res) => {
           console.log(res.data)
-          router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`, { shallow: false})
+          router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`)
           return res.data
         }).catch((error) => {
           console.log('fetch user error:', error)
@@ -82,6 +83,7 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
         return
       }
     }
+    setLoading(false)
 
   }
 
@@ -180,22 +182,35 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
                       <button
                         type="button"
                         className="w-full bg-[#1D0045] rounded-sm border-solid border border-[#FF8500] cursor-pointer"
-                        onClick={() => router.push(`/stream-info?id=${streamEvent.id}`, `/stream-info?id=${streamEvent.id}`, { shallow: false })}
+                        onClick={() => router.push(`/stream-info?id=${streamEvent.id}`, `/stream-info?id=${streamEvent.id}`)}
                       >
                         <h3 className={'text-[#FF8500]'}>{`SEE MORE`}</h3>
                       </button>
                       {/*</Link>*/}
                     </div>
                       <div className="mt-4 w-1/3">
-                        <button
-                          type="button"
-                          className={`bg-[#FF8500] border-[#FF8500] w-full rounded-sm cursor-pointer`}
-                          onClick={handleRSVP}
-                          disabled={!hasAccount}
+                        { !isLoading ? (
+                          <button
+                            type="button"
+                            className={`bg-[#FF8500] border-[#FF8500] w-full rounded-sm cursor-pointer`}
+                            onClick={handleRSVP}
+                            disabled={!hasAccount}
 
-                        >
-                          <h3 className={'text-[#1D0045]'}>{`ENTER`}</h3>
-                        </button>
+                          >
+                            <h3 className={'text-[#1D0045]'}>{`ENTER`}</h3>
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className={`bg-[#FF8500] border-[#FF8500] w-full rounded-sm cursor-pointer`}
+                            disabled={true}
+
+                          >
+                            <h3 className={'text-[#1D0045] animate-pulse'}>{`Loading`}</h3>
+                          </button>
+                        )
+                        }
+
                       </div>
 
                     </div>

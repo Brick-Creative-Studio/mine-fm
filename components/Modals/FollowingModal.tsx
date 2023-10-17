@@ -73,6 +73,8 @@ export default function FollowingModal({ followingList } : FollowingList) {
   let [isOpen, setIsOpen] = useState(false)
   const [ userList, setUserList] = useState<User[]>([])
 
+  console.log('following list from parent', followingList)
+
   function closeModal() {
     setIsOpen(false)
   }
@@ -81,27 +83,28 @@ export default function FollowingModal({ followingList } : FollowingList) {
     setIsOpen(true)
   }
 
-  useEffect(() => {
-    function fetchList(){
-      const list : User[] = [];
+  function fetchList(){
+    const list : User[] = [];
 
-      followingList?.map((follow) => {
-        const endpoint = 'user/user'
-        const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
-        axios.post(url, {
-          id: follow.userID
-        }).then((res) => {
-          console.log('f response', res.data)
-
-          list.push(res.data)
-        }).catch((error) => {
-          console.log('error fetching user lists', error)
-        })
+    followingList?.map((follow) => {
+      const endpoint = 'user/user'
+      const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+      axios.post(url, {
+        id: follow.userID
+      }).then((res) => {
+        console.log('following response', res.data)
+        list.push(res.data)
+      }).catch((error) => {
+        console.log('error fetching user lists', error)
       })
-      if(followingList){
-        setUserList(list)
-      }
+    })
+    if(followingList){
+      setUserList(list)
     }
+  }
+
+  useEffect(() => {
+
     if (followingList?.length){
       fetchList()
     }else {
