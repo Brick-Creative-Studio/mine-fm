@@ -12,10 +12,11 @@ type InstaInput = {
 
 interface SocialProps {
   instaUrl: string | null | undefined
+  isUserPage : boolean
 }
 
 
-export default function InstaModal({ instaUrl } : SocialProps) {
+export default function InstaModal({ instaUrl, isUserPage } : SocialProps) {
   let [isOpen, setIsOpen] = useState(false)
   let [] = useState('')
   const { signerAddress } = useLayoutStore((state) => state)
@@ -68,17 +69,33 @@ export default function InstaModal({ instaUrl } : SocialProps) {
 
   return (
     <>
-      <button
-        className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent border-none"
-        onClick={openModal}
-      >
-        <Image
-          width={24}
-          height={24}
-          src={'/stock/instagram-logo.svg'}
-          alt="instagram button"
-        />
-      </button>
+      { isUserPage ? (
+        <button
+          className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent border-none cursor-pointer"
+          onClick={openModal}
+        >
+          <Image
+            width={24}
+            height={24}
+            src={'/stock/instagram-logo.svg'}
+            alt="instagram button"
+          />
+        </button>
+      ) : (
+        <a rel={'external'} target={"_blank"} href={instaUrl!}>
+
+        <button
+          className={`hover:bg-sky-100 w-10 h-10 rounded-lg bg-transparent border-none cursor-pointer ${instaUrl ? null : 'hidden'}`}
+        >
+          <Image
+            width={24}
+            height={24}
+            src={'/stock/instagram-logo.svg'}
+            alt="instagram button"
+          />
+        </button>
+        </a>
+      )}
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-0" onClose={closeModal}>

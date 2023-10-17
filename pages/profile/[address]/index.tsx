@@ -132,6 +132,7 @@ export default function Profile() {
       .catch((error) => {
         console.log('error removing relationship', error)
       }).then(() => {
+        //update relationships
         fetchRelations()
       })
   }
@@ -154,6 +155,7 @@ export default function Profile() {
       .catch((error) => {
         console.log('error removing relationship', error)
       }).then(() => {
+        //update relationships
         fetchRelations()
       })
   }
@@ -220,8 +222,8 @@ export default function Profile() {
                 </div>
 
                 <div className="flex w-fit justify-around	mt-4 bg-black/50 rounded-xl">
-                  <TwitterModal twitterUrl={user?.twitter} />
-                  <InstaModal instaUrl={user?.instagram} />
+                  <TwitterModal isUserPage={isUserPage} twitterUrl={user?.twitter} />
+                  <InstaModal isUserPage={isUserPage} instaUrl={user?.instagram} />
                   {
                     isUserPage ?  <Link href={`${address}/aura`}>
                       <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent border-none">

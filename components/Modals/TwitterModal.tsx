@@ -12,9 +12,10 @@ type TwitterInput = {
 
 interface SocialProps {
   twitterUrl: string | undefined | null
+  isUserPage : boolean
 }
 
-export default function TwitterModal({ twitterUrl }: SocialProps) {
+export default function TwitterModal({ twitterUrl, isUserPage }: SocialProps) {
 
   const { signerAddress } = useLayoutStore((state) => state)
 
@@ -65,17 +66,33 @@ export default function TwitterModal({ twitterUrl }: SocialProps) {
   }
   return (
     <>
-      <button
-        onClick={openModal}
-        className="hover:bg-sky-100 w-10 h-10 rounded-lg bg-transparent border-none"
-      >
-        <Image
-          width={24}
-          height={24}
-          src={'/stock/twitter-logo.svg'}
-          alt="twitter button"
-        />
-      </button>
+      { isUserPage ? (
+        <button
+          onClick={openModal}
+          className="hover:bg-sky-100 w-10 h-10 rounded-lg bg-transparent border-none cursor-pointer"
+        >
+          <Image
+            width={24}
+            height={24}
+            src={'/stock/twitter-logo.svg'}
+            alt="twitter button"
+          />
+        </button>
+      ) : (
+        <a rel="noopener noreferrer" target={"_blank"} href={'https://'+twitterUrl!}>
+        <button
+          className={`hover:bg-sky-100 w-10 h-10 rounded-lg bg-transparent border-none cursor-pointer ${twitterUrl ? null : 'hidden'}`}
+        >
+          <Image
+            width={24}
+            height={24}
+            src={'/stock/twitter-logo.svg'}
+            alt="twitter button"
+          />
+        </button>
+        </a>
+      )}
+
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-0" onClose={closeModal}>
