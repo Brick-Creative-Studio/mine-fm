@@ -82,7 +82,7 @@ export default function InstaModal({ instaUrl, isUserPage } : SocialProps) {
           />
         </button>
       ) : (
-        <a rel={'external'} target={"_blank"} href={instaUrl!}>
+        <a rel="noopener noreferrer" target={"_blank"} href={'https://'+instaUrl!}>
 
         <button
           className={`hover:bg-sky-100 w-10 h-10 rounded-lg bg-transparent border-none cursor-pointer ${instaUrl ? null : 'hidden'}`}

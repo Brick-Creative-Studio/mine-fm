@@ -79,7 +79,7 @@ export default function TwitterModal({ twitterUrl, isUserPage }: SocialProps) {
           />
         </button>
       ) : (
-        <a rel="noopener noreferrer" target={"_blank"} href={'https://'+twitterUrl!}>
+        <a rel="noopener noreferrer" target={"_blank"} aria-label={'https://'+twitterUrl!} href={'https://'+twitterUrl!}>
         <button
           className={`hover:bg-sky-100 w-10 h-10 rounded-lg bg-transparent border-none cursor-pointer ${twitterUrl ? null : 'hidden'}`}
         >
