@@ -10,7 +10,7 @@ interface CopyButtonProps {
   variant?: 'default' | 'icon'
 }
 
-const CopyButton = ({ title, text, variant = 'default' }: CopyButtonProps) => {
+const CopyButtonLight = ({ title, text, variant = 'icon' }: CopyButtonProps) => {
   const { signerAddress } = useLayoutStore()
   const copy: any = {
     address: signerAddress,
@@ -41,10 +41,9 @@ const CopyButton = ({ title, text, variant = 'default' }: CopyButtonProps) => {
           onClick={() => handleCopy((text as string))}
         >
           <button className="bg-transparent hover:bg-sky-100 w-fit h-fit cursor-pointer">
-            <Image
-              width={84}
-              height={84}
-              src={'/copy.svg'}
+            <img
+              className={'w-6 h-6'}
+              src={'/copy_green.svg'}
               alt="copy address button"
             />
           </button>        </div>
@@ -57,9 +56,8 @@ const CopyButton = ({ title, text, variant = 'default' }: CopyButtonProps) => {
             exit={{ scale: 0 }}
           >
             <button className="bg-transparent hover:bg-sky-100 w-fit h-fit">
-              <Image
-                width={92}
-                height={92}
+              <img
+                className={'w-8 h-8'}
                 src={'/check.svg'}
                 alt="copy address button"
               />
@@ -71,4 +69,4 @@ const CopyButton = ({ title, text, variant = 'default' }: CopyButtonProps) => {
   )
 }
 
-export default CopyButton
+export default CopyButtonLight

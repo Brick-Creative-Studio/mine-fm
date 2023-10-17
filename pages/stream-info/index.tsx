@@ -9,16 +9,19 @@ import useSWR, { Fetcher, Key } from 'swr'
 import { Event } from '../../types/Event'
 import { Attendee } from '../../types/Attendee'
 import { User } from '../../types/User'
-import process from 'process'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
+import CopyButtonLight from "../../components/CopyButton/CopyButtonLight";
 
 export default function StreamInfoPage({}) {
   const router = useRouter()
-    const { id: pathID } = router.query
+  const { id: pathID } = router.query
+  const [event, setEvent] = useState<Event|undefined>(undefined)
   const [isOwner, setIsOwner] = useState<boolean>(false)
   const { isConnected, address } = useAccount()
   const { openConnectModal } = useConnectModal()
   const { id: accountId } = useProfileStore()
+  const [codeVisibile, setCodeVisibilty] = useState<boolean>(false)
+  const streamKey = process.env.NEXT_PUBLIC_EVENINGS_KEY
 
   const endpoint = 'event/event'
   const eventURL = process.env.NEXT_PUBLIC_BASE_URL + endpoint
@@ -35,12 +38,12 @@ export default function StreamInfoPage({}) {
           id: pathID,
         })
         .then((res) => {
-          // setEvent(res.data)
+          setEvent(res.data)
           console.log('event data', res.data)
           return res.data
         })
         .catch((error) => {
-          // setEvent(null)
+          setEvent(undefined)
           router.push('/404')
           console.log('error fetching event data:', error)
         })
@@ -48,20 +51,27 @@ export default function StreamInfoPage({}) {
     }
   }
 
-  const { data: eventData, error } = useSWR([eventURL], fetchEvent, {
-    revalidateOnMount: true
-  })
 
-  const formatDate = eventData
-    ? new Date(eventData.startDate).toLocaleDateString('en-US', {
+
+  // const { data: eventData, isValidating, error } = useSWR([eventURL], fetchEvent, {
+  //   revalidateOnMount: true
+  // })
+
+  useEffect(() => {
+    fetchEvent(eventURL)
+  }, [pathID, eventURL])
+
+
+  const formatDate = event
+    ? new Date(event.startDate).toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     })
     : 'N/A'
-  const formatTime = eventData
-    ? new Date(eventData.startDate).toLocaleTimeString([], {
+  const formatTime = event
+    ? new Date(event.startDate).toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit',
     })
@@ -149,15 +159,20 @@ export default function StreamInfoPage({}) {
     return userList
   }
 
+  useEffect(() => {
+    if(event){
+      event.ownerAddress === address ? setIsOwner(true) : setIsOwner(false)
+    }
+  })
 
   return (
     <div className="flex flex-col mt-24 items-center justify-center w-full">
-      {eventData ? (
+      {event ? (
         <div className="flex flex-col p-4 sm:w-full md:w-3/4">
           <div className="flex flex-col mx-auto md:mx-0 md:flex-row md:mr-12">
             <div className=" md:mr-8">
               <Image
-                src={`${eventData.posterURL}`}
+                src={`${event.posterURL}`}
                 width={340}
                 height={340}
                 alt={'moodscape poster'}
@@ -165,9 +180,9 @@ export default function StreamInfoPage({}) {
             </div>
             <div className="flex flex-col md:mx-auto ">
               <div>
-                <p className={'text-[32px] md:mt-0'}> {eventData.title} </p>
+                <p className={'text-[32px] md:mt-0'}> {event.title} </p>
                 <button
-                  onClick={() => rsvp(eventData)}
+                  onClick={() => rsvp(event)}
                   className={
                     'bg-[#FF8500] hover:bg-orange-300 m-2 rounded-sm cursor-pointer'
                   }
@@ -175,10 +190,29 @@ export default function StreamInfoPage({}) {
                   <h3 className={'text-sm text-[#1D0045]'}> ENTER STREAM </h3>
                 </button>
               </div>
+              {
+                isOwner ? codeVisibile ? (
+                  <div className={'flex items-center w-44'}>
+                    <button onClick={() => setCodeVisibilty(false)} className={'flex items-center bg-transparent m-2 rounded-sm cursor-pointer'}>
+                      <img className={'mr-2'} alt={'key viewable icon'} src={'/eye-open.svg'}/>
+                      <p className={'text-[#7DD934] '}> {streamKey}</p>
+                    </button>
+                    <CopyButtonLight text={streamKey} />
+                  </div>
+                ) : (
+                  <div className={'flex'}>
+                    <button onClick={() => setCodeVisibilty(true)} className={'flex items-center bg-transparent m-2 rounded-sm cursor-pointer'}>
+                      <img className={'mr-2'} alt={'key hidden icon'} src={'/eye-closed.svg'}/>
+                      <p className={'text-[#7DD934]'}>Reveal Stream Key</p>
+                    </button>
+                  </div>
+                ) : null
+              }
+
               <div className="mt-2 flex flex-col ">
                 <div className={'flex'}>
                   <Image src={'/user-icon-orange.svg'} width={18} height={18} />
-                  <p className={'ml-2'}> {`${eventData.organizer}`}</p>
+                  <p className={'ml-2'}> {`${event.organizer}`}</p>
                 </div>
                 <div className={'flex'}>
                   <Image src={'/calendar.svg'} width={18} height={18} />
@@ -191,16 +225,18 @@ export default function StreamInfoPage({}) {
               </div>
               <div className={'flex flex-col mt-auto text-[#FF8500]'}>
                 <p> {attendanceData?.length} Attendee(s) </p>
+                <div className={'flex'}>
                {  attendanceData && formatAuraList(attendanceData).map((user, index) => {
                  const aura = `linear-gradient(to ${user.direction}, ${user.colorOne}, ${user.colorTwo}, ${user.colorThree})`;
-                 return <div style={{ background: aura}} className={'w-10 h-10 rounded-full'} />
+                 return <div style={{ background: aura}} className={'w-10 h-10 mx-1 rounded-full'} />
                }) }
+                </div>
               </div>
             </div>
           </div>
           <div className="flex flex-col px-2 md:py-4 items-center">
             <p className={'text-[32px] self-start'}> Description </p>
-            <p className={'text-xl text-start self-start'}>{eventData.description}</p>
+            <p className={'text-xl text-start self-start'}>{event.description}</p>
           </div>
           <div className="flex flex-row p-2 w-full justify-center rounded-lg">
             {/* attendance list box component */}

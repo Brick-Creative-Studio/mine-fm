@@ -15,6 +15,7 @@ import { useAccount} from "wagmi";
 import { Attendee } from "../../../types/Attendee";
 import axios from "axios";
 import { Relation } from "../../../types/Relation";
+import { useProfileStore } from "../../../stores";
 
 
 export default function Profile() {
@@ -23,7 +24,8 @@ export default function Profile() {
   const [isUserPage, setPageType] = useState(true)
   const [ following, setFollowing] = useState<Relation[]>([])
   const [ follower, setFollower] = useState<Relation[]>([])
-
+  const [followProfile, setFollowProfile] = useState<boolean>(false)
+  const { id : myID } = useProfileStore((state) => state)
   const { query } = useRouter()
   const pathAddress = query?.address?.toString()
   const { error, user, isLoading } = useGetUser(pathAddress as string)
@@ -45,6 +47,7 @@ export default function Profile() {
       component: [<OreSection key={'Ores'} />],
     },
   ]
+
   useEffect(() => {
     setGradient(
       `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
@@ -65,35 +68,108 @@ export default function Profile() {
       const endpoint = 'follower/where'
       const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
 
-      console.log('pathy', pathAddress)
-      if(pathAddress){
-        //fetch followers
+      if(pathAddress && user){
+        //fetch followers of user
         await axios.post(url, {
-          userID: user?.id!
+          userID: user.id!
         }).then((res) => {
           setFollower((prevState) => res.data)
         }).catch((error) => {
-          console.log(error, 'error fetching followers')
+          console.log(error, 'errorrr fetching followers')
+          // setFollowProfile(false)
+
         })
 
-        //fetch following
+        //fetch ppl user is following
         await axios.post(url, {
-          followerID: user?.id!
+          followerID: user.id!
         }).then((res) => {
           setFollowing((prevState) => res.data)
         }).catch((error) => {
           console.log(error, 'error fetching following')
         })
       }
-
-
     }
-
-
     if(user && !isLoading && pathAddress){
       fetchRelations()
     }
-  }, [user, isLoading, pathAddress])
+
+  })
+
+
+  useEffect(() => {
+    if (follower){
+      follower.map((relation) => {
+        if(relation.followerID === myID){
+          setFollowProfile(true)
+        }
+      })
+    }
+
+  }, [])
+
+  async function mutateRelation() {
+    const deleteEndpoint = 'follower/delete'
+    const createEndpoint = 'follower/create'
+
+    const deleteURL = process.env.NEXT_PUBLIC_BASE_URL + deleteEndpoint
+    const createURL = process.env.NEXT_PUBLIC_BASE_URL + createEndpoint
+
+
+    if (followProfile) {
+      return await axios
+        .post(deleteURL, {
+          followerID: myID,
+          userID: user?.id,
+        })
+        .then((res) => {
+          //if relation found user is following viewed account
+          setFollowProfile(false)
+          return res.data
+        })
+        .catch((error) => {
+          console.log('error removing relationship', error)
+        })
+    } else {
+      return await axios
+        .post(createURL, {
+          followerID: myID,
+          userID: user?.id,
+        })
+        .then((res) => {
+          //if relation found user is following viewed account
+          setFollowProfile(true)
+          return res.data
+        })
+        .catch((error) => {
+          console.log('error removing relationship', error)
+        })
+    }
+  }
+
+  function followUIState(){
+    return followProfile ? (
+      <button
+        className={
+          'w-40 h-12 cursor-pointer flex items-center justify-center bg-fuchsia-700 rounded-full mt-4'
+        }
+        onClick={() => mutateRelation()}
+      >
+        {' '}
+        <h3>Unfollow</h3>{' '}
+      </button>
+    ) : (
+      <button
+        className={
+          'w-40 h-12 cursor-pointer flex items-center justify-center bg-fuchsia-700 rounded-full mt-4'
+        }
+        onClick={() => mutateRelation()}
+      >
+        {' '}
+        <h3>Follow</h3>{' '}
+      </button>
+    )
+  }
 
   return (
     <>
@@ -122,14 +198,7 @@ export default function Profile() {
                   </div>
                   {
                     isUserPage  ? null : (
-                      <div
-                        className={
-                          'w-40 h-12 flex items-center justify-center bg-fuchsia-700 rounded-full mt-4'
-                        }
-                      >
-                        {' '}
-                        <h3>Follow</h3>{' '}
-                      </div>
+                      followUIState()
                     )
                   }
                 </div>

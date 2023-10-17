@@ -153,7 +153,7 @@ export default function FollowerModal({ followerList } : FollowerList) {
                       userList && userList.length > 0 ? ( userList.map((user) =>{
                         return <UserListItem user={user}/>
                       })) : (
-                        'You have no followers yest'
+                        'You have no followers yet'
                       )
                     }
                   </div>

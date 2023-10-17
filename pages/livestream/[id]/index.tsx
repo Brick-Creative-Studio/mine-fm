@@ -18,15 +18,10 @@ import { User } from '../../../types/User'
 import { Event } from '../../../types/Event'
 import ExitModal from '../../../components/Modals/ConfirmExitModal'
 import { useProfileStore } from '../../../stores'
-// import { socket } from '../../../utils/socket-client'
+import { socket } from '../../../utils/socket-client'
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 
-import io from "socket.io-client";
-
-const baseURL = process.env.NEXT_PUBLIC_BASE_URL
-
-export const socket = io(baseURL!, { autoConnect: false })
 interface Props {
   attendees: User[] | null
   eventInfo: Event | null

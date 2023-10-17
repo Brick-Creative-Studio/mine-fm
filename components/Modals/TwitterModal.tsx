@@ -63,8 +63,6 @@ export default function TwitterModal({ twitterUrl }: SocialProps) {
   function openModal() {
     setIsOpen(true)
   }
-
-  console.log('twitter modal id check', id)
   return (
     <>
       <button

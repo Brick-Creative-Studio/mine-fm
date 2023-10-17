@@ -3,7 +3,6 @@ import React, { Fragment, useState } from 'react'
 import { getFetchableUrl } from '../../packages/ipfs-service'
 import Image from 'next/image'
 import { Event } from '../../types/Event'
-import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useProfileStore } from "../../stores";
@@ -51,7 +50,7 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
 
     //check if owner
     if(streamEvent.ownerAddress === address as string){
-      await router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`, { shallow: true})
+      await router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`)
       return
     }
 
@@ -69,12 +68,12 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
 
     //otherwise, rsvp to stream
     if(isAttending){
-      await router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`, { shallow: true})
+      await router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`)
     } else {
       try {
         await axios.post(url, attendee).then((res) => {
           console.log(res.data)
-          router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`, { shallow: true})
+          router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`)
           return res.data
         }).catch((error) => {
           console.log('fetch user error:', error)
@@ -183,7 +182,7 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
                       <button
                         type="button"
                         className="w-full bg-[#1D0045] rounded-sm border-solid border border-[#FF8500] cursor-pointer"
-                        onClick={() => router.push(`/stream-info?id=${streamEvent.id}`, `/stream-info?id=${streamEvent.id}`, { shallow: true })}
+                        onClick={() => router.push(`/stream-info?id=${streamEvent.id}`, `/stream-info?id=${streamEvent.id}`)}
                       >
                         <h3 className={'text-[#FF8500]'}>{`SEE MORE`}</h3>
                       </button>
