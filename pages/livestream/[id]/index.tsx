@@ -21,6 +21,9 @@ import { useProfileStore } from '../../../stores'
 import { socket } from '../../../utils/socket-client'
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
+import {
+  useConnectModal,
+} from '@rainbow-me/rainbowkit';
 
 interface Props {
   attendees: User[] | null
@@ -28,13 +31,16 @@ interface Props {
 }
 
 export default function LivestreamPage({ attendees, eventInfo }: Props) {
-  const { id: userId, m_tag, aura } = useProfileStore((state) => state)
+  const { id: userId, m_tag, aura, hasAccount } = useProfileStore((state) => state)
   const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
   const [ promptOpen, setPrompt] = useState<boolean>(false);
   const router = useRouter()
+  const { openConnectModal } = useConnectModal();
   const { query } = useRouter()
   const { address } = useAccount()
   const [isConnected, setIsConnected] = useState(socket.connected)
+  const createRSVPEndpoint = 'attendee/create'
+  const rsvpURL = process.env.NEXT_PUBLIC_BASE_URL + createRSVPEndpoint
 
   const guestSections = [
     {
@@ -86,6 +92,38 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
     },
   ]
 
+  async function handleRSVP(){
+
+    const attendee = {
+      eventID: eventInfo?.id,
+      userID: userId
+    }
+
+      await axios.post(rsvpURL, attendee).then((res) => {
+        console.log(res.data)
+        return res.data
+      }).catch((error) => {
+        console.log('create attendee error:', error)
+      })
+
+  }
+
+  // useEffect(() => {
+  //
+  //   //check wallet connection
+  //   if(!isConnected && openConnectModal){
+  //     openConnectModal()
+  //     return
+  //   }
+  //   //check for mine account
+  //   if(!hasAccount){
+  //     return
+  //   }
+  //
+  //   handleRSVP()
+  //
+  // })
+
   useEffect(() => {
     if (eventInfo) {
       socket.on('connect', () => {
@@ -99,15 +137,34 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
           },
         })
         setIsConnected(true)
+//check wallet connection
+        if(!isConnected && openConnectModal){
+          openConnectModal()
+          return
+        }
+        //check for mine account
+        if(!hasAccount){
+          return
+        }
+
+       // handleRSVP()
       })
       socket.connect()
+
     }
+    socket.on('disconnect', () => {
+      socket.emit('remove_rsvp', {
+        userID: userId,
+        roomName: eventInfo!.id
+      })
+    })
 
     return () => {
       socket.disconnect()
       socket.off('connect')
       socket.off('disconnect')
       socket.off('chat')
+      //leaveStream()
     }
   }, [eventInfo?.id, socket])
 
@@ -119,12 +176,14 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
       // if (e.) return
       // e.preventDefault()
       // return (e.returnValue = 'test')
+      //leaveStream()
       socket.off('connect')
       socket.off('disconnect')
       socket.off('chat')
       // setPrompt(true)
     }
     const handleBrowseAway = () => {
+      //leaveStream()
       // if (window.confirm(warningText)) return
       // router.events.emit('routeChangeError')
       // throw 'routeChange aborted.'
@@ -291,6 +350,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const userURL = process.env.NEXT_PUBLIC_BASE_URL + userEndpoint
   const eventEndpoint = 'event/event'
   const eventURL = process.env.NEXT_PUBLIC_BASE_URL + eventEndpoint
+  const createRSVPEndpoint = 'attendee/create'
+  const rsvpURL = process.env.NEXT_PUBLIC_BASE_URL + createRSVPEndpoint
 
   const attendeesList: Attendee[] | null = eventID
     ? await axios
