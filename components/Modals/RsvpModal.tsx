@@ -70,18 +70,18 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
     if(isAttending){
       await router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`)
     } else {
-      try {
-        await axios.post(url, attendee).then((res) => {
-          console.log(res.data)
+      // try {
+      //   await axios.post(url, attendee).then((res) => {
+      //     console.log(res.data)
           router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`)
-          return res.data
-        }).catch((error) => {
-          console.log('fetch user error:', error)
-        })
-      } catch (error) {
-        console.log('create event error:', error)
-        return
-      }
+      //     return res.data
+      //   }).catch((error) => {
+      //     console.log('fetch user error:', error)
+      //   })
+      // } catch (error) {
+      //   console.log('create event error:', error)
+      //   return
+      // }
     }
     setLoading(false)
 
