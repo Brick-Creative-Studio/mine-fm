@@ -15,6 +15,8 @@ import { useAccount } from 'wagmi'
 import { GetServerSideProps } from 'next'
 import process from 'process'
 import { User } from '../../../types/User'
+import useSWR, { useSWRConfig, preload } from 'swr'
+
 import { Event } from '../../../types/Event'
 import ExitModal from '../../../components/Modals/ConfirmExitModal'
 import { useProfileStore } from '../../../stores'
@@ -26,11 +28,13 @@ import {
 } from '@rainbow-me/rainbowkit';
 
 interface Props {
-  attendees: User[] | null
   eventInfo: Event | null
 }
 
-export default function LivestreamPage({ attendees, eventInfo }: Props) {
+
+
+export default function LivestreamPage({ eventInfo }: Props) {
+  const { mutate } = useSWRConfig()
   const { id: userId, m_tag, aura, hasAccount } = useProfileStore((state) => state)
   const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
   const [ promptOpen, setPrompt] = useState<boolean>(false);
@@ -42,6 +46,11 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
   const createRSVPEndpoint = 'attendee/create'
   const rsvpURL = process.env.NEXT_PUBLIC_BASE_URL + createRSVPEndpoint
 
+  const { data: attendees, error } = useSWR([eventInfo?.id], getAttendees, {
+    revalidateOnMount: true,
+    revalidateIfStale: true,
+  })
+
   const guestSections = [
     {
       title: 'Chat',
@@ -51,7 +60,7 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
     },
     {
       title: 'Audience',
-      component: [<AudienceGrid audienceList={attendees} key={'audience'} />],
+      component: [<AudienceGrid audienceList={attendees!} key={'audience'} />],
     },
     {
       title: 'Info',
@@ -74,7 +83,7 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
     },
     {
       title: 'Audience',
-      component: [<AudienceGrid audienceList={attendees} key={'audience'} />],
+      component: [<AudienceGrid audienceList={attendees!} key={'audience'} />],
     },
     {
       title: 'Section',
@@ -137,7 +146,8 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
           },
         })
         setIsConnected(true)
-//check wallet connection
+
+        //check wallet connection
         if(!isConnected && openConnectModal){
           openConnectModal()
           return
@@ -152,12 +162,6 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
       socket.connect()
 
     }
-    socket.on('disconnect', () => {
-      socket.emit('remove_rsvp', {
-        userID: userId,
-        roomName: eventInfo!.id
-      })
-    })
 
     return () => {
       socket.disconnect()
@@ -229,8 +233,17 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
     closeModal()
   }
 
+  useEffect(() => {
+    // const rsvpList = await preload([eventInfo?.id], getAttendees)
+
+  }, [eventInfo])
+
+  if (!attendees) return <div className={'animate-pulse'}>Loading...</div>
+
+
   return (
     <div className="flex flex-col h-min	 w-full mt-8 md:my-auto">
+
       <div className={'flex justify-between mb-4'}>
         {/*<ExitModal*/}
         {/*  eventId={eventInfo?.id!}*/}
@@ -342,44 +355,57 @@ export default function LivestreamPage({ attendees, eventInfo }: Props) {
   )
 }
 
+
+async function getAttendees(eventID: string){
+  const attendeeEndpoint = `attendee/${eventID}`
+  const attendeeURL = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
+  const userEndpoint = 'user/user'
+  const userURL = process.env.NEXT_PUBLIC_BASE_URL + userEndpoint
+
+  const attendeesList: Attendee[] | null = eventID
+    ? await axios
+      .get(attendeeURL)
+      .then((res) => {
+        return res.data
+      })
+      .catch((error) => {
+        console.log('error fetching stream data:', error)
+      })
+    : null
+
+  const attendees: User[] | null = attendeesList
+    ? await Promise.all(
+      attendeesList.map(async (attendee) => {
+        return await axios
+          .post(userURL, {
+            id: attendee.userID,
+          })
+          .then((res) => {
+            return res.data
+          })
+          .catch((error) => {
+            console.log('error fetching stream data:', error)
+          })
+      })
+    )
+    : null
+
+  console.log('swr run list', attendees)
+
+
+  return attendees
+}
+
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const eventID = params?.id?.toString()
   const attendeeEndpoint = `attendee/${eventID}`
-  const url = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
+  const attendeeURL = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
   const userEndpoint = 'user/user'
   const userURL = process.env.NEXT_PUBLIC_BASE_URL + userEndpoint
   const eventEndpoint = 'event/event'
   const eventURL = process.env.NEXT_PUBLIC_BASE_URL + eventEndpoint
   const createRSVPEndpoint = 'attendee/create'
   const rsvpURL = process.env.NEXT_PUBLIC_BASE_URL + createRSVPEndpoint
-
-  const attendeesList: Attendee[] | null = eventID
-    ? await axios
-        .get(url)
-        .then((res) => {
-          return res.data
-        })
-        .catch((error) => {
-          console.log('error fetching stream data:', error)
-        })
-    : null
-
-  const attendees: User[] | null = attendeesList
-    ? await Promise.all(
-        attendeesList.map(async (attendee) => {
-          return await axios
-            .post(userURL, {
-              id: attendee.userID,
-            })
-            .then((res) => {
-              return res.data
-            })
-            .catch((error) => {
-              console.log('error fetching stream data:', error)
-            })
-        })
-      )
-    : null
 
   const eventInfo: Event | null = eventID
     ? await axios
@@ -406,8 +432,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     }
   }
 
+
+
   const props: Props = {
-    attendees,
     eventInfo,
   }
   return {
