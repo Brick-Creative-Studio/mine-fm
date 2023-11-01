@@ -13,7 +13,6 @@ interface ModalProps {
 
 export default function SuccessEventModal({ isOpen, eventId } : ModalProps) {
   const { signerAddress } = useLayoutStore((state) => state)
-  const streamKey = 'A@12erSUjB24'
 
   function closeModal() {
 
@@ -47,35 +46,37 @@ export default function SuccessEventModal({ isOpen, eventId } : ModalProps) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="flex flex-col items-center w-full max-w-md transform overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900 via-30% via-black via-60% to-purple-900 via-15%  p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="flex flex-col items-center w-full max-w-md transform overflow-hidden rounded-2xl bg-black  p-6 text-left align-middle shadow-xl transition-all">
+                  <img src={'/gif/mine-cube.gif'} alt={'mine cube gif'} className={'h-32 w-32 p-0 m-0'} />
+
+
                   <Dialog.Title
                     as="h3"
                     className="text-xl font-medium leading-6"
                   >
-                    Congrats!
+                    Thanks for your submission!
                   </Dialog.Title>
-                  <p className={'text-center m-0'}>
-                    Below is your audio key in order to stream audio on MINE.FM,
-                    make sure to keep this key a secret in store it in safe place.
-                    Insert this key in your media player in order to connect to our servers
+                  <p className={'text-center mb-2'}>
+                    Please give us at least 24 hours to review your submission. If approved then your stream it will be available in the explore page and listeners will be able to reserve their spot.
                   </p>
 
-                  <h3 className={'text-lime-400'}> {streamKey}</h3>
-                  <Image src={'/gif/mine-cube.gif'} alt={'mine cube gif'} height={64} width={64}/>
+                  <p className={'text-center m-0'}>
+                    Until then check out your Event info page which also contains your stream key and broadcasting guide, which inlcudes instruction on how to stream with MINE.FM when your show is live.
+                  </p>
+
 
                   <div className="mt-4">
                     { eventId ?
                       <Link href={`/livestream/${eventId}`}>
                       <button
                         type="submit"
-                        className="not-italic bg-black/40 h-12 rounded-lg font-mono font-bold text-green-200 text-lg p-2 px-4 border-none cursor-pointer mb-8"
+                        className="not-italic bg-black/40 h-12 rounded-lg font-mono font-bold text-green-200 text-lg p-2 px-4 border-[#7DD934] border-solid cursor-pointer mb-8"
                       >
-                        Head to your livestream page
+                        Head to your event info page
                       </button>
                     </Link> :
                       <button
-                        type="submit"
-                        className="not-italic bg-black/40 h-12 rounded-lg font-mono font-bold text-green-200 text-lg p-2 px-4 border-none cursor-pointer mb-8"
+                        className="not-italic bg-black/40 h-12 border-[#7DD934] border-solid rounded-lg font-mono font-bold text-green-200 text-lg p-2 px-4 cursor-pointer mb-8"
                       >
                         Fetching Event Data
                       </button>
