@@ -14,11 +14,17 @@ export type Event = {
 
   isOnline: boolean
 
+  isApproved: boolean
+
+  isFree: boolean
+
   posterURL: string | null
 
-  mood: string | null
+  startingPrice: string | null
 
   startDate: Date
+
+  endDate: Date | null
 
   description: string | null
 

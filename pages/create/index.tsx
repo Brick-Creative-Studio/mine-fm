@@ -17,7 +17,7 @@ export default function CreatePage() {
         <div className={'flex flex-col items-center'}>
           <p className="text-[#B999FA] text-[48px] mb-4 md:mb-10"> LIVESTREAM </p>
 
-          <Link href={`/create/livestream`}>
+          <Link href={`/create/stream`}>
           <div className="flex flex-col justify-center items-center w-80 h-48 p-8 border-solid md:w-[35rem] border-[#B999FA] border-4 rounded-full bg-[#1D0045] mb-10 cursor-pointer hover:opacity-80">
             <h3 className="text-center text-[20px] font-light text-[#B999FA]">
               {' '}

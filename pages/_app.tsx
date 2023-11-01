@@ -9,7 +9,7 @@ import {
   ledgerWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
-import { mainnet, goerli, optimism, optimismGoerli, zora, zoraTestnet } from "wagmi/chains";
+import { mainnet, goerli, optimism, optimismGoerli, zora, zoraTestnet, base, baseGoerli } from "wagmi/chains";
 import { router } from "next/client";
 import Layout  from '../components/Layout/Layout'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <WagmiConfig config={config}>
-      <RainbowKitProvider chains={chains} initialChain={zora}>
+      <RainbowKitProvider chains={chains} initialChain={baseGoerli}>
         {/* Head */}
         <Head>
           <title key="title">MINE.FM</title>
