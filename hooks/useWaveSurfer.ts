@@ -16,6 +16,8 @@ const useWavesurfer = (containerRef: any, options: any) => {
         container: containerRef.current,
         autoplay: false,
         url: src,
+        dragToSeek: true,
+        backend: 'MediaElementWebAudio'
       })
       setWavesurfer(ws as any)
 

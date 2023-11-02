@@ -106,37 +106,30 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
               </div>
             )}
           </Menu.Item>
-          <Menu.Item as="div" className="flex my-4  hover:bg-[#FF8500]">
-            {({ active }) => (
-              <Link
-                className={`${
-                  active && 'bg-[#FF8500]'
-                } flex items-center  justify-between w-full`}
-                href={hasAccount ? `/profile/${signerAddress}` : '/onboarding?tab=aura'}
-              >
+          <Link
+            className={`
+            } flex items-center  justify-between w-full`}
+            href={hasAccount ? `/profile/${signerAddress}` : '/onboarding?tab=aura'}
+          >
+          <Menu.Item as="div" className="flex my-4 cursor-pointer hover:bg-[#FF8500]">
                 {hasAccount ? (
                   <h3 className={'text-[20px] font-light mx-8 cursor-pointer'}>Profile</h3>
                 ) : (
                   <h3 className={'text-[20px] font-light mx-8 cursor-pointer'}>Create Account</h3>
                 )}
-
-              </Link>
-            )}
           </Menu.Item>
+          </Link>
 
-          <Menu.Item as="div" className={`flex my-4 hover:bg-[#FF8500] ${hasAccount ? null : 'hidden'}`}>
-            {({ active }) => (
-              <Link
-                className={`${
-                  active && 'bg-[#FF8500]'
-                } flex items-center justify-between w-full`}
-                href={hasAccount ? `/profile/${signerAddress}/aura` : ''}
-              >
+          <Link
+            className={`flex items-center justify-between w-full`}
+            href={hasAccount ? `/profile/${signerAddress}/aura` : ''}
+          >
+          <Menu.Item as="div" className={`flex my-4 cursor-pointer hover:bg-[#FF8500] ${hasAccount ? null : 'hidden'}`}>
+
                 {hasAccount ? <h3 className={'text-[20px] font-light mx-8 cursor-pointer'}>Settings </h3> : null}
-
-              </Link>
-            )}
           </Menu.Item>
+          </Link>
+
           <Menu.Item as="div" className={`flex my-4`}>
             {({ active }) => (
               <a
