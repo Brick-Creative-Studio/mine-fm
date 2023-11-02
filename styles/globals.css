@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@400;900&display=swap');
-
 
 @font-face {
   font-family: CamptonBold;
@@ -166,14 +164,14 @@ input::-webkit-inner-spin-button {
 
   body {
     background: #000;
-    margin: 0%;
-    padding: 0%;
+    margin: 0;
+    padding: 0;
     
   }
 
 
   button {
-    font-family: EllographCF-Bold !important;
+    font-family: EllographCF-Bold, serif !important;
     border: none;
 
   }
