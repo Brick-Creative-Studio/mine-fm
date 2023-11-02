@@ -11,7 +11,7 @@ interface CardProps {
 export const EventCard: React.FC<CardProps> = ({ id }) => {
 
   return (
-    <Link href={`/moodscape/${id}`} key={1}>
+    // <Link href={`/moodscape/${id}`} key={1}>
       <div className='flex flex-col w-72 h-fit rounded-lg bg-[#463850]/75'>
 
         <div className="flex h-auto rounded-lg cursor-pointer relative aspect-square w-full">
@@ -41,6 +41,6 @@ export const EventCard: React.FC<CardProps> = ({ id }) => {
         </div>
 
       </div>
-    </Link>
+    // </Link>
   )
 }
