@@ -106,35 +106,35 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
               </div>
             )}
           </Menu.Item>
-          <Menu.Item as="div" className="flex my-4">
+          <Menu.Item as="div" className="flex my-4  hover:bg-[#FF8500]">
             {({ active }) => (
-              <a
+              <Link
                 className={`${
                   active && 'bg-[#FF8500]'
-                } flex items-center justify-between w-full`}
+                } flex items-center  justify-between w-full`}
                 href={hasAccount ? `/profile/${signerAddress}` : '/onboarding?tab=aura'}
               >
                 {hasAccount ? (
-                  <h3 className={'text-sm mx-8'}>Profile</h3>
+                  <h3 className={'text-[20px] font-light mx-8 cursor-pointer'}>Profile</h3>
                 ) : (
-                  <h3 className={'text-sm mx-8'}>Create Account</h3>
+                  <h3 className={'text-[20px] font-light mx-8 cursor-pointer'}>Create Account</h3>
                 )}
 
-              </a>
+              </Link>
             )}
           </Menu.Item>
 
-          <Menu.Item as="div" className={`flex my-4 ${hasAccount ? null : 'hidden'}`}>
+          <Menu.Item as="div" className={`flex my-4 hover:bg-[#FF8500] ${hasAccount ? null : 'hidden'}`}>
             {({ active }) => (
-              <a
+              <Link
                 className={`${
                   active && 'bg-[#FF8500]'
                 } flex items-center justify-between w-full`}
-                href={hasAccount ? `/profile/${signerAddress}/aura` : undefined}
+                href={hasAccount ? `/profile/${signerAddress}/aura` : ''}
               >
-                {hasAccount ? <h3 className={'text-sm mx-8'}>Settings </h3> : null}
+                {hasAccount ? <h3 className={'text-[20px] font-light mx-8 cursor-pointer'}>Settings </h3> : null}
 
-              </a>
+              </Link>
             )}
           </Menu.Item>
           <Menu.Item as="div" className={`flex my-4`}>
@@ -146,7 +146,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                 href={'https://www.notion.so/brickstudio/FAQ-04bfb4c4580c4ce8a94202f4e6a7b359'}
                 target="_blank"
               >
-                <h3 className={'text-sm mx-8'}>FAQ </h3>
+                <h3 className={'text-[20px] font-light mx-8'}>FAQ </h3>
 
               </a>
             )}
@@ -162,7 +162,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                   disconnect()
                 }}
               >
-                {<h3 className={'text-sm text-white'}>Disconnect </h3>}
+                {<h3 className={'text-[20px] font-light text-white'}>Disconnect </h3>}
               </button>
             )}
           </Menu.Item>
