@@ -34,14 +34,14 @@ export default function Aura({})  {
 
         <h2 className={'w-24 text-center'}> Change Aura </h2>
 
-        <div className="invisible">
+        <div className="">
           <Link
             href={{
-              pathname: `/profile/${address}/mc-gallery`,
+              pathname: `/profile/${address}/identity`,
             }}
           >
             <div className="flex flex-row cursor-pointer">
-              <h3>Gallery</h3>
+              <h3>Identity</h3>
               <Image
                 src={'/chevron-right.svg'}
                 width={32}

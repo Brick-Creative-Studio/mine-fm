@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useLayoutStore } from '../stores'
 
 import { MoodCard } from "../components/Cards/MoodCard";
-import { mood001, mood002 } from "../constants/moods";
+import { mood001, mood002, mood003 } from "../constants/moods";
 import React from "react";
 
 
@@ -112,10 +112,12 @@ export default function HomePage({}) {
                 </div>
               <div className={'flex space-x-4 > * + * md:space-x-24 > * + * pr-4'}>
 
-                <MoodCard mood={mood001}/>
-
+                <MoodCard mood={mood003}/>
 
                 <MoodCard mood={mood002}/>
+
+                <MoodCard mood={mood001}/>
+
                 <Link href={'/explore?tab=moods'}>
                   <div className={'self-center flex items-center'}>
                   <div className={'w-26 h-26 p-2 bg-[#B999FA] rounded-full self-center flex justify-center items-center cursor-pointer'}>
@@ -136,7 +138,7 @@ export default function HomePage({}) {
               <p className={'leading-loose text-[#B999FA]'}> MINE.FM combines the ability to LIVESTREAM from anywhere with our unique REVENUE DISTRIBUTION MODEL. We provide a new way for artists and fans to connect and profit together. </p>
               </div>
             </div>
-            <div>
+            <div className={'mb-20'}>
               <h3 className={'text-[#B999FA]'}> A GUIDE TO MINE.FM: </h3>
 
               {
