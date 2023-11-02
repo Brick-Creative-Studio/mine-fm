@@ -14,7 +14,7 @@ export interface UseArtworkPreviewProps {
  */
 
 
-export const useMemCardPreview = ({ image }: UseArtworkPreviewProps) => {
+export const useMemCardPreview = () => {
 
   const canvas = React.useRef(null)
   const [generatedImages, setGeneratedImages] = React.useState<any[]>([])
@@ -25,19 +25,31 @@ export const useMemCardPreview = ({ image }: UseArtworkPreviewProps) => {
 
  */
 
-  const imagesToDraw = React.useMemo(() => {
-    const background = new Image()
-    let cardFrame = new Image();
-    let stickerImg = new Image()
+  const imagesToDraw = () => {
+    const background = new Image();
+    const cardFrame = new Image();
+    const stickerImg = new Image()
 
 
-    background.src = '/memory-cards/bg-cool.png';
-    cardFrame.src = '/memory-cards/card-frame.png';
-    stickerImg.src = image?.name!
+    background.src = '/memory-cards/card-frame.png';
+    // imgFrame.src = '/memory-cards/MINEcard2.0_STICKER_01.png';
+    cardFrame.src = '/memory-cards/bg-cool.png';
+    stickerImg.src = '/stock/stonie-test-poster.jpeg'
+    stickerImg.src = '/stock/wd-mj-2.png'
+    stickerImg.src = '/stock/mood-3-alt-cover.jpeg'
+
+    // stickerImg.src = image?.name!
+    // stickerImg.src = '/memory-cards/MINEcard2.0_STICKER_01.png
+
+    cardFrame.height = 200
+    cardFrame.width = 200
+    stickerImg.height = 100
+    stickerImg.width = 100
+
+    // return [background, cardFrame, stickerImg];
 
     return [background, cardFrame, stickerImg];
-
-  }, [image])
+  }
 
   const generateStackedImage = React.useCallback(
     async (e?: BaseSyntheticEvent) => {
@@ -48,24 +60,23 @@ export const useMemCardPreview = ({ image }: UseArtworkPreviewProps) => {
           const _canvas: HTMLCanvasElement = canvas.current
           const ctx = _canvas?.getContext('2d')
           const generate = () => {
-            _canvas.height = imagesToDraw[0].naturalHeight
-            _canvas.width = imagesToDraw[0].naturalWidth
+            _canvas.height = imagesToDraw()[0].naturalHeight
+            _canvas.width = imagesToDraw()[0].naturalWidth
 
-            for (let i = 0; i < imagesToDraw.length; i++) {
-              ctx?.drawImage(imagesToDraw[i], 0, 0)
-            }
+              console.log('ct x', ctx?.getImageData(0, 0, 1500 , 1500))
 
-            canvasToBlob(_canvas, imagesToDraw)
+              ctx?.drawImage(imagesToDraw()[0], 0, 0, 1500, 1500)
+            ctx?.drawImage(imagesToDraw()[1], 315, 452, 865, 860)
+            ctx?.drawImage(imagesToDraw()[2], 325, 460, 845, 845)
+
+
+            canvasToBlob(_canvas, imagesToDraw())
           }
 
-          if (isInit) {
-            imagesToDraw[0].onload = function () {
+            imagesToDraw()[0].onload = function () {
               generate()
-              setIsInit(false)
+              // setIsInit(false)
             }
-          } else {
-            generate()
-          }
 
       } catch (err) {
         console.log('err', err)

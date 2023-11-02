@@ -1,14 +1,12 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm, SubmitHandler, FormProvider, useFormContext } from 'react-hook-form'
-import Image from 'next/future/image'
-import styles from '../../pages/create/create-sound/styles.module.css'
-import { getFetchableUrl } from 'packages/ipfs-service'
+import Popup from 'reactjs-popup';
 import { useLayoutStore } from '../../stores'
 import SingleImageUpload from '../SingleImageUpload/SingleImageUpload'
 import { useEventStore } from '../../stores/useEventStore'
 import createEvent from '../../data/rest/createEvent'
-import { Event } from '../../types/Event'
 import SuccessEventModal from '../Modals/SuccessEventModal'
+import MemoryCardUpload from "../MemoryCardUpload/MemoryCardUpload";
 
 type LivestreamInput = {
   title: string
@@ -96,6 +94,29 @@ export default function LivestreamForm({}) {
               <div className={'flex flex-col items-center justify-center'}>
                 <label className="mb-1 self-start"> Artwork<span className={'text-red-600'}>*</span> </label>
                 <SingleImageUpload
+                  id={'livestream-poster'}
+                  alt={'upload image'}
+                  name={'posterUrl'}
+                />
+              </div>
+              <div>
+
+                <label className="mb-4"> Memory Card
+
+                  <Popup
+                    trigger={open => (
+                      <img alt={'info-circle'} className={'cursor-pointer m-1'} src={'/info-circled.svg'}/>
+                    )}
+                    on={'hover'}
+                    position="right center"
+                    closeOnDocumentClick
+                  >
+                    <div className={'bg-[#12002C] w-48 p-4 rounded-md border-[#7DD934] border-solid'}>
+                      <p className={'text-sm'}><span className={'text-[#B999FA] '}> Memory Cards: </span> an (erc-1155) NFT that provides miners access to their livestreams and rewards.</p>
+                    </div>
+                  </Popup>
+                </label>
+                <MemoryCardUpload
                   id={'livestream-poster'}
                   alt={'upload image'}
                   name={'posterUrl'}
@@ -434,6 +455,29 @@ export default function LivestreamForm({}) {
                 <div>
                   <label className="mb-4"> Artwork<span className={'text-red-600'}>*</span> </label>
                   <SingleImageUpload
+                    id={'livestream-poster'}
+                    alt={'upload image'}
+                    name={'posterUrl'}
+                  />
+                </div>
+                <div>
+
+                  <label className="mb-4"> Memory Card
+
+                    <Popup
+                      trigger={open => (
+                        <img alt={'info-circle'} className={'cursor-pointer m-1'} src={'/info-circled.svg'}/>
+                      )}
+                      on={'hover'}
+                      position="right center"
+                      closeOnDocumentClick
+                    >
+                      <div className={'bg-[#12002C] w-48 p-4 rounded-md border-[#7DD934] border-solid'}>
+                        <p className={'text-sm'}><span className={'text-[#B999FA] '}> Memory Cards: </span> an (erc-1155) NFT that provides miners access to their livestreams and rewards.</p>
+                      </div>
+                    </Popup>
+                    </label>
+                  <MemoryCardUpload
                     id={'livestream-poster'}
                     alt={'upload image'}
                     name={'posterUrl'}

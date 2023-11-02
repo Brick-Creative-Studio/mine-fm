@@ -3,10 +3,11 @@ import { useFormContext } from 'react-hook-form'
 import { useEventStore } from "../../stores";
 import React, { ReactElement, useEffect, useState } from 'react'
 import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from 'packages/ipfs-service'
-
+import { useMemCardPreview } from "../../hooks/useMemCardPreview";
 // import { Spinner } from 'src/components/Spinner'
 
 import { defaultUploadStyle } from './MemoryCardUpload.css'
+import { useIsMounted } from "../../hooks/useMounted";
 
 interface MemoryCardUploadProps {
   id: string
@@ -30,6 +31,9 @@ const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) =>
   const { memoryCardUrl, setMemoryUrl } = useEventStore((state) => state)
   const [fileUrl, updateFileUrl] = useState('')
   const { register, setValue, getValues } = useFormContext<LivestreamInput>() // retrieve all hook methods
+  const img = <img alt={'sample'} src={'/bloomin_poster_square.png'}/>
+  const { generateStackedImage, generatedImages, canvas } = useMemCardPreview()
+  const isMounted = useIsMounted()
 
   const [uploadArtworkError, setUploadArtworkError] = React.useState<any>()
   const [isUploading, setIsUploading] = React.useState<boolean>(false)
@@ -38,8 +42,14 @@ const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) =>
     if(fileUrl.length > 0){
       const url = getFetchableUrl(fileUrl)
       setMemoryUrl(url!)
+      // generateStackedImage()
+
     }
   }, [fileUrl])
+
+  useEffect(() => {
+      generateStackedImage()
+  }, )
 
   const handleFileUpload = React.useCallback(
     async (_input: FileList | null) => {
@@ -87,7 +97,7 @@ const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) =>
   return (
     <div
       className={
-        'flex flex-col justify-center items-center border border-solid w-96 h-96 relative cursor-pointer rounded-md border-zinc-500 mt-4'
+        'flex flex-col justify-center items-center  w-96 h-96 relative cursor-pointer rounded-md'
       }
     >
       {isUploading && (
@@ -104,30 +114,12 @@ const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) =>
           alt={alt}
         />
       )}
+      {/*<img alt={'memory-card-base'} src={'/memory-cards/card-frame.png'} className={'w-full h-full'}/>*/}
 
-      <input
-        className={'hidden'}
-        id="file-upload"
-        data-testid="file-upload"
-        type="file"
 
-        multiple={false}
-        // @ts-ignore
-        {...register(name as string)}
-        onChange={(event) => {
-          handleFileUpload(event.currentTarget.files)
-        }}
-      />
-      <label htmlFor="file-upload">
-        <Image
-          src={'/plus-icon.png'}
-          alt="add-art"
-          width={42}
-          height={42}
-          className={'cursor-pointer'}
-        />
-      </label>
-      <p> Choose File </p>
+      <img height={'100%'} width={'100%'} src={generatedImages[0]} />
+      <canvas ref={canvas} style={{ display: 'none' }} />
+
     </div>
   )
 }
