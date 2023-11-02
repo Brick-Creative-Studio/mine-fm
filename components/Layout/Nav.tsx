@@ -96,8 +96,8 @@ const Nav = () => {
 
       <div className={navActions}>
         <Link
-          key={'aboutus'}
-          href={'/aboutus'}
+          key={'about-us'}
+          href={'/about-us'}
         >
         <p className={`m-2 text-xl text-[#B999FA] cursor-pointer hover:text-purple-800 ${isMobile ? 'hidden' : null}`}> ABOUT US </p>
 
