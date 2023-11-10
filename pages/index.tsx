@@ -142,7 +142,7 @@ export default function HomePage({}) {
               <h3 className={'text-[#B999FA]'}> A GUIDE TO MINE.FM: </h3>
 
               {
-                isMobile ? <img src={'/mine-guide-mobile.png'} alt={'mine.fm infographic'}/> : <img src={'/mine-guide2.png'} alt={'mine.fm infographic'}/>
+                isMobile ? <img src={'/mine-guide-mobile.png'} alt={'mine.fm infographic'}/> : <img src={'/mine-guide.png'} alt={'mine.fm infographic'}/>
               }
 
             </div>

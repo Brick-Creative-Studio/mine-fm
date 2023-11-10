@@ -473,7 +473,7 @@ export default function LivestreamForm({}) {
                       closeOnDocumentClick
                     >
                       <div className={'bg-[#12002C] w-48 p-4 rounded-md border-[#7DD934] border-solid'}>
-                        <p className={'text-sm'}><span className={'text-[#B999FA] '}> Memory Cards: </span> an (erc-1155) NFT that provides miners access to their livestreams and rewards.</p>
+                        <p className={'text-sm'}><span className={'text-[#B999FA] '}> Memory Cards: </span> an (erc-1155) token that grants miners access to livestreams and rewards.</p>
                       </div>
                     </Popup>
                     </label>
