@@ -477,11 +477,13 @@ export default function LivestreamForm({}) {
                       </div>
                     </Popup>
                     </label>
+                  <div className={'w-full h-full bg-black/50 border-solid border-[#7DD934] rounded-md  mt-4 items-center flex'}>
                   <MemoryCardUpload
                     id={'livestream-poster'}
                     alt={'upload image'}
                     name={'posterUrl'}
                   />
+                  </div>
                 </div>
               </div>
             </div>

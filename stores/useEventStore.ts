@@ -9,9 +9,9 @@ interface EventStoreProps {
   setTitle: (id: string) => void
   setEvent: (initialState: any) => void
   posterUrl: string | null
-  setPosterUrl: (url: string) => void
-  memoryCardUrl: string | null
-  setMemoryUrl: (url : string) => void
+  setPosterUrl: (url: string | null) => void
+  memoryCardFile: File | null
+  setMemoryFile: (sticker : File) => void
 
 }
 
@@ -19,7 +19,7 @@ const initialState ={
   id: null,
   title: null,
   posterUrl: null,
-  memoryCardUrl: null
+  memoryCardFile: null
 }
 export const useEventStore = create(
   persist<EventStoreProps>(
@@ -28,8 +28,8 @@ export const useEventStore = create(
       setId: (id: string) => set({ id }),
       setTitle: (title: string) => set({ title }),
       setEvent: (initialState: any) => set({...initialState}),
-      setPosterUrl: (posterUrl: string) => set({ posterUrl }),
-      setMemoryUrl: (memoryCardUrl: string) => set({ memoryCardUrl }),
+      setPosterUrl: (posterUrl: string | null) => set({ posterUrl }),
+      setMemoryFile: (sticker: File) => set({ memoryCardFile: sticker }),
     }),
     {
       name: `mine-fm-event`,
