@@ -7,7 +7,7 @@ import { useAccount } from 'wagmi'
 import StreamSection from '../../components/Sections/StreamSection'
 import IRLSection from '../../components/Sections/IRLSection'
 import MoodsSection from "../../components/Sections/MoodsSection";
-import { ExploreSectionHandler } from '../../components/Layout/ExploreSectionHandler'
+import { ExploreSectionHandler } from '../../components/Layout/SectionHandlers/ExploreSectionHandler'
 
 export default function Explore({}) {
   const { signerAddress } = useLayoutStore((state) => state)

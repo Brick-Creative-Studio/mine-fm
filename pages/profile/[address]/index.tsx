@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { ProfileSectionHandler as SectionHandler } from 'components/Layout/ProfileSectionHandler'
+import { ProfileSectionHandler as SectionHandler } from 'components/Layout/SectionHandlers/ProfileSectionHandler'
 import InstaModal from 'components/Modals/InstaModal'
 import TwitterModal from 'components/Modals/TwitterModal'
 import MemoryCardSection from "../../../components/Sections/MemoryCardSection";

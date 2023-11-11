@@ -3,7 +3,7 @@ import Head from 'next/head'
 import SongForm from 'components/Forms/SongForm'
 import MoodForm from 'components/Forms/MoodForm'
 import CollectionForm from 'components/Forms/CollectionForm'
-import { SoundFormHandler } from 'components/Layout/SoundFormHandler'
+import { SoundFormHandler } from 'components/Layout/SectionHandlers/SoundFormHandler'
 import { useRouter } from 'next/router'
 import { useLayoutStore } from 'stores'
 
