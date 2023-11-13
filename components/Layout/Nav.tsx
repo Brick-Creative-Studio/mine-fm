@@ -73,7 +73,7 @@ const Nav = () => {
     <nav className={NavBar}>
       <div className={navLogo}>
         <Link key={'home'} href={'/'}>
-          <Image
+          <img
             src={'/mine-boxLogo-icon.svg'}
             alt={'minefm-logo'}
             width={48}

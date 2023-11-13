@@ -1,12 +1,16 @@
 import React from 'react'
 
-export default function OreSection({}) {
+interface Props {
+  aura: string
+}
+export default function YourIRLSection({ aura }: Props) {
+
   return (
-    <div className="m-8">
-      <p>
-        {' '}
-        You currently don't have any saved files yet. Head to a MINE.FM event and download the
-        drops provided by the host{' '}
+    <div className="m-8 h-96">
+      <p className={'bg-black/50 p-2 rounded-md'}>
+
+        You haven't attended any events yet. RSVP to an in-person MINE.FM event first.
+
       </p>
     </div>
   )

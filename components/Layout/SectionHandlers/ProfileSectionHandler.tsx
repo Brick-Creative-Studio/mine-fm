@@ -11,6 +11,8 @@ interface SectionHandlerProps {
   }[]
   signerAddress?: string
   activeTab?: string
+  aura: string
+
 }
 
 interface activeSectionProps {
@@ -22,6 +24,7 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
   sections,
   signerAddress,
   activeTab,
+  aura
 }) => {
   /*
 
@@ -38,20 +41,20 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
   )
 
   const activeSection: activeSectionProps | undefined = React.useMemo(() => {
-    const memoryCards = tab('Memory Cards')
-    const ores = tab('Ores')
+    const irl = tab('IRL')
+    const livestream = tab('Livestream')
 
     if (!activeTab) {
-      return memoryCards
+      return livestream
     }
 
-    return tab(unslugify(activeTab)) ?? memoryCards
+    return tab(unslugify(activeTab)) ?? irl
   }, [activeTab, tab])
 
   return (
-    <div className={'mx-8'}>
+    <div className={'flex flex-col flex-1 w-full mt-4'}>
       {sections && sections.length > 1 && (
-        <div className="flex flex-row space-x-6">
+        <div className="flex flex-row justify-center space-x-6 mb-4">
           {sections?.map((section, index) => {
             return (
               <Link
@@ -66,11 +69,14 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
                 key={section.title}
               >
                 <div className="flex flex-col cursor-pointer ">
-                  <p>{section.title}</p>
                   {activeSection?.title === section.title ? (
-                    <div key={index} className="w-auto h-0.5 -mt-4 bg-sky-500/75" />
+                    <div className={'border border-solid rounded-full border-[#B999FA] px-4 py-0 my-0 h-fit'}>
+                      <h3 className={'text-[#B999FA] text-[14px] my-2'}>{section.title.toUpperCase()}</h3>
+                    </div>
                   ) : (
-                    <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
+                    <>
+                      <h3 className={'text-[14px] my-2'}>{section.title.toUpperCase()}</h3>
+                    </>
                   )}
                 </div>
               </Link>
@@ -78,9 +84,8 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
           })}
         </div>
       )}
-      <div className="w-inherite border border-white opacity-10 border-solid -mt-3" />
 
-      <div>
+      <div style={{ background: aura }} className={'flex flex-1 h-full'}>
         <AnimatePresence mode={'wait'}>
           <motion.div
             key={activeSection?.title}

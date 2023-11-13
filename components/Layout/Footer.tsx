@@ -34,7 +34,7 @@ const Footer = () => {
 
         </footer>
       ) : (
-        <footer className='flex h-16 mx-0 mt-8'>
+        <footer className='flex h-16 mx-0'>
           <a
             href="https://brickxstudio.com"
             target="_blank"

@@ -44,7 +44,7 @@ const CopyButton = ({ title, text, variant = 'default' }: CopyButtonProps) => {
             <Image
               width={84}
               height={84}
-              src={'/copy.svg'}
+              src={'/copy_green.svg'}
               alt="copy address button"
             />
           </button>        </div>
@@ -58,8 +58,8 @@ const CopyButton = ({ title, text, variant = 'default' }: CopyButtonProps) => {
           >
             <button className="bg-transparent hover:bg-sky-100 w-fit h-fit">
               <Image
-                width={92}
-                height={92}
+                width={84}
+                height={84}
                 src={'/check.svg'}
                 alt="copy address button"
               />
