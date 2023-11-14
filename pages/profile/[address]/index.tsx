@@ -225,7 +225,7 @@ export default function Profile() {
                   <TwitterModal isUserPage={isUserPage} twitterUrl={user?.twitter} />
                   <InstaModal isUserPage={isUserPage} instaUrl={user?.instagram} />
                   {
-                    isUserPage ?  <Link href={`${address}/aura`}>
+                    isUserPage ?  <Link href={`${address}/settings?tab=aura`}>
                       <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent border-none">
                         <Image
                           width={24}

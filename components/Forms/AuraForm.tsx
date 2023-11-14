@@ -43,10 +43,10 @@ const AuraForm: React.FC = ({}) => {
   const [gradient, setGradient] = useState<string>(initialGradient)
 
   const cardinalMap = new Map<string, string>([
-    ['left', 'West'],
-    ['right', 'East'],
-    ['top', 'North'],
-    ['bottom', 'South'],
+    ['left', 'Left'],
+    ['right', 'Right'],
+    ['top', 'Up'],
+    ['bottom', 'Down'],
   ])
 
   const onSubmit: SubmitHandler<AuraInputs> = async (data) => {
