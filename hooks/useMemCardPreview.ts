@@ -1,8 +1,8 @@
-import React, { BaseSyntheticEvent } from 'react'
+import React, { BaseSyntheticEvent, useEffect } from "react";
 
 
 export interface UseArtworkPreviewProps {
-  image?: File | null
+  image: File | null
 }
 
 /*
@@ -14,139 +14,110 @@ export interface UseArtworkPreviewProps {
  */
 
 
-export const useMemCardPreview = ({ image } : UseArtworkPreviewProps) => {
+export const useMemCardPreview = () => {
 
   const canvas = React.useRef(null)
-  const [generatedImages, setGeneratedImages] = React.useState<any[]>([])
-  const [isInit, setIsInit] = React.useState<boolean>(true)
+  const [generatedImage, setGeneratedImage] = React.useState<string[]>([])
+  const [cardStack, setCardStack] = React.useState<HTMLImageElement[]>([])
+
   /*
 
-   create array of Image objects from blob for canvas
-
+  create 3 sets if images the first 2 to set the card backdrop and frame.
+  the last one being the uploaded file from the user
+  to read the image from the input upload create a file reader
+  then assign the url to the img src attribute
+  then set our cardStack state variable to update state.
  */
+  const gatherImages = (image: File)  => {
+    console.log('gatherImgs() run--img file check:',image)
 
-  const imagesToDraw = () => {
-    const mcBackdrop = new Image();
-    const stickerFrame = new Image();
-    const stickerImg = new Image()
-
-
-    mcBackdrop.src = '/memory-cards/card-frame.png';
-    // imgFrame.src = '/memory-cards/MINEcard2.0_STICKER_01.png';
-    stickerFrame.src = '/memory-cards/bg-cool.png';
     // stickerImg.src = '/stock/stonie-test-poster.jpeg'
-    // stickerImg.src = '/stock/wd-mj-2.png';
-    // stickerImg.src = '/stock/mood-3-alt-cover.jpeg'
+    const readURL = (file: File) => {
+      return new Promise((res, rej) => {
+        const reader = new FileReader();
+        reader.onload = e => res(e.target?.result);
+        reader.onerror = e => rej(e);
+        reader.readAsDataURL(file);
+      });
+    };
+    async function setURL(){
+      const mcBackdrop = new Image();
+      const stickerFrame = new Image();
+      const stickerImg = new Image();
+      let arr : HTMLImageElement[] = [mcBackdrop, stickerFrame, stickerImg]
+      console.log('setURL() run--img file check:',image)
 
-    // stickerImg.src = image?.name!
-    // stickerImg.src = '/memory-cards/MINEcard2.0_STICKER_01.png
+      const url = image ? await readURL(image) : '';
+      arr[0].src = '/memory-cards/card-frame.png';
+      arr[1].src = '/memory-cards/bg-cool.png';
+      // arr[2].src = '/stock/stonie-test-poster.jpeg';
+      arr[2].src = url as string;
 
-    // return [background, cardFrame, stickerImg];
-
-    return [mcBackdrop, stickerFrame, stickerImg];
+      // imgFrame.src = '/memory-cards/MINEcard2.0_STICKER_01.png';
+      setCardStack(arr)
+      //uggj
+      // await generateStackedImage()
+    }
+    if(image.name){
+      setURL()
+    }
+    // const imageSet = setURL()
   }
 
-  const generateStackedImage = React.useCallback(
-    async () => {
+  /*
+  * usecallback to generate the image stack on a canvas so that it fits--
+  *  on top of the card frame and background
+  *
+  * */
+  React.useEffect(() => {
+
       try {
-        if (!imagesToDraw || !canvas.current) return
+        if (!cardStack[0] || !canvas.current) return
+        console.log('generatedStackedImage() run')
 
-        // const blob = URL.createObjectURL(stickerFile)
+        const _canvas: HTMLCanvasElement = canvas.current
+        const ctx = _canvas?.getContext('2d')
+        const generate = () => {
 
-        // console.log('sticker load running')
-        // let data = await fetch(`https://localhost:3000 ${blob}`).then(r => r.blob());
+            console.log('img[2].src check', cardStack[2])
 
-        // const url = new URL('https://localhost:3000')
-        // url.searchParams.append('images', encodeURI(blob))
-        // const response = await fetch(url.href, {
-        //   method: 'GET',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //     'Access-Control-Allow-Origin': '*',
-        //   },
-        // })
-        // const data = await response.json()
-        // let data = await fetch(blob).then(r => r.blob());
-        // console.log('fetched blob data',data)
-        // imagesToDraw()[2].src = blob
+            _canvas.height = cardStack[0].naturalHeight
+            _canvas.width = cardStack[0].naturalWidth
+            ctx?.drawImage(cardStack[0], 0, 0, 1500, 1500)
+            ctx?.drawImage(cardStack[1], 315, 452, 865, 860)
+            ctx?.drawImage(cardStack[2], 325, 460, 845, 845)
 
+            canvasToBlob(_canvas, cardStack)
+        }
 
-        // assign ug file to image src
-        // const reader = new FileReader();
-        // convert file to a base64 url
-        const readURL = (file: File) => {
-          return new Promise((res, rej) => {
-            const reader = new FileReader();
-            reader.onload = e => res(e.target?.result);
-            reader.onerror = e => rej(e);
-            reader.readAsDataURL(file);
-          });
-        };
-
-
-
-
-        // console.log('memory name888', url)
-        // imagesToDraw()[2].src = url as string
-        // console.log('memory name9999', imagesToDraw()[2].src)
-
-          const _canvas: HTMLCanvasElement = canvas.current
-          const ctx = _canvas?.getContext('2d')
-          const generate = () => {
-
-            _canvas.height = imagesToDraw()[0].naturalHeight
-            _canvas.width = imagesToDraw()[0].naturalWidth
-              ctx?.drawImage(imagesToDraw()[0], 0, 0, 1500, 1500)
-            ctx?.drawImage(imagesToDraw()[1], 315, 452, 865, 860)
-            ctx?.drawImage(imagesToDraw()[2], 325, 460, 845, 845)
-
-            canvasToBlob(_canvas, imagesToDraw())
-          }
-
-            imagesToDraw()[2].onload = function () {
-
-
-              generate()
-              // setIsInit(false)
-            }
-
-          const url = await readURL(image!);
-          imagesToDraw()[2].src = url as string
-
-        // generate()
-
-        // imagesToDraw()[2].onload = function () {
+        // cardStack[0].onload = function () {
         //   generate()
         //   // setIsInit(false)
         // }
-
+        generate()
+        // generate()
       } catch (err) {
         console.log('err', err)
       }
-    },
-    [imagesToDraw, canvas, isInit]
-  )
-
+    }, [cardStack, canvas]);
   /*
-
     save blob of stacked image to store
     memory cleanup for saved image
-
  */
   const canvasToBlob = React.useCallback(
     (canvas: HTMLCanvasElement, stack: HTMLImageElement[] | undefined = []) => {
       if (canvas.height > 0) {
         const data = canvas.toDataURL()
 
-        setGeneratedImages([data, ...generatedImages])
+        setGeneratedImage([data, ...generatedImage])
         for (const blob of stack) {
           URL.revokeObjectURL(blob.src)
         }
       }
     },
-    [generatedImages]
+    [generatedImage]
   )
 
-  return { generateStackedImage, imagesToDraw, generatedImages, canvas }
+  return { generatedImage, canvas, gatherImages }
 
 }

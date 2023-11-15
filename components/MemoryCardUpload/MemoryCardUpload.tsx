@@ -29,17 +29,26 @@ type LivestreamInput = {
 const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) => {
   const acceptableMIME = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']
   const { posterUrl, memoryCardFile } = useEventStore((state) => state)
-  const { generateStackedImage, generatedImages, canvas } = useMemCardPreview({ image: memoryCardFile })
+  const { generatedImage, canvas, gatherImages } = useMemCardPreview()
 
-  const [uploadArtworkError, setUploadArtworkError] = React.useState<any>()
+  const [cardArt, setCardArt] = React.useState<string | undefined>(undefined)
   const [isUploading, setIsUploading] = React.useState<boolean>(false)
 
   useEffect(() => {
-    if(memoryCardFile){
-      generateStackedImage()
-      console.log('new stack triggered', memoryCardFile)
+    if(memoryCardFile?.type?.length){
+      console.log('useEffect triggered: running memPreview hook', generatedImage[0])
+      gatherImages(memoryCardFile)
+      // generateStackedImage()
+      setIsUploading(true)
     }
-  }, [])
+  }, [memoryCardFile])
+
+  useEffect(() => {
+    if(generatedImage?.length){
+      console.log('generated image is not null', generatedImage)
+      setCardArt(generatedImage[0])
+    }
+  }, [generatedImage[0]])
 
 
   return (
@@ -52,10 +61,10 @@ const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) =>
         <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="24 24 24 24" />
       )}
 
-      {posterUrl ?  (
+      {cardArt ?  (
 
         <>
-        <img alt={'memory card'} height={'100%'} width={'100%'} src={generatedImages[0]}/>
+        <img alt={'memory card'} height={'100%'} width={'100%'} src={generatedImage[0]}/>
         <canvas ref={canvas} style={{ display: 'none' }} />
         </>
       ): (

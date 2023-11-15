@@ -45,7 +45,7 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
       const url = getFetchableUrl(fileUrl)
 
       setPosterUrl(url!)
-      console.log('new url triggered', url)
+      // setMemoryFile(getFetchableUrl(fileUrl) as string)
     }
     if (!fileUrl){
       setPosterUrl(null)
@@ -56,8 +56,8 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
     async (_input: FileList | null) => {
       if (!_input) return
       const input = _input[0]
-
       setMemoryFile(input)
+
 
       setUploadArtworkError(false)
 
