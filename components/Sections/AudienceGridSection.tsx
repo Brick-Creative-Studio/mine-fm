@@ -6,7 +6,7 @@ interface Props {
   audienceList: User[] | null
 }
 
-export default function AudienceGrid({ audienceList } : Props) {
+export default function AudienceGridSection({ audienceList } : Props) {
   return (
     <div className="md:h-[604px] w-full h-[32rem] p-2 overflow-scroll overflow-y-scroll	 ">
       {

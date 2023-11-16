@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useLayoutStore, useProfileStore } from 'stores'
 import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import styles from './AuraForm.module.css'
 import {
   crossBottom,
   crossCenter,
@@ -42,10 +43,10 @@ const AuraForm: React.FC = ({}) => {
   const [gradient, setGradient] = useState<string>(initialGradient)
 
   const cardinalMap = new Map<string, string>([
-    ['left', 'West'],
-    ['right', 'East'],
-    ['top', 'North'],
-    ['bottom', 'South'],
+    ['left', 'Left'],
+    ['right', 'Right'],
+    ['top', 'Up'],
+    ['bottom', 'Down'],
   ])
 
   const onSubmit: SubmitHandler<AuraInputs> = async (data) => {
@@ -131,39 +132,49 @@ const AuraForm: React.FC = ({}) => {
               style={{ background: `${gradient}` }}
             />
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="flex flex-col my-12">
+              <div className="flex flex-col m-12">
                 <div className="flex flex-row  justify-around" >
                   <div className="flex flex-col justify-center items-center">
+                    <div className={'w-24 h-12 mx-6 appearance-none p-0 border-none bg-transparent rounded-full cursor-pointer'}>
+
                     <input
                       type="color"
                       value={colorOne}
                       {...register('colorOne')}
                       onChange={(event) => onChangeColorOne(event)}
-                      className="w-24 h-12 border-none bg-transparent cursor-pointer	"
-                    />
+                      className={styles.style2}                    />
+                    </div>
                     <p>{colorOne}</p>
                   </div>
                   <div className="flex flex-col justify-center items-center ">
+                    <div className={'w-24 h-12 appearance-none p-0 border-none bg-transparent rounded-full cursor-pointer'}>
+
                     <input
                       type="color"
                       value={colorTwo}
                       {...register('colorTwo')}
                       onChange={(event) => onChangeColorTwo(event)}
-                      className="w-24 h-12 border-none bg-transparent cursor-pointer"
+                      className={styles.style2}
                     />
+                    </div>
                     <p>{colorTwo}</p>
                   </div>
-                  <div className="flex flex-col justify-center items-center">
+                  <div className="flex flex-col justify-center items-center mx-6">
+                    <div className={'w-24 h-12 appearance-none p-0 border-none bg-transparent rounded-full cursor-pointer'}>
                     <input
                       type="color"
                       value={colorThree }
                       {...register('colorThree')}
                       onChange={(event) => onChangeColorThree(event)}
-                      className="w-24 h-12 border-none bg-transparent cursor-pointer"
+                      className={styles.style2}
+                      // className="w-24 h-12 appearance-none p-0 border-none bg-transparent rounded-full cursor-pointer"
                     />
+                    </div>
+
                     <p>{colorThree}</p>
                   </div>
                 </div>
+                <div className={'flex justify-around items-center'}>
                 <div className="flex justify-center m-8">
                   <div className={'bg-gray-800 w-8 h-8 m-6'}>
                     <input
@@ -193,12 +204,13 @@ const AuraForm: React.FC = ({}) => {
                     <div className={'bg-gray-900 w-6 h-6 absolute mt-1 ml-1 rounded-full'} />
                   </div>
                 </div>
-                <h3 className="self-center my-8"> Direction: {cardinalMap.get(direction)} </h3>
+                <p className="self-center"> Direction: {cardinalMap.get(direction)} </p>
+                </div>
                 <input
                   type="submit"
                   title="next"
                   value={'Save Aura'}
-                  className="not-italic bg-[#0E4749] h-12 rounded-lg font-mono font-bold text-lg p-2 px-4 border-none mt-2 cursor-pointer"
+                  className="not-italic bg-transparent h-12 rounded-lg font-mono font-bold text-lg p-2 px-4 border-solid border-[#B999FA] m-6 cursor-pointer"
                 />
               </div>
             </form>

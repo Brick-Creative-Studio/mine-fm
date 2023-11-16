@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { ProfileSectionHandler as SectionHandler } from 'components/Layout/ProfileSectionHandler'
+import { ProfileSectionHandler as SectionHandler } from 'components/Layout/SectionHandlers/ProfileSectionHandler'
 import InstaModal from 'components/Modals/InstaModal'
 import TwitterModal from 'components/Modals/TwitterModal'
-import MemoryCardSection from "../../../components/Sections/MemoryCardSection";
-import OreSection from "../../../components/Sections/OresSection";
+import YourMoodSection from "../../../components/Sections/YourMoodSection";
+import YourIRLSection from "../../../components/Sections/OresSection";
 import CopyButton from '../../../components/CopyButton/CopyButton'
 import FollowerModal from "../../../components/Modals/FollowerModal";
 import FollowingModal from "../../../components/Modals/FollowingModal";
@@ -39,12 +39,12 @@ export default function Profile() {
 
   const sections = [
     {
-      title: 'Memory Cards',
-      component: [<MemoryCardSection key={'MemoryCards'} />],
+      title: 'Livestream',
+      component: [<YourMoodSection aura={gradient} key={'Livestream'} />],
     },
     {
-      title: 'Saved Audio',
-      component: [<OreSection key={'Ores'} />],
+      title: 'IRL',
+      component: [<YourIRLSection aura={gradient} key={'IRL'} />],
     },
   ]
 
@@ -192,26 +192,26 @@ export default function Profile() {
   return (
     <>
       { pathAddress ? (
-        <div className="flex flex-col mt-24 mb-auto w-full">
+        <div className="flex flex-col h-full mt-24 w-full">
 
-          <div className="flex mx-8">
-            <div className="px-2 pt-1">
-              <div
-                style={{
-                  width: '140px',
-                  height: '140px',
-                  borderRadius: '50%',
-                  background: gradient && gradient,
-                }}
-              />
+          <div className="flex ">
+            <div className="">
+              {/*<div*/}
+              {/*  style={{*/}
+              {/*    width: '140px',*/}
+              {/*    height: '140px',*/}
+              {/*    borderRadius: '50%',*/}
+              {/*    background: gradient && gradient,*/}
+              {/*  }}*/}
+              {/*/>*/}
             </div>
             <div className=" mx-8 w-full">
+              <p className="text-[#B999FA]"> {user?.miner_tag} </p>
               <h2 className={ 'w-1/2'}> {user?.name}</h2>
-              <p className="-mt-4"> {user?.miner_tag} </p>
               <div className="flex flex-col w-full justify-between">
                 <div className="flex flex-col">
-                  <div className="flex justify-center w-40 h-fit items-center mr-8 bg-white drop-shadow-lg text-black border-1 rounded-full px-2 ">
-                    <p className="text-ellipsis overflow-hidden"> {user?.walletAddress}</p>
+                  <div className="flex justify-center w-40 h-fit items-center mr-8 bg-transparent drop-shadow-lg text-black border-1 rounded-full">
+                    <p className="text-ellipsis text-[#B999FA] overflow-hidden"> {user?.walletAddress}</p>
                     <CopyButton text={user?.walletAddress as string} />
                   </div>
                   {
@@ -225,7 +225,7 @@ export default function Profile() {
                   <TwitterModal isUserPage={isUserPage} twitterUrl={user?.twitter} />
                   <InstaModal isUserPage={isUserPage} instaUrl={user?.instagram} />
                   {
-                    isUserPage ?  <Link href={`${address}/aura`}>
+                    isUserPage ?  <Link href={`${address}/settings?tab=aura`}>
                       <button className="hover:bg-sky-100  w-10 h-10 rounded-lg bg-transparent border-none">
                         <Image
                           width={24}
@@ -252,19 +252,19 @@ export default function Profile() {
             <FollowingModal followingList={followingList}/>
           </div>
           <div className="flex-col mx-8">
-            <h2> Bio </h2>
             {user?.bio ? (
-              <p className="text-ellipsis	"> {user.bio} </p>
+              <h3 className="text-ellipsis text-sm font-light md:font-normal"> {user.bio} </h3>
             ) : (
-              <p className="text-ellipsis	">
+              <h3 className="text-ellipsis	">
                 Contrary to popular belief, Lorem Ipsum is not simply random text. It has
                 roots in a piece of classical Latin literature from 45 BC, making it over 2000
                 years old. Richard McClintock, a Latin professor at Hampden
-              </p>
+              </h3>
             )}
           </div>
           <SectionHandler
             sections={sections}
+            aura={gradient}
             signerAddress={user?.walletAddress ? user.walletAddress : undefined}
             activeTab={query?.tab ? (query.tab as string) : undefined}
           />

@@ -1,0 +1,20 @@
+.style2 {
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  border: none;
+  cursor: pointer;
+}
+.style2::-webkit-color-swatch {
+  border-radius: 40px;
+  border: none;
+}
+.style2::-moz-color-swatch {
+  border-radius: 40px;
+  border: none;
+
+}

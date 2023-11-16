@@ -1,8 +1,8 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 import { Attendee } from '../../../types/Attendee'
-import AudienceGrid from '../../../components/Layout/AudienceGrid'
-import { StreamSectionHandler as SectionHandler } from '../../../components/Layout/StreamSectionHandler'
+import AudienceGridSection from '../../../components/Sections/AudienceGridSection'
+import { StreamSectionHandler as SectionHandler } from '../../../components/Layout/SectionHandlers/StreamSectionHandler'
 import AdminSection from '../../../components/Sections/AdminSection'
 import GeneralChatSection from '../../../components/Sections/GenChatSection'
 import StreamInfoDesktop from 'components/Sections/StreamInfo-Desktop'
@@ -60,7 +60,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Audience',
-      component: [<AudienceGrid audienceList={attendees!} key={'audience'} />],
+      component: [<AudienceGridSection audienceList={attendees!} key={'audience'} />],
     },
     {
       title: 'Info',
@@ -83,7 +83,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Audience',
-      component: [<AudienceGrid audienceList={attendees!} key={'audience'} />],
+      component: [<AudienceGridSection audienceList={attendees!} key={'audience'} />],
     },
     {
       title: 'Section',

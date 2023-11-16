@@ -34,16 +34,14 @@ const Footer = () => {
 
         </footer>
       ) : (
-        <footer className='flex h-16 mx-0 mt-8'>
+        <footer className='flex h-16 mx-0'>
           <a
             href="https://brickxstudio.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            A Brick Studio Product{' '}
-            <span>
-            <Image src="/BrckStd_logo-white.png" alt="Brick Studio Logo" width={42} height={42} />
-          </span>
+            <p className={'text-[#B999FA] text-[16px] font-[Carbon] font-bold'}>A Brick Studio Product{' '}</p>
+
           </a>
         </footer>
       )}

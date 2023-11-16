@@ -68,11 +68,14 @@ export const OnboardingSectionHandler: React.FC<SectionHandlerProps> = ({
                 key={section.title}
               >
                 <div className="flex flex-col cursor-pointer ">
-                  <p>{section.title}</p>
                   {activeSection?.title === section.title ? (
-                    <div key={index} className="w-auto h-0.5 -mt-4 bg-sky-500/75" />
+                    <div className={'border border-solid rounded-full border-[#B999FA] px-4 py-0 my-0 h-fit'}>
+                      <h3 className={'text-[#B999FA] my-2'}>{section.title.toUpperCase()}</h3>
+                    </div>
                   ) : (
-                    <div className="w-auto h-0.5 -mt-4 bg-sky-500/75 hidden" />
+                    <>
+                      <h3 className={' my-2'}>{section.title.toUpperCase()}</h3>
+                    </>
                   )}
                 </div>
               </Link>
@@ -80,7 +83,6 @@ export const OnboardingSectionHandler: React.FC<SectionHandlerProps> = ({
           })}
         </div>
       )}
-      <div className="w-inherite border border-white opacity-10 border-solid -mt-3" />
 
       <div >
         <AnimatePresence mode={'wait'}>

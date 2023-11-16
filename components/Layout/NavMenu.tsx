@@ -122,7 +122,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
 
           <Link
             className={`flex items-center justify-between w-full`}
-            href={hasAccount ? `/profile/${signerAddress}/aura` : ''}
+            href={hasAccount ? `/profile/${signerAddress}/settings?tab=aura` : ''}
           >
           <Menu.Item as="div" className={`flex my-4 cursor-pointer hover:bg-[#FF8500] ${hasAccount ? null : 'hidden'}`}>
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { OnboardingSectionHandler as SectionHandler } from 'components/Layout/OnboardingSection'
+import { OnboardingSectionHandler as SectionHandler } from 'components/Layout/SectionHandlers/OnboardingHandler'
 import { useLayoutStore, useMCStore } from 'stores'
 import { useRouter } from 'next/router'
 import Link from 'next/link'

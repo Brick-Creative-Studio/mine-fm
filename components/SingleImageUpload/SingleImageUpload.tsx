@@ -32,22 +32,23 @@ type LivestreamInput = {
 
 const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) => {
   const acceptableMIME = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']
-  const { posterUrl, setPosterUrl} = useEventStore((state) => state)
-  const [isMounted, setIsMounted] = useState(false)
+  const { posterUrl, setPosterUrl, setMemoryFile} = useEventStore((state) => state)
   const [fileUrl, updateFileUrl] = useState('')
   const { register, setValue, getValues } = useFormContext<LivestreamInput>() // retrieve all hook methods
 
   const [uploadArtworkError, setUploadArtworkError] = React.useState<any>()
   const [isUploading, setIsUploading] = React.useState<boolean>(false)
 
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
 
   useEffect(() => {
     if(fileUrl.length > 0){
       const url = getFetchableUrl(fileUrl)
+
       setPosterUrl(url!)
+      // setMemoryFile(getFetchableUrl(fileUrl) as string)
+    }
+    if (!fileUrl){
+      setPosterUrl(null)
     }
   }, [fileUrl])
 
@@ -55,7 +56,8 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
     async (_input: FileList | null) => {
       if (!_input) return
       const input = _input[0]
-      input.name
+      setMemoryFile(input)
+
 
       setUploadArtworkError(false)
 
