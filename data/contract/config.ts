@@ -18,7 +18,6 @@ const { wallets,  } = getDefaultWallets({
 
 export const connectors = connectorsForWallets([
   ...wallets,
-
   {
     groupName: 'Other',
     wallets: [
