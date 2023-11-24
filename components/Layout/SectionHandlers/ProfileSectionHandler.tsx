@@ -85,7 +85,7 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
         </div>
       )}
 
-      <div style={{ background: aura }} className={'flex flex-1 h-full'}>
+      <div style={{ background: aura }} className={'flex flex-1 h-full rounded-t-xl items-center justify-center'}>
         <AnimatePresence mode={'wait'}>
           <motion.div
             key={activeSection?.title}

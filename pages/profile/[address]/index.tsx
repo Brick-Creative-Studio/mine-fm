@@ -5,8 +5,8 @@ import Link from 'next/link'
 import { ProfileSectionHandler as SectionHandler } from 'components/Layout/SectionHandlers/ProfileSectionHandler'
 import InstaModal from 'components/Modals/InstaModal'
 import TwitterModal from 'components/Modals/TwitterModal'
-import YourMoodSection from "../../../components/Sections/YourMoodSection";
-import YourIRLSection from "../../../components/Sections/OresSection";
+import YourStreamsSection from "../../../components/Sections/YourStreamsSection";
+import YourIRLSection from "../../../components/Sections/YourIRLSection";
 import CopyButton from '../../../components/CopyButton/CopyButton'
 import FollowerModal from "../../../components/Modals/FollowerModal";
 import FollowingModal from "../../../components/Modals/FollowingModal";
@@ -40,7 +40,7 @@ export default function Profile() {
   const sections = [
     {
       title: 'Livestream',
-      component: [<YourMoodSection aura={gradient} key={'Livestream'} />],
+      component: [<YourStreamsSection aura={gradient} key={'Livestream'} />],
     },
     {
       title: 'IRL',
