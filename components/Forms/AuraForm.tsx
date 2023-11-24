@@ -45,8 +45,8 @@ const AuraForm: React.FC = ({}) => {
   const cardinalMap = new Map<string, string>([
     ['left', 'Left'],
     ['right', 'Right'],
-    ['top', 'Up'],
-    ['bottom', 'Down'],
+    ['top', 'Top'],
+    ['bottom', 'Bottom'],
   ])
 
   const onSubmit: SubmitHandler<AuraInputs> = async (data) => {

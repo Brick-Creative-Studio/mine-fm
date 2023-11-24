@@ -7,20 +7,21 @@ import { useEventStore } from '../../stores/useEventStore'
 import createEvent from '../../data/rest/createEvent'
 import SuccessEventModal from '../Modals/SuccessEventModal'
 import MemoryCardUpload from "../MemoryCardUpload/MemoryCardUpload";
+import { streamValidationSchema } from './LivestreamForm.schema'
+import { yupResolver } from "@hookform/resolvers/yup"
 
 type LivestreamInput = {
   title: string
-  address: string
   organizer: string
+  ownerAddress: string
   artist: string
   description: string
   posterUrl: string
-  website: string
+  website?: string
   social: string
-  titleRequired: string
   startDate: string
   startTime: string
-  startingPrice: string | null
+  startingPrice: string
   isApproved: boolean
   isFree: boolean
   endDate: string
@@ -28,7 +29,7 @@ type LivestreamInput = {
 }
 
 export default function LivestreamForm({}) {
-  const methods = useForm<LivestreamInput>()
+  const methods = useForm<LivestreamInput>({ resolver: yupResolver(streamValidationSchema)})
 
   const {
     register,
@@ -50,7 +51,6 @@ export default function LivestreamForm({}) {
   const onSubmit: SubmitHandler<LivestreamInput> = async (data) => {
     const event = {
       title: data.title,
-      address: signerAddress as string,
       ownerAddress: signerAddress as string,
       organizer: data.organizer,
       artist: data.artist,
@@ -142,6 +142,18 @@ export default function LivestreamForm({}) {
                   defaultValue=""
                   className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                   {...register('organizer', { required: true })}
+                />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="organizer" className="">
+                  {' '}
+                  Organizer Wallet Address <span className={'text-red-600'}>*</span>{' '}
+                </label>
+                {/* register your input into the hook by invoking the "register" function */}
+                <input
+                  defaultValue=""
+                  className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
+                  {...register('ownerAddress', { required: true })}
                 />
               </div>
 
@@ -282,7 +294,7 @@ export default function LivestreamForm({}) {
               </div>
 
               {/* errors will return when field validation fails  */}
-              {errors.titleRequired && <span>This field is required</span>}
+              {errors && <span>This field is required</span>}
               <SuccessEventModal isOpen={isOpen} eventId={eventID} />
               <input
                 type="submit"
@@ -442,7 +454,7 @@ export default function LivestreamForm({}) {
                 </div>
 
                 {/* errors will return when field validation fails  */}
-                {errors.titleRequired && <span>This field is required</span>}
+                {errors && <span>This field is required</span>}
                 <SuccessEventModal isOpen={isOpen} eventId={eventID} />
 
                 <input
