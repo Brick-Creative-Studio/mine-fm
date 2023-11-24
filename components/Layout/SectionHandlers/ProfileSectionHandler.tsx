@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { slugify } from 'utils/slugify'
 import { unslugify } from 'utils/unslugify'
+import {useLayoutStore} from "../../../stores";
 
 interface SectionHandlerProps {
   sections: {
@@ -26,6 +27,9 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
   activeTab,
   aura
 }) => {
+
+  const { isMobile } = useLayoutStore()
+
   /*
 
     handle active session if:
@@ -53,7 +57,7 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
 
   return (
     <div className={'flex flex-col flex-1 w-full mt-4'}>
-      {sections && sections.length > 1 && (
+      { isMobile ? (
         <div className="flex flex-row justify-center space-x-6 mb-4">
           {sections?.map((section, index) => {
             return (
@@ -82,6 +86,37 @@ export const ProfileSectionHandler: React.FC<SectionHandlerProps> = ({
               </Link>
             )
           })}
+        </div>
+      ) : (
+        <div className="flex flex-row justify-start space-x-6 mb-4">
+          {sections?.map((section, index) => {
+            return (
+              <Link
+                href={{
+                  pathname: `/profile/${signerAddress}`,
+                  query: {
+                    tab: slugify(section.title),
+                  },
+                }}
+                scroll={false}
+                shallow={true}
+                key={section.title}
+              >
+                <div className="flex flex-col cursor-pointer mx-8 ">
+                  {activeSection?.title === section.title ? (
+                    <div className={'border border-solid rounded-full border-[#B999FA] px-4 py-0 my-0 h-fit'}>
+                      <h3 className={'text-[#B999FA] text-[16px] my-2'}>{section.title.toUpperCase()}</h3>
+                    </div>
+                  ) : (
+                    <>
+                      <h3 className={'text-[16px] my-2'}>{section.title.toUpperCase()}</h3>
+                    </>
+                  )}
+                </div>
+              </Link>
+            )
+          })}
+          <div className={''}></div>
         </div>
       )}
 
