@@ -129,7 +129,6 @@ a {
 footer {
   display: flex;
   padding: 2rem 0;
-  border-top: 1px solid gray;
   font-family: 'Courier New', Courier, monospace;
   margin-left: 18px;
   margin-right: 18px;
