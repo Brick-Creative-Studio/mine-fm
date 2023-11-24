@@ -4,12 +4,16 @@ import { GetServerSideProps } from "next";
 import process from "process";
 import { Event } from "../../../types/Event";
 import axios from "axios";
+import Link from "next/link";
+import { useAccount } from "wagmi";
 
 interface Props {
   eventInfo: Event | null
 }
 
 export default function ExitStreamPage({ eventInfo }: Props){
+
+  const { address } = useAccount()
 
 
   return (
@@ -26,15 +30,19 @@ export default function ExitStreamPage({ eventInfo }: Props){
         <h2 className={'text-[#1D0045] '}>{`Claim Rewards`}</h2>
       </button>
       <div className={'flex justify-around w-full'}>
-        <div className={'flex'}>
+        <Link href={'/explore?tab=livestream'}>
+        <div className={'flex cursor-pointer'}>
           <img src={'/double-arrow-left.svg'} alt={'explore-livestreams'}/>
           <h3 className={'text-[#B999FA]'}>Livestreams</h3>
         </div>
-        <div className={'flex'}>
+        </Link>
+        <Link href={`/profile/${address}`}>
+        <div className={'flex cursor-pointer'}>
           <h3 className={'text-[#B999FA]'}>Profile</h3>
           <img src={'/double-arrow-right.svg'} alt={'explore-livestreams'}/>
 
         </div>
+        </Link>
 
       </div>
 
