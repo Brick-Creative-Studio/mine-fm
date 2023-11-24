@@ -3,7 +3,6 @@ import { EventCard } from "components/Cards/EventCard";
 import { LivestreamCard } from "../Cards/LivestreamCard";
 import getAllEvents from "../../data/rest/getAllEvents";
 import { Event } from "../../types/Event";
-
 const StreamLoader = (livestreams: Event[])=> {
 
 }
