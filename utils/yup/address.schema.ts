@@ -1,6 +1,5 @@
 import * as Yup from 'yup'
 import { debounce } from 'lodash'
-
 import { CHAIN_ID } from '../../types/chainTyping'
 import { isValidAddress } from "../ens"
 import { getProvider } from '../provider'
