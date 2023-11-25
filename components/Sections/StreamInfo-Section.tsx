@@ -2,14 +2,18 @@ import React from 'react'
 import Image from 'next/image'
 import { Event } from "../../types/Event";
 import { Attendee } from "../../types/Attendee";
+import useSWR from "swr";
+import getAttendees from "../../data/rest/getAttendees";
 
 interface Props {
   eventInfo : Event,
-  attendanceCount : number
 }
 
-export default function StreamInfo({ eventInfo, attendanceCount } : Props) {
-
+export default function StreamInfo({ eventInfo } : Props) {
+  const { data: attendees, error } = useSWR([eventInfo?.id], getAttendees, {
+    revalidateOnMount: true,
+    revalidateIfStale: true,
+  })
   const time = new Date(eventInfo.startDate).toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit',
@@ -29,7 +33,7 @@ export default function StreamInfo({ eventInfo, attendanceCount } : Props) {
       </div>
       <div className={'flex-row flex items-center w-full'}>
         <p className={'mr-2'}> Attendance: </p>
-        <p className={'text-[#7DD934]'}> {`${attendanceCount}`} </p>
+        <p className={'text-[#7DD934]'}> {`${attendees?.length}`} </p>
       </div>
       <div className={'flex-row flex items-center w-full'}>
         <p className={'mr-2'}> Current Entry Fee: </p>
