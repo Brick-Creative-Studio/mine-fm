@@ -46,10 +46,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
   const createRSVPEndpoint = 'attendee/create'
   const rsvpURL = process.env.NEXT_PUBLIC_BASE_URL + createRSVPEndpoint
 
-  const { data: attendees, error } = useSWR([eventInfo?.id], getAttendees, {
-    revalidateOnMount: true,
-    revalidateIfStale: true,
-  })
+
 
   const guestSections = [
     {
@@ -60,13 +57,12 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Audience',
-      component: [<AudienceGridSection audienceList={attendees!} key={'audience'} />],
+      component: [<AudienceGridSection event={eventInfo!} key={'audience'} />],
     },
     {
       title: 'Info',
       component: [
         <StreamInfo
-          attendanceCount={attendees?.length!}
           eventInfo={eventInfo!}
           key={'info'}
         />,
@@ -83,14 +79,13 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Audience',
-      component: [<AudienceGridSection audienceList={attendees!} key={'audience'} />],
+      component: [<AudienceGridSection event={eventInfo!} key={'audience'} />],
     },
     {
       title: 'Section',
       component: [
         <StreamInfo
           eventInfo={eventInfo!}
-          attendanceCount={attendees?.length!}
           key={'info'}
         />,
       ],
@@ -116,22 +111,6 @@ export default function LivestreamPage({ eventInfo }: Props) {
       })
 
   }
-
-  // useEffect(() => {
-  //
-  //   //check wallet connection
-  //   if(!isConnected && openConnectModal){
-  //     openConnectModal()
-  //     return
-  //   }
-  //   //check for mine account
-  //   if(!hasAccount){
-  //     return
-  //   }
-  //
-  //   handleRSVP()
-  //
-  // })
 
   useEffect(() => {
     if (eventInfo) {
@@ -238,8 +217,6 @@ export default function LivestreamPage({ eventInfo }: Props) {
 
   }, [eventInfo])
 
-  if (!attendees) return <div className={'animate-pulse'}>Loading...</div>
-
 
   return (
     <div className="flex flex-col h-min	 w-full mt-8 md:my-auto">
@@ -279,7 +256,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
           </div>
 
           <div className="hidden md:flex">
-            <StreamInfoDesktop attendanceCount={attendees?.length!} event={eventInfo!} />
+            <StreamInfoDesktop event={eventInfo!} />
           </div>
         </div>
 
@@ -356,45 +333,6 @@ export default function LivestreamPage({ eventInfo }: Props) {
 }
 
 
-async function getAttendees(eventID: string){
-  const attendeeEndpoint = `attendee/${eventID}`
-  const attendeeURL = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
-  const userEndpoint = 'user/user'
-  const userURL = process.env.NEXT_PUBLIC_BASE_URL + userEndpoint
-
-  const attendeesList: Attendee[] | null = eventID
-    ? await axios
-      .get(attendeeURL)
-      .then((res) => {
-        return res.data
-      })
-      .catch((error) => {
-        console.log('error fetching stream data:', error)
-      })
-    : null
-
-  const attendees: User[] | null = attendeesList
-    ? await Promise.all(
-      attendeesList.map(async (attendee) => {
-        return await axios
-          .post(userURL, {
-            id: attendee.userID,
-          })
-          .then((res) => {
-            return res.data
-          })
-          .catch((error) => {
-            console.log('error fetching stream data:', error)
-          })
-      })
-    )
-    : null
-
-  console.log('swr run list', attendees)
-
-
-  return attendees
-}
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const eventID = params?.id?.toString()

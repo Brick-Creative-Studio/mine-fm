@@ -1,12 +1,17 @@
 import React from 'react'
 import Image from 'next/image'
 import { Event } from '../../types/Event'
+import useSWR from "swr";
+import getAttendees from "../../data/rest/getAttendees";
 
 interface Props {
   event: Event
-  attendanceCount: number
 }
-const StreamInfoDesktop = ({ event, attendanceCount }: Props) => {
+const StreamInfoDesktop = ({ event }: Props) => {
+  const { data: attendees, error } = useSWR([event?.id], getAttendees, {
+    revalidateOnMount: true,
+    revalidateIfStale: true,
+  })
   return (
     <div
       className={
@@ -25,7 +30,7 @@ const StreamInfoDesktop = ({ event, attendanceCount }: Props) => {
 
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
         <Image width={24} height={24} src={'/UserIcon.svg'} alt="share button" />
-        <p className={'text-[#7DD934] overflow-clip'}>{`${attendanceCount} miners`}</p>
+        <p className={'text-[#7DD934] overflow-clip'}>{`${attendees?.length} miners`}</p>
       </div>
 
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
