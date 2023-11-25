@@ -13,8 +13,6 @@ interface Props {
 }
 export default function GeneralChatSection({ eventId, socket } : Props) {
   const [comments, setComments] = useState<Comment[]>([])
-  const [isLoading, setLoading] = useState(true)
-  const [isConnected, setIsConnected] = useState(socket.connected)
 
 
 
@@ -58,8 +56,6 @@ export default function GeneralChatSection({ eventId, socket } : Props) {
     loader()
   },[])
 
-
-  //TODO: On connection load messages into array
 
   return (
     <div className={'md:h-[525px] h-96  justify-end'}>

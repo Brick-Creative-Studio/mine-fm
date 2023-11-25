@@ -12,6 +12,13 @@ export default function MessageCell({
   time: string
 }) {
 
+  const convertTime = () => {
+    return new Date(Date.parse(time)).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+  }
+
   return (
     <div className={'flex-col h-fit p-2 border-y-[.5px] border-x-0 border-solid border-[#808080] '}>
 
@@ -22,7 +29,7 @@ export default function MessageCell({
           <p> { message }</p>
         </div>
       </div>
-      <p className={'flex justify-end my-0 -mt-2 text-xs'}> { time } </p>
+      <p className={'flex justify-end my-0 -mt-2 text-xs'}> { convertTime() } </p>
     </div>
   )
 }
