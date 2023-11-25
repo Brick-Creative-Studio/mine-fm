@@ -1,24 +1,18 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useRouter } from 'next/router'
-import { Attendee } from '../../../types/Attendee'
 import AudienceGridSection from '../../../components/Sections/AudienceGridSection'
 import { StreamSectionHandler as SectionHandler } from '../../../components/Layout/SectionHandlers/StreamSectionHandler'
 import AdminSection from '../../../components/Sections/AdminSection'
 import GeneralChatSection from '../../../components/Sections/GenChatSection'
 import StreamInfoDesktop from 'components/Sections/StreamInfo-Desktop'
 import StreamInfo from '../../../components/Sections/StreamInfo-Section'
-import SectionsGrid from '../../../components/Sections/SectionGrid'
 import Link from 'next/link'
 import PageAudioPlayer from '../../../components/PageAudioPlayer.tsx'
 import axios from 'axios'
 import { useAccount } from 'wagmi'
 import { GetServerSideProps } from 'next'
 import process from 'process'
-import { User } from '../../../types/User'
-import useSWR, { useSWRConfig, preload } from 'swr'
-
 import { Event } from '../../../types/Event'
-import ExitModal from '../../../components/Modals/ConfirmExitModal'
 import { useProfileStore } from '../../../stores'
 import { socket } from '../../../utils/socket-client'
 import Image from "next/image";
@@ -34,7 +28,6 @@ interface Props {
 
 
 export default function LivestreamPage({ eventInfo }: Props) {
-  const { mutate } = useSWRConfig()
   const { id: userId, m_tag, aura, hasAccount } = useProfileStore((state) => state)
   const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
   const [ promptOpen, setPrompt] = useState<boolean>(false);
@@ -43,10 +36,6 @@ export default function LivestreamPage({ eventInfo }: Props) {
   const { query } = useRouter()
   const { address } = useAccount()
   const [isConnected, setIsConnected] = useState(socket.connected)
-  const createRSVPEndpoint = 'attendee/create'
-  const rsvpURL = process.env.NEXT_PUBLIC_BASE_URL + createRSVPEndpoint
-
-
 
   const guestSections = [
     {
@@ -82,7 +71,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
       component: [<AudienceGridSection event={eventInfo!} key={'audience'} />],
     },
     {
-      title: 'Section',
+      title: 'Info',
       component: [
         <StreamInfo
           eventInfo={eventInfo!}
@@ -95,22 +84,6 @@ export default function LivestreamPage({ eventInfo }: Props) {
       component: [<AdminSection key={'Admin'} />],
     },
   ]
-
-  async function handleRSVP(){
-
-    const attendee = {
-      eventID: eventInfo?.id,
-      userID: userId
-    }
-
-      await axios.post(rsvpURL, attendee).then((res) => {
-        console.log(res.data)
-        return res.data
-      }).catch((error) => {
-        console.log('create attendee error:', error)
-      })
-
-  }
 
   useEffect(() => {
     if (eventInfo) {
@@ -217,16 +190,19 @@ export default function LivestreamPage({ eventInfo }: Props) {
 
   }, [eventInfo])
 
+  const infoSection = () => {
+    if(isConnected){
+      console.log('owner address', eventInfo?.ownerAddress)
+      return eventInfo?.ownerAddress === address ? adminSections : guestSections
+    }
+    return guestSections
+  }
 
   return (
     <div className="flex flex-col h-min	 w-full mt-8 md:my-auto">
 
       <div className={'flex justify-between mb-4'}>
-        {/*<ExitModal*/}
-        {/*  eventId={eventInfo?.id!}*/}
-        {/*  userId={userId!}*/}
-        {/*  ownerAddress={eventInfo?.ownerAddress!}*/}
-        {/*/>*/}
+
         <button className={'bg-transparent'} onClick={() => setPrompt(true)}>
           <div className="flex flex-row mx-6 cursor-pointer">
             <Image src={'/chevron-left.svg'} width={28} height={28} alt="gallery button" />
@@ -261,7 +237,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
         </div>
 
         <SectionHandler
-          sections={guestSections}
+          sections={infoSection()}
           activeTab={query?.tab ? (query.tab as string) : undefined}
           eventId={eventInfo?.id as string}
         />
