@@ -28,10 +28,7 @@ export default function Input({ eventId, socket }: Props) {
   const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
 
-  const time = new Date(Date.now()).toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-  })
+  const time = new Date(Date.now()).toString()
   async function createMessage(msg: Message) {
     const endpoint = 'comments/create'
     const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint;
