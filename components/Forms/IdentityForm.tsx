@@ -119,10 +119,16 @@ export default function IdentityForm({}) {
             <input
               type="text"
               required
-              placeholder="@miner_b"
+              placeholder="miner_b"
               defaultValue={isOnboarding ? '' : (m_tag as string)}
               className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-              {...register('m_tag', { required: true })}
+              {...register('m_tag', {
+                required: true,
+                pattern: {
+                  value:/^[^@]+$/,
+                  message: "invalid miner tag, no symbols allowed here."
+                }
+              })}
             />
           </div>
           <div className="flex flex-col w-full">
