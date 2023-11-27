@@ -130,7 +130,8 @@ export default function LivestreamPage({ eventInfo }: Props) {
   useEffect(() => {
     const handleWindowClose = (e : BeforeUnloadEvent) => {
       // if (e.) return
-      // e.preventDefault()
+      e.preventDefault()
+
       // return (e.returnValue = 'test')
       //leaveStream()
       socket.off('connect')
