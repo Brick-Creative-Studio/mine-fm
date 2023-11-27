@@ -53,7 +53,7 @@ export const ExploreSectionHandler: React.FC<SectionHandlerProps> = ({
   return (
     <div className='w-full'>
       {sections && sections.length > 1 && (
-        <div className="flex flex-row space-x-20 mb-12 justify-center">
+        <div className="flex flex-row space-x-6 md:space-x-20 md:mb-12 justify-center">
           {sections?.map((section, index) => {
             return (
               <Link
@@ -70,11 +70,11 @@ export const ExploreSectionHandler: React.FC<SectionHandlerProps> = ({
                 <div className="flex flex-col cursor-pointer ">
                   {activeSection?.title === section.title ? (
                     <div className={'border border-solid rounded-full border-[#984DDF] px-4 py-1 my-0 h-fit'}>
-                      <h3 className={'text-[#984DDF] text-[24px] my-2'}>{section.title.toUpperCase()}</h3>
+                      <h3 className={'text-[#984DDF] md:text-[24px] my-2'}>{section.title.toUpperCase()}</h3>
                     </div>
                   ) : (
                     <>
-                    <h3 className={'text-[24px] my-2'}>{section.title.toUpperCase()}</h3>
+                    <h3 className={'md:text-[24px] my-2'}>{section.title.toUpperCase()}</h3>
                     </>
                   )}
                 </div>
