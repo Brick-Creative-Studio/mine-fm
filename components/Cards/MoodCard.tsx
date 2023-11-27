@@ -13,6 +13,7 @@ type Mood = {
   tags: any,
   description: string | null,
   date: string | null,
+  socialURL: string
 }
 interface CardProps {
   mood: Mood
@@ -75,7 +76,7 @@ export const MoodCard = (props: CardProps) => {
           <img alt={'Mood artwork'} className={'-z-10 object-cover self-center w-64 h-48 border-solid rounded-md border-[#B999FA]'} src={`${props.mood.artworkURL ?  props.mood.artworkURL : '/stock/stonie-test-poster.jpeg'}`} />
         </div>
         <div className={'flex justify-between'}>
-          <p className={'text-[#B999FA]'}> { props.mood.artist } </p>
+          <a href={props.mood.socialURL} target="_blank"><p className={'text-[#B999FA] cursor-pointer'}> { props.mood.artist } </p></a>
           <p className={'text-[#B999FA]'}> { props.mood.date } </p>
         </div>
         <p className={'my-0 text-xl text-[#B999FA]'}> { props.mood.title } </p>

@@ -5,7 +5,8 @@ export const mood001 = {
     title: 'Fresh Out',
     tags: ['Amapiano', 'Afrodance'],
     description: 'an Amapiano/Afro Dance mix to shake off the winter',
-    date: '04-20-23'
+    date: '04-20-23',
+    socialURL: 'https://www.instagram.com/elinam.yaa/'
 }
 
 
@@ -16,7 +17,8 @@ export const mood002 = {
   title: 'Because of Winn-Dixie',
   tags: ['Mellow', 'Ambient'],
   description: 'melancholic catharsis',
-  date: '08-07-23'
+  date: '08-07-23',
+  socialURL: 'https://www.instagram.com/jamierbh/'
 }
 
 export const mood003 = {
@@ -26,6 +28,7 @@ export const mood003 = {
   title: 'Bloomin',
   tags: ['Urgent', 'Forward'],
   description: 'a new day, a new sun, with uptempo dance grooves.',
-  date: '11-01-23'
+  date: '11-01-23',
+  socialURL: 'https://www.instagram.com/keithcharles/'
 
 }
