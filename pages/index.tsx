@@ -9,6 +9,7 @@ import { useLayoutStore } from '../stores'
 import { MoodCard } from "../components/Cards/MoodCard";
 import { mood001, mood002, mood003 } from "../constants/moods";
 import React from "react";
+import Popup from "reactjs-popup";
 
 
 export default function HomePage({}) {
@@ -106,8 +107,20 @@ export default function HomePage({}) {
             </div>
             <div className={'overflow-x-scroll ml-8 mt-8 w-full '}>
             <div className={'border border-[#984DDF]  rounded-md border-solid  md:ml-40 w-max md:w-full h-1/2 px-2 md:px-24 pb-16'}>
-                <div className={'flex justify-between'}>
+                <div className={'flex '}>
                   <h3 className={'text-[#B999FA]'}> LATEST MOODs </h3>
+                  <Popup
+                    trigger={open => (
+                      <img alt={'info-circle'} className={'cursor-pointer m-1'} src={'/info-circled.svg'}/>
+                    )}
+                    on={'hover'}
+                    position="right center"
+                    closeOnDocumentClick
+                  >
+                    <div className={'bg-[#12002C] w-48 p-4 rounded-md border-[#7DD934] border-solid'}>
+                      <p className={'text-sm'}><span className={'text-[#B999FA] text-xs'}> MOODs: </span> are audio mixes curated by our community of creative partners for miners (you) to enjoy :)</p>
+                    </div>
+                  </Popup>
 
                 </div>
               <div className={'flex space-x-4 > * + * md:space-x-24 > * + * pr-4'}>
