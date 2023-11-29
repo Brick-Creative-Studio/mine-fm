@@ -22,7 +22,7 @@ export type Event = {
 
   startingPrice: string | null
 
-  startDate: Date
+  startDate: Date | null
 
   endDate: Date | null
 

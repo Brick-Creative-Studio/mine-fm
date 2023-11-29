@@ -1,9 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm, SubmitHandler, FormProvider, useFormContext } from 'react-hook-form'
 import Popup from 'reactjs-popup';
-import { useLayoutStore } from '../../stores'
+import { useLayoutStore, useEventStore } from '../../stores'
 import SingleImageUpload from '../SingleImageUpload/SingleImageUpload'
-import { useEventStore } from '../../stores/useEventStore'
 import createEvent from '../../data/rest/createEvent'
 import SuccessEventModal from '../Modals/SuccessEventModal'
 import MemoryCardUpload from "../MemoryCardUpload/MemoryCardUpload";
@@ -29,7 +28,7 @@ type LivestreamInput = {
 }
 
 export default function LivestreamForm({}) {
-  const methods = useForm<LivestreamInput>({ resolver: yupResolver(streamValidationSchema)})
+  const methods = useForm<LivestreamInput>()
 
   const {
     register,
@@ -37,18 +36,20 @@ export default function LivestreamForm({}) {
     formState: { errors },
   } = methods
   const [isMounted, setIsMounted] = useState(false)
-  const { posterUrl, setPosterUrl } = useEventStore((state) => state)
+  const { posterUrl, setPosterUrl, memoryCardURL, setEvent } = useEventStore((state) => state)
   const { isMobile, signerAddress } = useLayoutStore()
   let [isOpen, setIsOpen] = useState(false)
   const [eventID, setEventId] = useState<string>()
   const [isChecked, setIsChecked] = useState(false);
   const handleOnChange = () => {
-    console.log('onchecked?', isChecked)
-
     setIsChecked(!isChecked);
   };
 
   const onSubmit: SubmitHandler<LivestreamInput> = async (data) => {
+    const fStartTime = new Date(`${data.startDate} ${data.startTime}`)
+    const fEndTime = new Date(`${data.endDate} ${data.endTime}`)
+
+
     const event = {
       title: data.title,
       ownerAddress: signerAddress as string,
@@ -57,20 +58,21 @@ export default function LivestreamForm({}) {
       isOnline: true,
       website: data.website,
       social: data.social,
-      posterURL: posterUrl ? posterUrl : '',
-      startDate: data.startDate,
+      posterUrl: posterUrl ? posterUrl : '',
+      memoryCardURL: memoryCardURL ? memoryCardURL : '',
       description: data.description,
+      startDate: data.startDate,
+      startTime: data.startTime,
+      endDate: data.endDate,
+      endTime: data.endTime,
+      startingPrice: data.startingPrice,
+      isFree: data.isFree,
     }
 
-    const response = await createEvent(event).then((event) => {
-      if (event !== undefined) {
-        setEventId(event.id!)
-        setIsOpen(true)
-        console.log('form set open check:', event)
-        return event
-      }
-      console.log('form set open check:', event)
-    })
+    setEvent(event)
+    alert('Event submitted ')
+
+
 
     //TODO: Date and time formatter
   }
@@ -294,13 +296,19 @@ export default function LivestreamForm({}) {
               </div>
 
               {/* errors will return when field validation fails  */}
-              {errors && <span>This field is required</span>}
-              <SuccessEventModal isOpen={isOpen} eventId={eventID} />
+              {/*{errors && <span>This field is required</span>}*/}
+              {/*<SuccessEventModal isOpen={isOpen} eventId={eventID} />*/}
               <input
                 type="submit"
-                className="bg-[#5971ED] border-transparent h-12 rounded-lg font-mono font-bold text-lg"
+                className="bg-black border-transparent h-12 rounded-lg font-mono font-bold text-lg cursor-pointer"
               />
             </div>
+          /*
+          * MOBILE VIEW ABOVE ^^^
+          *
+          *
+          * DESKTOP VIEW BELOW
+          * */
           ) : (
             <div className="flex">
               <div className="flex flex-col space-y-8 basis-1/2 mr-24">
@@ -324,6 +332,18 @@ export default function LivestreamForm({}) {
                     defaultValue=""
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('organizer')}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="organizer" className="">
+                    {' '}
+                    Organizer Wallet Address <span className={'text-red-600'}>*</span>{' '}
+                  </label>
+                  {/* register your input into the hook by invoking the "register" function */}
+                  <input
+                    defaultValue=""
+                    className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
+                    {...register('ownerAddress', { required: true })}
                   />
                 </div>
 
@@ -454,12 +474,12 @@ export default function LivestreamForm({}) {
                 </div>
 
                 {/* errors will return when field validation fails  */}
-                {errors && <span>This field is required</span>}
-                <SuccessEventModal isOpen={isOpen} eventId={eventID} />
+                {/*{errors && <span>This field is required</span>}*/}
+               {/*// <SuccessEventModal isOpen={isOpen} eventId={eventID} />*/}
 
                 <input
                   type="submit"
-                  className="bg-[#5971ED] border-transparent h-12 rounded-lg font-mono font-bold text-lg"
+                  className="bg-black border-transparent h-12 rounded-lg font-mono font-bold text-lg cursor-pointer"
                 />
               </div>
 

@@ -4,11 +4,10 @@ import React, { BaseSyntheticEvent, useEffect } from "react";
 export interface UseArtworkPreviewProps {
   image: File | null
 }
-
 /*
   - user clicks upload then we call useMemCard hook and supply local file as argument
   - we take local file and create an array of our three image files (background, memory card frame, uploaded poster)
-  - convert files to JS Image objects then initalize 2d canvas, load images then draw each image onto the canvas
+  - convert files to JS Image objects then initialize 2d canvas, load images then draw each image onto the canvas
   - once drawing is complete save canvas to blob setState value generatedImages
   - finally return generateStackedImage, imagesToDraw, generatedImages, canvas
  */
@@ -29,8 +28,6 @@ export const useMemCardPreview = () => {
   then set our cardStack state variable to update state.
  */
   const gatherImages = (image: File)  => {
-    console.log('gatherImgs() run--img file check:',image)
-
     // stickerImg.src = '/stock/stonie-test-poster.jpeg'
     const readURL = (file: File) => {
       return new Promise((res, rej) => {
@@ -45,7 +42,6 @@ export const useMemCardPreview = () => {
       const stickerFrame = new Image();
       const stickerImg = new Image();
       let arr : HTMLImageElement[] = [mcBackdrop, stickerFrame, stickerImg]
-      console.log('setURL() run--img file check:',image)
 
       const url = image ? await readURL(image) : '';
       arr[0].src = '/memory-cards/card-frame.png';
@@ -53,10 +49,7 @@ export const useMemCardPreview = () => {
       // arr[2].src = '/stock/stonie-test-poster.jpeg';
       arr[2].src = url as string;
 
-      // imgFrame.src = '/memory-cards/MINEcard2.0_STICKER_01.png';
       setCardStack(arr)
-      //uggj
-      // await generateStackedImage()
     }
     if(image.name){
       setURL()
@@ -73,14 +66,9 @@ export const useMemCardPreview = () => {
 
       try {
         if (!cardStack[0] || !canvas.current) return
-        console.log('generatedStackedImage() run')
-
         const _canvas: HTMLCanvasElement = canvas.current
         const ctx = _canvas?.getContext('2d')
         const generate = () => {
-
-            console.log('img[2].src check', cardStack[2])
-
             _canvas.height = cardStack[0].naturalHeight
             _canvas.width = cardStack[0].naturalWidth
             ctx?.drawImage(cardStack[0], 0, 0, 1500, 1500)
