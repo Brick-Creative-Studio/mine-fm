@@ -34,7 +34,8 @@ export default function LivestreamForm({}) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, },
+    setError,
   } = methods
   const [isMounted, setIsMounted] = useState(false)
   const { posterUrl, setPosterUrl, memoryCardURL, setEvent } = useEventStore((state) => state)
@@ -121,13 +122,16 @@ export default function LivestreamForm({}) {
                 />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="song title"> Title<span className={'text-red-600'}>*</span> </label>
+                <label htmlFor="livestream title"> Title<span className={'text-red-600'}>*</span> </label>
                 {/* include validation with required or other standard HTML validation rules */}
                 <input
                   type="text"
+                  placeholder={'Your Stream Title'}
                   className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
                   {...register('title', { required: true })}
                 />
+                {errors.title && <p className={'text-sm text-red-500 '} role="alert">A title is required.</p>}
+
               </div>
 
               <div className="flex flex-col">
@@ -138,21 +142,27 @@ export default function LivestreamForm({}) {
                 {/* register your input into the hook by invoking the "register" function */}
                 <input
                   defaultValue=""
+                  placeholder={'MINE Records'}
                   className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                   {...register('organizer', { required: true })}
                 />
+                {errors.organizer && <p className={'text-sm text-red-500 '} role="alert">A organizer is required.</p>}
+
               </div>
               <div className="flex flex-col">
-                <label htmlFor="organizer" className="">
+                <label htmlFor="ownerAddress" className="">
                   {' '}
+
                   Organizer Wallet Address <span className={'text-red-600'}>*</span>{' '}
                 </label>
                 {/* register your input into the hook by invoking the "register" function */}
                 <input
                   defaultValue=""
+                  placeholder={'0x4bf...28eA3'}
                   className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                   {...register('ownerAddress', { required: true })}
                 />
+                {errors.ownerAddress && <p className={'text-sm text-red-500 '} role="alert">An owner is required to earn rewards.</p>}
               </div>
 
               <div className="flex flex-col">
@@ -160,9 +170,12 @@ export default function LivestreamForm({}) {
                 {/* register your input into the hook by invoking the "register" function */}
                 <input
                   defaultValue=""
+                  placeholder={'0xStevie wonder'}
                   className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                   {...register('artist', { required: true })}
                 />
+                {errors.artist && <p className={'text-sm text-red-500 '} role="alert">An artist is required.</p>}
+
               </div>
 
               <div className="flex flex-col">
@@ -170,6 +183,7 @@ export default function LivestreamForm({}) {
                 {/* register your input into the hook by invoking the "register" function */}
                 <input
                   defaultValue=""
+                  placeholder={'www.mine.fm'}
                   className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                   {...register('website')}
                 />
@@ -180,6 +194,7 @@ export default function LivestreamForm({}) {
                 {/* register your input into the hook by invoking the "register" function */}
                 <input
                   defaultValue=""
+                  placeholder={'www.instagram.com/mine.fm'}
                   className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                   {...register('social')}
                 />
@@ -204,7 +219,7 @@ export default function LivestreamForm({}) {
                 <label htmlFor="startPrice"> Starting Price<span className={'text-red-600'}>*</span> </label>
                 {/* register your input into the hook by invoking the "register" function */}
                 <input
-                  placeholder="ETH"
+                  placeholder=".005 ETH"
                   min={0}
                   defaultValue={0}
                   type={'number'}
@@ -296,7 +311,7 @@ export default function LivestreamForm({}) {
               {/*<SuccessEventModal isOpen={isOpen} eventId={eventID} />*/}
               <input
                 type="submit"
-                className="bg-black border-transparent h-12 rounded-lg font-mono font-bold text-lg cursor-pointer"
+                className="bg-black hover:bg-black/60 hover:border-emerald-700 border-transparent h-12 rounded-lg font-mono font-bold text-lg cursor-pointer"
               />
             </div>
           /*
@@ -313,9 +328,13 @@ export default function LivestreamForm({}) {
                   {/* include validation with required or other standard HTML validation rules */}
                   <input
                     type="text"
+                    placeholder={'Your Stream Title'}
                     className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
                     {...register('title', { required: true })}
+
                   />
+                  {errors.title && <p className={'text-sm text-red-500 '} role="alert">A title is required.</p>}
+
                 </div>
 
                 <div className="flex flex-col">
@@ -326,21 +345,27 @@ export default function LivestreamForm({}) {
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
                     defaultValue=""
+                    placeholder={'MINE Records'}
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-                    {...register('organizer')}
+                    {...register('organizer', { required: true})}
                   />
+                  {errors.organizer && <p className={'text-sm text-red-500 '} role="alert">An organizer is required.</p>}
+
                 </div>
                 <div className="flex flex-col">
-                  <label htmlFor="organizer" className="">
+                  <label htmlFor="owner address" className="">
                     {' '}
                     Organizer Wallet Address <span className={'text-red-600'}>*</span>{' '}
                   </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
                     defaultValue=""
+                    placeholder={'0x4bf...28eA3'}
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('ownerAddress', { required: true })}
                   />
+                  {errors.ownerAddress && <p className={'text-sm text-red-500 '} role="alert">An address is required to claim your rewards.</p>}
+
                 </div>
 
                 <div className="flex flex-col">
@@ -348,9 +373,12 @@ export default function LivestreamForm({}) {
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
                     defaultValue=""
+                    placeholder={'0xStevieWonder'}
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-                    {...register('artist')}
+                    {...register('artist', { required: true })}
                   />
+                  {errors.artist && <p className={'text-sm text-red-500 '} role="alert">An artist is required.</p>}
+
                 </div>
 
                 <div className="flex flex-col">
@@ -358,6 +386,7 @@ export default function LivestreamForm({}) {
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
                     defaultValue=""
+                    placeholder={'www.your-amazing.com'}
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('website')}
                   />
@@ -367,6 +396,7 @@ export default function LivestreamForm({}) {
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
                     defaultValue=""
+                    placeholder={'www.myspace.com/minefm'}
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('social')}
                   />
@@ -392,7 +422,7 @@ export default function LivestreamForm({}) {
                   <label htmlFor="starting entry price"> Starting Entry Price<span className={'text-red-600'}>*</span> </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    placeholder="ETH"
+                    placeholder="0.005 ETH"
                     min={0}
                     type={'number'}
                     step={0.0001}
@@ -451,7 +481,7 @@ export default function LivestreamForm({}) {
                     defaultValue=""
                     type="time"
                     className="w-1/4 bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-                    {...register('endTime', { required: true })}
+                    {...register('endTime', { required: true})}
                   />
                 </div>
                 <div className="flex flex-col">
@@ -475,7 +505,8 @@ export default function LivestreamForm({}) {
 
                 <input
                   type="submit"
-                  className="bg-black border-transparent h-12 rounded-lg font-mono font-bold text-lg cursor-pointer"
+                  value={'Review Details'}
+                  className="bg-black hover:bg-black/60 hover:border-emerald-700 border-transparent h-12 rounded-lg font-mono font-bold text-lg cursor-pointer"
                 />
               </div>
 

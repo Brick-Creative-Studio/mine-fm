@@ -3,17 +3,13 @@ import { useFormContext } from 'react-hook-form'
 import { useEventStore } from "../../stores";
 import React, { ReactElement, useEffect, useState } from 'react'
 import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from 'packages/ipfs-service'
-
 // import { Spinner } from 'src/components/Spinner'
-
-import { defaultUploadStyle } from './SingleImageUpload.css'
 
 interface SingleImageUploadProps {
   id: string
   alt: string | ''
   name: string
 }
-
 
 type LivestreamInput = {
   title: string
@@ -32,10 +28,9 @@ type LivestreamInput = {
 
 const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) => {
   const acceptableMIME = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']
-  const { posterUrl, setPosterUrl, setMemoryFile} = useEventStore((state) => state)
+  const { setPosterUrl, setMemoryFile} = useEventStore((state) => state)
   const [fileUrl, updateFileUrl] = useState('')
   const { register, setValue, getValues } = useFormContext<LivestreamInput>() // retrieve all hook methods
-
   const [uploadArtworkError, setUploadArtworkError] = React.useState<any>()
   const [isUploading, setIsUploading] = React.useState<boolean>(false)
 
@@ -65,6 +60,7 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
         setUploadArtworkError({
           message: `Sorry, ${input.type} is an unsupported file type`,
         })
+        console.log(uploadArtworkError)
         return
       }
 
@@ -72,7 +68,6 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
         setIsUploading(true)
 
         const { cid } = await uploadFile(_input[0], { cache: true })
-
         const url = normalizeIPFSUrl(cid)?.toString()
 
         /** set useState values **/
@@ -81,10 +76,8 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
         setUploadArtworkError(null)
 
         /** set form field value in parent **/
-        // @ts-ignore
-        setValue(name as string, url)
+        setValue('posterUrl', url!)
 
-        console.log('file url:', url)
       } catch (err: any) {
         setIsUploading(false)
         setUploadArtworkError({
@@ -100,15 +93,11 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
   return (
     <div
       className={
-        'flex flex-col justify-center items-center border border-solid w-96 h-96 relative cursor-pointer rounded-md border-zinc-500 mt-4'
+        `flex flex-col justify-center items-center  w-96 h-96 relative cursor-pointer rounded-lg ${ fileUrl ? 'border-none' : 'border border-solid border-zinc-500' }  mt-4`
       }
     >
-      {isUploading && (
-        <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="24 24 24 24" />
-      )}
-
-      {fileUrl &&  (
-
+      { isUploading ? (
+        <img src={'/spinner-48.png'} alt={'loading icon'} className={'animate-spin border-none w-12 h-12'}/>      ) : fileUrl ? (
         <Image
           src={getFetchableUrl(fileUrl)!!}
           fill
@@ -116,31 +105,33 @@ const SingleImageUpload: React.FC<SingleImageUploadProps> = ({ id, alt, name }) 
           className="w-full h-auto"
           alt={alt}
         />
+
+      ) : (
+        <>
+          <input
+            className={'hidden'}
+            id="file-upload"
+            data-testid="file-upload"
+            type="file"
+            multiple={false}
+            {...register('posterUrl')}
+            onChange={(event) => {
+              handleFileUpload(event.currentTarget.files)
+            }}
+          />
+          <label htmlFor="file-upload">
+            <Image
+              src={'/plus-icon.png'}
+              alt="add-art"
+              width={42}
+              height={42}
+              className={'cursor-pointer'}
+            />
+          </label>
+          <p> Choose File </p>
+        </>
       )}
 
-      <input
-        className={'hidden'}
-        id="file-upload"
-        data-testid="file-upload"
-        type="file"
-
-        multiple={false}
-        // @ts-ignore
-        {...register(name as string)}
-        onChange={(event) => {
-          handleFileUpload(event.currentTarget.files)
-        }}
-      />
-      <label htmlFor="file-upload">
-        <Image
-          src={'/plus-icon.png'}
-          alt="add-art"
-          width={42}
-          height={42}
-          className={'cursor-pointer'}
-        />
-      </label>
-      <p> Choose File </p>
     </div>
   )
 }
