@@ -8,7 +8,7 @@ import SuccessEventModal from '../Modals/SuccessEventModal'
 import MemoryCardUpload from "../MemoryCardUpload/MemoryCardUpload";
 import { streamValidationSchema } from './LivestreamForm.schema'
 import { yupResolver } from "@hookform/resolvers/yup"
-import { router } from "next/client";
+import { useRouter } from "next/router";
 
 type LivestreamInput = {
   title: string
@@ -30,7 +30,7 @@ type LivestreamInput = {
 
 export default function LivestreamForm({}) {
   const methods = useForm<LivestreamInput>()
-
+  const router = useRouter()
   const {
     register,
     handleSubmit,
