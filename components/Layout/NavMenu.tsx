@@ -136,7 +136,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                 className={`${
                   active && 'bg-[#FF8500]'
                 } flex items-center justify-between w-full`}
-                href={'https://www.notion.so/brickstudio/FAQ-04bfb4c4580c4ce8a94202f4e6a7b359'}
+                href={'https://brickstudio.notion.site/FAQ-04bfb4c4580c4ce8a94202f4e6a7b359?pvs=4'}
                 target="_blank"
               >
                 <h3 className={'text-[20px] font-light mx-8'}>FAQ </h3>

@@ -8,6 +8,7 @@ import SuccessEventModal from '../Modals/SuccessEventModal'
 import MemoryCardUpload from "../MemoryCardUpload/MemoryCardUpload";
 import { streamValidationSchema } from './LivestreamForm.schema'
 import { yupResolver } from "@hookform/resolvers/yup"
+import { router } from "next/client";
 
 type LivestreamInput = {
   title: string
@@ -49,7 +50,6 @@ export default function LivestreamForm({}) {
     const fStartTime = new Date(`${data.startDate} ${data.startTime}`)
     const fEndTime = new Date(`${data.endDate} ${data.endTime}`)
 
-
     const event = {
       title: data.title,
       ownerAddress: signerAddress as string,
@@ -70,11 +70,7 @@ export default function LivestreamForm({}) {
     }
 
     setEvent(event)
-    alert('Event submitted ')
-
-
-
-    //TODO: Date and time formatter
+    await router.push(`/create/stream/confirmation`)
   }
 
   useEffect(() => {

@@ -5,10 +5,16 @@ import { useIsMounted} from "../../../../hooks/useMounted";
 import Image from "next/future/image";
 import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from "../../../../packages/ipfs-service";
 import formatAddress from "../../../../utils/formatAddress";
+import createToken from "../../../../data/contract/requests/createToken";
+import createEvent from "../../../../data/rest/createEvent";
+import { Event } from '../../../../types/Event'
+import { useRouter } from "next/router";
 
 
 export default function ConfirmPage() {
   const isMounted = useIsMounted()
+  const router = useRouter();
+  const [metaURL, setMetaURL] = useState<string | undefined>(undefined)
   const state = useStore( useEventStore, (state) => state)
   const startTime = state ? new Date(`${state.startDate} ${state.startTime}`).toLocaleDateString() + " " + new Date(`${state.startDate} ${state.startTime}`).toLocaleTimeString([], {
     hour: '2-digit',
@@ -20,6 +26,8 @@ export default function ConfirmPage() {
     }) : ''
 
   const formattedAddress = formatAddress(state?.ownerAddress!)
+  const {data, txData, settled, write, isSuccess, isLoading} = createToken(2000, state?.ownerAddress!)
+
 
 
   // const response = await createEvent(event).then((event) => {
@@ -52,7 +60,17 @@ export default function ConfirmPage() {
     const { cid } = await uploadFile(metaDataFile, { cache: true })
     const url = normalizeIPFSUrl(cid)?.toString()
     console.log('Livestream Event IPFS url:', url)
+    if(url){
+
+      setMetaURL(url);
+
+    }
   }
+
+  // async function tokenTransaction(){
+  //
+  //   console.log('contract data', data)
+  // }
 
 
   useEffect(() => {
@@ -61,6 +79,40 @@ export default function ConfirmPage() {
       return
     }
   },[state])
+
+  useEffect(() => {
+
+    async function eventUpload(){
+      const event = {
+        address: "",
+        artist: state?.artist,
+        description: state?.description,
+        endDate: new Date(endTime),
+        isFree: false,
+        isOnline: true,
+        organizer: state?.organizer,
+        ownerAddress: state?.ownerAddress,
+        posterURL: state?.posterUrl,
+        startDate: new Date(startTime),
+        startingPrice: state?.startingPrice,
+        title: state?.title
+
+      }
+      return await createEvent(event).then((event) => {
+        if (event !== undefined) {
+          router?.push(`/explore?tab=livestream`)
+
+        }
+        console.log('form set open check:', event)
+      })
+    }
+
+    if(txData){
+      console.log('tx data', txData)
+        eventUpload()
+    }
+
+  }, [txData])
 
   return !isMounted ? null : (
     <div className={'mx-auto mt-32 w-fit'}>
@@ -148,9 +200,17 @@ export default function ConfirmPage() {
       </div>
       <button
         className="not-italic w-full bg-black hover:bg-black/50 rounded-lg font-mono font-bold text-lg p-2 px-4 border-none cursor-pointer my-8"
-        onClick={() => uploadMetaData()}
+        onClick={() => metaURL ? write?.() : uploadMetaData()}
       >
-        <p> Upload Metadata (1/2) </p>
+        {
+          metaURL ? (
+              <p> Put Onchain (2/2) </p>
+
+            ) :
+            (
+              <p> Upload Metadata (1/2) </p>
+            )
+        }
       </button>
 
 
