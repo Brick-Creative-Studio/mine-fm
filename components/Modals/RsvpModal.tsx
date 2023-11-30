@@ -23,8 +23,8 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
   let [isOpen, setIsOpen] = useState(false)
   const [isLoading, setLoading] = useState<boolean>(false)
 
-  const formatDate = new Date(streamEvent.startDate).toLocaleDateString("en-US", { weekday: "long",year: "numeric", month: "long", day: "numeric",})
-  const formatTime = new Date(streamEvent.startDate).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+  const formatDate = new Date(streamEvent?.startDate!).toLocaleDateString("en-US", { weekday: "long",year: "numeric", month: "long", day: "numeric",})
+  const formatTime = new Date(streamEvent.startDate!).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
   const { openConnectModal } = useConnectModal();
   const { hasAccount, id: userId } = useProfileStore((state) => state);
   const { isConnected, address } = useAccount()

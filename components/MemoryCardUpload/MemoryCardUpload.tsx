@@ -1,13 +1,8 @@
-import Image from 'next/future/image'
-import { useFormContext } from 'react-hook-form'
 import { useEventStore } from "../../stores";
 import React, { ReactElement, useEffect, useState } from 'react'
 import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from 'packages/ipfs-service'
 import { useMemCardPreview } from "../../hooks/useMemCardPreview";
-// import { Spinner } from 'src/components/Spinner'
 
-import { defaultUploadStyle } from './MemoryCardUpload.css'
-import { useIsMounted } from "../../hooks/useMounted";
 
 interface MemoryCardUploadProps {
   id: string
@@ -28,15 +23,14 @@ type LivestreamInput = {
 
 const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) => {
   const acceptableMIME = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']
-  const { posterUrl, memoryCardFile } = useEventStore((state) => state)
+  const { posterUrl, memoryCardFile, setCardUrl } = useEventStore((state) => state)
   const { generatedImage, canvas, gatherImages } = useMemCardPreview()
-
+  const [fileUrl, updateFileUrl] = useState('')
   const [cardArt, setCardArt] = React.useState<string | undefined>(undefined)
   const [isUploading, setIsUploading] = React.useState<boolean>(false)
 
   useEffect(() => {
     if(memoryCardFile?.type?.length){
-      console.log('useEffect triggered: running memPreview hook', generatedImage[0])
       gatherImages(memoryCardFile)
       // generateStackedImage()
       setIsUploading(true)
@@ -44,12 +38,43 @@ const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) =>
   }, [memoryCardFile])
 
   useEffect(() => {
+    async function uploader(){
+      await handleFileUpload(generatedImage[0])
+    }
+
     if(generatedImage?.length){
-      console.log('generated image is not null', generatedImage)
       setCardArt(generatedImage[0])
+      uploader()
     }
   }, [generatedImage[0]])
 
+  const handleFileUpload = React.useCallback(
+    async (base64_Memory: string | null) => {
+      if(!base64_Memory) return
+
+      const binaryString = atob(base64_Memory.split(',')[1])
+      const binaryArray = new Uint8Array(binaryString.length);
+
+      for (let i = 0; i < binaryString.length; i++) {
+        binaryArray[i] = binaryString.charCodeAt(i);
+      }
+
+      const blob = new Blob([binaryArray], { type: 'application/octet-stream' });
+      const memoryCardFile = new File([blob], 'memory-card-img'); // Specify the desired filename
+
+      // Now 'file' contains the file created from the Base64 string
+      console.log('memory card file shit',memoryCardFile);
+
+      const { cid } = await uploadFile(memoryCardFile, { cache: true })
+
+      const url = normalizeIPFSUrl(cid)?.toString()
+      console.log('MC IPFS url:', url)
+
+      //set ipfs url for memorycard in event store
+      if (url) setCardUrl(url)
+
+    }, []
+  )
 
   return (
     <div
@@ -62,7 +87,6 @@ const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) =>
       )}
 
       {cardArt ?  (
-
         <>
         <img alt={'memory card'} height={'100%'} width={'100%'} src={generatedImage[0]}/>
         <canvas ref={canvas} style={{ display: 'none' }} />
@@ -74,9 +98,6 @@ const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) =>
         </>
       )
       }
-
-
-
     </div>
   )
 }
