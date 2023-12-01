@@ -14,7 +14,7 @@ export default function LivestreamPage() {
       <p className={'text-2xl'}>
         Our platform is for the creative and the crate-digger. We leverage decentralized tech and crypto to make sharing and listening to music more communal, more intentional, and more profitable.
 
-        We believe the best way to make this impact is by bridging the divide between the physical and digital communities we interact with. We are bound by sound not distance 🎧
+        We believe the best way to make this impact is by bridging the divide between the physical and digital communities we interact with. We are bound by sound not distance.
       </p>
     {/*</div>*/}
     </div>

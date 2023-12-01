@@ -55,4 +55,15 @@ const useCreateToken = (maxSupply : number, createReferralAddress: string) => {
 
 }
 
+
+function constructCreate1155TokenCalls(){
+  const contractCalls = [];
+
+  const BondingCurveAddress = '0xA23f1ffb3e6FCF78fc62Cc8ADCA81fD2d28DB3Cd' as `0x${string}`;
+
+
+
+
+}
+
 export default useCreateToken
