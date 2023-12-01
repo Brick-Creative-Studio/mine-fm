@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import { useProfileStore } from '../../stores'
+import { useLayoutStore, useProfileStore } from "../../stores";
 import Link from 'next/link'
 import { useAccount } from 'wagmi'
 import useSWR, { Fetcher, Key } from 'swr'
@@ -11,10 +11,12 @@ import { Attendee } from '../../types/Attendee'
 import { User } from '../../types/User'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import CopyButtonLight from "../../components/CopyButton/CopyButtonLight";
+import { useIsMounted } from "../../hooks/useMounted";
 
 export default function StreamInfoPage({}) {
   const router = useRouter()
   const { id: pathID } = router.query
+  const [isLoading, setIsLoading] = useState(false)
   const [event, setEvent] = useState<Event|undefined>(undefined)
   const [isOwner, setIsOwner] = useState<boolean>(false)
   const { isConnected, address } = useAccount()
@@ -22,13 +24,15 @@ export default function StreamInfoPage({}) {
   const { id: accountId } = useProfileStore()
   const [codeVisibile, setCodeVisibilty] = useState<boolean>(false)
   const streamKey = process.env.NEXT_PUBLIC_EVENINGS_KEY
-
+  const isMounted = useIsMounted()
   const endpoint = 'event/event'
   const eventURL = process.env.NEXT_PUBLIC_BASE_URL + endpoint
   const attendeeEndpoint = `attendee/${pathID}`
   const rsvpURL = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
   const userEndpoint = 'user/user'
   const userURL = process.env.NEXT_PUBLIC_BASE_URL + userEndpoint
+
+
 
   async function fetchEvent(url: string) {
     if (pathID){
@@ -51,7 +55,11 @@ export default function StreamInfoPage({}) {
     }
   }
 
-
+  useEffect(() => {
+    if(!isMounted){
+      return
+    }
+  })
 
   // const { data: eventData, isValidating, error } = useSWR([eventURL], fetchEvent, {
   //   revalidateOnMount: true
@@ -59,11 +67,12 @@ export default function StreamInfoPage({}) {
 
   useEffect(() => {
     fetchEvent(eventURL)
+
   }, [pathID, eventURL])
 
-
+const data = event ? event!.startDate! : undefined
   const formatDate = event
-    ? new Date(event.startDate).toLocaleDateString('en-US', {
+    ? new Date(event.startDate)?.toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
@@ -71,7 +80,7 @@ export default function StreamInfoPage({}) {
     })
     : 'N/A'
   const formatTime = event
-    ? new Date(event.startDate).toLocaleTimeString([], {
+    ? new Date(event.startDate)?.toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit',
     })
@@ -115,12 +124,12 @@ export default function StreamInfoPage({}) {
     return dataList;
   }
 
-  const { data: attendanceData } = useSWR([rsvpURL], fetchAttendance)
+  const { data: attendanceData } = useSWR(rsvpURL, fetchAttendance)
 
   async function rsvp(event: Event) {
     const attendeeEndpoint = `attendee/create`
     const rsvpURL = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
-
+    setIsLoading(true)
     if (!isConnected && openConnectModal) {
       openConnectModal()
       return
@@ -165,6 +174,8 @@ export default function StreamInfoPage({}) {
     }
   })
 
+
+
   return (
     <div className="flex flex-col mt-24 items-center justify-center w-full">
       {event ? (
@@ -187,7 +198,7 @@ export default function StreamInfoPage({}) {
                     'bg-[#FF8500] hover:bg-orange-300 m-2 rounded-sm cursor-pointer'
                   }
                 >
-                  <h3 className={'text-sm text-[#1D0045]'}> ENTER STREAM </h3>
+                  { isLoading ? <h3 className={'text-sm w-32 animate-pulse text-[#1D0045]'}> CONFIRMING </h3> : <h3 className={'text-sm w-32 text-[#1D0045]'}> ENTER STREAM </h3>}
                 </button>
               </div>
               {
