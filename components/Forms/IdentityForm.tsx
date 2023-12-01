@@ -6,6 +6,7 @@ import { phoneNumberAutoFormat } from '../../utils/phoneNumberAutoFormat'
 import NewUserModal from '../Modals/NewUserModal';
 import UploadFailModal from "../Modals/UploadFailModal";
 import axios from "axios";
+import { err } from "pino-std-serializers";
 
 type Identity = {
   id: string | null
@@ -18,7 +19,7 @@ type Identity = {
 }
 
 export default function IdentityForm({}) {
-  const { register, handleSubmit, getValues } = useForm<Identity>()
+  const { register, handleSubmit, getValues, formState :{ errors } } = useForm<Identity>()
   const { setIdentity, name, aura, m_tag, email, bio, setHasAccount, id } = useProfileStore(
     (state) => state
   )
@@ -111,10 +112,14 @@ export default function IdentityForm({}) {
               defaultValue={isOnboarding ? undefined : (name as string)}
               className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
               {...register('name', { required: true })}
+
             />
+
+            {errors.name && <p className={'text-sm text-red-500 '} role="alert">a name is  required.</p>}
+
           </div>
           <div className="flex flex-col w-full">
-            <label htmlFor="Miner tag"> miner_tag </label>
+            <label htmlFor="m_tag"> miner_tag </label>
             {/* include validation with required or other standard HTML validation rules */}
             <input
               type="text"
@@ -130,6 +135,9 @@ export default function IdentityForm({}) {
                 }
               })}
             />
+            {errors.m_tag?.types?.pattern && <p className={'text-sm text-red-500 '} role="alert">{errors.m_tag.message}</p>}
+            {errors.m_tag && <p className={'text-sm text-red-500 '} role="alert"> a miner tag is required </p>}
+
           </div>
           <div className="flex flex-col w-full">
             <label htmlFor="email"> Email </label>
@@ -143,6 +151,7 @@ export default function IdentityForm({}) {
               {...register('email', { required: false })}
             />
           </div>
+
           <div className="flex flex-col w-full">
             <label htmlFor="bio"> Bio </label>
             {/* include validation with required or other standard HTML validation rules */}
