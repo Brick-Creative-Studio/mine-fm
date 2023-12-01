@@ -37,6 +37,8 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
       eventID: streamEvent.id,
       userID: userId
     }
+    setLoading(true)
+
 
     //check wallet connection
     if(!isConnected && openConnectModal){
@@ -55,7 +57,6 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
     }
 
     let isAttending = false
-    setLoading(true)
 
     if(rsvpList && rsvpList.length >= 1) {
       //check if already in rsvp list.
@@ -206,7 +207,7 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
                             disabled={true}
 
                           >
-                            <h3 className={'text-[#1D0045] animate-pulse'}>{`Loading`}</h3>
+                            <h3 className={'text-[#1D0045] animate-pulse'}>{`CONFIRMING`}</h3>
                           </button>
                         )
                         }
