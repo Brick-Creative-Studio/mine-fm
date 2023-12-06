@@ -1,5 +1,5 @@
-export const bondingCurveStrategyABI = [
-  [
+const bondingCurveStrategyABI = [
+
     { inputs: [], name: 'SaleEnded', type: 'error' },
     { inputs: [], name: 'SaleHasNotEnded', type: 'error' },
     { inputs: [], name: 'SaleHasNotStarted', type: 'error' },
@@ -204,5 +204,6 @@ export const bondingCurveStrategyABI = [
       stateMutability: 'nonpayable',
       type: 'function',
     },
-  ],
 ] as const
+
+export default bondingCurveStrategyABI;
