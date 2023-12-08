@@ -1,10 +1,8 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm, SubmitHandler, FormProvider, useFormContext } from 'react-hook-form'
 import Popup from 'reactjs-popup';
 import { useLayoutStore, useEventStore } from '../../stores'
 import SingleImageUpload from '../SingleImageUpload/SingleImageUpload'
-import createEvent from '../../data/rest/createEvent'
-import SuccessEventModal from '../Modals/SuccessEventModal'
 import MemoryCardUpload from "../MemoryCardUpload/MemoryCardUpload";
 import { streamValidationSchema } from './LivestreamForm.schema'
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -38,7 +36,7 @@ export default function LivestreamForm({}) {
     setError,
   } = methods
   const [isMounted, setIsMounted] = useState(false)
-  const { posterUrl, setPosterUrl, memoryCardURL, setEvent } = useEventStore((state) => state)
+  const state = useEventStore((state) => state)
   const { isMobile, signerAddress } = useLayoutStore()
   let [isOpen, setIsOpen] = useState(false)
   const [eventID, setEventId] = useState<string>()
@@ -59,8 +57,8 @@ export default function LivestreamForm({}) {
       isOnline: true,
       website: data.website,
       social: data.social,
-      posterUrl: posterUrl ? posterUrl : '',
-      memoryCardURL: memoryCardURL ? memoryCardURL : '',
+      posterUrl: state?.posterUrl ? state?.posterUrl : '',
+      memoryCardURL: state?.memoryCardURL ? state?.memoryCardURL : '',
       description: data.description,
       startDate: data.startDate,
       startTime: data.startTime,
@@ -70,7 +68,7 @@ export default function LivestreamForm({}) {
       isFree: data.isFree,
     }
 
-    setEvent(event)
+    state.setEvent(event)
     await router.push(`/create/stream/confirmation`)
   }
 
@@ -126,6 +124,7 @@ export default function LivestreamForm({}) {
                 {/* include validation with required or other standard HTML validation rules */}
                 <input
                   type="text"
+                  defaultValue={state?.title ? state?.title : undefined}
                   placeholder={'Your Stream Title'}
                   className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
                   {...register('title', { required: true })}
@@ -141,7 +140,7 @@ export default function LivestreamForm({}) {
                 </label>
                 {/* register your input into the hook by invoking the "register" function */}
                 <input
-                  defaultValue=""
+                  defaultValue={state?.organizer ? state?.organizer : undefined}
                   placeholder={'MINE Records'}
                   className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                   {...register('organizer', { required: true })}
@@ -157,7 +156,7 @@ export default function LivestreamForm({}) {
                 </label>
                 {/* register your input into the hook by invoking the "register" function */}
                 <input
-                  defaultValue=""
+                  defaultValue={state?.ownerAddress ? state?.ownerAddress : undefined}
                   placeholder={'0x4bf...28eA3'}
                   className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                   {...register('ownerAddress', { required: true })}
@@ -182,7 +181,7 @@ export default function LivestreamForm({}) {
                 <label htmlFor="website"> Website </label>
                 {/* register your input into the hook by invoking the "register" function */}
                 <input
-                  defaultValue=""
+                  defaultValue={state?.website ? state?.website : undefined}
                   placeholder={'www.mine.fm'}
                   className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                   {...register('website')}
@@ -193,7 +192,7 @@ export default function LivestreamForm({}) {
                 <label htmlFor="social"> Social </label>
                 {/* register your input into the hook by invoking the "register" function */}
                 <input
-                  defaultValue=""
+                  defaultValue={state?.social ? state?.social : undefined}
                   placeholder={'www.instagram.com/mine.fm'}
                   className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                   {...register('social')}
@@ -221,7 +220,7 @@ export default function LivestreamForm({}) {
                 <input
                   placeholder=".005 ETH"
                   min={0}
-                  defaultValue={0}
+                  defaultValue={state?.startingPrice ? state?.startingPrice : undefined}
                   type={'number'}
                   disabled={isChecked}
                   step={0.0001}
@@ -300,7 +299,8 @@ export default function LivestreamForm({}) {
 
                 {/* register your input into the hook by invoking the "register" function */}
                 <textarea
-                  defaultValue="feels like summer"
+                  placeholder="A livestream for your mood"
+                  defaultValue={state?.description ? state?.description : undefined}
                   className=" bg-transparent  h-44 border p-2 border-solid  rounded-md text-white "
                   {...register('description')}
                 />
@@ -328,6 +328,7 @@ export default function LivestreamForm({}) {
                   {/* include validation with required or other standard HTML validation rules */}
                   <input
                     type="text"
+                    defaultValue={state?.title ? state?.title : undefined}
                     placeholder={'Your Stream Title'}
                     className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
                     {...register('title', { required: true })}
@@ -344,7 +345,7 @@ export default function LivestreamForm({}) {
                   </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    defaultValue=""
+                    defaultValue={state?.organizer ? state?.organizer : undefined}
                     placeholder={'MINE Records'}
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('organizer', { required: true})}
@@ -359,7 +360,7 @@ export default function LivestreamForm({}) {
                   </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    defaultValue=""
+                    defaultValue={state?.ownerAddress ? state?.ownerAddress : undefined}
                     placeholder={'0x4bf...28eA3'}
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('ownerAddress', { required: true })}
@@ -372,7 +373,7 @@ export default function LivestreamForm({}) {
                   <label htmlFor="artist"> Featured Artist<span className={'text-red-600'}>*</span> </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    defaultValue=""
+                    defaultValue={state?.artist ? state?.artist : undefined}
                     placeholder={'0xStevieWonder'}
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('artist', { required: true })}
@@ -385,7 +386,7 @@ export default function LivestreamForm({}) {
                   <label htmlFor="website"> Website </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    defaultValue=""
+                    defaultValue={state?.website ? state?.website : undefined}
                     placeholder={'www.your-amazing.com'}
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('website')}
@@ -395,7 +396,7 @@ export default function LivestreamForm({}) {
                   <label htmlFor="social"> Social </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    defaultValue=""
+                    defaultValue={state?.social ? state?.social : undefined}
                     placeholder={'www.myspace.com/minefm'}
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('social')}
@@ -426,6 +427,7 @@ export default function LivestreamForm({}) {
                     min={0}
                     type={'number'}
                     step={0.0001}
+                    defaultValue={state?.startingPrice ? state?.startingPrice : undefined}
                     disabled={isChecked}
                     autoComplete={'off'}
                     className="bg-transparent appearance-none	 h-10 w-1/3 border p-2 px-4 border-solid rounded-md text-white "
@@ -494,6 +496,7 @@ export default function LivestreamForm({}) {
                   {/* register your input into the hook by invoking the "register" function */}
                   <textarea
                     placeholder="A livestream for your mood"
+                    defaultValue={state?.description ? state?.description : undefined}
                     className=" bg-transparent  h-44 border p-2 border-solid  rounded-md text-white "
                     {...register('description')}
                   />
@@ -532,7 +535,7 @@ export default function LivestreamForm({}) {
                       closeOnDocumentClick
                     >
                       <div className={'bg-[#12002C] w-48 p-4 rounded-md border-[#7DD934] border-solid'}>
-                        <p className={'text-sm'}><span className={'text-[#B999FA] '}> Memory Cards: </span> an (erc-1155) token that grants miners access to livestreams and rewards.</p>
+                        <p className={'text-sm'}><span className={'text-[#B999FA] '}> Memory Cards: </span> A (erc-1155) token that grants miners access to livestreams and rewards. This can be thought of as a "loyalty" card as well.</p>
                       </div>
                     </Popup>
                     </label>
@@ -540,7 +543,7 @@ export default function LivestreamForm({}) {
                   <MemoryCardUpload
                     id={'livestream-poster'}
                     alt={'upload image'}
-                    name={'posterUrl'}
+                    name={'memory card image'}
                   />
                   </div>
                 </div>

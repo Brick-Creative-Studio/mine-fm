@@ -10,6 +10,7 @@ interface EventStoreProps {
   memoryCardURL:  string | null
   memoryCardFile: File | null
   address: string | null
+  website?: string  | null
   ownerAddress: string | null
   organizer: string | null
   artist: string | null
@@ -21,6 +22,7 @@ interface EventStoreProps {
   endTime: string | null
   description: string | null
   metaDataURL: string | null
+  social: string  | null
   setEvent: (initialState: any) => void
   setTitle: (id: string) => void
   setPosterUrl: (url: string | null) => void
@@ -39,12 +41,14 @@ const initialState ={
   ownerAddress: null,
   organizer: null,
   artist: null,
+  website: null,
   isFree: false,
   startingPrice: null,
   startDate: null,
   startTime: null,
   endDate: null,
   endTime: null,
+  social: null,
   description: null,
   metaDataURL: null
 }
