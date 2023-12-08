@@ -9,20 +9,32 @@ import {
   ledgerWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
-import { mainnet, goerli, optimism, optimismGoerli, zora, zoraTestnet, base, baseGoerli } from "wagmi/chains";
+import { mainnet, goerli, base, baseGoerli } from 'viem/chains'
 import { router } from "next/client";
 import Layout  from '../components/Layout/Layout'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
-import { chains } from '../data/contract/chains'
+import { chains } from "../data/contract/chains";
 import { config } from '../data/contract/config'
 import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
 import Footer from "../components/Layout/Footer";
+import { createPublicClient, http, } from 'viem'
 import React from "react";
 import Head from "next/head";
+import { SplitsProvider, useSplitMetadata } from '@0xsplits/splits-sdk-react'
 
 
 
 function MyApp({ Component, pageProps }: AppProps) {
+
+  const publicClient = createPublicClient({
+    chain: baseGoerli,
+    transport: http()
+  })
+
+  const splitsConfig = {
+    chainId: 5,
+    publicClient,
+  }
 
 
   return (
