@@ -8,6 +8,8 @@ import bondingCurveStrategyABI from "../abis/BondingCurveStrategy";
 import zoraContractFactoryABI from "../abis/Zora-1155-Factory";
 import { useNetwork, useWaitForTransaction } from "wagmi";
 import { useEffect, useState } from "react";
+import { ethers } from "ethers";
+
 import { BONDING_CURVE_ADDRESS_GOERLI_BASE,
   MINE_ADMIN_EOA,
   ZORA_FACTORY_GOERLI_BASE,
@@ -15,12 +17,13 @@ import { BONDING_CURVE_ADDRESS_GOERLI_BASE,
   EX_SPLIT_WALLET_GOERLI_BASE
 } from "../../../constants/addresses";
 
-export function useCreateEventContract({ tokenURI, createReferral, saleStart, saleEnd, basePrice, splitAddress } : {
+export function useCreateEventContract({ tokenURI, createReferral, ownerAddress, saleStart, saleEnd, basePrice, splitAddress } : {
   tokenURI: string,
   createReferral: `0x${string}`,
+  ownerAddress: `0x${string}`
   saleStart: number,
   saleEnd: number,
-  basePrice: number,
+  basePrice: string,
   splitAddress: `0x${string}`
 
 }){
@@ -46,7 +49,7 @@ export function useCreateEventContract({ tokenURI, createReferral, saleStart, sa
       royaltyBPS: number;
       royaltyRecipient: Address;
     };
-
+    console.log('tied', ownerAddress)
     const royaltyConfig = encodeFunctionData({
       abi: zora1155CreatorABI,
       functionName: 'updateRoyaltiesForToken',
@@ -54,7 +57,7 @@ export function useCreateEventContract({ tokenURI, createReferral, saleStart, sa
         BigInt(0),
         {
           royaltyBPS: 0,
-          royaltyRecipient: MINE_ADMIN_EOA,
+          royaltyRecipient: ownerAddress ? ownerAddress : NULL_ADDRESS,
           royaltyMintSchedule: 0,
         },
       ],
@@ -76,10 +79,10 @@ export function useCreateEventContract({ tokenURI, createReferral, saleStart, sa
       args: [
         BigInt(1),
         {
-          basePricePerToken: BigInt(50),
+          basePricePerToken: BigInt(ethers.utils.parseEther(basePrice).toBigInt()) || BigInt(0),
           saleStart: BigInt(saleStart) || BigInt(0),
           saleEnd: BigInt(saleEnd) || BigInt(0),
-          fundsRecipient: EX_SPLIT_WALLET_GOERLI_BASE,
+          fundsRecipient: splitAddress || NULL_ADDRESS,
           scalingFactor: BigInt( 110)
         },
       ],

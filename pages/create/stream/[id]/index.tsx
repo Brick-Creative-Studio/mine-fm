@@ -5,7 +5,8 @@ import { useIsMounted} from "../../../../hooks/useMounted";
 import Image from "next/future/image";
 import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from "../../../../packages/ipfs-service";
 import formatAddress from "../../../../utils/formatAddress";
-import { BytesLike, ethers } from "ethers";
+import { MINE_ADMIN_EOA } from "../../../../constants/addresses";
+import { BigNumber, BytesLike, ethers } from "ethers";
 import createToken from "../../../../data/contract/requests/createToken";
 import createEvent from "../../../../data/rest/createEvent";
 import { Event } from '../../../../types/Event'
@@ -33,111 +34,18 @@ export default function DeployEventPage({ tokenURI, createReferral, saleStart, s
     hour: '2-digit',
     minute: '2-digit',
   }) : ''
-  const [splitAddress, setSplit] = useState<string>('')
+  const [splitAddress, setSplitAddress] = useState<string | undefined>(undefined)
   const formattedAddress = formatAddress(state?.ownerAddress!)
+  const TOKEN_URI = 'https://goerli.basescan.org/address/0x454fd3973a8e532258bd132ae5c696ac2faae180#code'
+  console.log('mount check', state?.ownerAddress)
+
+  //create treasury split contract
   const { data,
-    settled,
-    isLoading,
-    txData,
-    write,
-    isSuccess  } = useCreateSplit(state?.ownerAddress as `0x${string}`)
-  const startTimestamp =  new Date(`${state?.startDate} ${state?.startTime}`).getDate();
-  const endTimestamp = new Date(`${state?.startDate} ${state?.startTime}`).getDate()
-  console.log('start timestamp', startTimestamp)
-  console.log('end timestamp', endTimestamp)
-
-  const splitArgs = {
-    recipients: [
-      {
-        address: "0x4bF7F16fDF430DAEAEE579A80233d97A11A81Ae2",
-        percentAllocation: 50.0000
-      },
-      {
-        address: "0x364D9b4449331888913D80F52592394c60A155eC",
-        percentAllocation: 50.0000
-      }
-    ],
-    distributorFeePercent: 0,
-    controller: "0x4bF7F16fDF430DAEAEE579A80233d97A11A81Ae2"
-  }
-  const { settled: contractSettled,
-    isLoading: ctIsLoading,
-    txData: ctTxData,
-    write: ctWrite,
-    isSuccess: ctIsSuccess  } = useCreateEventContract(
-    {
-      tokenURI: '',
-      createReferral: '0x4bF7F16fDF430DAEAEE579A80233d97A11A81Ae2' as `0x${string}`,
-      saleEnd: 1691125522,
-      saleStart: 1796664206,
-      basePrice: 0.005,
-      splitAddress: '0x236796BF9Ec88Fd7b1F33e06226579029EC5BAFe' as `0x${string}`
-
-    })
-
-  // const {data
-  //   ,
-  //   txData,
-  //   settled,
-  //   write,
-  //   isSuccess,
-  //   isLoading} = useCreateEventContract({
-  //   tokenURI: metaURL!,
-  //   createReferral: '0x4bF7F16fDF430DAEAEE579A80233d97A11A81Ae2' ,
-  //   saleStart: 1701661197,
-  //   saleEnd: 1701661197,
-  //   basePrice: 0.001
-  //   })
-
-
-
-  // const response = await createEvent(event).then((event) => {
-  //   if (event !== undefined) {
-  //     setEventId(event.id!)
-  //     setIsOpen(true)
-  //     console.log('form set open check:', event)
-  //     return event
-  //   }
-  //   console.log('form set open check:', event)
-  // })
-
-  async function uploadMetaData(){
-    const meta = {
-      title: state?.title,
-      description: state?.description,
-      image: state?.memoryCardURL,
-      attributes: [
-        {
-          trait_type: "posterUrl",
-          value: state?.posterUrl
-        }
-      ]
-    }
-
-    const metaJSON = JSON.stringify(meta, null, 2)
-    const blob = new Blob([metaJSON], { type: 'application/json' });
-    const metaDataFile = new File([blob], `${state?.title}.json`); // Specify the desired filename
-
-    const { cid } = await uploadFile(metaDataFile, { cache: true })
-    const url = normalizeIPFSUrl(cid)?.toString()
-    console.log('Livestream Event IPFS url:', url)
-
-    if(url){
-      setMetaURL(url);
-    }
-
-  }
-
-  // async function createSplitContract(){
-  //   const splitResponse = await useCreateSplit(splitArgs).then(() => {
-  //     console.log('deploy splits txhash:', txHash);
-  //     console.log('deploy splits status:', status);
-  //     console.log('deploy splits response:', splitResponse);
-  //   })
-  //
-  //
-  // }
-
+    settled: splitSettled,
+    isLoading: splitLoading,
+    txData: splitTxData,
+    write: writeSplit,
+    isSuccess: splitSuccess  } = useCreateSplit(state?.ownerAddress as `0x${string}`)
 
   useEffect(() => {
     if (isMounted && state){
@@ -146,53 +54,45 @@ export default function DeployEventPage({ tokenURI, createReferral, saleStart, s
     }
   },[state])
 
+  //create 1155 contract
+  const {
+    settled: contractSettled,
+    isLoading: ctIsLoading,
+    txData: ctTxData,
+    write: ctWrite,
+    isSuccess: ctIsSuccess  } = useCreateEventContract(
+    {
+      tokenURI: TOKEN_URI,
+      createReferral: MINE_ADMIN_EOA,
+      saleStart: state ? new Date(`${state?.startDate} ${state?.startTime}`).getTime() : 0,
+      saleEnd: state ? new Date(`${state?.endDate} ${state?.endTime}`).getTime() : 0,
+      basePrice: state?.startingPrice ? state?.startingPrice : "0.00",
+      splitAddress: splitAddress as `0x${string}`,
+      ownerAddress: state?.ownerAddress as `0x${string}`
+    })
+
+
+
   useEffect(() => {
-    if (txData && settled){
-      console.log('deploy splits txdata:', txData?.logs[0].topics[1]);
-      console.log('deploy splits address:', ethers.utils.hexStripZeros(txData?.logs[0].topics[1] as BytesLike));
-      setSplit(ethers.utils.hexStripZeros(txData?.logs[0].topics[1]!).toString())
-      console.log('deploy splits response:', data);
+    if (splitSuccess && splitSettled){
+      console.log('deploy splits txdata:', splitTxData?.logs[0].topics[1]);
+      setSplitAddress(ethers.utils.hexStripZeros(splitTxData?.logs[0].topics[1]!).toString())
     }
 
-  }, [txData, settled])
+  }, [splitTxData, splitSettled, splitSuccess])
 
-  // useEffect(() => {
-  //
-  //   async function eventUpload(){
-  //     const event = {
-  //       address: "",
-  //       artist: state?.artist,
-  //       description: state?.description,
-  //       endDate: new Date(endTime),
-  //       isFree: false,
-  //       isOnline: true,
-  //       organizer: state?.organizer,
-  //       ownerAddress: state?.ownerAddress,
-  //       posterURL: state?.posterUrl,
-  //       startDate: new Date(startTime),
-  //       startingPrice: state?.startingPrice,
-  //       title: state?.title
-  //
-  //     }
-  //     return await createEvent(event).then((event) => {
-  //       if (event !== undefined) {
-  //         router?.push(`/explore?tab=livestream`)
-  //
-  //       }
-  //       console.log('form set open check:', event)
-  //     })
-  //   }
-  //
-  //   if(txData){
-  //     console.log('tx data', txData)
-  //       eventUpload()
-  //   }
-  //
-  // }, [txData])
+  useEffect(() => {
+    if(ctIsSuccess && contractSettled){
+      //TODO: Update event
+    }
+    //         router?.push(`/explore?tab=livestream`)
+
+  }, [])
+
 
   return !isMounted ? null : (
     <div className={'mx-auto mt-32 w-fit'}>
-      <h2>Confirm Livestream Info </h2>
+      <h2> Deploy your Event to Base Chain  </h2>
       <div className={'bg-[#1D0045] border-[#B999FA] border-solid p-4 rounded-md h-full'}>
 
         <div className={'flex justify-between'}>
@@ -236,6 +136,18 @@ export default function DeployEventPage({ tokenURI, createReferral, saleStart, s
 
         </div>
 
+
+        <div className={'flex justify-between'}>
+          <p className={'text-lg '}>Website: </p>
+          <p className={'text-lg text-blue-300 hover:text-blue-600'}> <a target="_blank" href={`https://${state?.website}`}>{state?.website}</a></p>
+        </div>
+
+        <div className={'flex justify-between'}>
+          <p className={'text-lg '}>Social: </p>
+          <p className={'text-lg text-blue-300 hover:text-blue-600'}> <a target="_blank" href={`https://${state?.social}`}>{state?.social}</a></p>
+        </div>
+
+
         <div  className={'flex justify-between'}>
           <p className={'text-lg '}>Description:  </p>
           <p className={'text-lg'}> { state?.description  }</p>
@@ -276,13 +188,13 @@ export default function DeployEventPage({ tokenURI, createReferral, saleStart, s
       </div>
       <button
         className="not-italic w-full bg-black hover:bg-black/50 rounded-lg font-mono font-bold text-lg p-2 px-4 border-none cursor-pointer my-8"
-        // onClick={() => metaURL ?  ctWrite?.() : write?.()}
-        onClick={() => ctWrite?.()}
+        onClick={() => splitAddress ?  ctWrite?.() : writeSplit?.()}
+        // onClick={() => ctWrite?.()}
 
       >
         {
-          metaURL ? (
-              <p> Deployy Event Contract (2/2) </p>
+          splitAddress ? (
+              <p> Deploy Event Contract (2/2) </p>
 
             ) :
             (

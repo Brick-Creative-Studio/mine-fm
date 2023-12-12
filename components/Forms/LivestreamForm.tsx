@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useForm, SubmitHandler, FormProvider, useFormContext } from 'react-hook-form'
-import Popup from 'reactjs-popup';
+import Popup from 'reactjs-popup'
 import { useLayoutStore, useEventStore } from '../../stores'
 import SingleImageUpload from '../SingleImageUpload/SingleImageUpload'
-import MemoryCardUpload from "../MemoryCardUpload/MemoryCardUpload";
+import MemoryCardUpload from '../MemoryCardUpload/MemoryCardUpload'
 import { streamValidationSchema } from './LivestreamForm.schema'
-import { yupResolver } from "@hookform/resolvers/yup"
-import { useRouter } from "next/router";
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useRouter } from 'next/router'
 
 type LivestreamInput = {
   title: string
@@ -32,7 +32,7 @@ export default function LivestreamForm({}) {
   const {
     register,
     handleSubmit,
-    formState: { errors, },
+    formState: { errors },
     setError,
   } = methods
   const [isMounted, setIsMounted] = useState(false)
@@ -40,10 +40,10 @@ export default function LivestreamForm({}) {
   const { isMobile, signerAddress } = useLayoutStore()
   let [isOpen, setIsOpen] = useState(false)
   const [eventID, setEventId] = useState<string>()
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(false)
   const handleOnChange = () => {
-    setIsChecked(!isChecked);
-  };
+    setIsChecked(!isChecked)
+  }
 
   const onSubmit: SubmitHandler<LivestreamInput> = async (data) => {
     const fStartTime = new Date(`${data.startDate} ${data.startTime}`)
@@ -89,7 +89,10 @@ export default function LivestreamForm({}) {
           {isMobile ? (
             <div className="flex flex-col space-y-8">
               <div className={'flex flex-col items-center justify-center'}>
-                <label className="mb-1 self-start"> Artwork<span className={'text-red-600'}>*</span> </label>
+                <label className="mb-1 self-start">
+                  {' '}
+                  Artwork<span className={'text-red-600'}>*</span>{' '}
+                </label>
                 <SingleImageUpload
                   id={'livestream-poster'}
                   alt={'upload image'}
@@ -97,19 +100,31 @@ export default function LivestreamForm({}) {
                 />
               </div>
               <div>
-
-                <label className="mb-4"> Memory Card
-
+                <label className="mb-4">
+                  {' '}
+                  Memory Card
                   <Popup
-                    trigger={open => (
-                      <img alt={'info-circle'} className={'cursor-pointer m-1'} src={'/info-circled.svg'}/>
+                    trigger={(open) => (
+                      <img
+                        alt={'info-circle'}
+                        className={'cursor-pointer m-1'}
+                        src={'/info-circled.svg'}
+                      />
                     )}
                     on={'hover'}
                     position="right center"
                     closeOnDocumentClick
                   >
-                    <div className={'bg-[#12002C] w-48 p-4 rounded-md border-[#7DD934] border-solid'}>
-                      <p className={'text-sm'}><span className={'text-[#B999FA] '}> Memory Cards: </span> an (erc-1155) NFT that provides miners access to their livestreams and rewards.</p>
+                    <div
+                      className={
+                        'bg-[#12002C] w-48 p-4 rounded-md border-[#7DD934] border-solid'
+                      }
+                    >
+                      <p className={'text-sm'}>
+                        <span className={'text-[#B999FA] '}> Memory Cards: </span> an
+                        (erc-1155) NFT that provides miners access to their livestreams
+                        and rewards.
+                      </p>
                     </div>
                   </Popup>
                 </label>
@@ -120,7 +135,10 @@ export default function LivestreamForm({}) {
                 />
               </div>
               <div className="flex flex-col">
-                <label htmlFor="livestream title"> Title<span className={'text-red-600'}>*</span> </label>
+                <label htmlFor="livestream title">
+                  {' '}
+                  Title<span className={'text-red-600'}>*</span>{' '}
+                </label>
                 {/* include validation with required or other standard HTML validation rules */}
                 <input
                   type="text"
@@ -129,8 +147,11 @@ export default function LivestreamForm({}) {
                   className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
                   {...register('title', { required: true })}
                 />
-                {errors.title && <p className={'text-sm text-red-500 '} role="alert">A title is required.</p>}
-
+                {errors.title && (
+                  <p className={'text-sm text-red-500 '} role="alert">
+                    A title is required.
+                  </p>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -145,13 +166,15 @@ export default function LivestreamForm({}) {
                   className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                   {...register('organizer', { required: true })}
                 />
-                {errors.organizer && <p className={'text-sm text-red-500 '} role="alert">A organizer is required.</p>}
-
+                {errors.organizer && (
+                  <p className={'text-sm text-red-500 '} role="alert">
+                    A organizer is required.
+                  </p>
+                )}
               </div>
               <div className="flex flex-col">
                 <label htmlFor="ownerAddress" className="">
                   {' '}
-
                   Organizer Wallet Address <span className={'text-red-600'}>*</span>{' '}
                 </label>
                 {/* register your input into the hook by invoking the "register" function */}
@@ -161,11 +184,18 @@ export default function LivestreamForm({}) {
                   className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                   {...register('ownerAddress', { required: true })}
                 />
-                {errors.ownerAddress && <p className={'text-sm text-red-500 '} role="alert">An owner is required to earn rewards.</p>}
+                {errors.ownerAddress && (
+                  <p className={'text-sm text-red-500 '} role="alert">
+                    An owner is required to earn rewards.
+                  </p>
+                )}
               </div>
 
               <div className="flex flex-col">
-                <label htmlFor="artist"> Featured Artist<span className={'text-red-600'}>*</span> </label>
+                <label htmlFor="artist">
+                  {' '}
+                  Featured Artist<span className={'text-red-600'}>*</span>{' '}
+                </label>
                 {/* register your input into the hook by invoking the "register" function */}
                 <input
                   defaultValue=""
@@ -173,8 +203,11 @@ export default function LivestreamForm({}) {
                   className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                   {...register('artist', { required: true })}
                 />
-                {errors.artist && <p className={'text-sm text-red-500 '} role="alert">An artist is required.</p>}
-
+                {errors.artist && (
+                  <p className={'text-sm text-red-500 '} role="alert">
+                    An artist is required.
+                  </p>
+                )}
               </div>
 
               <div className="flex flex-col">
@@ -215,7 +248,10 @@ export default function LivestreamForm({}) {
               </div>
 
               <div className="flex flex-col relative">
-                <label htmlFor="startPrice"> Starting Price<span className={'text-red-600'}>*</span> </label>
+                <label htmlFor="startPrice">
+                  {' '}
+                  Starting Price<span className={'text-red-600'}>*</span>{' '}
+                </label>
                 {/* register your input into the hook by invoking the "register" function */}
                 <input
                   placeholder=".005 ETH"
@@ -229,7 +265,6 @@ export default function LivestreamForm({}) {
                   {...register('startingPrice', { required: true })}
                 />
                 <div className={'absolute text-white right-4 top-7'}> ETH </div>
-
               </div>
               <div>
                 <div className={'my-2'}>
@@ -262,31 +297,31 @@ export default function LivestreamForm({}) {
 
               <div>
                 <div className={'my-2'}>
-                <label htmlFor="endDate" className="mr-8">
-                  {' '}
-                  End Date<span className={'text-red-600'}>*</span>
-                </label>
-                {/* register your input into the hook by invoking the "register" function */}
-                <input
-                  defaultValue=""
-                  type="date"
-                  className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-                  {...register('endDate', { required: true })}
-                />
+                  <label htmlFor="endDate" className="mr-8">
+                    {' '}
+                    End Date<span className={'text-red-600'}>*</span>
+                  </label>
+                  {/* register your input into the hook by invoking the "register" function */}
+                  <input
+                    defaultValue=""
+                    type="date"
+                    className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
+                    {...register('endDate', { required: true })}
+                  />
                 </div>
 
                 <div>
-                <label htmlFor="endTime" className="mr-8">
-                  {' '}
-                  End Time<span className={'text-red-600'}>*</span>
-                </label>
-                {/* register your input into the hook by invoking the "register" function */}
-                <input
-                  defaultValue=""
-                  type="time"
-                  className=" bg-transparent h-10 border p-1 w-fit border-solid rounded-md text-white "
-                  {...register('endTime', { required: true })}
-                />
+                  <label htmlFor="endTime" className="mr-8">
+                    {' '}
+                    End Time<span className={'text-red-600'}>*</span>
+                  </label>
+                  {/* register your input into the hook by invoking the "register" function */}
+                  <input
+                    defaultValue=""
+                    type="time"
+                    className=" bg-transparent h-10 border p-1 w-fit border-solid rounded-md text-white "
+                    {...register('endTime', { required: true })}
+                  />
                 </div>
               </div>
 
@@ -314,17 +349,20 @@ export default function LivestreamForm({}) {
                 className="bg-black hover:bg-black/60 hover:border-emerald-700 border-transparent h-12 rounded-lg font-mono font-bold text-lg cursor-pointer"
               />
             </div>
-          /*
-          * MOBILE VIEW ABOVE ^^^
-          *
-          *
-          * DESKTOP VIEW BELOW
-          * */
           ) : (
+            /*
+             * MOBILE VIEW ABOVE ^^^
+             *
+             *
+             * DESKTOP VIEW BELOW
+             * */
             <div className="flex">
               <div className="flex flex-col space-y-8 basis-1/2 mr-24">
                 <div className="flex flex-col">
-                  <label htmlFor="song title"> Title<span className={'text-red-600'}>*</span> </label>
+                  <label htmlFor="song title">
+                    {' '}
+                    Title<span className={'text-red-600'}>*</span>{' '}
+                  </label>
                   {/* include validation with required or other standard HTML validation rules */}
                   <input
                     type="text"
@@ -332,10 +370,12 @@ export default function LivestreamForm({}) {
                     placeholder={'Your Stream Title'}
                     className=" bg-transparent  h-10 border p-2 border-solid rounded-md text-white "
                     {...register('title', { required: true })}
-
                   />
-                  {errors.title && <p className={'text-sm text-red-500 '} role="alert">A title is required.</p>}
-
+                  {errors.title && (
+                    <p className={'text-sm text-red-500 '} role="alert">
+                      A title is required.
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex flex-col">
@@ -348,15 +388,20 @@ export default function LivestreamForm({}) {
                     defaultValue={state?.organizer ? state?.organizer : undefined}
                     placeholder={'MINE Records'}
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-                    {...register('organizer', { required: true})}
+                    {...register('organizer', { required: true })}
                   />
-                  {errors.organizer && <p className={'text-sm text-red-500 '} role="alert">An organizer is required.</p>}
-
+                  {errors.organizer && (
+                    <p className={'text-sm text-red-500 '} role="alert">
+                      An organizer is required.
+                    </p>
+                  )}
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="owner address" className="">
                     {' '}
-                    Organizer Wallet Address <span className={'text-red-600'}>*</span>{' '}
+                    Organizer Wallet Address <span className={'text-red-600'}>
+                      *
+                    </span>{' '}
                   </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
@@ -365,12 +410,18 @@ export default function LivestreamForm({}) {
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('ownerAddress', { required: true })}
                   />
-                  {errors.ownerAddress && <p className={'text-sm text-red-500 '} role="alert">An address is required to claim your rewards.</p>}
-
+                  {errors.ownerAddress && (
+                    <p className={'text-sm text-red-500 '} role="alert">
+                      An address is required to claim your rewards.
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex flex-col">
-                  <label htmlFor="artist"> Featured Artist<span className={'text-red-600'}>*</span> </label>
+                  <label htmlFor="artist">
+                    {' '}
+                    Featured Artist<span className={'text-red-600'}>*</span>{' '}
+                  </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
                     defaultValue={state?.artist ? state?.artist : undefined}
@@ -378,8 +429,11 @@ export default function LivestreamForm({}) {
                     className="bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('artist', { required: true })}
                   />
-                  {errors.artist && <p className={'text-sm text-red-500 '} role="alert">An artist is required.</p>}
-
+                  {errors.artist && (
+                    <p className={'text-sm text-red-500 '} role="alert">
+                      An artist is required.
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex flex-col">
@@ -420,7 +474,10 @@ export default function LivestreamForm({}) {
                 </div>
 
                 <div className="flex flex-col relative">
-                  <label htmlFor="starting entry price"> Starting Entry Price<span className={'text-red-600'}>*</span> </label>
+                  <label htmlFor="starting entry price">
+                    {' '}
+                    Starting Entry Price<span className={'text-red-600'}>*</span>{' '}
+                  </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
                     placeholder="0.005 ETH"
@@ -483,7 +540,7 @@ export default function LivestreamForm({}) {
                     defaultValue=""
                     type="time"
                     className="w-1/4 bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-                    {...register('endTime', { required: true})}
+                    {...register('endTime', { required: true })}
                   />
                 </div>
                 <div className="flex flex-col">
@@ -504,7 +561,7 @@ export default function LivestreamForm({}) {
 
                 {/* errors will return when field validation fails  */}
                 {/*{errors && <span>This field is required</span>}*/}
-               {/*// <SuccessEventModal isOpen={isOpen} eventId={eventID} />*/}
+                {/*// <SuccessEventModal isOpen={isOpen} eventId={eventID} />*/}
 
                 <input
                   type="submit"
@@ -515,7 +572,10 @@ export default function LivestreamForm({}) {
 
               <div className="flex flex-col space-y-12 ">
                 <div>
-                  <label className="mb-4"> Artwork<span className={'text-red-600'}>*</span> </label>
+                  <label className="mb-4">
+                    {' '}
+                    Artwork<span className={'text-red-600'}>*</span>{' '}
+                  </label>
                   <SingleImageUpload
                     id={'livestream-poster'}
                     alt={'upload image'}
@@ -523,28 +583,44 @@ export default function LivestreamForm({}) {
                   />
                 </div>
                 <div>
-
-                  <label className="mb-4"> Memory Card
-
+                  <label className="mb-4">
+                    {' '}
+                    Memory Card
                     <Popup
-                      trigger={open => (
-                        <img alt={'info-circle'} className={'cursor-pointer m-1'} src={'/info-circled.svg'}/>
+                      trigger={(open) => (
+                        <img
+                          alt={'info-circle'}
+                          className={'cursor-pointer m-1'}
+                          src={'/info-circled.svg'}
+                        />
                       )}
                       on={'hover'}
                       position="right center"
                       closeOnDocumentClick
                     >
-                      <div className={'bg-[#12002C] w-48 p-4 rounded-md border-[#7DD934] border-solid'}>
-                        <p className={'text-sm'}><span className={'text-[#B999FA] '}> Memory Cards: </span> A (erc-1155) token that grants miners access to livestreams and rewards. This can be thought of as a "loyalty" card as well.</p>
+                      <div
+                        className={
+                          'bg-[#12002C] w-48 p-4 rounded-md border-[#7DD934] border-solid'
+                        }
+                      >
+                        <p className={'text-sm'}>
+                          <span className={'text-[#B999FA] '}> Memory Cards: </span> A
+                          (erc-1155) token that grants miners access to livestreams and
+                          rewards. This can be thought of as a "loyalty" card as well.
+                        </p>
                       </div>
                     </Popup>
-                    </label>
-                  <div className={'w-full h-full bg-black/50 border-solid border-[#7DD934] rounded-md  mt-4 items-center flex'}>
-                  <MemoryCardUpload
-                    id={'livestream-poster'}
-                    alt={'upload image'}
-                    name={'memory card image'}
-                  />
+                  </label>
+                  <div
+                    className={
+                      'w-full h-full bg-black/50 border-solid border-[#7DD934] rounded-md  mt-4 items-center flex'
+                    }
+                  >
+                    <MemoryCardUpload
+                      id={'livestream-poster'}
+                      alt={'upload image'}
+                      name={'memory card image'}
+                    />
                   </div>
                 </div>
               </div>

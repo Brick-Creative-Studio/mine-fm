@@ -33,6 +33,7 @@ export default function ConfirmPage({
   basePrice: number
 }) {
   const isMounted = useIsMounted()
+  const router = useRouter()
   const [metaURL, setMetaURL] = useState<string | undefined>(undefined)
   const state = useStore(useEventStore, (state) => state)
   const [eventData, setEventData] = useState<Event | undefined>(undefined)
@@ -81,9 +82,19 @@ export default function ConfirmPage({
         // router?.push(`/explore?tab=livestream`)
         setIsLoading(false)
         setPrompt(true)
+        return event.id;
       }
       console.log('form set open check:', event)
     })
+  }
+
+  async function selfDeployRoute(){
+    const eventID = await eventUpload();
+
+    if(eventID){
+      await router.push(`/create/stream/${eventID}`)
+    }
+    console.log('error fetching event data')
   }
 
   async function uploadMetaData() {
@@ -170,6 +181,16 @@ export default function ConfirmPage({
         </div>
 
         <div className={'flex justify-between'}>
+          <p className={'text-lg '}>Website: </p>
+          <p className={'text-lg text-blue-300 hover:text-blue-600'}> <a target="_blank" href={`https://${state?.website}`}>{state?.website}</a></p>
+        </div>
+
+        <div className={'flex justify-between'}>
+          <p className={'text-lg '}>Social: </p>
+          <p className={'text-lg text-blue-300 hover:text-blue-600'}> <a target="_blank" href={`https://${state?.social}`}>{state?.social}</a></p>
+        </div>
+
+        <div className={'flex justify-between'}>
           <p className={'text-lg '}>Description: </p>
           <p className={'text-lg'}> {state?.description}</p>
         </div>
@@ -245,7 +266,7 @@ export default function ConfirmPage({
                 <Dialog.Panel className="w-full max-w-md  transform border-solid border-[#B999FA] overflow-hidden rounded-2xl bg-[#12002C] p-6 text-center align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="p"
-                    className="text-lg font-light mx-auto leading-6 text-[#B999FA] p-2 w-fit border border-solid border-[#B999FA] rounded-md"
+                    className="text-xl font-light mx-auto leading-6 text-[#B999FA] p-2 w-fit border border-solid border-[#B999FA] rounded-md"
                   >
                     Event Saved!
                   </Dialog.Title>
@@ -255,7 +276,7 @@ export default function ConfirmPage({
                     </p>
                     <ol >
                       <li className=" text-white mb-4">
-                        Free Deployment - requires waiting in a queue for your contracts to deployed. Can take 1-3hrs for us to deploy.
+                        Free Deployment - requires waiting in a queue for your contracts to be deployed. Can take 1-3hrs for deployment.
                       </li>
                       <li className="text-white mb-8">
                         Paid Deployment - skip the line for fast and immediate deployment. Usually completed in less than 5 minutes.
@@ -265,15 +286,15 @@ export default function ConfirmPage({
                   </div>
 
                   <div className="mt-4 flex justify-around">
-                    <Link href={`/create/stream/${eventData?.id}`}>
+                    {/*<Link href={`/create/stream/${eventData?.id}`}>*/}
                       <button
                         type="button"
-                        onClick={() => eventUpload()}
+                        onClick={() => selfDeployRoute()}
                         className=" cursor-pointer inline-flex justify-center border-solid border-[#B999FA] rounded-md bg-[#B999FA] px-4 py-2 text-sm font-medium text-[#12002C] hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       >
                         Paid Deployment
                       </button>
-                    </Link>
+                    {/*</Link>*/}
 
                     <Link href={'/explore?tab=livestream'}>
                       <button
