@@ -82,9 +82,13 @@ export default function IdentityForm({}) {
         return res.data
       }).catch((error) => {
         console.log('error updating user:', error)
-        router.push(`/profile/${address}/aura`)
         return error
       })
+
+      if (updatedUser){
+        await router.push(`/profile/${address}`)
+
+      }
 
     }
   }
@@ -136,7 +140,7 @@ export default function IdentityForm({}) {
               })}
             />
             {errors.m_tag?.types?.pattern && <p className={'text-sm text-red-500 '} role="alert">{errors.m_tag.message}</p>}
-            {errors.m_tag && <p className={'text-sm text-red-500 '} role="alert"> a miner tag is required </p>}
+            {errors.m_tag && <p className={'text-sm text-red-500 '} role="alert"> a miner tag is required and cannot contain any @ symbols </p>}
 
           </div>
           <div className="flex flex-col w-full">
