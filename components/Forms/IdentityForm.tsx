@@ -7,20 +7,11 @@ import NewUserModal from '../Modals/NewUserModal';
 import UploadFailModal from "../Modals/UploadFailModal";
 import axios from "axios";
 import { err } from "pino-std-serializers";
-
-type Identity = {
-  id: string | null
-  name: string
-  m_tag: string
-  email: string
-  bio: string
-  twitter: string | null
-  instagram: string | null
-}
+import { Identity } from "stores";
 
 export default function IdentityForm({}) {
   const { register, handleSubmit, getValues, formState :{ errors } } = useForm<Identity>()
-  const { setIdentity, name, aura, m_tag, email, bio, setHasAccount, id } = useProfileStore(
+  const { setIdentity, setBasicInfo, name, aura, miner_tag, email, bio, setHasAccount, id } = useProfileStore(
     (state) => state
   )
   const { signerAddress: address } = useLayoutStore()
@@ -41,20 +32,22 @@ export default function IdentityForm({}) {
   }
 
   const onSubmit: SubmitHandler<Identity> = async (data) => {
-    setIdentity(data)
 
-    const user = {
-      miner_tag: data.m_tag,
-      email: data.email,
-      walletAddress: address,
-      name: data.name,
-      colorOne: aura.colorOne,
-      colorTwo: aura.colorTwo,
-      colorThree: aura.colorThree,
-      direction: aura.direction,
-      bio: data.bio,
-    }
+
     if (isOnboarding) {
+      setIdentity(data)
+
+      const user = {
+        miner_tag: data.miner_tag,
+        email: data.email,
+        walletAddress: address,
+        name: data.name,
+        colorOne: aura.colorOne,
+        colorTwo: aura.colorTwo,
+        colorThree: aura.colorThree,
+        direction: aura.direction,
+        bio: data.bio,
+      }
 
       const endpoint = 'user/create'
       const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
@@ -73,27 +66,32 @@ export default function IdentityForm({}) {
       })
 
     } else {
-      const endpoint = 'user/'
-      const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
+      const updateEndpoint = 'user'
+      const url = process.env.NEXT_PUBLIC_BASE_URL + updateEndpoint
 
-      const updatedUser = await axios.put(url, user).then((res) => {
-        console.log(res.data)
-        setUser(data)
+      const updates = {
+          name: data.name,
+          miner_tag: data.miner_tag,
+          email: data.email,
+          bio: data.bio,
+          walletAddress: address,
+          id: id
+
+      }
+
+
+      const updatedUser = await axios.put(url, updates).then((res) => {
+        setBasicInfo(updates)
+        router.push(`/profile/${address}`)
         return res.data
       }).catch((error) => {
         console.log('error updating user:', error)
-        router.push(`/profile/${address}/aura`)
         return error
       })
 
     }
   }
 
-  const onAuraSubmit = () => {
-    const identityValues: Identity = getValues()
-    onSubmit(identityValues)
-    setIdentity(identityValues)
-  }
 
   return (
     <div className="flex flex-col mt-24  h-full my-auto  justify-center items-center">
@@ -119,15 +117,15 @@ export default function IdentityForm({}) {
 
           </div>
           <div className="flex flex-col w-full">
-            <label htmlFor="m_tag"> miner_tag </label>
+            <label htmlFor="miner_tag"> miner_tag </label>
             {/* include validation with required or other standard HTML validation rules */}
             <input
               type="text"
               required
               placeholder="miner_b"
-              defaultValue={isOnboarding ? '' : (m_tag as string)}
+              defaultValue={isOnboarding ? '' : (miner_tag as string)}
               className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-              {...register('m_tag', {
+              {...register('miner_tag', {
                 required: true,
                 pattern: {
                   value:/^[^@]+$/,
@@ -135,8 +133,8 @@ export default function IdentityForm({}) {
                 }
               })}
             />
-            {errors.m_tag?.types?.pattern && <p className={'text-sm text-red-500 '} role="alert">{errors.m_tag.message}</p>}
-            {errors.m_tag && <p className={'text-sm text-red-500 '} role="alert"> a miner tag is required </p>}
+            {errors.miner_tag?.types?.pattern && <p className={'text-sm text-red-500 '} role="alert">{errors.miner_tag.message}</p>}
+            {errors.miner_tag && <p className={'text-sm text-red-500 '} role="alert"> a miner tag is required and cannot contain any @ symbols </p>}
 
           </div>
           <div className="flex flex-col w-full">
