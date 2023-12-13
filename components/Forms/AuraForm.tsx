@@ -78,7 +78,7 @@ const AuraForm: React.FC = ({}) => {
           colorThree: colorThree,
           direction: direction,
         })
-        router.push(`/profile/${address}/identity`)
+        router.push(`/profile/${address}/settings?tab=identity`)
       }).catch((error) => {
         console.log('error updating user:', error)
         return error
