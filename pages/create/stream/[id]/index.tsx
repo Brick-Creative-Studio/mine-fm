@@ -88,7 +88,8 @@ export default function DeployEventPage({ tokenURI, createReferral, saleStart, s
         id: eventStore?.id,
         tokenAddress: tokenTxData?.logs[0].address!,
         splitAddress: splitAddress,
-        memoryCard: getFetchableUrl(eventStore?.memoryCardURL)
+        memoryCard: getFetchableUrl(eventStore?.memoryCardURL),
+        isApproved: true
       }).then(() => {
 
         router?.push(`/explore?tab=livestream`)
