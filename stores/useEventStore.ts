@@ -4,7 +4,6 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface EventStoreProps {
   id: string | null
-  setId: (id: string) => void
   title: string | null
   posterUrl: string | null
   memoryCardURL:  string | null
@@ -22,13 +21,17 @@ interface EventStoreProps {
   endTime: string | null
   description: string | null
   metaDataURL: string | null
+  tokenAddress: `0x${string}` | null
   social: string  | null
+  splitAddress: string | null
+  setId: (id: string) => void
+  setSplitAddress: (splitAddress: string) => void
   setEvent: (initialState: any) => void
   setTitle: (id: string) => void
   setPosterUrl: (url: string | null) => void
   setMemoryFile: (sticker : File) => void
   setCardUrl: (url: string | null) => void
-
+  setTokenAddress: (tokenAddress: `0x${string}`) => void
 }
 
 const initialState ={
@@ -50,7 +53,9 @@ const initialState ={
   endTime: null,
   social: null,
   description: null,
-  metaDataURL: null
+  metaDataURL: null,
+  splitAddress: null,
+  tokenAddress: null
 }
 export const useEventStore = create(
   persist<EventStoreProps>(
@@ -62,6 +67,8 @@ export const useEventStore = create(
       setPosterUrl: (posterUrl: string | null) => set({ posterUrl }),
       setMemoryFile: (sticker: File) => set({ memoryCardFile: sticker }),
       setCardUrl: (memoryCardURL: string | null) => set({ memoryCardURL }),
+      setSplitAddress: (splitAddress: string) => set({ splitAddress }),
+      setTokenAddress: (tokenAddress: `0x${string}`) => set({ tokenAddress })
     }),
     {
       name: `mine-fm-event`,

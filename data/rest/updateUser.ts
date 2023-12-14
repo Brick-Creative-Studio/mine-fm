@@ -4,7 +4,7 @@ import process from "process";
 
 
 export default async function updateUser(user: any) {
-  const endpoint = 'user/'
+  const endpoint = 'user'
   const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
   let updatedUser;
 
@@ -15,7 +15,7 @@ export default async function updateUser(user: any) {
       return res.data
     })
   } catch (error) {
-    console.log('create event error:', error)
+    console.log('create user error:', error)
     return error
   }
   return updatedUser;
