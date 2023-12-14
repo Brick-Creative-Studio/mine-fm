@@ -26,13 +26,17 @@ export const LivestreamCard: React.FC<CardProps> = ({ streamEvent }) => {
     console.log('error fetching stream data:', error)
   })
 
-  const { data, error } = useSWR(url, listFetcher)
+  const { data: attendanceData, error } = useSWR(url, listFetcher)
 
 
 
 
 
-  const formatDate = new Date(streamEvent.startDate).toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(0, 16)
+  const formatDate =  new Date(`${streamEvent.startDate}`).toLocaleDateString() +
+    ' ' + new Date(`${streamEvent.startDate}`).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  })
   let f = formatDate
 
 
@@ -56,7 +60,7 @@ export const LivestreamCard: React.FC<CardProps> = ({ streamEvent }) => {
           <p className="text-[#B999FA] font-thin mt-2 my-2"> {formatDate} </p>
 
           </div>
-          <RsvpModal streamEvent={streamEvent} rsvpList={data!} />
+          <RsvpModal streamEvent={streamEvent} rsvpList={attendanceData!} />
 
         </div>
 
@@ -66,11 +70,11 @@ export const LivestreamCard: React.FC<CardProps> = ({ streamEvent }) => {
           <div className="flex flex-col justify-center mx-2">
             <p className="m-0 text-[#B999FA] font-light "> # of Attendees </p>
             {/*seperate api call to get event size*/}
-            <p className="m-0 mt-1 self-start text-[#B999FA] "> {data?.length} </p>
+            <p className="m-0 mt-1 self-start text-[#B999FA] "> {attendanceData?.length} </p>
           </div>
           <div className="flex flex-col justify-center mx-2">
             <p className="m-0 text-[#B999FA] font-light"> Entrance Fee </p>
-            <p className="m-0 mt-1 self-start text-[#B999FA]"> N/A eth </p>
+            <p className="m-0 mt-1 self-start text-[#B999FA]"> {streamEvent.startingPrice} eth </p>
           </div>
         </div>
 
