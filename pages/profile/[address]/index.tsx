@@ -206,7 +206,7 @@ export default function Profile() {
               {/*/>*/}
             </div>
             <div className=" mx-8 w-full">
-              <p className="text-[#B999FA]"> {user?.miner_tag} </p>
+              <p className="text-[#B999FA]"> {`@${user?.miner_tag}`} </p>
               <h2 className={ 'w-1/2'}> {user?.name}</h2>
               <div className="flex flex-col w-full justify-between">
                 <div className="flex flex-col">

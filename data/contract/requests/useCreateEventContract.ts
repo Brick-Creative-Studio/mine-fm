@@ -49,7 +49,7 @@ export function useCreateEventContract({ tokenURI, createReferral, ownerAddress,
       royaltyBPS: number;
       royaltyRecipient: Address;
     };
-    console.log('tied', ownerAddress)
+
     const royaltyConfig = encodeFunctionData({
       abi: zora1155CreatorABI,
       functionName: 'updateRoyaltiesForToken',

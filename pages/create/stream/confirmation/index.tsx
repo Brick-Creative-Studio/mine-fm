@@ -10,12 +10,9 @@ import {
 } from '../../../../packages/ipfs-service'
 import formatAddress from '../../../../utils/formatAddress'
 import { BytesLike, ethers } from 'ethers'
-import createToken from '../../../../data/contract/requests/createToken'
 import createEvent from '../../../../data/rest/createEvent'
 import { Event } from '../../../../types/Event'
-import useCreateSplit from '../../../../data/contract/requests/useCreateSplit'
 import { useRouter } from 'next/router'
-import { useCreateEventContract } from '../../../../data/contract/requests/useCreateEventContract'
 import { Dialog, Transition } from '@headlessui/react'
 import Link from 'next/link'
 
@@ -35,54 +32,55 @@ export default function ConfirmPage({
   const isMounted = useIsMounted()
   const router = useRouter()
   const [metaURL, setMetaURL] = useState<string | undefined>(undefined)
-  const state = useStore(useEventStore, (state) => state)
+  const eventStore = useStore(useEventStore, (state) => state)
   const [eventData, setEventData] = useState<Event | undefined>(undefined)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const startTime = state
-    ? new Date(`${state.startDate} ${state.startTime}`).toLocaleDateString() +
+  const startTime = eventStore
+    ? new Date(`${eventStore.startDate} ${eventStore.startTime}`).toLocaleDateString() +
       ' ' +
-      new Date(`${state.startDate} ${state.startTime}`).toLocaleTimeString([], {
+      new Date(`${eventStore.startDate} ${eventStore.startTime}`).toLocaleTimeString([], {
         hour: '2-digit',
         minute: '2-digit',
       })
     : ''
-  const endTime = state
-    ? new Date(`${state.endDate} ${state.endTime}`).toLocaleDateString() +
+  const endTime = eventStore
+    ? new Date(`${eventStore.endDate} ${eventStore.endTime}`).toLocaleDateString() +
       ' ' +
-      new Date(`${state.endDate} ${state.endTime}`).toLocaleTimeString([], {
+      new Date(`${eventStore.endDate} ${eventStore.endTime}`).toLocaleTimeString([], {
         hour: '2-digit',
         minute: '2-digit',
       })
     : ''
   const [promptOpen, setPrompt] = useState<boolean>(false)
 
-  const formattedAddress = formatAddress(state?.ownerAddress!)
-  console.log(state?.posterUrl)
+  const formattedAddress = formatAddress(eventStore?.ownerAddress!)
+  console.log(eventStore?.posterUrl)
 
   async function eventUpload() {
     const event = {
       address: '',
-      artist: state?.artist,
-      description: state?.description,
+      artist: eventStore?.artist,
+      description: eventStore?.description,
       isFree: false,
       isOnline: true,
-      organizer: state?.organizer,
-      ownerAddress: state?.ownerAddress,
-      posterURL: state?.posterUrl,
+      organizer: eventStore?.organizer,
+      ownerAddress: eventStore?.ownerAddress,
+      posterURL: eventStore?.posterUrl,
       startDate: new Date(startTime),
-      startingPrice: state?.startingPrice,
+      startingPrice: eventStore?.startingPrice,
       endDate: new Date(endTime),
-      title: state?.title,
-      website: state?.website,
-      social: state?.social,
+      title: eventStore?.title,
+      website: eventStore?.website,
+      social: eventStore?.social,
       metadata: metaURL,
     }
-    return await createEvent(event).then((event) => {
-      if (event !== undefined) {
+    return await createEvent(event).then((newEvent) => {
+      if (newEvent !== undefined) {
         // router?.push(`/explore?tab=livestream`)
         setIsLoading(false)
         setPrompt(true)
-        return event.id;
+        eventStore?.setId(newEvent.id!)
+        return newEvent.id;
       }
       console.log('form set open check:', event)
     })
@@ -100,20 +98,20 @@ export default function ConfirmPage({
   async function uploadMetaData() {
     setIsLoading(true)
     const meta = {
-      title: state?.title,
-      description: state?.description,
-      image: state?.memoryCardURL,
+      title: eventStore?.title,
+      description: eventStore?.description,
+      image: eventStore?.memoryCardURL,
       attributes: [
         {
           trait_type: 'posterUrl',
-          value: state?.posterUrl,
+          value: eventStore?.posterUrl,
         },
       ],
     }
 
     const metaJSON = JSON.stringify(meta, null, 2)
     const blob = new Blob([metaJSON], { type: 'application/json' })
-    const metaDataFile = new File([blob], `${state?.title}.json`) // Specify the desired filename
+    const metaDataFile = new File([blob], `${eventStore?.title}.json`) // Specify the desired filename
 
     const { cid } = await uploadFile(metaDataFile, { cache: true })
     const url = normalizeIPFSUrl(cid)?.toString()
@@ -135,11 +133,11 @@ export default function ConfirmPage({
   }
 
   useEffect(() => {
-    if (isMounted && state) {
+    if (isMounted && eventStore) {
     } else {
       return
     }
-  }, [state])
+  }, [eventStore])
 
   return !isMounted ? null : (
     <div className={'mx-auto mt-32 w-fit'}>
@@ -147,7 +145,7 @@ export default function ConfirmPage({
       <div className={'bg-[#1D0045] border-[#B999FA] border-solid p-4 rounded-md h-full'}>
         <div className={'flex justify-between'}>
           <p className={'text-lg'}>Title: </p>
-          <p className={'text-lg'}> {state?.title}</p>
+          <p className={'text-lg'}> {eventStore?.title}</p>
         </div>
 
         <div className={'flex justify-between'}>
@@ -157,17 +155,17 @@ export default function ConfirmPage({
 
         <div className={'flex justify-between'}>
           <p className={'text-lg'}>Organizer: </p>
-          <p className={'text-lg'}> {state?.organizer}</p>
+          <p className={'text-lg'}> {eventStore?.organizer}</p>
         </div>
 
         <div className={'flex justify-between'}>
           <p className={'text-lg'}>Artist: </p>
-          <p className={'text-lg'}> {state?.artist}</p>
+          <p className={'text-lg'}> {eventStore?.artist}</p>
         </div>
 
         <div className={'flex justify-between'}>
           <p className={'text-lg'}>Initial Price: </p>
-          <p className={'text-lg'}> {state?.startingPrice}</p>
+          <p className={'text-lg'}> {eventStore?.startingPrice}</p>
         </div>
 
         <div className={'flex justify-between'}>
@@ -182,17 +180,17 @@ export default function ConfirmPage({
 
         <div className={'flex justify-between'}>
           <p className={'text-lg '}>Website: </p>
-          <p className={'text-lg text-blue-300 hover:text-blue-600'}> <a target="_blank" href={`https://${state?.website}`}>{state?.website}</a></p>
+          <p className={'text-lg text-blue-300 hover:text-blue-600'}> <a target="_blank" href={`https://${eventStore?.website}`}>{eventStore?.website}</a></p>
         </div>
 
         <div className={'flex justify-between'}>
           <p className={'text-lg '}>Social: </p>
-          <p className={'text-lg text-blue-300 hover:text-blue-600'}> <a target="_blank" href={`https://${state?.social}`}>{state?.social}</a></p>
+          <p className={'text-lg text-blue-300 hover:text-blue-600'}> <a target="_blank" href={`https://${eventStore?.social}`}>{eventStore?.social}</a></p>
         </div>
 
         <div className={'flex justify-between'}>
           <p className={'text-lg '}>Description: </p>
-          <p className={'text-lg'}> {state?.description}</p>
+          <p className={'text-lg'}> {eventStore?.description}</p>
         </div>
 
         <div className={'h-0.5 bg-white w-full mt-0 mb-4 pt-0'} />
@@ -204,7 +202,7 @@ export default function ConfirmPage({
             </p>
             <div className={'w-64 h-64 relative'}>
               <Image
-                src={getFetchableUrl(state?.posterUrl)!!}
+                src={getFetchableUrl(eventStore?.posterUrl)!!}
                 fill
                 sizes="100vw"
                 className="w-full h-auto"
@@ -220,7 +218,7 @@ export default function ConfirmPage({
 
             <div className={'w-64 h-64 relative'}>
               <Image
-                src={getFetchableUrl(state?.memoryCardURL)!!}
+                src={getFetchableUrl(eventStore?.memoryCardURL)!!}
                 fill
                 sizes="100vw"
                 className="w-full h-auto"
