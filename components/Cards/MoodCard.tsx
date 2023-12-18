@@ -29,7 +29,7 @@ export const MoodCard = (props: CardProps) => {
   }
 
   const audioState = () => {
-    if (isLoading) {
+    if (isLoading && props.mood.audioSrc === src) {
       return (
         <div
           className={'md:opacity-0 md:hover:opacity-100 w-64 h-48 fixed bg-transparent'}
