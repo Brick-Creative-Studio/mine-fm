@@ -21,8 +21,6 @@ export const MoodCard = (props: CardProps) => {
     useMoodPlayerStore((state) => state)
 
   function play() {
-    console.log(props.mood.audioSrc)
-
     if (isVisible) {
       setIsPlaying(true)
     }
