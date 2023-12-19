@@ -61,8 +61,8 @@ export default function DeployEventPage({ tokenURI, createReferral, saleStart, s
     {
       tokenURI: TOKEN_URI,
       createReferral: MINE_ADMIN_EOA,
-      saleStart: eventStore ? new Date(`${eventStore?.startDate} ${eventStore?.startTime}`).getTime() : 0,
-      saleEnd: eventStore ? new Date(`${eventStore?.endDate} ${eventStore?.endTime}`).getTime() : 0,
+      saleStart: eventStore ? new Date(`${eventStore?.startDate} ${eventStore?.startTime}`).getTime() / 1000: 0,
+      saleEnd: eventStore ? new Date(`${eventStore?.endDate} ${eventStore?.endTime}`).getTime() / 1000 : 0,
       basePrice: eventStore?.startingPrice ? eventStore?.startingPrice : "0.00",
       splitAddress: splitAddress as `0x${string}`,
       ownerAddress: eventStore?.ownerAddress as `0x${string}`
@@ -75,6 +75,7 @@ export default function DeployEventPage({ tokenURI, createReferral, saleStart, s
       setSplitAddress(ethers.utils.hexStripZeros(splitTxData?.logs[0].topics[1]!).toString())
       eventStore?.setSplitAddress(ethers.utils.hexStripZeros(splitTxData?.logs[0].topics[1]!).toString())
     }
+    console.log('split data', data)
 
   }, [splitTxData, splitSettled, splitSuccess])
 

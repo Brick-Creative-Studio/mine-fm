@@ -3,7 +3,8 @@ import { useNetwork, useWaitForTransaction, useContractWrite, usePrepareContract
 import { useState } from "react";
 import { SPLIT_MAIN_ADDRESS_GOERLI_BASE,
   MINE_ADMIN_EOA,
-  MINE_TEST_EOA
+  MINE_TEST_EOA,
+  MINE_TEST_EOA_2
 } from "../../../constants/addresses";
 
 const useCreateSplit = (ownerAddress: `0x${string}`) => {
@@ -16,10 +17,12 @@ const useCreateSplit = (ownerAddress: `0x${string}`) => {
     abi: splitMainABI,
   } as const;
 
+  const splittyArgs = [MINE_TEST_EOA_2, ownerAddress].sort()
+
   const { config } = usePrepareContractWrite({
     ...splitContract,
     functionName: "createSplit",
-    args: [[MINE_TEST_EOA, ownerAddress], [500000, 500000], 0, MINE_ADMIN_EOA]
+    args: [splittyArgs, [500000, 500000], 0, MINE_ADMIN_EOA]
   })
 
 
@@ -28,7 +31,7 @@ const useCreateSplit = (ownerAddress: `0x${string}`) => {
     onSettled(data, error) {
       if (error) {
         setSettled(false);
-        return console.log("error settling");
+        return console.log("error settling", error);
       }
       setSettled(true);
     },

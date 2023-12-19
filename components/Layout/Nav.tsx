@@ -36,7 +36,7 @@ const Nav = () => {
     if (user){
       setIdentity({
         id: user.id,
-        m_tag: user.miner_tag,
+        miner_tag: user.miner_tag,
         instagram: user.instagram,
         twitter: user.twitter,
         email: user.email,

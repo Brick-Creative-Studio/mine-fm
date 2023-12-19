@@ -22,6 +22,7 @@ interface ModalProps {
 export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
   let [isOpen, setIsOpen] = useState(false)
   const [isLoading, setLoading] = useState<boolean>(false)
+  const [ canEnter, setEntrance ] = useState<boolean>(false)
 
   const formatDate = new Date(streamEvent?.startDate!).toLocaleDateString("en-US", { weekday: "long",year: "numeric", month: "long", day: "numeric",})
   const formatTime = new Date(streamEvent.startDate!).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
@@ -88,6 +89,13 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
 
   }
 
+  function entranceUI(){
+    //check if free
+    //if free show regular UI
+    //else show large centered see more button
+
+  }
+
   function closeModal() {
     setIsOpen(false)
   }
@@ -100,10 +108,10 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className={'flex justify-center items-center cursor-pointer rounded-tl-lg h-10 w-24 bg-[#FF8500] self-end'}
+        className={'flex justify-center items-center border-none cursor-pointer rounded-tl-lg h-10 w-24 bg-[#FF8500] self-end'}
       >
 
-        <h3 className={'text-sm  text-[#1D0045] my-0 mr-1'}>ENTER</h3>
+        <h3 className={'text-sm  text-[#1D0045] my-0 mr-1'}>{streamEvent.isFree ? 'ENTER'  : 'INFO'}</h3>
         <img alt={'enter icon'} src={'/exit-dark.svg'}/>
 
       </button>
@@ -175,46 +183,59 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
 
                       <p className={'mt-4'}> {streamEvent.description} </p>
                     </div>
-
-                    <div className={'flex justify-around'}>
-
-                    <div className="mt-4 w-1/3 ">
-                      {/*<Link href={`/livestream/${streamEvent.id}?tab=chat`}>*/}
-                      <button
-                        type="button"
-                        className="w-full bg-[#1D0045] rounded-sm border-solid border border-[#FF8500] cursor-pointer"
-                        onClick={() => router.push(`/stream-info?id=${streamEvent.id}`, `/stream-info?id=${streamEvent.id}`)}
-                      >
-                        <h3 className={'text-[#FF8500]'}>{`SEE MORE`}</h3>
-                      </button>
-                      {/*</Link>*/}
-                    </div>
-                      <div className="mt-4 w-1/3">
-                        { !isLoading ? (
+                    { streamEvent.isFree ? (
+                      <div className={'flex justify-around'}>
+                        <div className="mt-4 w-1/3 ">
+                          {/*<Link href={`/livestream/${streamEvent.id}?tab=chat`}>*/}
                           <button
                             type="button"
-                            className={`bg-[#FF8500] border-[#FF8500] w-full rounded-sm cursor-pointer`}
-                            onClick={handleRSVP}
-                            disabled={!hasAccount}
-
+                            className="w-full bg-[#1D0045] rounded-sm border-solid border border-[#FF8500] cursor-pointer"
+                            onClick={() => router.push(`/stream-info?id=${streamEvent.id}`, `/stream-info?id=${streamEvent.id}`)}
                           >
-                            <h3 className={'text-[#1D0045]'}>{`ENTER`}</h3>
+                            <h3 className={'text-[#FF8500]'}>{`EVENT DETAILS`}</h3>
                           </button>
-                        ) : (
-                          <button
-                            type="button"
-                            className={`bg-[#FF8500] border-[#FF8500] w-full rounded-sm cursor-pointer`}
-                            disabled={true}
+                          {/*</Link>*/}
+                        </div>
+                        <div className="mt-4 w-1/3">
+                          { !isLoading ? (
+                            <button
+                              type="button"
+                              className={`bg-[#FF8500] border-[#FF8500] w-full rounded-sm cursor-pointer`}
+                              onClick={handleRSVP}
+                              disabled={!hasAccount}
 
-                          >
-                            <h3 className={'text-[#1D0045] animate-pulse'}>{`CONFIRMING`}</h3>
-                          </button>
-                        )
-                        }
+                            >
+                              <h3 className={'text-[#1D0045]'}>{`ENTER`}</h3>
+                            </button>
+                          ) : (
+                            <button
+                              type="button"
+                              className={`bg-[#FF8500] border-[#FF8500] w-full rounded-sm cursor-pointer`}
+                              disabled={true}
+
+                            >
+                              <h3 className={'text-[#1D0045] animate-pulse'}>{`CONFIRMING`}</h3>
+                            </button>
+                          )
+                          }
+
+                        </div>
 
                       </div>
+                    ) : (
+                      <div className="mt-4 w-2/3 mx-auto ">
+                        {/*<Link href={`/livestream/${streamEvent.id}?tab=chat`}>*/}
+                        <button
+                          type="button"
+                          className="w-full bg-[#1D0045] hover:bg-blue-950 rounded-sm border-solid border border-[#FF8500] cursor-pointer"
+                          onClick={() => router.push(`/stream-info?id=${streamEvent.id}`, `/stream-info?id=${streamEvent.id}`)}
+                        >
+                          <h3 className={'text-[#FF8500]'}>{`GO TO EVENT PAGE`}</h3>
+                        </button>
+                        {/*</Link>*/}
+                      </div>
+                    )}
 
-                    </div>
                     {
                       <p className={`pt-2 text-sm text-red-600 animate-bounce ${hasAccount ? 'hidden': null}`}>
                       You need to create an account to enter a livestream!

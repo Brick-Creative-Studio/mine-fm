@@ -12,7 +12,10 @@ import { User } from '../../types/User'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import CopyButtonLight from "../../components/CopyButton/CopyButtonLight";
 import { useIsMounted } from "../../hooks/useMounted";
-
+import formatAddress from "../../utils/formatAddress";
+import useMint from "../../data/contract/requests/useMint";
+import useTokenInfo from "../../data/contract/requests/useTokenInfo";
+import { useSaleInfo } from "../../data/contract/requests/useSaleInfo";
 export default function StreamInfoPage({}) {
   const router = useRouter()
   const { id: pathID } = router.query
@@ -61,9 +64,6 @@ export default function StreamInfoPage({}) {
     }
   })
 
-  // const { data: eventData, isValidating, error } = useSWR([eventURL], fetchEvent, {
-  //   revalidateOnMount: true
-  // })
 
   useEffect(() => {
     fetchEvent(eventURL)
@@ -168,13 +168,24 @@ const data = event ? event!.startDate! : undefined
     return userList
   }
 
+
   useEffect(() => {
     if(event){
       event.ownerAddress === address ? setIsOwner(true) : setIsOwner(false)
     }
-  })
+  }, [event])
+
+  const { uri, totalMinted, maxSupply} = useTokenInfo(event?.tokenAddress!, 2)
 
 
+  const {
+    data: mintData,
+    isLoading: mintLoading,
+    isSuccess,
+    write,
+    settled,
+    txData,
+  } = useMint(event?.tokenAddress as `0x${string}` , 1, "0.003777")
 
   return (
     <div className="flex flex-col mt-24 items-center justify-center w-full">
@@ -246,8 +257,45 @@ const data = event ? event!.startDate! : undefined
             </div>
           </div>
           <div className="flex flex-col px-2 md:py-4 items-center">
-            <p className={'text-[32px] self-start'}> Description </p>
+            <p className={'text-[32px] self-start mb-1'}> Description </p>
             <p className={'text-xl text-start self-start'}>{event.description}</p>
+          </div>
+          <div className={'flex'}>
+
+          <div
+            className={
+              'w-96 h-96 bg-black/50 border-solid border-[#7DD934] rounded-md mb-4  items-center justify-center flex'
+            }
+          >
+            <img alt={'memory card'} className={'w-96 h-96'} src={event.memoryCard!}/>
+
+          </div>
+          <div className={'flex flex-col ml-12 w-1/2'}>
+            <p className={'text-2xl mt-0 mb-0 '}> Details </p>
+            <div className={'flex justify-between'}>
+              <p className={'text-lg'}>Network: </p>
+              <p className={'text-lg text-green-500'}>Base </p>
+            </div>
+            <div className={'flex justify-between'}>
+              <p className={'text-lg'}>Address: </p>
+              <p className={'text-lg text-green-500'}>{ event.tokenAddress } </p>
+            </div>
+            <div className={'flex justify-between'}>
+              <p className={'text-lg'}>Treasury: </p>
+              <p className={'text-lg text-green-500'}>{ event.splitAddress } </p>
+            </div>
+            <div className={'flex justify-between'}>
+              <p className={'text-lg'}>Media: </p>
+              <p className={'text-lg text-green-500'}> IPFS  </p>
+            </div>
+
+            <button
+              className="not-italic bg-transparent h-12 rounded-lg font-mono font-bold hover:bg-purple-400 text-lg p-2 px-4 border-solid border-[#B999FA] mt-6 cursor-pointer"
+              onClick={()=> { write?.()}}
+            >
+              {`Mint: ${event.startingPrice} ETH` }
+            </button>
+          </div>
           </div>
           <div className="flex flex-row p-2 w-full justify-center rounded-lg">
             {/* attendance list box component */}

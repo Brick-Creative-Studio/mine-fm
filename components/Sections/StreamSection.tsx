@@ -2,6 +2,7 @@ import React, { useEffect, useState} from "react";
 import { EventCard } from "components/Cards/EventCard";
 import { LivestreamCard } from "../Cards/LivestreamCard";
 import getAllEvents from "../../data/rest/getAllEvents";
+import getEventsWhere from "../../data/rest/getEventsWhere";
 import { Event } from "../../types/Event";
 const StreamLoader = (livestreams: Event[])=> {
 
@@ -13,7 +14,11 @@ export default function StreamSection({}) {
 
   useEffect( () => {
     const fetchEvents = async () => {
-      const newEvents = await getAllEvents().then((res) => {
+      const fetchParam = {
+        isApproved: true
+      }
+
+      const newEvents = await getEventsWhere(fetchParam).then((res) => {
         console.log(res)
         return res
 
