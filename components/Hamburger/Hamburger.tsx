@@ -31,7 +31,7 @@ const Hamburger = () => {
       <div
         className={`${
           hamburgerOpen ? 'inline' : 'hidden'
-        } absolute right-[150px] top-[50px]`}
+        } absolute md:right-[150px] right-[115px] top-[50px]`}
       >
         <Link key={'about-us'} href={'/about-us'}>
           <p
