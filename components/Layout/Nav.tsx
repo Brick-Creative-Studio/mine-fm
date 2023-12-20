@@ -6,12 +6,12 @@ import NavMenu from './NavMenu'
 import { useIsMounted } from '../../hooks/useMounted'
 import { useAccount } from 'wagmi'
 import { useProfileStore } from 'stores'
-// import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { ConnectButton } from 'components/ConnectButton/ConnectButton'
 import { useLayoutStore } from 'stores'
 import useGetUser from '../../hooks/useGetUser'
 import { User } from '../../types/User'
 import { useRouter } from 'next/router'
+import ConnectButton from 'components/ConnectButton/ConnectButton'
+import Hamburger from 'components/Hamburger/Hamburger'
 
 const Nav = () => {
   const isMounted = useIsMounted()
@@ -128,16 +128,6 @@ const Nav = () => {
       )}
 
       <div className={navActions}>
-        <Link key={'about-us'} href={'/about-us'}>
-          <p
-            className={`m-2 text-xl text-[#B999FA] cursor-pointer hover:text-purple-800 ${
-              isMobile ? 'hidden' : null
-            }`}
-          >
-            {' '}
-            ABOUT US{' '}
-          </p>
-        </Link>
         {address && <NavMenu hasAccount={hasAccount} signerAddress={address} />}
       </div>
     </nav>
@@ -203,17 +193,8 @@ const Nav = () => {
       )}
 
       <div className={navActions}>
-        <Link key={'about-us'} href={'/about-us'}>
-          <p
-            className={`m-2 text-xl text-[#B999FA] cursor-pointer hover:text-purple-800 ${
-              isMobile ? 'hidden' : null
-            }`}
-          >
-            {' '}
-            ABOUT US{' '}
-          </p>
-        </Link>{' '}
         <ConnectButton />
+        <Hamburger />
       </div>
     </div>
   )
