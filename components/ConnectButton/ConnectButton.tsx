@@ -37,9 +37,9 @@ const ConnectButton = () => {
                   <button
                     onClick={openConnectModal}
                     type="button"
-                    className="bg-white min-h-[35px] rounded-full w-[150px] md:w-[225px] cursor-pointer"
+                    className="bg-white min-h-[35px] rounded-full w-[150px] md:w-[225px] cursor-pointer md:ml-[20px] ml-[10px]"
                   >
-                    <div className="text-black border border-red-600">Connect Wallet</div>
+                    <div className="text-black">Connect Wallet</div>
                   </button>
                 )
               }

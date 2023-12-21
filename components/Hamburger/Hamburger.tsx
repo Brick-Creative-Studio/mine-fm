@@ -9,7 +9,7 @@ const Hamburger = () => {
   }
   return (
     <div>
-      <div className="pl-[20px]" onClick={toggleHamburger}>
+      <div className="pl-[20px] cursor-pointer" onClick={toggleHamburger}>
         <div className="flex justify-around flex-col flex-nowrap w-[2rem] h-[2rem] z-10">
           <div
             className={`flex w-[6px] h-[6px] rounded-full bg-white origin-[1px] transition-all ${
