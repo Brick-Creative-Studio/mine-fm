@@ -129,6 +129,7 @@ const Nav = () => {
 
       <div className={navActions}>
         {address && <NavMenu hasAccount={hasAccount} signerAddress={address} />}
+        <Hamburger />
       </div>
     </nav>
   ) : (
