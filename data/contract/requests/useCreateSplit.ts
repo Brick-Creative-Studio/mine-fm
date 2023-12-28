@@ -22,7 +22,7 @@ const useCreateSplit = (ownerAddress: `0x${string}`) => {
   const { config } = usePrepareContractWrite({
     ...splitContract,
     functionName: "createSplit",
-    args: [splittyArgs, [500000, 500000], 0, MINE_ADMIN_EOA]
+    args: [[ownerAddress, MINE_TEST_EOA_2], [500000, 500000], 0, MINE_ADMIN_EOA]
   })
 
 

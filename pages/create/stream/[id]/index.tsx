@@ -10,6 +10,7 @@ import { BigNumber, BytesLike, ethers } from "ethers";
 import updateEvent from "../../../../data/rest/updateEvent";
 import useCreateSplit from "../../../../data/contract/requests/useCreateSplit";
 import { useRouter } from "next/router";
+import { BONDING_CURVE_V3_GB } from "../../../../constants/addresses";
 import { useCreateEventContract } from "../../../../data/contract/requests/useCreateEventContract";
 
 
@@ -90,6 +91,7 @@ export default function DeployEventPage({ tokenURI, createReferral, saleStart, s
         tokenAddress: tokenTxData?.logs[0].address!,
         splitAddress: splitAddress,
         memoryCard: getFetchableUrl(eventStore?.memoryCardURL),
+        minterContract: BONDING_CURVE_V3_GB,
         isApproved: true
       }).then(() => {
 

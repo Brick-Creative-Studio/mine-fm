@@ -1,7 +1,10 @@
 import zora1155CreatorABI from "../abis/Zora-1155-Creator";
+import bondingCurveV3ABI from "../abis/BCS_v3";
 import { useNetwork, useWaitForTransaction, useContractWrite, usePrepareContractWrite, useAccount } from "wagmi";
 import { useState } from "react";
 import { ethers, utils } from "ethers";
+import { decodeErrorResult } from 'viem'
+
 import { decodeEventLog, encodeAbiParameters, encodeFunctionData, parseAbiParameter, zeroAddress } from "viem";
 import { SPLIT_MAIN_ADDRESS_GOERLI_BASE,
   MINE_ADMIN_EOA,
@@ -9,7 +12,8 @@ import { SPLIT_MAIN_ADDRESS_GOERLI_BASE,
   MINE_TEST_EOA_2,
   NULL_ADDRESS,
   BONDING_CURVE_ADDRESS_GOERLI_BASE,
-  BONDING_CURVE_V2_GOERLI_BASE
+  // BONDING_CURVE_V2_GOERLI_BASE,
+  BONDING_CURVE_V3_GB
 } from "../../../constants/addresses";
 import { BigNumber } from "ethers";
 
@@ -25,20 +29,29 @@ const useMint = (tokenAddress: `0x${string}`, tokenID: number, price: string) =>
     abi: zora1155CreatorABI
   } as const;
 
+
   const { config } = usePrepareContractWrite({
     ...creatorContract,
-    functionName: "mint",
+    functionName: "mintWithRewards",
     args: [
-      BONDING_CURVE_V2_GOERLI_BASE,
+      BONDING_CURVE_V3_GB,
       BigInt(tokenID),
-      BigInt('1'),
+      BigInt(1),
       utils.defaultAbiCoder.encode(
         ['address'],
         [MINE_ADMIN_EOA]
-      ) as `0x${string}`
+      ) as `0x${string}`,
+      MINE_ADMIN_EOA
     ],
     value: formattedPrice,
+    // onError(error) {
+    //   return console.log("error with prepare write", error);
+    //
+    // }
+
   })
+
+
 
   const { data, write, error, isError} = useContractWrite({
     ...config,
@@ -51,6 +64,7 @@ const useMint = (tokenAddress: `0x${string}`, tokenID: number, price: string) =>
     },
     onError(error) {
       if (chain?.network !== 'base-goerli') return console.log("wrong network");
+      return console.log("error minting tx", error);
     },
   });
 
