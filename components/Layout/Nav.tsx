@@ -129,7 +129,6 @@ const Nav = () => {
 
       <div className={navActions}>
         {address && <NavMenu hasAccount={hasAccount} signerAddress={address} />}
-        <Hamburger />
       </div>
     </nav>
   ) : (
@@ -193,9 +192,9 @@ const Nav = () => {
         </div>
       )}
 
-      <div className={navActions}>
+      <div className={'flex items-center justify-between'}>
         <ConnectButton />
-        <Hamburger />
+        <NavMenu hasAccount={hasAccount} signerAddress={null} />
       </div>
     </div>
   )

@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from "react";
 import { miniAvatar, navAvatar } from './styles.css'
-import { useDisconnect, useBalance } from 'wagmi'
+import { useDisconnect, useBalance, useAccount } from 'wagmi'
 import { Menu } from '@headlessui/react'
 import { useProfileStore } from '../../stores'
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Link from 'next/link'
 import { parseEther, formatEther } from 'ethers/lib/utils'
 import { BigNumber } from 'ethers'
 
 interface NavMenuProps {
-  signerAddress: string
+  signerAddress: string | null
   hasAccount: boolean
 }
 
@@ -19,6 +20,13 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
     address: signerAddress as `0x${string}`,
     formatUnits: 'ether',
   })
+  const { openConnectModal } = useConnectModal();
+
+  const [hamburgerOpen, setHamburgerOpen] = useState(false)
+
+  const toggleHamburger = () => {
+    setHamburgerOpen(!hamburgerOpen)
+  }
 
   const balance =
     hasAccount && data ? BigNumber.from(data?.value.toString()).mod(1e14) : null
@@ -35,7 +43,33 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
     <nav className="z-40">
       <Menu as="div" className="">
         <Menu.Button as={React.Fragment}>
-          <button style={{ background: `${userGradient}` }} className={navAvatar} />
+          {
+            signerAddress ? (
+              <button style={{ background: `${userGradient}` }} className={navAvatar} />
+            ) : (
+              <div className="pl-[20px] mr-[-20px] cursor-pointer" onClick={toggleHamburger}>
+                <div className="flex justify-around flex-col flex-nowrap w-[2rem] h-[2rem] z-10">
+                  <div
+                    className={`flex w-[6px] h-[6px] rounded-full bg-white origin-[1px] transition-all ${
+                      'rotate-0'
+                    }`}
+                  />
+                  <div
+                    className={`flex w-[6px] h-[6px] rounded-full bg-white origin-[1px] transition-all ${
+                      'translate-x-0'
+                    }`}
+                  />
+                  <div
+                    className={`flex w-[6px] h-[6px] rounded-full bg-white origin-[1px] transition-all ${
+                      hamburgerOpen ? '-rotate-45' : 'rotate-0'
+                    }`}
+                  />
+                </div>
+              </div>
+            )
+          }
+
+
         </Menu.Button>
 
         <Menu.Items className="absolute top-2 md:top-0 right-0 flex flex-col w-full md:w-1/3  bg-[#12002C] rounded-md">
@@ -58,16 +92,22 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
             </Menu.Item>
             <Menu.Item as="div" className={'p-4'}>
               {({ active }) => (
-                <div style={{ background: `${userGradient}` }} className={miniAvatar} />
+                signerAddress ? <div style={{ background: `${userGradient}` }}
+                     className={miniAvatar} /> : <div/>
               )}
             </Menu.Item>
           </div>
           <Menu.Item>
             {({ active }) => (
+
+              signerAddress ?
               <h2 className={'text-center'}>
                 {' '}
                 {formattedBalance ? formattedBalance : 0} ETH{' '}
-              </h2>
+              </h2> :
+                <h2 className={'text-center'}>
+                  Sign In to View Balance
+                </h2>
               // <h2 className={'text-center'}> { 0 } ETH </h2>
             )}
           </Menu.Item>
@@ -111,7 +151,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
             } flex items-center  justify-between w-full`}
             href={hasAccount ? `/profile/${signerAddress}` : '/onboarding?tab=aura'}
           >
-          <Menu.Item as="div" className="flex my-4 cursor-pointer hover:bg-[#FF8500]">
+          <Menu.Item as="div" className={`flex my-4 cursor-pointer hover:bg-[#FF8500] ${signerAddress ? null : 'hidden'}`}>
                 {hasAccount ? (
                   <h3 className={'text-[20px] font-light mx-8 cursor-pointer'}>Profile</h3>
                 ) : (
@@ -128,6 +168,16 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
 
                 {hasAccount ? <h3 className={'text-[20px] font-light mx-8 cursor-pointer'}>Settings </h3> : null}
           </Menu.Item>
+          </Link>
+
+          <Link
+            className={`flex items-center justify-between w-full`}
+            href={ `/about-us`}
+          >
+            <Menu.Item as="div" className={`flex my-4 cursor-pointer hover:bg-[#FF8500]`}>
+
+              { <h3 className={'text-[20px] font-light mx-8 cursor-pointer'}>About Us </h3> }
+            </Menu.Item>
           </Link>
 
           <Menu.Item as="div" className={`flex my-4`}>
@@ -151,11 +201,11 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                 className={`${
                   active && 'bg-blue-500'
                 } border-[#B999FA] rounded-md border-solid hover:bg-red-500 bg-transparent flex items-center justify-center w-3/4 cursor-pointer`}
-                onClick={() => {
-                  disconnect()
+                onClick={() =>  {
+                  signerAddress ? disconnect() : openConnectModal?.()
                 }}
               >
-                {<h3 className={'text-[20px] font-light text-white'}>Disconnect </h3>}
+                {<h3 className={'text-[20px] font-light text-white'}>{ signerAddress ? `Disconnect` : `Connect`} </h3>}
               </button>
             )}
           </Menu.Item>
