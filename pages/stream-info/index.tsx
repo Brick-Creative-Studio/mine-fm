@@ -185,7 +185,7 @@ const data = event ? event!.startDate! : undefined
     write,
     settled,
     txData,
-  } = useMint(event?.tokenAddress as `0x${string}` , 1, "0.003777")
+  } = useMint(event?.tokenAddress as `0x${string}` , 1, "0.005777")
 
   return (
     <div className="flex flex-col mt-24 items-center justify-center w-full">
