@@ -115,7 +115,7 @@ export default function FollowingModal({ followingList } : FollowingList) {
   return (
     <>
       <div className="flex w-fit flex-col items-center mx-4">
-        <button type="button" onClick={openModal} className={'bg-transparent cursor-pointer'}>
+        <button type="button" onClick={openModal} className={'bg-transparent border-none cursor-pointer'}>
           <p className={'text-white text-[13px] md:text-[16px]'}> Following </p>
           <p className="-mt-2 text-white text-[13px] md:text-[16px]"> {followingList?.length} </p>
         </button>

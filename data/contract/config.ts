@@ -6,6 +6,8 @@ import {
   trustWallet,
   ledgerWallet,
 } from '@rainbow-me/rainbowkit/wallets';
+import { alchemyProvider } from 'wagmi/providers/alchemy'
+
 import { chains, publicClient, webSocketPublicClient } from './chains'
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID!!;
 
@@ -27,10 +29,11 @@ export const connectors = connectorsForWallets([
     ],
   }
 ]);
+const provider = alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID ? process.env.NEXT_PUBLIC_ALCHEMY_ID : ""})
 
 
 export const config = createConfig({
   autoConnect: true,
   connectors,
-  publicClient
+  publicClient,
 })

@@ -21,10 +21,7 @@ interface ProfileStoreProps {
   setAura: (aura: AuraType) => void
   setIdentity: (identity: Identity) => void
   setBasicInfo: (info: BasicInfo) => void
-
   resetProfileState: () => void
-
-
 }
 
 const initialState = {

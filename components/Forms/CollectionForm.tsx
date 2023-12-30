@@ -126,7 +126,7 @@ export default function CollectionForm({ }){
                                 <div>
                                     <label> Artwork </label>
 
-                                   <SingleImageUpload id={'Collection Art'} alt={'collection art'} name={'collectionArt'} register={register}/>
+                                   <SingleImageUpload id={'Collection Art'} alt={'collection art'} name={'collectionArt'}/>
                                 </div>
                                 <div>
                                     <label htmlFor="file-input"> Upload Song </label>

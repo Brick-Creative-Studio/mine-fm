@@ -4,13 +4,14 @@ import type {
 import { decodeEventLog, encodeFunctionData, zeroAddress } from "viem";
 import { useContractWrite, usePrepareContractWrite, useAccount } from "wagmi";
 import  zora1155CreatorABI  from "../abis/Zora-1155-Creator";
-import bondingCurveStrategyABI from "../abis/BondingCurveStrategy";
+// import bondingCurveV2ABI from "../abis/BCS_v2";
+import bondingCurveV3ABI from "../abis/BCS_v3";
 import zoraContractFactoryABI from "../abis/Zora-1155-Factory";
 import { useNetwork, useWaitForTransaction } from "wagmi";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 
-import { BONDING_CURVE_ADDRESS_GOERLI_BASE,
+import { BONDING_CURVE_V3_GB,
   MINE_ADMIN_EOA,
   ZORA_FACTORY_GOERLI_BASE,
   NULL_ADDRESS,
@@ -33,10 +34,8 @@ export function useCreateEventContract({ tokenURI, createReferral, ownerAddress,
   const { chain } = useNetwork();
   const [settled, setSettled] = useState<boolean>(false);
 
-  const setUpAction = () => {
+  const constructActions = () => {
     const contractCalls = [];
-
-
 
 
     const setupNewToken = encodeFunctionData({
@@ -68,20 +67,20 @@ export function useCreateEventContract({ tokenURI, createReferral, ownerAddress,
       functionName: "addPermission",
       args: [
         BigInt(0),
-        BONDING_CURVE_ADDRESS_GOERLI_BASE,
+        BONDING_CURVE_V3_GB,
         BigInt(2 ** 2), // PERMISSION_BIT_MINTER
       ],
     });
 
     const saleData = encodeFunctionData({
-      abi: bondingCurveStrategyABI,
+      abi: bondingCurveV3ABI,
       functionName: 'setSale',
       args: [
         BigInt(1),
         {
-          basePricePerToken: BigInt(ethers.utils.parseEther(basePrice).toBigInt()) || BigInt(0),
-          saleStart: BigInt(saleStart) || BigInt(0),
-          saleEnd: BigInt(saleEnd) || BigInt(0),
+          basePricePerToken: BigInt(ethers.utils.parseEther(basePrice).toBigInt()),
+          saleStart: BigInt(saleStart),
+          saleEnd: BigInt(saleEnd),
           fundsRecipient: splitAddress || NULL_ADDRESS,
           scalingFactor: BigInt( 110)
         },
@@ -91,7 +90,7 @@ export function useCreateEventContract({ tokenURI, createReferral, ownerAddress,
     const callSale = encodeFunctionData({
       abi: zora1155CreatorABI,
       functionName: 'callSale',
-      args: [BigInt(0), BONDING_CURVE_ADDRESS_GOERLI_BASE, saleData],
+      args: [BigInt(0), BONDING_CURVE_V3_GB, saleData],
     })
 
     contractCalls.push(setupNewToken, bondingCurveApproval, callSale)
@@ -99,7 +98,7 @@ export function useCreateEventContract({ tokenURI, createReferral, ownerAddress,
     return contractCalls;
   }
 
-  const setUp = setUpAction();
+  const setUpActions = constructActions();
 
   const zora1155Factory = {
     address: ZORA_FACTORY_GOERLI_BASE,
@@ -119,7 +118,7 @@ export function useCreateEventContract({ tokenURI, createReferral, ownerAddress,
       royaltyMintSchedule: 0,
     },
       MINE_ADMIN_EOA ,
-      setUp as `0x${string}`[],
+      setUpActions as `0x${string}`[],
     ],
   });
 

@@ -30,8 +30,6 @@ export const LivestreamCard: React.FC<CardProps> = ({ streamEvent }) => {
 
 
 
-
-
   const formatDate =  new Date(`${streamEvent.startDate}`).toLocaleDateString() +
     ' ' + new Date(`${streamEvent.startDate}`).toLocaleTimeString([], {
     hour: '2-digit',

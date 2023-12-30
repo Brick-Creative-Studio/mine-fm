@@ -10,6 +10,7 @@ import { BigNumber, BytesLike, ethers } from "ethers";
 import updateEvent from "../../../../data/rest/updateEvent";
 import useCreateSplit from "../../../../data/contract/requests/useCreateSplit";
 import { useRouter } from "next/router";
+import { BONDING_CURVE_V3_GB } from "../../../../constants/addresses";
 import { useCreateEventContract } from "../../../../data/contract/requests/useCreateEventContract";
 
 
@@ -61,8 +62,8 @@ export default function DeployEventPage({ tokenURI, createReferral, saleStart, s
     {
       tokenURI: TOKEN_URI,
       createReferral: MINE_ADMIN_EOA,
-      saleStart: eventStore ? new Date(`${eventStore?.startDate} ${eventStore?.startTime}`).getTime() : 0,
-      saleEnd: eventStore ? new Date(`${eventStore?.endDate} ${eventStore?.endTime}`).getTime() : 0,
+      saleStart: eventStore ? new Date(`${eventStore?.startDate} ${eventStore?.startTime}`).getTime() / 1000: 0,
+      saleEnd: eventStore ? new Date(`${eventStore?.endDate} ${eventStore?.endTime}`).getTime() / 1000 : 0,
       basePrice: eventStore?.startingPrice ? eventStore?.startingPrice : "0.00",
       splitAddress: splitAddress as `0x${string}`,
       ownerAddress: eventStore?.ownerAddress as `0x${string}`
@@ -75,6 +76,7 @@ export default function DeployEventPage({ tokenURI, createReferral, saleStart, s
       setSplitAddress(ethers.utils.hexStripZeros(splitTxData?.logs[0].topics[1]!).toString())
       eventStore?.setSplitAddress(ethers.utils.hexStripZeros(splitTxData?.logs[0].topics[1]!).toString())
     }
+    console.log('split data', data)
 
   }, [splitTxData, splitSettled, splitSuccess])
 
@@ -89,6 +91,7 @@ export default function DeployEventPage({ tokenURI, createReferral, saleStart, s
         tokenAddress: tokenTxData?.logs[0].address!,
         splitAddress: splitAddress,
         memoryCard: getFetchableUrl(eventStore?.memoryCardURL),
+        minterContract: BONDING_CURVE_V3_GB,
         isApproved: true
       }).then(() => {
 

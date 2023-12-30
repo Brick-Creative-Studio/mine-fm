@@ -221,7 +221,7 @@ export default function Profile() {
                   }
                 </div>
 
-                <div className="flex w-fit justify-around	mt-4 bg-black/50 rounded-xl">
+                <div className="flex w-fit justify-around	mt-4 bg-black/50 border-none rounded-xl">
                   <TwitterModal isUserPage={isUserPage} twitterUrl={user?.twitter} />
                   <InstaModal isUserPage={isUserPage} instaUrl={user?.instagram} />
                   {

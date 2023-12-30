@@ -8,7 +8,15 @@ export type Event = {
 
   ownerAddress: string | null
 
+  tokenAddress: string | null
+
+  tokenId: number | null
+
+  memoryCard: string | null
+
   organizer: string
+
+  splitAddress: string | null
 
   artist: string
 

@@ -23,7 +23,7 @@ export const NavBar = style([
         padding: '20px 32px',
         '@media': {
             '(max-width: 768px)': {
-                padding: '10px 32px',
+                padding: '10px 10px',
             },
         },
     },
