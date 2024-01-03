@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useContractRead, useNetwork, useAccount } from "wagmi";
-import bondingCurveV2ABI from "../abis/BCS_v2";
+import bondingCurveStrategyABI from "../abis/BondingCurveStrategy";
 import {
-  BONDING_CURVE_V2_GOERLI_BASE,
+  BONDING_CURVE_V3_GB,
   NULL_ADDRESS,
 } from "../../../constants/addresses";
 
@@ -21,8 +21,8 @@ export function useSaleInfo(tokenContract: `0x${string}`, tokenId: number){
   const SCALING_FACTOR = 110
 
   const bondingCurveContract = {
-    address: BONDING_CURVE_V2_GOERLI_BASE,
-    abi: bondingCurveV2ABI,
+    address: BONDING_CURVE_V3_GB,
+    abi: bondingCurveStrategyABI,
     chainId: chain?.id,
   } as const;
 
@@ -40,6 +40,7 @@ export function useSaleInfo(tokenContract: `0x${string}`, tokenId: number){
         saleEnd: BigInt(0),
         basePricePerToken: BigInt(0),
         scalingFactor: BigInt(SCALING_FACTOR),
+        initialTokenPrice: BigInt(0),
         fundsRecipient: NULL_ADDRESS
       };
     }
@@ -49,6 +50,7 @@ export function useSaleInfo(tokenContract: `0x${string}`, tokenId: number){
       saleEnd,
       fundsRecipient,
       basePricePerToken,
+      initialTokenPrice,
       scalingFactor
     } = data;
 
@@ -57,6 +59,7 @@ export function useSaleInfo(tokenContract: `0x${string}`, tokenId: number){
       saleEnd: saleEnd,
       fundsRecipient: fundsRecipient,
       basePricePerToken: basePricePerToken,
+      initialTokenPrice: initialTokenPrice,
       scalingFactor: scalingFactor,
     }
   }, [data])

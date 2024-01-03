@@ -28,7 +28,7 @@ interface Props {
 
 
 export default function LivestreamPage({ eventInfo }: Props) {
-  const { id: userId, m_tag, aura, hasAccount } = useProfileStore((state) => state)
+  const { id: userId, miner_tag, aura, hasAccount } = useProfileStore((state) => state)
   const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
   const [ promptOpen, setPrompt] = useState<boolean>(false);
   const router = useRouter()
@@ -92,9 +92,10 @@ export default function LivestreamPage({ eventInfo }: Props) {
           roomName: eventInfo.id,
           messenger: {
             userId: userId,
-            miner_tag: m_tag,
+            miner_tag: miner_tag,
             socketId: socket.id,
             auraCode: auraCode,
+            walletAddress: address as string
           },
         })
         setIsConnected(true)

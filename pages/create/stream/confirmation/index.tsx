@@ -56,12 +56,13 @@ export default function ConfirmPage({
   const formattedAddress = formatAddress(eventStore?.ownerAddress!)
   console.log(eventStore?.posterUrl)
 
-  async function eventUpload() {
+  async function eventUpload(isFree: boolean ) {
     const event = {
       address: '',
       artist: eventStore?.artist,
       description: eventStore?.description,
-      isFree: false,
+      isFree: isFree,
+      isApproved: isFree,
       isOnline: true,
       organizer: eventStore?.organizer,
       ownerAddress: eventStore?.ownerAddress,
@@ -73,6 +74,7 @@ export default function ConfirmPage({
       website: eventStore?.website,
       social: eventStore?.social,
       metadata: metaURL,
+      memoryCard: eventStore?.memoryCardURL
     }
     return await createEvent(event).then((newEvent) => {
       if (newEvent !== undefined) {
@@ -87,10 +89,10 @@ export default function ConfirmPage({
   }
 
   async function selfDeployRoute(){
-    const eventID = await eventUpload();
+    const eventID = await eventUpload(false);
 
     if(eventID){
-      await router.push(`/create/stream/${eventID}`)
+      await router.push(`/create/stream/deploy/${eventID}`)
     }
     console.log('error fetching event data')
   }
@@ -109,6 +111,11 @@ export default function ConfirmPage({
       ],
     }
 
+    //if free skip metadata and deployment prompt
+    if(eventStore?.startingPrice == "0"){
+      return await eventUpload(true)
+    }
+
     const metaJSON = JSON.stringify(meta, null, 2)
     const blob = new Blob([metaJSON], { type: 'application/json' })
     const metaDataFile = new File([blob], `${eventStore?.title}.json`) // Specify the desired filename
@@ -116,6 +123,7 @@ export default function ConfirmPage({
     const { cid } = await uploadFile(metaDataFile, { cache: true })
     const url = normalizeIPFSUrl(cid)?.toString()
     console.log('Livestream Event IPFS url:', url)
+
 
     if (url) {
       setMetaURL(url)
@@ -233,7 +241,7 @@ export default function ConfirmPage({
         // onClick={() => metaURL ?  ctWrite?.() : write?.()}
         onClick={() => uploadMetaData()}
       >
-        <p> Upload Metadata and Save For Review </p>
+        <p> Upload Metadata and Save </p>
       </button>
 
       <Transition appear show={promptOpen} as={Fragment}>
@@ -297,7 +305,7 @@ export default function ConfirmPage({
                     <Link href={'/explore?tab=livestream'}>
                       <button
                         type="button"
-                        onClick={() => eventUpload()}
+                        onClick={() => eventUpload(false)}
                         className="cursor-pointer inline-flex justify-center border-solid border-[#B999FA] rounded-md bg-[#B999FA] px-4 py-2 text-sm font-medium text-[#12002C] hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       >
                         Free Deployment

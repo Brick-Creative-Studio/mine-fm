@@ -10,7 +10,6 @@ import { SPLIT_MAIN_ADDRESS_GOERLI_BASE,
 const useCreateSplit = (ownerAddress: `0x${string}`) => {
   const { chain } = useNetwork();
   const [settled, setSettled] = useState<boolean>(false);
-  //base goerli address
 
   const splitContract = {
     address: SPLIT_MAIN_ADDRESS_GOERLI_BASE,

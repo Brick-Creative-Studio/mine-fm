@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import { useLayoutStore, useProfileStore } from "../../stores";
+import { useLayoutStore, useProfileStore } from '../../stores'
 import Link from 'next/link'
 import { useAccount } from 'wagmi'
 import useSWR, { Fetcher, Key } from 'swr'
@@ -10,17 +10,21 @@ import { Event } from '../../types/Event'
 import { Attendee } from '../../types/Attendee'
 import { User } from '../../types/User'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import CopyButtonLight from "../../components/CopyButton/CopyButtonLight";
-import { useIsMounted } from "../../hooks/useMounted";
-import formatAddress from "../../utils/formatAddress";
-import useMint from "../../data/contract/requests/useMint";
-import useTokenInfo from "../../data/contract/requests/useTokenInfo";
-import { useSaleInfo } from "../../data/contract/requests/useSaleInfo";
+import CopyButtonLight from '../../components/CopyButton/CopyButtonLight'
+import { useIsMounted } from '../../hooks/useMounted'
+import formatAddress from '../../utils/formatAddress'
+import useMint from '../../data/contract/requests/useMint'
+import useTokenInfo from '../../data/contract/requests/useTokenInfo'
+import { useSaleInfo } from '../../data/contract/requests/useSaleInfo'
+import addRewardFee from '../../utils/addRewardFee'
+import { getNextTokenPrice } from '../../data/contract/requests/getNextTokenPrice'
+import { ethers } from 'ethers'
+import createRSVP from '../../data/rest/createRSVP'
 export default function StreamInfoPage({}) {
   const router = useRouter()
   const { id: pathID } = router.query
   const [isLoading, setIsLoading] = useState(false)
-  const [event, setEvent] = useState<Event|undefined>(undefined)
+  const [event, setEvent] = useState<Event | undefined>(undefined)
   const [isOwner, setIsOwner] = useState<boolean>(false)
   const { isConnected, address } = useAccount()
   const { openConnectModal } = useConnectModal()
@@ -34,11 +38,10 @@ export default function StreamInfoPage({}) {
   const rsvpURL = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
   const userEndpoint = 'user/user'
   const userURL = process.env.NEXT_PUBLIC_BASE_URL + userEndpoint
-
-
+  const [currentPrice, setCurrentPrice] = useState('0')
 
   async function fetchEvent(url: string) {
-    if (pathID){
+    if (pathID) {
       //fetch event info
       const data: Event = await axios
         .post(url, {
@@ -54,39 +57,42 @@ export default function StreamInfoPage({}) {
           router.push('/404')
           console.log('error fetching event data:', error)
         })
-      return data;
+      return data
     }
   }
 
   useEffect(() => {
-    if(!isMounted){
+    if (!isMounted) {
       return
     }
   })
 
-
   useEffect(() => {
     fetchEvent(eventURL)
-
   }, [pathID, eventURL])
 
-const data = event ? event!.startDate! : undefined
+  const nextTokenPrice = getNextTokenPrice(
+    event?.tokenAddress as `0x${string}`,
+    event?.tokenId ? event?.tokenId : 1
+  )
+
+  const data = event ? event!.startDate! : undefined
   const formatDate = event
     ? new Date(event.startDate)?.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
     : 'N/A'
   const formatTime = event
     ? new Date(event.startDate)?.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    })
+        hour: '2-digit',
+        minute: '2-digit',
+      })
     : 'N/A'
 
-  async function fetchAttendeeList (url: string){
+  async function fetchAttendeeList(url: string) {
     //fetch attendees
     return await axios
       .get(url)
@@ -99,36 +105,37 @@ const data = event ? event!.startDate! : undefined
   }
 
   async function fetchUserList(attendees: Attendee[]) {
-
-    const rsvpList: User[] = await Promise.all(attendees.map((attendee) => {
-      return axios
-        .post(userURL, {
-          id: attendee.userID,
-        })
-        .then((res) => {
-          // setAttendees(res.data)
-          console.log('attendees', res.data)
-          return res.data
-        })
-        .catch((error) => {
-          console.log('error fetching stream data:', error)
-        })
-    }))
+    const rsvpList: User[] = await Promise.all(
+      attendees.map((attendee) => {
+        return axios
+          .post(userURL, {
+            id: attendee.userID,
+          })
+          .then((res) => {
+            // setAttendees(res.data)
+            console.log('attendees', res.data)
+            return res.data
+          })
+          .catch((error) => {
+            console.log('error fetching stream data:', error)
+          })
+      })
+    )
     return rsvpList
   }
 
-  async function fetchAttendance(url : string){
-    const dataList : User[] = await fetchAttendeeList(url).then((attendees) => {
+  async function fetchAttendance(url: string) {
+    const dataList: User[] = await fetchAttendeeList(url).then((attendees) => {
       return fetchUserList(attendees)
     })
-    return dataList;
+    return dataList
   }
 
   const { data: attendanceData } = useSWR(rsvpURL, fetchAttendance)
 
   async function rsvp(event: Event) {
     const attendeeEndpoint = `attendee/create`
-    const rsvpURL = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
+    const attendeeURL = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
     setIsLoading(true)
     if (!isConnected && openConnectModal) {
       openConnectModal()
@@ -136,21 +143,25 @@ const data = event ? event!.startDate! : undefined
     }
 
     if (event?.ownerAddress === (address as string)) {
-      await router.push(`/livestream/${pathID}`, `/livestream/${pathID}`, { shallow: false })
+      await router.push(`/livestream/${pathID}`, `/livestream/${pathID}`, {
+        shallow: false,
+      })
       return
     }
 
     if (attendanceData && attendanceData?.length > 1) {
       attendanceData.map((user) => {
         if (user.walletAddress === (address as string)) {
-          router.push(`/livestream/${pathID}`, `/livestream/${pathID}`, { shallow: false })
+          router.push(`/livestream/${pathID}`, `/livestream/${pathID}`, {
+            shallow: false,
+          })
           return
         }
       })
     }
 
     await axios
-      .post(rsvpURL, {
+      .post(attendeeURL, {
         userID: accountId,
         eventID: pathID,
       })
@@ -161,22 +172,22 @@ const data = event ? event!.startDate! : undefined
         console.log('error rsvping to event:', error)
       })
   }
-  function formatAuraList(userList : User[]){
-    if(userList.length > 5){
+  function formatAuraList(userList: User[]) {
+    if (userList.length > 5) {
       return userList.slice(0, 5)
     }
     return userList
   }
 
-
   useEffect(() => {
-    if(event){
+    if (event) {
       event.ownerAddress === address ? setIsOwner(true) : setIsOwner(false)
+      const priceWithFee = addRewardFee(nextTokenPrice)
+      setCurrentPrice(priceWithFee.toString())
     }
   }, [event])
 
-  const { uri, totalMinted, maxSupply} = useTokenInfo(event?.tokenAddress!, 2)
-
+  const { uri, totalMinted, maxSupply } = useTokenInfo(event?.tokenAddress!, 1)
 
   const {
     data: mintData,
@@ -185,7 +196,23 @@ const data = event ? event!.startDate! : undefined
     write,
     settled,
     txData,
-  } = useMint(event?.tokenAddress as `0x${string}` , 1, "0.005777")
+  } = useMint(
+    event?.tokenAddress as `0x${string}`,
+    1,
+    ethers.utils.formatEther(currentPrice)
+  )
+
+  useEffect(() => {
+    // async function handleRSVP(){
+    //   createRSVP(event?.id!, accountId!, address as `0x${string}`, new Date(Date.now())).then(() => {
+    //      rsvp(event!)
+    //   })
+    // }
+    if (mintData && settled) {
+      //handleRSVP()
+      router.push(`/livestream/${pathID}`, `/livestream/${pathID}`, { shallow: false })
+    }
+  }, [settled, mintData])
 
   return (
     <div className="flex flex-col mt-24 items-center justify-center w-full">
@@ -209,27 +236,52 @@ const data = event ? event!.startDate! : undefined
                     'bg-[#FF8500] hover:bg-orange-300 m-2 rounded-sm cursor-pointer'
                   }
                 >
-                  { isLoading ? <h3 className={'text-sm w-32 animate-pulse text-[#1D0045]'}> CONFIRMING </h3> : <h3 className={'text-sm w-32 text-[#1D0045]'}> ENTER STREAM </h3>}
+                  {isLoading ? (
+                    <h3 className={'text-sm w-32 animate-pulse text-[#1D0045]'}>
+                      {' '}
+                      CONFIRMING{' '}
+                    </h3>
+                  ) : (
+                    <h3 className={'text-sm w-32 text-[#1D0045]'}> ENTER STREAM </h3>
+                  )}
                 </button>
               </div>
-              {
-                isOwner ? codeVisibile ? (
+              {isOwner ? (
+                codeVisibile ? (
                   <div className={'flex items-center w-44'}>
-                    <button onClick={() => setCodeVisibilty(false)} className={'flex items-center bg-transparent m-2 rounded-sm cursor-pointer'}>
-                      <img className={'mr-2'} alt={'key viewable icon'} src={'/eye-open.svg'}/>
+                    <button
+                      onClick={() => setCodeVisibilty(false)}
+                      className={
+                        'flex items-center bg-transparent m-2 rounded-sm cursor-pointer'
+                      }
+                    >
+                      <img
+                        className={'mr-2'}
+                        alt={'key viewable icon'}
+                        src={'/eye-open.svg'}
+                      />
                       <p className={'text-[#7DD934] '}> {streamKey}</p>
                     </button>
                     <CopyButtonLight text={streamKey} />
                   </div>
                 ) : (
                   <div className={'flex'}>
-                    <button onClick={() => setCodeVisibilty(true)} className={'flex items-center bg-transparent m-2 rounded-sm cursor-pointer'}>
-                      <img className={'mr-2'} alt={'key hidden icon'} src={'/eye-closed.svg'}/>
+                    <button
+                      onClick={() => setCodeVisibilty(true)}
+                      className={
+                        'flex items-center bg-transparent m-2 rounded-sm cursor-pointer'
+                      }
+                    >
+                      <img
+                        className={'mr-2'}
+                        alt={'key hidden icon'}
+                        src={'/eye-closed.svg'}
+                      />
                       <p className={'text-[#7DD934]'}>Reveal Stream Key</p>
                     </button>
                   </div>
-                ) : null
-              }
+                )
+              ) : null}
 
               <div className="mt-2 flex flex-col ">
                 <div className={'flex'}>
@@ -248,10 +300,16 @@ const data = event ? event!.startDate! : undefined
               <div className={'flex flex-col mt-auto text-[#FF8500]'}>
                 <p> {attendanceData?.length} Attendee(s) </p>
                 <div className={'flex'}>
-               {  attendanceData && formatAuraList(attendanceData).map((user, index) => {
-                 const aura = `linear-gradient(to ${user.direction}, ${user.colorOne}, ${user.colorTwo}, ${user.colorThree})`;
-                 return <div style={{ background: aura}} className={'w-10 h-10 mx-1 rounded-full'} />
-               }) }
+                  {attendanceData &&
+                    formatAuraList(attendanceData).map((user, index) => {
+                      const aura = `linear-gradient(to ${user.direction}, ${user.colorOne}, ${user.colorTwo}, ${user.colorThree})`
+                      return (
+                        <div
+                          style={{ background: aura }}
+                          className={'w-10 h-10 mx-1 rounded-full'}
+                        />
+                      )
+                    })}
                 </div>
               </div>
             </div>
@@ -261,41 +319,56 @@ const data = event ? event!.startDate! : undefined
             <p className={'text-xl text-start self-start'}>{event.description}</p>
           </div>
           <div className={'flex'}>
-
-          <div
-            className={
-              'w-96 h-96 bg-black/50 border-solid border-[#7DD934] rounded-md mb-4  items-center justify-center flex'
-            }
-          >
-            <img alt={'memory card'} className={'w-96 h-96'} src={event.memoryCard!}/>
-
-          </div>
-          <div className={'flex flex-col ml-12 w-1/2'}>
-            <p className={'text-2xl mt-0 mb-0 '}> Details </p>
-            <div className={'flex justify-between'}>
-              <p className={'text-lg'}>Network: </p>
-              <p className={'text-lg text-green-500'}>Base </p>
-            </div>
-            <div className={'flex justify-between'}>
-              <p className={'text-lg'}>Address: </p>
-              <p className={'text-lg text-green-500'}>{ event.tokenAddress } </p>
-            </div>
-            <div className={'flex justify-between'}>
-              <p className={'text-lg'}>Treasury: </p>
-              <p className={'text-lg text-green-500'}>{ event.splitAddress } </p>
-            </div>
-            <div className={'flex justify-between'}>
-              <p className={'text-lg'}>Media: </p>
-              <p className={'text-lg text-green-500'}> IPFS  </p>
-            </div>
-
-            <button
-              className="not-italic bg-transparent h-12 rounded-lg font-mono font-bold hover:bg-purple-400 text-lg p-2 px-4 border-solid border-[#B999FA] mt-6 cursor-pointer"
-              onClick={()=> { write?.()}}
+            <div
+              className={
+                'w-96 h-96 bg-black/50 border-solid border-[#7DD934] rounded-md mb-4  items-center justify-center flex'
+              }
             >
-              {`Mint: ${event.startingPrice} ETH` }
-            </button>
-          </div>
+              <img alt={'memory card'} className={'w-96 h-96'} src={event.memoryCard!} />
+            </div>
+            <div className={'flex flex-col ml-12 w-1/2'}>
+              <p className={'text-2xl mt-0 mb-0 '}> Details </p>
+              <div className={'flex justify-between'}>
+                <p className={'text-lg'}>Network: </p>
+                <p className={'text-lg text-green-500'}>Base </p>
+              </div>
+              <div className={'flex justify-between'}>
+                <p className={'text-lg'}>Address: </p>
+                <p className={'text-lg text-green-500'}>{event.tokenAddress} </p>
+              </div>
+              <div className={'flex justify-between'}>
+                <p className={'text-lg'}>Treasury: </p>
+                <p className={'text-lg text-green-500'}>{event.splitAddress} </p>
+              </div>
+              <div className={'flex justify-between'}>
+                <p className={'text-lg'}>Media: </p>
+                <p className={'text-lg text-green-500'}> IPFS </p>
+              </div>
+              <div className={'flex justify-between'}>
+                <p className={'text-lg'}>Protocol Fee: </p>
+                <p className={'text-lg text-green-500'}> 0.000777 ETH </p>
+              </div>
+              <div className={'flex justify-between'}>
+                <p className={'text-lg'}> Initial Price: </p>
+                <p className={'text-lg text-green-500'}> {event.startingPrice} ETH </p>
+              </div>
+              <div className={'flex justify-between'}>
+                <p className={'text-lg'}> Current Price: </p>
+                <p className={'text-lg text-green-500'}>
+                  {' '}
+                  {ethers.utils.formatEther(currentPrice)} ETH{' '}
+                </p>
+              </div>
+
+              <button
+                className="not-italic bg-transparent h-12 rounded-lg font-mono font-bold hover:bg-purple-400 text-lg p-2 px-4 border-solid border-[#B999FA] mt-6 cursor-pointer"
+                onClick={() => {
+                  write?.()
+                }}
+              >
+                {`Mint: ${ethers.utils.formatEther(currentPrice)} ETH`}
+              </button>
+            </div>
           </div>
           <div className="flex flex-row p-2 w-full justify-center rounded-lg">
             {/* attendance list box component */}

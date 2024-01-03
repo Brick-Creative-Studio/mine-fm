@@ -12,6 +12,8 @@ export type Event = {
 
   tokenId: number | null
 
+  tokensMinted: number | null
+
   memoryCard: string | null
 
   organizer: string
@@ -19,6 +21,10 @@ export type Event = {
   splitAddress: string | null
 
   artist: string
+
+  social: string | null;
+
+  website: string | null;
 
   isOnline: boolean
 

@@ -1,11 +1,10 @@
 import type {
   Address,
 } from "viem";
-import { decodeEventLog, encodeFunctionData, zeroAddress } from "viem";
+import { encodeFunctionData, zeroAddress } from "viem";
+import bondingCurveStrategyABI from "../abis/BondingCurveStrategy";
 import { useContractWrite, usePrepareContractWrite, useAccount } from "wagmi";
 import  zora1155CreatorABI  from "../abis/Zora-1155-Creator";
-// import bondingCurveV2ABI from "../abis/BCS_v2";
-import bondingCurveV3ABI from "../abis/BCS_v3";
 import zoraContractFactoryABI from "../abis/Zora-1155-Factory";
 import { useNetwork, useWaitForTransaction } from "wagmi";
 import { useEffect, useState } from "react";
@@ -18,13 +17,14 @@ import { BONDING_CURVE_V3_GB,
   EX_SPLIT_WALLET_GOERLI_BASE
 } from "../../../constants/addresses";
 
-export function useCreateEventContract({ tokenURI, createReferral, ownerAddress, saleStart, saleEnd, basePrice, splitAddress } : {
+export function useCreateEventContract({ tokenURI, createReferral, ownerAddress, saleStart, saleEnd, basePrice, initialPrice, splitAddress } : {
   tokenURI: string,
   createReferral: `0x${string}`,
   ownerAddress: `0x${string}`
   saleStart: number,
   saleEnd: number,
   basePrice: string,
+  initialPrice: string,
   splitAddress: `0x${string}`
 
 }){
@@ -53,7 +53,7 @@ export function useCreateEventContract({ tokenURI, createReferral, ownerAddress,
       abi: zora1155CreatorABI,
       functionName: 'updateRoyaltiesForToken',
       args: [
-        BigInt(0),
+        BigInt(1),
         {
           royaltyBPS: 0,
           royaltyRecipient: ownerAddress ? ownerAddress : NULL_ADDRESS,
@@ -66,19 +66,20 @@ export function useCreateEventContract({ tokenURI, createReferral, ownerAddress,
       abi: zora1155CreatorABI,
       functionName: "addPermission",
       args: [
-        BigInt(0),
+        BigInt(1),
         BONDING_CURVE_V3_GB,
         BigInt(2 ** 2), // PERMISSION_BIT_MINTER
       ],
     });
 
     const saleData = encodeFunctionData({
-      abi: bondingCurveV3ABI,
+      abi: bondingCurveStrategyABI,
       functionName: 'setSale',
       args: [
         BigInt(1),
         {
           basePricePerToken: BigInt(ethers.utils.parseEther(basePrice).toBigInt()),
+          initialTokenPrice: BigInt(ethers.utils.parseEther(initialPrice).toBigInt()),
           saleStart: BigInt(saleStart),
           saleEnd: BigInt(saleEnd),
           fundsRecipient: splitAddress || NULL_ADDRESS,
@@ -90,7 +91,7 @@ export function useCreateEventContract({ tokenURI, createReferral, ownerAddress,
     const callSale = encodeFunctionData({
       abi: zora1155CreatorABI,
       functionName: 'callSale',
-      args: [BigInt(0), BONDING_CURVE_V3_GB, saleData],
+      args: [BigInt(1), BONDING_CURVE_V3_GB, saleData],
     })
 
     contractCalls.push(setupNewToken, bondingCurveApproval, callSale)
