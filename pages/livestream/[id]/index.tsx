@@ -9,9 +9,9 @@ import StreamInfo from '../../../components/Sections/StreamInfo-Section'
 import Link from 'next/link'
 import PageAudioPlayer from '../../../components/PageAudioPlayer.tsx'
 import axios from 'axios'
+import { useVerifyAttendance } from "../../../hooks/useVerifyAttendance";
 import { useAccount } from 'wagmi'
 import { GetServerSideProps } from 'next'
-import process from 'process'
 import { Event } from '../../../types/Event'
 import { useProfileStore } from '../../../stores'
 import { socket } from '../../../utils/socket-client'
@@ -31,11 +31,17 @@ export default function LivestreamPage({ eventInfo }: Props) {
   const { id: userId, miner_tag, aura, hasAccount } = useProfileStore((state) => state)
   const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
   const [ promptOpen, setPrompt] = useState<boolean>(false);
+  const [ isGranted, setGranted ] = useState<boolean>(false)
   const router = useRouter()
   const { openConnectModal } = useConnectModal();
   const { query } = useRouter()
   const { address } = useAccount()
   const [isConnected, setIsConnected] = useState(socket.connected)
+  const {isError, isLoading, isVerified } = useVerifyAttendance(
+    address as `0x${string}`,
+    1,
+    eventInfo?.tokenAddress as `0x${string}`
+  )
 
   const guestSections = [
     {
@@ -186,11 +192,6 @@ export default function LivestreamPage({ eventInfo }: Props) {
     }
     closeModal()
   }
-
-  useEffect(() => {
-    // const rsvpList = await preload([eventInfo?.id], getAttendees)
-
-  }, [eventInfo])
 
   const infoSection = () => {
     if(isConnected){
@@ -347,8 +348,6 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       notFound: true,
     }
   }
-
-
 
   const props: Props = {
     eventInfo,

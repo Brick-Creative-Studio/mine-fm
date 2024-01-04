@@ -17,7 +17,7 @@ import { BONDING_CURVE_V3_GB,
   EX_SPLIT_WALLET_GOERLI_BASE
 } from "../../../constants/addresses";
 
-export function useCreateEventContract({ tokenURI, createReferral, ownerAddress, saleStart, saleEnd, basePrice, initialPrice, splitAddress } : {
+export function useCreateEventContract({ tokenURI, createReferral, ownerAddress, saleStart, saleEnd, basePrice, initialPrice, splitAddress, tokenName } : {
   tokenURI: string,
   createReferral: `0x${string}`,
   ownerAddress: `0x${string}`
@@ -25,7 +25,8 @@ export function useCreateEventContract({ tokenURI, createReferral, ownerAddress,
   saleEnd: number,
   basePrice: string,
   initialPrice: string,
-  splitAddress: `0x${string}`
+  splitAddress: `0x${string}`,
+  tokenName: string
 
 }){
 
@@ -112,7 +113,7 @@ export function useCreateEventContract({ tokenURI, createReferral, ownerAddress,
     functionName: "createContract",
     chainId: 84531,
     args: [tokenURI,
-      'Test MFM Contract',
+      tokenName,
       {
       royaltyBPS: 0,
       royaltyRecipient: MINE_ADMIN_EOA,

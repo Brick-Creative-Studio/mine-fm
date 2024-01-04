@@ -1,17 +1,45 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import Image from 'next/image'
 import { Event } from '../../types/Event'
 import useSWR from "swr";
 import getAttendees from "../../data/rest/getAttendees";
+import { User } from "../../types/User";
+import axios from "axios";
+import { Attendee } from "../../types/Attendee";
 
 interface Props {
   event: Event
 }
 const StreamInfoDesktop = ({ event }: Props) => {
-  const { data: attendees, error } = useSWR([event?.id], getAttendees, {
+  const [attendees, setAttendees] = useState<Attendee[]>([])
+
+  async function loader(eventID: string){
+    const attendeeEndpoint = `attendee/${eventID}`
+    const attendeeURL = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
+    console.log('stream id:', eventID)
+
+    const audience : Attendee[] = await axios.get(attendeeURL).then((res) => {
+      console.log('stream data:', res.data)
+      setAttendees(res.data)
+      return res.data
+      }).catch((error) => {
+        console.log('error fetching stream data:', error)
+      })
+    return audience;
+  }
+  const { data, error } = useSWR([event?.id], loader, {
     revalidateOnMount: true,
     revalidateIfStale: true,
   })
+
+  useEffect(() => {
+    async function m(){
+      const a = await loader(event.id as string)
+      setAttendees(a)
+    }
+    m()
+  }, [])
+
   return (
     <div
       className={
@@ -30,7 +58,7 @@ const StreamInfoDesktop = ({ event }: Props) => {
 
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
         <Image width={24} height={24} src={'/UserIcon.svg'} alt="share button" />
-        <p className={'text-[#7DD934] overflow-clip'}>{`${attendees?.length} miners`}</p>
+        <p className={'text-[#7DD934] overflow-clip'}>{`${data?.length !== 0 ? data?.length : attendees?.length} miners`}</p>
       </div>
 
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>

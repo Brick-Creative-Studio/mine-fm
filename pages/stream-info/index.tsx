@@ -19,7 +19,6 @@ import { useSaleInfo } from '../../data/contract/requests/useSaleInfo'
 import addRewardFee from '../../utils/addRewardFee'
 import { getNextTokenPrice } from '../../data/contract/requests/getNextTokenPrice'
 import { ethers } from 'ethers'
-import createRSVP from '../../data/rest/createRSVP'
 export default function StreamInfoPage({}) {
   const router = useRouter()
   const { id: pathID } = router.query
@@ -77,6 +76,7 @@ export default function StreamInfoPage({}) {
   )
 
   const data = event ? event!.startDate! : undefined
+
   const formatDate = event
     ? new Date(event.startDate)?.toLocaleDateString('en-US', {
         weekday: 'long',
@@ -133,45 +133,6 @@ export default function StreamInfoPage({}) {
 
   const { data: attendanceData } = useSWR(rsvpURL, fetchAttendance)
 
-  async function rsvp(event: Event) {
-    const attendeeEndpoint = `attendee/create`
-    const attendeeURL = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
-    setIsLoading(true)
-    if (!isConnected && openConnectModal) {
-      openConnectModal()
-      return
-    }
-
-    if (event?.ownerAddress === (address as string)) {
-      await router.push(`/livestream/${pathID}`, `/livestream/${pathID}`, {
-        shallow: false,
-      })
-      return
-    }
-
-    if (attendanceData && attendanceData?.length > 1) {
-      attendanceData.map((user) => {
-        if (user.walletAddress === (address as string)) {
-          router.push(`/livestream/${pathID}`, `/livestream/${pathID}`, {
-            shallow: false,
-          })
-          return
-        }
-      })
-    }
-
-    await axios
-      .post(attendeeURL, {
-        userID: accountId,
-        eventID: pathID,
-      })
-      .then((res) => {
-        router.push(`/livestream/${pathID}`, `/livestream/${pathID}`, { shallow: false })
-      })
-      .catch((error) => {
-        console.log('error rsvping to event:', error)
-      })
-  }
   function formatAuraList(userList: User[]) {
     if (userList.length > 5) {
       return userList.slice(0, 5)
@@ -203,13 +164,7 @@ export default function StreamInfoPage({}) {
   )
 
   useEffect(() => {
-    // async function handleRSVP(){
-    //   createRSVP(event?.id!, accountId!, address as `0x${string}`, new Date(Date.now())).then(() => {
-    //      rsvp(event!)
-    //   })
-    // }
     if (mintData && settled) {
-      //handleRSVP()
       router.push(`/livestream/${pathID}`, `/livestream/${pathID}`, { shallow: false })
     }
   }, [settled, mintData])
@@ -230,8 +185,10 @@ export default function StreamInfoPage({}) {
             <div className="flex flex-col md:mx-auto ">
               <div>
                 <p className={'text-[32px] md:mt-0'}> {event.title} </p>
+                <Link
+                  href={`/livestream/${pathID}`}
+                >
                 <button
-                  onClick={() => rsvp(event)}
                   className={
                     'bg-[#FF8500] hover:bg-orange-300 m-2 rounded-sm cursor-pointer'
                   }
@@ -245,6 +202,7 @@ export default function StreamInfoPage({}) {
                     <h3 className={'text-sm w-32 text-[#1D0045]'}> ENTER STREAM </h3>
                   )}
                 </button>
+                </Link>
               </div>
               {isOwner ? (
                 codeVisibile ? (
@@ -318,10 +276,10 @@ export default function StreamInfoPage({}) {
             <p className={'text-[32px] self-start mb-1'}> Description </p>
             <p className={'text-xl text-start self-start'}>{event.description}</p>
           </div>
-          <div className={'flex'}>
+          <div className={'flex mb-10'}>
             <div
               className={
-                'w-96 h-96 bg-black/50 border-solid border-[#7DD934] rounded-md mb-4  items-center justify-center flex'
+                'w-96 h-96 bg-black/50 border-solid border-[#7DD934] rounded-md my-auto items-center justify-center flex'
               }
             >
               <img alt={'memory card'} className={'w-96 h-96'} src={event.memoryCard!} />

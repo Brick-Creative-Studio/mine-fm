@@ -70,7 +70,8 @@ export default function DeployEventPage({ eventInfo }: Props) {
       initialPrice: eventInfo.startingPrice!,
       basePrice: BASE_FEE,
       splitAddress: splitAddress as `0x${string}`,
-      ownerAddress: eventInfo.ownerAddress as `0x${string}`
+      ownerAddress: eventInfo.ownerAddress as `0x${string}`,
+      tokenName: eventInfo.title
     })
 
 
