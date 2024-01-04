@@ -17,31 +17,30 @@ import { useProfileStore } from '../../../stores'
 import { socket } from '../../../utils/socket-client'
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  useConnectModal,
-} from '@rainbow-me/rainbowkit';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 interface Props {
   eventInfo: Event | null
 }
 
-
-
 export default function LivestreamPage({ eventInfo }: Props) {
   const { id: userId, miner_tag, aura, hasAccount } = useProfileStore((state) => state)
   const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
   const [ promptOpen, setPrompt] = useState<boolean>(false);
-  const [ isGranted, setGranted ] = useState<boolean>(false)
   const router = useRouter()
   const { openConnectModal } = useConnectModal();
   const { query } = useRouter()
   const { address } = useAccount()
+  const [modalText, setModalText ] = useState<string>('Verifying Your RSVP...')
   const [isConnected, setIsConnected] = useState(socket.connected)
   const {isError, isLoading, isVerified } = useVerifyAttendance(
     address as `0x${string}`,
     1,
     eventInfo?.tokenAddress as `0x${string}`
   )
+
+  const [ isGranted, setGranted ] = useState<boolean>(isVerified)
+
 
   const guestSections = [
     {
@@ -92,6 +91,15 @@ export default function LivestreamPage({ eventInfo }: Props) {
   ]
 
   useEffect(() => {
+    console.log('isVerified:', isVerified)
+    if(!isVerified){
+      closeValidationModal()
+    } else {
+      setGranted(true)
+    }
+  }, [isVerified])
+
+  useEffect(() => {
     if (eventInfo) {
       socket.on('connect', () => {
         socket.emit('join_room', {
@@ -132,40 +140,34 @@ export default function LivestreamPage({ eventInfo }: Props) {
   }, [eventInfo?.id, socket])
 
   const warningText =
-    'Are you sure you want to leave this page? Leaving will impact your listening stats.'
+    'Are you sure you want to leave this page? Leaving this page will impact your listening stats.'
 
   useEffect(() => {
     const handleWindowClose = (e : BeforeUnloadEvent) => {
-      // if (e.) return
+
       e.preventDefault()
 
-      // return (e.returnValue = 'test')
-      //leaveStream()
       socket.off('connect')
       socket.off('disconnect')
       socket.off('chat')
       // setPrompt(true)
     }
-    const handleBrowseAway = () => {
-      //leaveStream()
-      // if (window.confirm(warningText)) return
-      // router.events.emit('routeChangeError')
-      // throw 'routeChange aborted.'
-
-      // setPrompt(true)
-    }
     window.addEventListener('beforeunload', handleWindowClose)
 
-    router.events.on('routeChangeStart', handleBrowseAway)
     return () => {
       window.removeEventListener('beforeunload', handleWindowClose)
-      router.events.off('routeChangeStart', handleBrowseAway)
-
     }
   }, [socket])
 
-  function closeModal() {
+  function closeExitModal() {
     setPrompt(false)
+  }
+
+  function closeValidationModal(){
+    setTimeout(() => {
+      setModalText('RSVP not found. Leaving livestream...');
+        router.push('/explore?tab=livestream')
+    }, 2500);
   }
 
   function openModal() {
@@ -190,7 +192,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
           console.log('error fetching stream data:', error)
         })
     }
-    closeModal()
+    closeExitModal()
   }
 
   const infoSection = () => {
@@ -245,8 +247,9 @@ export default function LivestreamPage({ eventInfo }: Props) {
           eventId={eventInfo?.id as string}
         />
       </div>
+      {/* Confirm Exit Modal */}
       <Transition appear show={promptOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Dialog as="div" className="relative z-10" onClose={closeExitModal}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -287,7 +290,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
                     <button
                       type="button"
                       className=" cursor-pointer inline-flex justify-center border-solid border-[#B999FA] rounded-md bg-[#B999FA] px-4 py-2 text-sm font-medium text-[#12002C] hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
+                      onClick={closeExitModal}
                     >
                       I'm staying
                     </button>
@@ -307,6 +310,49 @@ export default function LivestreamPage({ eventInfo }: Props) {
           </div>
         </Dialog>
       </Transition>
+      {/* Validation Modal*/}
+      <Transition appear show={!isGranted} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={() => console.log()}>
+
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-75" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform border-solid border-[#B999FA] overflow-hidden rounded-2xl bg-[#12002C] p-6 text-center align-middle shadow-xl transition-all">
+                  <Dialog.Title
+                    as="p"
+                    className="text-lg font-light mx-auto animate-pulse leading-6 text-[#B999FA] p-2 w-fit border border-solid border-[#B999FA] rounded-md"
+                  >
+                    { modalText }
+                  </Dialog.Title>
+
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+
+
     </div>
   )
 }
