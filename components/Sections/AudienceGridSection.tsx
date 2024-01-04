@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AttendeeBox from '../AttendeeBox/AttendeeBox'
 import { User } from "../../types/User";
 import { Event } from "../../types/Event";
@@ -11,13 +11,25 @@ interface Props {
 }
 
 export default function AudienceGridSection({ event } : Props) {
-  const { data: attendees, error } = useSWR([event?.id], getAttendees, {
+  const [attendees, setAttendees] = useState<User[]>([])
+
+  useEffect(() => {
+    async function loader(){
+      const eventAudience = await getAttendees(event?.id!)
+
+      setAttendees(eventAudience!)
+    }
+    loader()
+  }, [])
+
+  const { data, error } = useSWR([event?.id], getAttendees, {
     revalidateOnMount: true,
     revalidateIfStale: true,
   })
-  const [ audience, setAudience ] = useState<User[]>()
+  useEffect(() => {
+    setAttendees(data as User[])
 
-
+  }, [data])
 
   return (
     <div className="md:h-[604px] w-full h-[32rem] p-2 overflow-scroll overflow-y-scroll	 ">

@@ -12,7 +12,7 @@ export const mood001 = {
 
 export const mood002 = {
   audioSrc: 'https://mfm-audio-bucket.s3.us-east-2.amazonaws.com/because_of_winn_dixie.m4a',
-  artworkURL: '/stock/wd-mj-2.png',
+  artworkURL: '/stock/mood-02-cover.jpeg',
   artist: 'whoyouluv',
   title: 'Because of Winn-Dixie',
   tags: ['Mellow', 'Ambient'],
@@ -23,7 +23,7 @@ export const mood002 = {
 
 export const mood003 = {
   audioSrc: 'https://mfm-audio-bucket.s3.us-east-2.amazonaws.com/keith-bloomin-set.mp3',
-  artworkURL: '/stock/mood-3-alt-cover.jpeg',
+  artworkURL: '/stock/keith-charles-mood-headshot.jpeg',
   artist: 'Keith Charles',
   title: 'Bloomin',
   tags: ['Urgent', 'Forward'],

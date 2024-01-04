@@ -1,21 +1,15 @@
 import zora1155CreatorABI from "../abis/Zora-1155-Creator";
-import bondingCurveV3ABI from "../abis/BCS_v3";
 import { useNetwork, useWaitForTransaction, useContractWrite, usePrepareContractWrite, useAccount } from "wagmi";
 import { useState } from "react";
 import { ethers, utils } from "ethers";
-import { decodeErrorResult } from 'viem'
-
-import { decodeEventLog, encodeAbiParameters, encodeFunctionData, parseAbiParameter, zeroAddress } from "viem";
 import { SPLIT_MAIN_ADDRESS_GOERLI_BASE,
   MINE_ADMIN_EOA,
   MINE_TEST_EOA,
   MINE_TEST_EOA_2,
   NULL_ADDRESS,
-  BONDING_CURVE_ADDRESS_GOERLI_BASE,
-  // BONDING_CURVE_V2_GOERLI_BASE,
+  BONDING_CURVE_GOERLI_BASE_V2,
   BONDING_CURVE_V3_GB
 } from "../../../constants/addresses";
-import { BigNumber } from "ethers";
 
 const useMint = (tokenAddress: `0x${string}`, tokenID: number, price: string) => {
 

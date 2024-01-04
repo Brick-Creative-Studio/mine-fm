@@ -64,7 +64,7 @@ export default function LivestreamForm({}) {
       startTime: data.startTime,
       endDate: data.endDate,
       endTime: data.endTime,
-      startingPrice: data.startingPrice,
+      startingPrice: isChecked ? "0.00" : data.startingPrice,
       isFree: data.isFree,
     }
 
@@ -256,8 +256,9 @@ export default function LivestreamForm({}) {
                 <input
                   placeholder=".005 ETH"
                   min={0}
-                  defaultValue={state?.startingPrice ? state?.startingPrice : undefined}
+                  defaultValue={state?.startingPrice && !isChecked ? state?.startingPrice : 0.00 }
                   type={'number'}
+                  value={isChecked ? 0.00 : undefined}
                   disabled={isChecked}
                   step={0.0001}
                   autoComplete={'off'}
@@ -274,7 +275,7 @@ export default function LivestreamForm({}) {
                   </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    defaultValue=""
+                    defaultValue={state.startDate ? state.startDate : ""}
                     type="date"
                     className=" bg-transparent h-10 w-fit border p-2 border-solid rounded-md text-white "
                     {...register('startDate', { required: true })}
@@ -287,7 +288,7 @@ export default function LivestreamForm({}) {
                   </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    defaultValue=""
+                    defaultValue={state.startTime ? state.startTime : ""}
                     type="time"
                     className=" bg-transparent h-10 border p-1 w-fit border-solid rounded-md text-white "
                     {...register('startTime', { required: true })}
@@ -303,7 +304,7 @@ export default function LivestreamForm({}) {
                   </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    defaultValue=""
+                    defaultValue={state.endDate ? state.endDate : ""}
                     type="date"
                     className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('endDate', { required: true })}
@@ -317,7 +318,7 @@ export default function LivestreamForm({}) {
                   </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    defaultValue=""
+                    defaultValue={state.endTime ? state.endTime : ""}
                     type="time"
                     className=" bg-transparent h-10 border p-1 w-fit border-solid rounded-md text-white "
                     {...register('endTime', { required: true })}
@@ -482,10 +483,10 @@ export default function LivestreamForm({}) {
                   <input
                     placeholder="0.005 ETH"
                     min={0}
-                    type={'number'}
                     step={0.0001}
-                    defaultValue={state?.startingPrice ? state?.startingPrice : undefined}
-                    disabled={isChecked}
+                    defaultValue={state?.startingPrice && !isChecked ? state?.startingPrice : 0.00 }
+                    type={'number'}
+                    value={isChecked ? 0.00 : undefined}
                     autoComplete={'off'}
                     className="bg-transparent appearance-none	 h-10 w-1/3 border p-2 px-4 border-solid rounded-md text-white "
                     {...register('startingPrice', { required: true })}
@@ -499,7 +500,7 @@ export default function LivestreamForm({}) {
                   </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    defaultValue=""
+                    defaultValue={state.startDate ? state.startDate : ""}
                     type="date"
                     className="mr-16 w-1/4 bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('startDate', { required: true })}
@@ -511,7 +512,7 @@ export default function LivestreamForm({}) {
                   </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    defaultValue=""
+                    defaultValue={state.startTime ? state.startTime : ""}
                     type="time"
                     className="w-1/4 bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('startTime', { required: true })}
@@ -525,7 +526,7 @@ export default function LivestreamForm({}) {
                   </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    defaultValue=""
+                    defaultValue={state.endDate ? state.endDate : ""}
                     type="date"
                     className="mr-16 w-1/4 bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('endDate', { required: true })}
@@ -537,7 +538,7 @@ export default function LivestreamForm({}) {
                   </label>
                   {/* register your input into the hook by invoking the "register" function */}
                   <input
-                    defaultValue=""
+                    defaultValue={state.endTime ? state.endTime : ""}
                     type="time"
                     className="w-1/4 bg-transparent h-10 border p-2 border-solid rounded-md text-white "
                     {...register('endTime', { required: true })}

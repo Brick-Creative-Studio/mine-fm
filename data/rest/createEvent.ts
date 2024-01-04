@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { Event } from "../../types/Event";
-import process from "process";
 
 
 export default async function createEvent(event: any) : Promise<Event | undefined> {

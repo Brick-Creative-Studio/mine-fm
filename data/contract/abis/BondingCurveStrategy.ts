@@ -1,5 +1,4 @@
 const bondingCurveStrategyABI = [
-
     { inputs: [], name: 'SaleEnded', type: 'error' },
     { inputs: [], name: 'SaleHasNotEnded', type: 'error' },
     { inputs: [], name: 'SaleHasNotStarted', type: 'error' },
@@ -46,6 +45,7 @@ const bondingCurveStrategyABI = [
             { internalType: 'uint64', name: 'saleStart', type: 'uint64' },
             { internalType: 'uint64', name: 'saleEnd', type: 'uint64' },
             { internalType: 'uint96', name: 'basePricePerToken', type: 'uint96' },
+            { internalType: 'uint96', name: 'initialTokenPrice', type: 'uint96' },
             { internalType: 'uint96', name: 'scalingFactor', type: 'uint96' },
             { internalType: 'address', name: 'fundsRecipient', type: 'address' },
           ],
@@ -96,6 +96,26 @@ const bondingCurveStrategyABI = [
         { internalType: 'address', name: 'wallet', type: 'address' },
       ],
       name: 'getMintedPerWallet',
+      outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'address', name: 'tokenContract', type: 'address' },
+        { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
+      ],
+      name: 'getNextTokenPrice',
+      outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
+      inputs: [
+        { internalType: 'address', name: 'tokenContract', type: 'address' },
+        { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
+      ],
+      name: 'getPreviousTokenPrice',
       outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
       stateMutability: 'view',
       type: 'function',
@@ -154,6 +174,7 @@ const bondingCurveStrategyABI = [
             { internalType: 'uint64', name: 'saleStart', type: 'uint64' },
             { internalType: 'uint64', name: 'saleEnd', type: 'uint64' },
             { internalType: 'uint96', name: 'basePricePerToken', type: 'uint96' },
+            { internalType: 'uint96', name: 'initialTokenPrice', type: 'uint96' },
             { internalType: 'uint96', name: 'scalingFactor', type: 'uint96' },
             { internalType: 'address', name: 'fundsRecipient', type: 'address' },
           ],
@@ -173,6 +194,7 @@ const bondingCurveStrategyABI = [
             { internalType: 'uint64', name: 'saleStart', type: 'uint64' },
             { internalType: 'uint64', name: 'saleEnd', type: 'uint64' },
             { internalType: 'uint96', name: 'basePricePerToken', type: 'uint96' },
+            { internalType: 'uint96', name: 'initialTokenPrice', type: 'uint96' },
             { internalType: 'uint96', name: 'scalingFactor', type: 'uint96' },
             { internalType: 'address', name: 'fundsRecipient', type: 'address' },
           ],
@@ -187,6 +209,13 @@ const bondingCurveStrategyABI = [
       type: 'function',
     },
     {
+      inputs: [],
+      name: 'splitMain',
+      outputs: [{ internalType: 'contract ISplitMain', name: '', type: 'address' }],
+      stateMutability: 'view',
+      type: 'function',
+    },
+    {
       inputs: [{ internalType: 'bytes4', name: 'interfaceId', type: 'bytes4' }],
       name: 'supportsInterface',
       outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
@@ -197,13 +226,13 @@ const bondingCurveStrategyABI = [
       inputs: [
         { internalType: 'address', name: 'factory', type: 'address' },
         { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
-        { internalType: 'address', name: 'destination', type: 'address' },
+        { internalType: 'bytes', name: 'splitArgs', type: 'bytes' },
       ],
       name: 'withdrawFunds',
-      outputs: [],
+      outputs: [{ internalType: 'address', name: 'split', type: 'address' }],
       stateMutability: 'nonpayable',
       type: 'function',
     },
 ] as const
 
-export default bondingCurveStrategyABI;
+export default bondingCurveStrategyABI
