@@ -11,7 +11,7 @@ import { Identity } from "stores";
 
 export default function IdentityForm({}) {
   const { register, handleSubmit, getValues, formState :{ errors } } = useForm<Identity>()
-  const { setIdentity, setBasicInfo, name, aura, miner_tag, email, bio, setHasAccount, id } = useProfileStore(
+  const { setIdentity, setBasicInfo, name, aura, miner_tag, email, bio, setHasAccount, id, setId } = useProfileStore(
     (state) => state
   )
   const { signerAddress: address } = useLayoutStore()
@@ -52,12 +52,13 @@ export default function IdentityForm({}) {
       const endpoint = 'user/create'
       const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
 
-      const newMiner = await axios.post(url, user).then((res) => {
-        setSuccessIsOpen(true)
-          setHasAccount(true)
-        setUser(data)
-        // router.push(`/profile/${address}`)
-        return res.data
+     return await axios.post(url, user).then((res) => {
+       setHasAccount(true)
+       setUser(data)
+       setId(data?.id!)
+       setSuccessIsOpen(true)
+
+       return res.data
       }).catch((error) => {
         console.log('fetch user error:', error)
         setFailureIsOpen(true)

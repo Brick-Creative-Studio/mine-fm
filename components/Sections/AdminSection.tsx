@@ -1,124 +1,92 @@
-import React from 'react'
+import React, { Fragment, useState } from "react";
 import Image from 'next/image'
 import { defaultUploadStyle } from "../SingleImageUpload/SingleImageUpload.css";
+import { Dialog, Transition } from "@headlessui/react";
+import Link from "next/link";
+import { Event } from "../../types/Event";
+import { useRouter } from 'next/router'
 
-export default function AdminSection({}) {
-  const hostTitle = 'Brick Studio'
-  const attendanceCount = 210
-  const entryFee = 0.013
-  const treasury = 3.287
-  const channelName = 'Titi Me Pregunto'
-  const eventDate = '8.10.23'
-  const eventTime = '5-7pm EST'
+interface Props {
+  eventID: string
+}
+
+export default function AdminSection({ eventID }: Props) {
+
+  const [ promptOpen, setPrompt] = useState<boolean>(false);
+  const router = useRouter()
+
+
+  function closeExitModal() {
+    setPrompt(false)
+  }
 
   return (
-    <div className={'flex flex-col h-96 px-4 overflow-scroll md:h-[600px]'}>
-      <div className={'flex-row flex items-center w-full'}>
-        <h3 className={'w-5/12'}> ROOM DETAILS </h3>
-        <div className={'h-0.5 w-2/3 bg-sky-500/75'} />
-      </div>
-      <div className={'flex-row flex items-center w-full'}>
-        <p className={'mr-2'}> Attendance: </p>
-        <p className={'text-[#F25C54]'}> {`${attendanceCount}`} </p>
-      </div>
-      <div className={'flex-row flex items-center w-full'}>
-        <p className={'mr-2'}> Current Entry Fee: </p>
-        <p className={'text-[#F25C54]'}> {`${entryFee} eth`} </p>
-      </div>
+    <div className={'flex flex-col h-full px-4 pt-40 overflow-scroll md:h-[605px]'}>
+      <h3 className={'text-center'}> Would You Like to End This Livestream? </h3>
+      <button onClick={() => setPrompt(true)} className={'bg-red-500 hover:bg-red-400 border-transparent h-12 rounded-lg font-mono font-bold text-lg cursor-pointer'}>
+        <p className={'my-auto'}> End Stream </p>
+      </button>
 
-      <div className={'flex-row flex items-center w-full'}>
-        <p className={'mr-2'}> Treasury: </p>
-        <p className={'text-[#F25C54]'}> {`${treasury} eth`} </p>
-      </div>
+      <Transition appear show={promptOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={closeExitModal}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
 
-      <div className={'flex-row flex items-center w-full'}>
-        <h3 className={'w-1/2'}> CHANNEL DETAILS </h3>
-        <div className={'h-0.5 w-1/2 bg-sky-500/75'} />
-      </div>
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform border-solid border-[#B999FA] overflow-hidden rounded-2xl bg-[#12002C] p-6 text-center align-middle shadow-xl transition-all">
+                  <Dialog.Title
+                    as="p"
+                    className="text-lg font-light mx-auto leading-6 text-[#B999FA] p-2 w-fit border border-solid border-[#B999FA] rounded-md"
+                  >
+                    Leave Livestream?
+                  </Dialog.Title>
+                  <div className="mt-2">
+                    <p className="text-sm text-white">
+                      Are you sure you want to end the stream? This action cannot be undone, and the memory card sale will end.
+                    </p>
+                  </div>
 
-      <div className={'flex-col flex'}>
-        <label className={'mr-2 '}> Channel Name: </label>
-        <input
-          placeholder={channelName}
-          className=" bg-transparent h-8 md:w-2/3 border p-2 border-solid rounded-md text-white "
-        />
-      </div>
-      <div className={'flex'}>
-        <div className={'flex-col flex w-1/2 mr-8'}>
-          <p className={'mr-2'}> Event Date: </p>
-          <input
-            defaultValue=""
-            type="date"
-            className=" bg-transparent h-10 border p-2 border-solid rounded-md text-white "
-          />
-        </div>
-        <div className={''}>
-          <p className={'mr-2'}> Event Time: </p>
-          <input
-            defaultValue=""
-            type="time"
-            className=" bg-transparent h-10 border p-1 w-fit border-solid rounded-md w-full text-white "
-          />
-        </div>
-      </div>
-      <div className={'flex-row flex items-center w-full'}>
-        <h3 className={'w-1/2'}> AUDIO SETTINGS </h3>
-        <div className={'h-0.5 w-2/3 bg-sky-500/75'} />
-      </div>
-
-      <div className={'flex-col flex mb-4'}>
-        <label className={''}> Audio Input </label>
-        <select id="cars" name="cars">
-          <option value="volvo">Volvo</option>
-          <option value="audi">Audi</option>
-        </select>
-      </div>
-      <div className={'flex-col flex my-2'}>
-        <label className={''}> Microphone Input </label>
-        <select id="cars" name="cars">
-          <option value="volvo">Volvo</option>
-          <option value="audi">Audi</option>
-        </select>
-      </div>
-      <div className={'flex-row flex items-center w-full'}>
-        <h3 className={'w-fit mr-6'}> DOWNLOADABLE CONTENT </h3>
-        <div className={'h-0.5 w-1/3 bg-sky-500/75'} />
-      </div>
-      <div className={'flex-col flex my-2'}>
-        <label className={'mb-4'}> Please upload content for the livestream below  </label>
-        <input
-          className={''}
-          id="file-upload"
-          data-testid="file-upload"
-          type="file"
-          multiple={true}
-        />
-      </div>
-      <div className={'flex-row flex items-center w-full'}>
-        <h3 className={'w-1/2'}> SHARE DETAILS </h3>
-        <div className={'h-0.5 w-2/3 bg-sky-500/75'} />
-      </div>
-
-      <div className={'flex-row flex items-center w-full'}>
-        <button className={'bg-transparent'}>
-          <Image width={24} height={24} src={'/share.svg'} alt="share button" />
-        </button>
-        <p className={'text-[#F25C54] ml-2'}> Share </p>
-      </div>
-      <input
-        placeholder={channelName}
-        className=" bg-transparent h-8 md:w-2/3 border p-2 border-solid rounded-md text-white "
-      />
-      <div className={'flex-row flex items-center w-full'}>
-        <button className={'bg-transparent'}>
-          <Image width={24} height={24} src={'/globe.svg'} alt="share button" />
-        </button>
-        <p className={'text-[#F25C54] ml-2'}> Socials / Website </p>
-      </div>
-      <input
-        placeholder={channelName}
-        className=" bg-transparent h-8 mb-4 md:w-2/3 border p-2 border-solid rounded-md text-white "
-      />
+                  <div className="mt-4 flex justify-around">
+                    <button
+                      type="button"
+                      className=" cursor-pointer inline-flex justify-center border-solid border-[#B999FA] rounded-md bg-[#B999FA] px-4 py-2 text-sm font-medium text-[#12002C] hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      onClick={closeExitModal}
+                    >
+                      Continue streaming
+                    </button>
+                      <button
+                        type="button"
+                        className="cursor-pointer inline-flex justify-center border-solid border-[#B999FA] rounded-md bg-[#B999FA] px-4 py-2 text-sm font-medium text-[#12002C] hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={() => router.push(`/livestream/${eventID}/exit-stream`)}
+                      >
+                        End Stream
+                      </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </div>
   )
 }

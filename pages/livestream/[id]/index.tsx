@@ -86,7 +86,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Admin',
-      component: [<AdminSection key={'Admin'} />],
+      component: [<AdminSection eventID={eventInfo?.id!} key={'Admin'} />],
     },
   ]
 
@@ -100,7 +100,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
   }, [isVerified])
 
   useEffect(() => {
-    if (eventInfo) {
+    if (eventInfo && isVerified) {
       socket.on('connect', () => {
         socket.emit('join_room', {
           roomName: eventInfo.id,
@@ -137,7 +137,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
       socket.off('chat')
       //leaveStream()
     }
-  }, [eventInfo?.id, socket])
+  }, [eventInfo?.id, socket, isVerified])
 
   const warningText =
     'Are you sure you want to leave this page? Leaving this page will impact your listening stats.'
@@ -172,27 +172,6 @@ export default function LivestreamPage({ eventInfo }: Props) {
 
   function openModal() {
     setPrompt(true)
-  }
-
-  async function leaveStream() {
-    const endpoint = `attendee/delete`
-
-    const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
-
-    if (eventInfo!.ownerAddress !== address) {
-      await axios
-        .post(url, {
-          eventID: eventInfo?.id,
-          userID: userId,
-        })
-        .then((res) => {
-          return res.data
-        })
-        .catch((error) => {
-          console.log('error fetching stream data:', error)
-        })
-    }
-    closeExitModal()
   }
 
   const infoSection = () => {
@@ -298,7 +277,6 @@ export default function LivestreamPage({ eventInfo }: Props) {
                       <button
                         type="button"
                         className="cursor-pointer inline-flex justify-center border-solid border-[#B999FA] rounded-md bg-[#B999FA] px-4 py-2 text-sm font-medium text-[#12002C] hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={() => leaveStream()}
                       >
                         Leave Stream
                       </button>
@@ -358,17 +336,10 @@ export default function LivestreamPage({ eventInfo }: Props) {
 }
 
 
-
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const eventID = params?.id?.toString()
-  const attendeeEndpoint = `attendee/${eventID}`
-  const attendeeURL = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
-  const userEndpoint = 'user/user'
-  const userURL = process.env.NEXT_PUBLIC_BASE_URL + userEndpoint
   const eventEndpoint = 'event/event'
   const eventURL = process.env.NEXT_PUBLIC_BASE_URL + eventEndpoint
-  const createRSVPEndpoint = 'attendee/create'
-  const rsvpURL = process.env.NEXT_PUBLIC_BASE_URL + createRSVPEndpoint
 
   const eventInfo: Event | null = eventID
     ? await axios
