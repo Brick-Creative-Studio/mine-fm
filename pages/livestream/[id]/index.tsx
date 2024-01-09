@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import AudienceGridSection from '../../../components/Sections/AudienceGridSection'
 import { StreamSectionHandler as SectionHandler } from '../../../components/Layout/SectionHandlers/StreamSectionHandler'
@@ -9,15 +9,15 @@ import StreamInfo from '../../../components/Sections/StreamInfo-Section'
 import Link from 'next/link'
 import PageAudioPlayer from '../../../components/PageAudioPlayer.tsx'
 import axios from 'axios'
-import { useVerifyAttendance } from "../../../hooks/useVerifyAttendance";
+import { useVerifyAttendance } from '../../../hooks/useVerifyAttendance'
 import { useAccount } from 'wagmi'
 import { GetServerSideProps } from 'next'
 import { Event } from '../../../types/Event'
 import { useProfileStore } from '../../../stores'
 import { socket } from '../../../utils/socket-client'
-import Image from "next/image";
-import { Dialog, Transition } from "@headlessui/react";
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+import Image from 'next/image'
+import { Dialog, Transition } from '@headlessui/react'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 
 interface Props {
   eventInfo: Event | null
@@ -26,21 +26,20 @@ interface Props {
 export default function LivestreamPage({ eventInfo }: Props) {
   const { id: userId, miner_tag, aura, hasAccount } = useProfileStore((state) => state)
   const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
-  const [ promptOpen, setPrompt] = useState<boolean>(false);
+  const [promptOpen, setPrompt] = useState<boolean>(false)
   const router = useRouter()
-  const { openConnectModal } = useConnectModal();
+  const { openConnectModal } = useConnectModal()
   const { query } = useRouter()
   const { address } = useAccount()
-  const [modalText, setModalText ] = useState<string>('Verifying Your RSVP...')
+  const [modalText, setModalText] = useState<string>('Verifying Your RSVP...')
   const [isConnected, setIsConnected] = useState(socket.connected)
-  const {isError, isLoading, isVerified } = useVerifyAttendance(
+  const { isError, isLoading, isVerified } = useVerifyAttendance(
     address as `0x${string}`,
     1,
     eventInfo?.tokenAddress as `0x${string}`
   )
 
-  const [ isGranted, setGranted ] = useState<boolean>(isVerified)
-
+  const [isGranted, setGranted] = useState<boolean>(isVerified)
 
   const guestSections = [
     {
@@ -55,12 +54,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Info',
-      component: [
-        <StreamInfo
-          eventInfo={eventInfo!}
-          key={'info'}
-        />,
-      ],
+      component: [<StreamInfo eventInfo={eventInfo!} key={'info'} />],
     },
   ]
 
@@ -77,12 +71,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Info',
-      component: [
-        <StreamInfo
-          eventInfo={eventInfo!}
-          key={'info'}
-        />,
-      ],
+      component: [<StreamInfo eventInfo={eventInfo!} key={'info'} />],
     },
     {
       title: 'Admin',
@@ -92,7 +81,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
 
   useEffect(() => {
     console.log('isVerified:', isVerified)
-    if(!isVerified){
+    if (!isVerified) {
       closeValidationModal()
     } else {
       setGranted(true)
@@ -109,25 +98,24 @@ export default function LivestreamPage({ eventInfo }: Props) {
             miner_tag: miner_tag,
             socketId: socket.id,
             auraCode: auraCode,
-            walletAddress: address as string
+            walletAddress: address as string,
           },
         })
         setIsConnected(true)
 
         //check wallet connection
-        if(!isConnected && openConnectModal){
+        if (!isConnected && openConnectModal) {
           openConnectModal()
           return
         }
         //check for mine account
-        if(!hasAccount){
+        if (!hasAccount) {
           return
         }
 
-       // handleRSVP()
+        // handleRSVP()
       })
       socket.connect()
-
     }
 
     return () => {
@@ -143,8 +131,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
     'Are you sure you want to leave this page? Leaving this page will impact your listening stats.'
 
   useEffect(() => {
-    const handleWindowClose = (e : BeforeUnloadEvent) => {
-
+    const handleWindowClose = (e: BeforeUnloadEvent) => {
       e.preventDefault()
 
       socket.off('connect')
@@ -163,11 +150,11 @@ export default function LivestreamPage({ eventInfo }: Props) {
     setPrompt(false)
   }
 
-  function closeValidationModal(){
+  function closeValidationModal() {
     setTimeout(() => {
-      setModalText('RSVP not found. Leaving livestream...');
-        router.push('/explore?tab=livestream')
-    }, 2500);
+      setModalText('RSVP not found. Leaving livestream...')
+      router.push('/explore?tab=livestream')
+    }, 2500)
   }
 
   function openModal() {
@@ -175,7 +162,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
   }
 
   const infoSection = () => {
-    if(isConnected){
+    if (isConnected) {
       console.log('owner address', eventInfo?.ownerAddress)
       return eventInfo?.ownerAddress === address ? adminSections : guestSections
     }
@@ -184,12 +171,15 @@ export default function LivestreamPage({ eventInfo }: Props) {
 
   return (
     <div className="flex flex-col h-min	 w-full mt-8 md:my-auto">
-
       <div className={'flex justify-between mb-4'}>
-
         <button className={'bg-transparent'} onClick={() => setPrompt(true)}>
           <div className="flex flex-row mx-6 cursor-pointer">
-            <Image src={'/chevron-left.svg'} width={28} height={28} alt="gallery button" />
+            <Image
+              src={'/chevron-left.svg'}
+              width={28}
+              height={28}
+              alt="gallery button"
+            />
             <p className={'text-white text-[16px]'}> Exit </p>
           </div>
         </button>
@@ -261,7 +251,8 @@ export default function LivestreamPage({ eventInfo }: Props) {
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-white">
-                      Are you sure you want to leave this page? Leaving will impact your listening stats.
+                      Are you sure you want to leave this page? Leaving will impact your
+                      listening stats.
                     </p>
                   </div>
 
@@ -291,7 +282,6 @@ export default function LivestreamPage({ eventInfo }: Props) {
       {/* Validation Modal*/}
       <Transition appear show={!isGranted} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={() => console.log()}>
-
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -320,21 +310,17 @@ export default function LivestreamPage({ eventInfo }: Props) {
                     as="p"
                     className="text-lg font-light mx-auto animate-pulse leading-6 text-[#B999FA] p-2 w-fit border border-solid border-[#B999FA] rounded-md"
                   >
-                    { modalText }
+                    {modalText}
                   </Dialog.Title>
-
                 </Dialog.Panel>
               </Transition.Child>
             </div>
           </div>
         </Dialog>
       </Transition>
-
-
     </div>
   )
 }
-
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const eventID = params?.id?.toString()
@@ -369,6 +355,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const props: Props = {
     eventInfo,
   }
+
   return {
     props,
   }

@@ -1,39 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Event } from '../../types/Event'
-import useSWR from "swr";
-import getAttendees from "../../data/rest/getAttendees";
-import { User } from "../../types/User";
-import axios from "axios";
-import { Attendee } from "../../types/Attendee";
+import useSWR from 'swr'
+import getAttendees from '../../data/rest/getAttendees'
+import { User } from '../../types/User'
+import axios from 'axios'
+import { Attendee } from '../../types/Attendee'
+import TwitterShare from 'components/Modals/TwitterShare'
 
 interface Props {
   event: Event
 }
 const StreamInfoDesktop = ({ event }: Props) => {
   const [attendees, setAttendees] = useState<Attendee[]>([])
+  const [shareUrl, setShareUrl] = useState<string>('')
 
-  async function loader(eventID: string){
+  async function loader(eventID: string) {
     const attendeeEndpoint = `attendee/${eventID}`
     const attendeeURL = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
     console.log('stream id:', eventID)
 
-    const audience : Attendee[] = await axios.get(attendeeURL).then((res) => {
-      console.log('stream data:', res.data)
-      setAttendees(res.data)
-      return res.data
-      }).catch((error) => {
+    const audience: Attendee[] = await axios
+      .get(attendeeURL)
+      .then((res) => {
+        console.log('stream data:', res.data)
+        setAttendees(res.data)
+        return res.data
+      })
+      .catch((error) => {
         console.log('error fetching stream data:', error)
       })
-    return audience;
+    return audience
   }
   const { data, error } = useSWR([event?.id], loader, {
     revalidateOnMount: true,
     revalidateIfStale: true,
   })
 
+  function selectTweet() {
+    return `I just minted ‘${event.title}’ on @mine_fm`
+  }
+
   useEffect(() => {
-    async function m(){
+    setShareUrl(`${process.env.NEXT_PUBLIC_CLIENT_URL}/livestream/${event.id}`)
+    async function m() {
       const a = await loader(event.id as string)
       setAttendees(a)
     }
@@ -58,7 +68,9 @@ const StreamInfoDesktop = ({ event }: Props) => {
 
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
         <Image width={24} height={24} src={'/UserIcon.svg'} alt="share button" />
-        <p className={'text-[#7DD934] overflow-clip'}>{`${data?.length !== 0 ? data?.length : attendees?.length} miners`}</p>
+        <p className={'text-[#7DD934] overflow-clip'}>{`${
+          data?.length !== 0 ? data?.length : attendees?.length
+        } miners`}</p>
       </div>
 
       <div className={'flex-row gap-2 flex items-center justify-center w-full'}>
@@ -76,14 +88,16 @@ const StreamInfoDesktop = ({ event }: Props) => {
         <p className={'mr-2 text-[#7DD934]'}>∞</p>
       </div>
 
-      <button
-        className={
-          'flex-row gap-2 flex items-center justify-center w-full bg-transparent'
-        }
-      >
-        <Image width={24} height={24} src={'/ShareIcon.svg'} alt="share button" />
-        <p className={'text-[#7DD934] ml-2'}>Share</p>
-      </button>
+      <TwitterShare text={selectTweet()} url={shareUrl}>
+        <button
+          className={
+            'flex-row gap-2 flex items-center justify-center w-full bg-transparent cursor-pointer'
+          }
+        >
+          <Image width={24} height={24} src={'/ShareIcon.svg'} alt="share button" />
+          <p className={'text-[#7DD934] ml-2'}>Share</p>
+        </button>
+      </TwitterShare>
     </div>
   )
 }
