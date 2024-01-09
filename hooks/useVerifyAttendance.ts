@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { useBalance, useNetwork, useContractRead } from 'wagmi'
+import { useBalance, useNetwork, useContractRead, useAccount } from 'wagmi'
 import { BigNumber, ethers } from 'ethers'
 import zora1155CreatorABI from '../data/contract/abis/Zora-1155-Creator'
 
@@ -9,6 +9,7 @@ export function useVerifyAttendance(
   tokenAddress: `0x${string}`
 ) {
   const { chain } = useNetwork()
+  const { address } = useAccount()
   const [isVerified, setVerified] = React.useState(false)
 
   const creatorContract = {
@@ -26,7 +27,7 @@ export function useVerifyAttendance(
 
   useMemo<number>(() => {
     const tokenCount = data ? Number(ethers.utils.formatEther(data!)) : 0
-    if (tokenCount > 0) {
+    if (tokenCount > 0 || walletAddress === address) {
       setVerified(true)
     }
 
@@ -35,3 +36,4 @@ export function useVerifyAttendance(
 
   return { isVerified, isError, isLoading }
 }
+197
