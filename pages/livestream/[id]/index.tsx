@@ -18,7 +18,7 @@ import { socket } from '../../../utils/socket-client'
 import Image from 'next/image'
 import { Dialog, Transition } from '@headlessui/react'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-
+import readTreasury from "../../../data/contract/requests/readTreasury";
 interface Props {
   eventInfo: Event | null
 }
@@ -38,6 +38,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
     1,
     eventInfo?.tokenAddress as `0x${string}`
   )
+  const treasuryAmountInEth = readTreasury(eventInfo?.splitAddress as `0x${string}`)
 
   const [isGranted, setGranted] = useState<boolean>(isVerified)
 
@@ -75,7 +76,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Admin',
-      component: [<AdminSection eventID={eventInfo?.id!} key={'Admin'} />],
+      component: [<AdminSection splitAddress={eventInfo?.splitAddress as `0x${string}`} eventID={eventInfo?.id!} key={'Admin'} />],
     },
   ]
 
@@ -164,6 +165,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
   const infoSection = () => {
     if (isConnected) {
       console.log('owner address', eventInfo?.ownerAddress)
+      console.log('treasury', treasuryAmountInEth)
       return eventInfo?.ownerAddress === address ? adminSections : guestSections
     }
     return guestSections

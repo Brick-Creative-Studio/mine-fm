@@ -1,24 +1,65 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Image from 'next/image'
 import { defaultUploadStyle } from "../SingleImageUpload/SingleImageUpload.css";
 import { Dialog, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { Event } from "../../types/Event";
+import readSplits from "../../data/contract/requests/readSplits";
 import { useRouter } from 'next/router'
+import endStream from "../../data/rest/endStream";
+import updateSplit from "../../data/contract/requests/updateSplit";
+import { Rsvp } from "../../types/Rsvp";
 
 interface Props {
-  eventID: string
+  eventID: string,
+  splitAddress: `0x${string}`
 }
 
-export default function AdminSection({ eventID }: Props) {
+export default function AdminSection({ eventID, splitAddress }: Props) {
 
   const [ promptOpen, setPrompt] = useState<boolean>(false);
   const router = useRouter()
+  // readSplits()
 
+  const [splitReady, setSplitReady] = useState<boolean>(false)
+  const [ rosterData, setRosterData] = useState<Rsvp[]>([])
+  const { data,
+    isLoading,
+    isSuccess,
+    write,
+    txData, } = updateSplit(splitAddress, rosterData)
 
   function closeExitModal() {
     setPrompt(false)
   }
+
+  async function endEvent(eventID: string){
+     await endStream(eventID).then((roster) =>{
+      if(roster){
+        setRosterData(roster)
+      }
+    })
+
+  }
+
+  useEffect(() => {
+
+    if(rosterData.length > 1){
+      console.log('write triggered')
+
+      write?.()
+    }
+  }, [rosterData])
+
+
+  useEffect(() => {
+
+    if(txData && isSuccess){
+      console.log('update split success', txData)
+    }
+  }, [txData, isSuccess])
+
+
 
   return (
     <div className={'flex flex-col h-full px-4 pt-40 overflow-scroll md:h-[605px]'}>
@@ -76,7 +117,9 @@ export default function AdminSection({ eventID }: Props) {
                       <button
                         type="button"
                         className="cursor-pointer inline-flex justify-center border-solid border-[#B999FA] rounded-md bg-[#B999FA] px-4 py-2 text-sm font-medium text-[#12002C] hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={() => router.push(`/livestream/${eventID}/exit-stream`)}
+                        // onClick={() => router.push(`/livestream/${eventID}/exit-stream`)}
+                        onClick={() => endEvent(eventID)}
+
                       >
                         End Stream
                       </button>
