@@ -73,7 +73,7 @@ export default function CreateAccountModal() {
                       className="cursor-pointer inline-flex justify-center border-solid border-[#B999FA] rounded-md bg-[#B999FA] px-4 py-2 text-sm font-medium text-[#12002C] hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={() => closeModal()}
                     >
-                      Next Time
+                       Dismiss
                     </button>
                   </div>
                 </Dialog.Panel>
