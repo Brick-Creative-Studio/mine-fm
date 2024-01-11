@@ -2,11 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import React, { Fragment, useState } from 'react'
 import Link from 'next/link'
 
-interface Props {
-  ownerAddress: string
-  userId: string
-  eventId: string
-}
+
 export default function CreateAccountModal() {
   let [isOpen, setIsOpen] = useState(true)
 
