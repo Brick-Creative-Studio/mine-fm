@@ -11,13 +11,12 @@ import { SPLIT_MAIN_ADDRESS_GOERLI_BASE,
   BONDING_CURVE_V3_GB
 } from "../../../constants/addresses";
 
-const useMint = (tokenAddress: `0x${string}`, tokenID: number, price: string) => {
+const useMint = (tokenAddress: `0x${string}`, tokenID: number, price: string, recipient: `0x${string}`) => {
 
   const { chain } = useNetwork();
   const [settled, setSettled] = useState<boolean>(false);
   //base goerli address
   const formattedPrice = ethers.utils.parseEther(price).toBigInt()
-  console.log('price', formattedPrice)
   const creatorContract = {
     address: tokenAddress,
     abi: zora1155CreatorABI
@@ -33,7 +32,7 @@ const useMint = (tokenAddress: `0x${string}`, tokenID: number, price: string) =>
       BigInt(1),
       utils.defaultAbiCoder.encode(
         ['address'],
-        [MINE_ADMIN_EOA]
+        [recipient]
       ) as `0x${string}`,
       MINE_ADMIN_EOA
     ],
@@ -64,7 +63,7 @@ const useMint = (tokenAddress: `0x${string}`, tokenID: number, price: string) =>
 
 
   const {
-    isLoading,
+    isLoading: isTxLoading,
     isSuccess,
     data: txData,
   } = useWaitForTransaction({
@@ -73,7 +72,7 @@ const useMint = (tokenAddress: `0x${string}`, tokenID: number, price: string) =>
 
   return {
     data,
-    isLoading,
+    isTxLoading,
     isSuccess,
     write,
     settled,

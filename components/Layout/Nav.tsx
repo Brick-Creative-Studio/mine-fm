@@ -13,6 +13,8 @@ import { useRouter } from 'next/router'
 import ConnectButton from 'components/ConnectButton/ConnectButton'
 import Hamburger from 'components/Hamburger/Hamburger'
 import CreateAccountModal from 'components/Modals/CreateAccountModal'
+import useSWR from "swr";
+import getAttendees from "../../data/rest/getAttendees";
 
 const Nav = () => {
   const isMounted = useIsMounted()
@@ -34,6 +36,11 @@ const Nav = () => {
   })
 
   const { error, isLoading, user } = useGetUser(address as string)
+
+  const { data, error: swrError } = useSWR([address as string], useGetUser, {
+    revalidateOnMount: true,
+    revalidateIfStale: true,
+  })
 
   useEffect(() => {
     if (user) {
