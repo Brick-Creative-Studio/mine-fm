@@ -2,28 +2,36 @@ import React, { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import styles from './Player.module.css'
 
+interface Station {
+  id: string,
+  name: string,
+  host: string,
+  description: string,
+  streamUrl: string,
+  image: string,
+  online: boolean,
+  listeners: number
+}
 const PageAudioPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playable, setPlayable] = useState<boolean>(false)
   const [isPlaying, setIsPlaying]: [boolean, Function] = useState(false)
 
   // useEffect to check if audio src is playable
-  // will need a way to communicate from the server to the client
-  // when a stream goes live, and when it ends
-  // for when a user is on the page before the stream goes live
   useEffect(() => {
-    const audio = audioRef.current?.currentSrc
-     fetch(audio as string)
-      .then((res) => {
-        if (res.ok) {
-          setPlayable(true)
-        } else {
-          setPlayable(false)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    const eveningsAPI = "https://api.evenings.co/v1/streams/mine.fm/public"
+    async function fetchStatus(){
+      const stationData = await fetch(eveningsAPI)
+      const data: Station = await stationData?.json()
+
+      if(data.online){
+        setPlayable(true)
+      } else{
+        setPlayable(false)
+      }
+    }
+    fetchStatus()
+
   }, [])
 
   const handlePlayPause = () => {
@@ -33,7 +41,7 @@ const PageAudioPlayer = () => {
         audioRef.current.pause()
         setIsPlaying(false)
       } else {
-        audioRef.current.play()
+        audioRef.current?.play()
         setIsPlaying(true)
       }
     }
@@ -75,10 +83,10 @@ const PageAudioPlayer = () => {
       ) : !playable ? (
         <div>Stream is not Live</div>
       ) : null}
-      <audio ref={audioRef}>
+      <audio src="https://media.evenings.co/s/ML3761y9Q"  ref={audioRef}/>
         {/*<source src="https://stream-relay-geo.ntslive.net/stream/64.aac?client=NTSWebApp&t=1691770293785" />*/}
-         <source src="rtmp://s2.evenings.co/evenings" />
-      </audio>
+      {/*   <source src="https://media.evenings.co/s/ML3761y9Q" type={'audio/mpeg'} />*/}
+      {/*</audio>*/}
     </>
   )
 }
