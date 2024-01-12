@@ -12,13 +12,13 @@ import { User } from '../../types/User'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import CopyButtonLight from '../../components/CopyButton/CopyButtonLight'
 import { useIsMounted } from '../../hooks/useMounted'
-import formatAddress from '../../utils/formatAddress'
 import useMint from '../../data/contract/requests/useMint'
 import useTokenInfo from '../../data/contract/requests/useTokenInfo'
-import { useSaleInfo } from '../../data/contract/requests/useSaleInfo'
+import { useVerifyAttendance } from "../../hooks/useVerifyAttendance";
 import addRewardFee from '../../utils/addRewardFee'
 import { getNextTokenPrice } from '../../data/contract/requests/getNextTokenPrice'
 import { ethers } from 'ethers'
+import { NULL_ADDRESS } from "../../constants/addresses";
 export default function StreamInfoPage({}) {
   const router = useRouter()
   const { id: pathID } = router.query
@@ -38,6 +38,13 @@ export default function StreamInfoPage({}) {
   const userEndpoint = 'user/user'
   const userURL = process.env.NEXT_PUBLIC_BASE_URL + userEndpoint
   const [currentPrice, setCurrentPrice] = useState('0')
+  const {isError, isLoading: verifyLoading, isVerified } = useVerifyAttendance(
+    address as `0x${string}`,
+    1,
+    event?.tokenAddress as `0x${string}`
+  )
+  const [ isValid, setValidity ] = useState<boolean>(false)
+
 
   async function fetchEvent(url: string) {
     if (pathID) {
@@ -132,6 +139,15 @@ export default function StreamInfoPage({}) {
   }
 
   const { data: attendanceData } = useSWR(rsvpURL, fetchAttendance)
+  // const { data: verificationData, isValidating } = useSWR(
+  //   [address as `0x${string}`, 1, event?.tokenAddress as `0x${string}`],
+  //   (
+  //     [walletAddress,
+  //      isLoading,
+  //      isVerified]) => useVerifyAttendance(walletAddress, isLoading, isVerified), {
+  //     revalidateOnMount: true,
+  //     revalidateIfStale: true,
+  //   })
 
   function formatAuraList(userList: User[]) {
     if (userList.length > 5) {
@@ -143,16 +159,19 @@ export default function StreamInfoPage({}) {
   useEffect(() => {
     if (event) {
       event.ownerAddress === address ? setIsOwner(true) : setIsOwner(false)
+      setValidity(true)
       const priceWithFee = addRewardFee(nextTokenPrice)
       setCurrentPrice(priceWithFee.toString())
     }
-  }, [event])
+  }, [event, nextTokenPrice])
 
   const { uri, totalMinted, maxSupply } = useTokenInfo(event?.tokenAddress!, 1)
 
+
+
   const {
     data: mintData,
-    isLoading: mintLoading,
+    isTxLoading,
     isSuccess,
     write,
     settled,
@@ -160,14 +179,26 @@ export default function StreamInfoPage({}) {
   } = useMint(
     event?.tokenAddress as `0x${string}`,
     1,
-    ethers.utils.formatEther(currentPrice)
+    ethers.utils.formatEther(currentPrice),
+    address ? address as `0x${string}` : NULL_ADDRESS
   )
 
+
+
   useEffect(() => {
-    if (mintData && settled) {
-      router.push(`/livestream/${pathID}`, `/livestream/${pathID}`, { shallow: false })
+    if (txData?.status === 'success'){
+      setTimeout(() => {
+        setIsLoading(false)
+        setValidity(true)
+
+      }, 7000);
     }
-  }, [settled, mintData])
+
+    if(isTxLoading){
+      setIsLoading(true)
+    }
+
+  }, [isSuccess, txData, isTxLoading])
 
   return (
     <div className="flex flex-col mt-24 items-center justify-center w-full">
@@ -185,24 +216,25 @@ export default function StreamInfoPage({}) {
             <div className="flex flex-col md:mx-auto ">
               <div>
                 <p className={'text-[32px] md:mt-0'}> {event.title} </p>
-                <Link
-                  href={`/livestream/${pathID}`}
-                >
+
                 <button
                   className={
                     'bg-[#FF8500] hover:bg-orange-300 m-2 rounded-sm cursor-pointer'
                   }
                 >
-                  {isLoading ? (
-                    <h3 className={'text-sm w-32 animate-pulse text-[#1D0045]'}>
+                  { !isValid ? (
+                    <h3 className={'text-sm w-48 text-[#1D0045]'}>
                       {' '}
-                      CONFIRMING{' '}
+                      MEMORY CARD REQUIRED {' '}
                     </h3>
                   ) : (
+                    <Link
+                      href={`/livestream/${pathID}`}
+                    >
                     <h3 className={'text-sm w-32 text-[#1D0045]'}> ENTER STREAM </h3>
+                    </Link>
                   )}
                 </button>
-                </Link>
               </div>
               {isOwner ? (
                 codeVisibile ? (
@@ -288,31 +320,31 @@ export default function StreamInfoPage({}) {
               <p className={'text-2xl mt-0 mb-0 '}> Details </p>
               <div className={'flex justify-between'}>
                 <p className={'text-lg'}>Network: </p>
-                <p className={'text-lg text-green-500'}>Base </p>
+                <p className={'text-lg text-[#7DD934]'}>Base </p>
               </div>
               <div className={'flex justify-between'}>
                 <p className={'text-lg'}>Address: </p>
-                <p className={'text-lg text-green-500'}>{event.tokenAddress} </p>
+                <p className={'text-lg text-[#7DD934]'}>{event.tokenAddress} </p>
               </div>
               <div className={'flex justify-between'}>
                 <p className={'text-lg'}>Treasury: </p>
-                <p className={'text-lg text-green-500'}>{event.splitAddress} </p>
+                <p className={'text-lg text-[#7DD934]'}>{event.splitAddress} </p>
               </div>
               <div className={'flex justify-between'}>
                 <p className={'text-lg'}>Media: </p>
-                <p className={'text-lg text-green-500'}> IPFS </p>
+                <p className={'text-lg text-[#7DD934]'}> IPFS </p>
               </div>
               <div className={'flex justify-between'}>
                 <p className={'text-lg'}>Protocol Fee: </p>
-                <p className={'text-lg text-green-500'}> 0.000777 ETH </p>
+                <p className={'text-lg text-[#7DD934]'}> 0.000777 ETH </p>
               </div>
               <div className={'flex justify-between'}>
                 <p className={'text-lg'}> Initial Price: </p>
-                <p className={'text-lg text-green-500'}> {event.startingPrice} ETH </p>
+                <p className={'text-lg text-[#7DD934]'}> {event.startingPrice} ETH </p>
               </div>
               <div className={'flex justify-between'}>
                 <p className={'text-lg'}> Current Price: </p>
-                <p className={'text-lg text-green-500'}>
+                <p className={'text-lg text-[#7DD934]'}>
                   {' '}
                   {ethers.utils.formatEther(currentPrice)} ETH{' '}
                 </p>
@@ -324,7 +356,7 @@ export default function StreamInfoPage({}) {
                   write?.()
                 }}
               >
-                {`Mint: ${ethers.utils.formatEther(currentPrice)} ETH`}
+                {isLoading ? (<p className={'text-lg m-0 animate-pulse'}>Processing Transaction</p>) : (<p className={'text-lg m-0'}>Mint: ${ethers.utils.formatEther(currentPrice)} ETH</p>)}
               </button>
             </div>
           </div>

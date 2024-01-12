@@ -24,7 +24,7 @@ export default function Input({ eventId, socket }: Props) {
   const [submitting, setSubmitting] = useState(false)
   const [isConnected, setIsConnected] = useState(socket.connected)
 
-  const { aura, m_tag, id: userId } = useProfileStore((state) => state)
+  const { aura, miner_tag, id: userId } = useProfileStore((state) => state)
   const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
 
 
@@ -38,7 +38,7 @@ export default function Input({ eventId, socket }: Props) {
       eventId,
       auraCode,
       message: msg.message,
-      miner_tag: m_tag as string,
+      miner_tag: miner_tag as string,
       time
 
     }).then((res) => {
@@ -64,7 +64,7 @@ export default function Input({ eventId, socket }: Props) {
       messenger : {
         auraCode : auraCode,
         userId: userId as string,
-        miner_tag: m_tag as string,
+        miner_tag: miner_tag as string,
         socketId: socket.id
       },
       roomName: eventId as string,
