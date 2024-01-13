@@ -81,7 +81,6 @@ export default function LivestreamPage({ eventInfo }: Props) {
   ]
 
   useEffect(() => {
-    console.log('isVerified:', isVerified)
     if (!isVerified) {
       closeValidationModal()
     } else {
@@ -164,8 +163,6 @@ export default function LivestreamPage({ eventInfo }: Props) {
 
   const infoSection = () => {
     if (isConnected) {
-      console.log('owner address', eventInfo?.ownerAddress)
-      console.log('treasury', treasuryAmountInEth)
       return eventInfo?.ownerAddress === address ? adminSections : guestSections
     }
     return guestSections

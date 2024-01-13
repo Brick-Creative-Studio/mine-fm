@@ -25,6 +25,7 @@
     "dayjs": "^1.11.5",
     "ethers": "^5.7.2",
     "framer-motion": "10.3.2",
+    "howler": "^2.2.4",
     "ipfs-http-client": "^60.0.0",
     "it-last": "^2.0.1",
     "lodash": "^4.17.21",
@@ -38,6 +39,7 @@
     "react-base64-downloader": "^2.1.7",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.42.1",
+    "react-use-audio-player": "^2.2.0",
     "reactjs-popup": "^2.0.6",
     "sharp": "^0.32.4",
     "socket.io-client": "^4.6.1",
@@ -54,6 +56,7 @@
     "zustand": "^4.1.2"
   },
   "devDependencies": {
+    "@types/howler": "^2.2.11",
     "@types/node": "18.8.5",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",

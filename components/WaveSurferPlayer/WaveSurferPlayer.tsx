@@ -1,17 +1,35 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react'
 import useWavesurfer from '../../hooks/useWaveSurfer'
 import Image from 'next/image'
+import Howler, { Howl} from 'howler';
 import { useMoodPlayerStore } from "../../stores";
+import { useGlobalAudioPlayer } from 'react-use-audio-player';
 
 const WaveSurferPlayer = (props: any) => {
   const containerRef = useRef<any>()
-  const { isVisible, isPlaying, setIsPlaying, isLoading, setIsLoading, isMuted, setIsMuted, setVisibility} = useMoodPlayerStore((state) => state)
+  const { isVisible, isPlaying, setIsPlaying, isLoading, setIsLoading, isMuted, src, setIsMuted, setVisibility} = useMoodPlayerStore((state) => state)
+  const { load, play, pause} = useGlobalAudioPlayer();
 
   const wavesurfer: any = useWavesurfer(containerRef, props)
 
+  // Initialize Howler
+  // const sound = new Howler.Howl({
+  //   src: [src!],
+  //   html5: true, // Enable HTML5 audio
+  //   format: ['mp3'],
+  //   onload: () => {
+  //     console.log('Audio loaded!');
+  //   },
+  // });
+
+
   const onPlayPause = useCallback(() => {
-    wavesurfer.playPause()
-  }, [wavesurfer])
+    // wavesurfer.playPause()
+    if (!isPlaying){
+      play()
+      setIsPlaying(true)
+
+    }  }, [wavesurfer])
 
   const onVolumeClick = useCallback(() => {
     if(wavesurfer.getMuted()) {
@@ -28,15 +46,29 @@ const WaveSurferPlayer = (props: any) => {
   useEffect(() => {
     if (!wavesurfer) return
 
+    load(src!, {
+      autoplay: true,
+      html5: true,
+      format: 'mp3'
+    });
+
     const subscriptions = [
-      wavesurfer.on('play', () => setIsPlaying(true)),
-      wavesurfer.on('pause', () => setIsPlaying(false)),
-      wavesurfer.on('finish', () => setIsPlaying(false)),
+      wavesurfer.on('play', () => {
+        setIsPlaying(true)
+        // sound.play()
+      }),
+      wavesurfer.on('pause', () =>{
+        setIsPlaying(false)
+        pause()
+      }),
+      wavesurfer.on('finish', () =>{
+        setIsPlaying(false)
+      }),
       wavesurfer.on('ready', () => {
         setIsLoading(false)
 
         if (!isPlaying){
-          wavesurfer.playPause()
+          //wavesurfer.playPause()
           setIsPlaying(true)
 
         }
@@ -45,9 +77,11 @@ const WaveSurferPlayer = (props: any) => {
       wavesurfer.on('destroy', () => {
         console.log('surfer destroyed')
         setIsPlaying(false)
+        // sound.unload()
       }),
       wavesurfer.on('loading', () => {
         console.log('surfer destroyed')
+        // sound.load()
         setIsLoading(true)
       })
 

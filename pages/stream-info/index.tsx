@@ -55,7 +55,6 @@ export default function StreamInfoPage({}) {
         })
         .then((res) => {
           setEvent(res.data)
-          console.log('event data', res.data)
           return res.data
         })
         .catch((error) => {
@@ -119,8 +118,6 @@ export default function StreamInfoPage({}) {
             id: attendee.userID,
           })
           .then((res) => {
-            // setAttendees(res.data)
-            console.log('attendees', res.data)
             return res.data
           })
           .catch((error) => {

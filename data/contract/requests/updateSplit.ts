@@ -18,7 +18,6 @@ const updateSplit = (splitWallet: `0x${string}`, roster: Rsvp[] ) => {
     const percentageValue = split * 100;
 
     const formattedPercentage = percentageValue.toFixed(4);
-    console.log('teehee', Number.parseFloat(formattedPercentage.replace('.', '')))
     return  Number.parseFloat(formattedPercentage.replace('.', ''));
   }
 
@@ -46,7 +45,6 @@ const updateSplit = (splitWallet: `0x${string}`, roster: Rsvp[] ) => {
 
     roster.map((rsvp, index, roster) => {
       recipientAddresses.push(rsvp.walletAddress as `0x${string}`);
-      console.log('overflow check', ethers.utils.parseEther(rsvp.weight.toString()))
       const formattedPercentage = formatPercentage(rsvp.weight)
       percentageSplits.push(formattedPercentage)
     })
