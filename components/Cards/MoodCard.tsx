@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import Image from 'next/image'
+import React from 'react'
 import styles from './MoodCard.module.css'
 import { useMoodPlayerStore } from '../../stores'
+import { useGlobalAudioPlayer } from 'react-use-audio-player'
 
 type Mood = {
   audioSrc: string
@@ -17,15 +17,30 @@ interface CardProps {
   mood: Mood
 }
 export const MoodCard = (props: CardProps) => {
-  const { setVisibility, setIsPlaying, setSrc, isPlaying, isVisible, isLoading, src } =
+  const { setVisibility, setSrc, isVisible, setArtwork, src } =
     useMoodPlayerStore((state) => state)
 
-  function play() {
-    if (isVisible) {
-      setIsPlaying(true)
+  const { load, play, pause, isLoading, stop, isReady, playing, mute, duration, muted } =
+    useGlobalAudioPlayer()
+  function playAudio() {
+
+    if (isVisible && props.mood.audioSrc !== src) {
+      load(props.mood.audioSrc, {
+        autoplay: true,
+        html5: true,
+        format: 'mp3',
+      })
+    }
+    setSrc(props.mood.audioSrc)
+    setArtwork(props.mood.artworkURL!)
+    if(isVisible && !playing){
+      play()
     }
     setVisibility(true)
-    setSrc(props.mood.audioSrc)
+  }
+
+  function pauseAudio() {
+    pause()
   }
 
   const audioState = () => {
@@ -43,10 +58,10 @@ export const MoodCard = (props: CardProps) => {
       )
     }
 
-    if (isPlaying && props.mood.audioSrc === src) {
+    if (playing && props.mood.audioSrc === src) {
       return (
         <div
-          onClick={() => pause()}
+          onClick={() => pauseAudio()}
           className={
             'md:opacity-0 md:hover:opacity-100 w-64 h-48 absolute bg-transparent cursor-pointer'
           }
@@ -61,7 +76,7 @@ export const MoodCard = (props: CardProps) => {
     } else {
       return (
         <div
-          onClick={() => play()}
+          onClick={() => playAudio()}
           className={
             'md:opacity-0 md:hover:opacity-100 w-64 h-48 absolute bg-transparent cursor-pointer'
           }
@@ -76,11 +91,7 @@ export const MoodCard = (props: CardProps) => {
     }
   }
 
-  function pause() {
-    setIsPlaying(false)
-  }
 
-  useEffect(() => {}, [isPlaying])
 
   return (
     <div
