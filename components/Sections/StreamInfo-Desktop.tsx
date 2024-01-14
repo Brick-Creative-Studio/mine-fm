@@ -18,12 +18,10 @@ const StreamInfoDesktop = ({ event }: Props) => {
   async function loader(eventID: string) {
     const attendeeEndpoint = `attendee/${eventID}`
     const attendeeURL = process.env.NEXT_PUBLIC_BASE_URL + attendeeEndpoint
-    console.log('stream id:', eventID)
 
     const audience: Attendee[] = await axios
       .get(attendeeURL)
       .then((res) => {
-        console.log('stream data:', res.data)
         setAttendees(res.data)
         return res.data
       })

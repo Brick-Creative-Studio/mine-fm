@@ -4,7 +4,6 @@ import { useMoodPlayerStore } from "../stores";
 
 const useWavesurfer = (containerRef: any, options: any) => {
   const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null)
-  const { src } = useMoodPlayerStore((state) => state)
   // Initialize wavesurfer when the container mounts
   // or any of the props change
   useEffect(() => {
@@ -15,7 +14,9 @@ const useWavesurfer = (containerRef: any, options: any) => {
         ...options,
         container: containerRef.current,
         autoplay: false,
-        url: src,
+        backend: 'WebAudio',
+        waveColor: 'violet',
+        progressColor: 'purple',
         dragToSeek: true,
       })
       setWavesurfer(ws as any)
@@ -26,7 +27,7 @@ const useWavesurfer = (containerRef: any, options: any) => {
       // }
     }
 
-  }, [src])
+  }, [containerRef])
 
   return wavesurfer
 }
