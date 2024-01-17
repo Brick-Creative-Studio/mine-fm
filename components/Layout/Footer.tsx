@@ -2,7 +2,6 @@ import React, { Suspense, useEffect, useRef, useState } from "react";
 import Image from 'next/image'
 import { useMoodPlayerStore } from "../../stores";
 import { useRouter } from "next/router";
-import WaveForm from "../WaveForm/WaveForm";
 import WaveformPlayer from "../WaveFormPlayer/WaveformPlayer";
 
 const Footer = () => {

@@ -8,6 +8,8 @@ export type Event = {
 
   ownerAddress: string | null
 
+  ownerAura: string | null
+
   tokenAddress: string | null
 
   tokenId: number | null
