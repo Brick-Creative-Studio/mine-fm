@@ -24,7 +24,7 @@ type LivestreamInput = {
 const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) => {
   const acceptableMIME = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']
   const { posterUrl, memoryCardFile, setCardUrl } = useEventStore((state) => state)
-  const { generatedImage, canvas, gatherImages } = useMemCardPreview()
+  const { generatedImage, canvas, gatherImages, isLoading } = useMemCardPreview()
   const [fileUrl, updateFileUrl] = useState('')
   const [cardArt, setCardArt] = React.useState<string | undefined>(undefined)
   const [isUploading, setIsUploading] = React.useState<boolean>(false)
@@ -32,8 +32,6 @@ const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) =>
   useEffect(() => {
     if(memoryCardFile?.type?.length){
       gatherImages(memoryCardFile)
-      // generateStackedImage()
-      setIsUploading(true)
     }
   }, [memoryCardFile])
 
@@ -44,6 +42,8 @@ const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) =>
 
     if(generatedImage?.length){
       setCardArt(generatedImage[0])
+      setIsUploading(true)
+
       uploader()
     }
   }, [generatedImage[0]])
@@ -63,30 +63,30 @@ const MemoryCardUpload: React.FC<MemoryCardUploadProps> = ({ id, alt, name }) =>
       const memoryCardFile = new File([blob], 'memory-card-img'); // Specify the desired filename
 
       // Now 'file' contains the file created from the Base64 string
-      console.log('memory card file shit',memoryCardFile);
-
       const { cid } = await uploadFile(memoryCardFile, { cache: true })
 
       const url = normalizeIPFSUrl(cid)?.toString()
-      console.log('MC IPFS url:', url)
 
       //set ipfs url for memorycard in event store
-      if (url) setCardUrl(url)
+      if (url) {
+        setCardUrl(url)
+        setIsUploading(false)
+
+      }
 
     }, []
   )
-
   return (
     <div
       className={
         'flex flex-col justify-center items-center  w-96 h-96 relative cursor-pointer rounded-md'
       }
     >
-      {isUploading && (
-        <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="24 24 24 24" />
-      )}
+      {isUploading ? (
+        <img src={'/spinner-48.png'} alt={'loading icon'} className={'animate-spin border-none w-12 h-12'}/>
+      ) :
 
-      {cardArt ?  (
+      cardArt ?  (
         <>
         <img alt={'memory card'} height={'100%'} width={'100%'} src={generatedImage[0]}/>
         <canvas ref={canvas} style={{ display: 'none' }} />

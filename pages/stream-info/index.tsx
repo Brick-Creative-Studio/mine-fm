@@ -136,15 +136,6 @@ export default function StreamInfoPage({}) {
   }
 
   const { data: attendanceData } = useSWR(rsvpURL, fetchAttendance)
-  // const { data: verificationData, isValidating } = useSWR(
-  //   [address as `0x${string}`, 1, event?.tokenAddress as `0x${string}`],
-  //   (
-  //     [walletAddress,
-  //      isLoading,
-  //      isVerified]) => useVerifyAttendance(walletAddress, isLoading, isVerified), {
-  //     revalidateOnMount: true,
-  //     revalidateIfStale: true,
-  //   })
 
   function formatAuraList(userList: User[]) {
     if (userList.length > 5) {

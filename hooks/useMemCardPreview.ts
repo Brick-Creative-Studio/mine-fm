@@ -18,6 +18,7 @@ export const useMemCardPreview = () => {
   const canvas = React.useRef(null)
   const [generatedImage, setGeneratedImage] = React.useState<string[]>([])
   const [cardStack, setCardStack] = React.useState<HTMLImageElement[]>([])
+  const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
   /*
 
@@ -29,6 +30,7 @@ export const useMemCardPreview = () => {
  */
   const gatherImages = (image: File)  => {
     // stickerImg.src = '/stock/stonie-test-poster.jpeg'
+
     const readURL = (file: File) => {
       return new Promise((res, rej) => {
         const reader = new FileReader();
@@ -38,6 +40,8 @@ export const useMemCardPreview = () => {
       });
     };
     async function setURL(){
+      setIsLoading(true)
+
       const mcBackdrop = new Image();
       const stickerFrame = new Image();
       const stickerImg = new Image();
@@ -52,6 +56,7 @@ export const useMemCardPreview = () => {
       setCardStack(arr)
     }
     if(image.name){
+
       setURL()
     }
     // const imageSet = setURL()
@@ -66,6 +71,7 @@ export const useMemCardPreview = () => {
 
       try {
         if (!cardStack[0] || !canvas.current) return
+
         const _canvas: HTMLCanvasElement = canvas.current
         const ctx = _canvas?.getContext('2d')
         const generate = () => {
@@ -76,13 +82,18 @@ export const useMemCardPreview = () => {
             ctx?.drawImage(cardStack[2], 325, 460, 845, 845)
 
             canvasToBlob(_canvas, cardStack)
+
         }
 
         // cardStack[0].onload = function () {
         //   generate()
         //   // setIsInit(false)
         // }
-        generate()
+        setTimeout(() => {
+          generate()
+          setIsLoading(false)
+
+        }, 1000);
         // generate()
       } catch (err) {
         console.log('err', err)
@@ -95,9 +106,11 @@ export const useMemCardPreview = () => {
   const canvasToBlob = React.useCallback(
     (canvas: HTMLCanvasElement, stack: HTMLImageElement[] | undefined = []) => {
       if (canvas.height > 0) {
+
         const data = canvas.toDataURL()
 
         setGeneratedImage([data, ...generatedImage])
+
         for (const blob of stack) {
           URL.revokeObjectURL(blob.src)
         }
@@ -106,6 +119,6 @@ export const useMemCardPreview = () => {
     [generatedImage]
   )
 
-  return { generatedImage, canvas, gatherImages }
+  return { generatedImage, canvas, gatherImages, isLoading }
 
 }
