@@ -4,21 +4,20 @@ import process from "process";
 import { Rsvp } from "../../types/Rsvp";
 
 
-export default async function updateRsvp(rsvp: Rsvp) {
-  const endpoint = 'rsvp/update'
+export default async function batchUpdateRsvps(rsvps: Rsvp[]): Promise<Rsvp[]> {
+  const endpoint = 'rsvp/group-update'
   const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
-  let updateRSVP;
+  let updateRSVPs: Rsvp[] = [];
 
   try {
-    await axios.put(url, rsvp).then((res) => {
+    await axios.put(url, rsvps).then((res) => {
       console.log(res.data)
-      updateRSVP = res.data
-      return res.data
+      updateRSVPs = res.data
     })
   } catch (error) {
     console.log('update rsvp error:', error)
-    return error
+    return updateRSVPs
   }
-  return updateRSVP;
+  return updateRSVPs;
 
 }

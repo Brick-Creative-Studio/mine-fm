@@ -1,25 +1,26 @@
 import React, { Fragment, useEffect, useState } from "react";
-import Image from 'next/image'
-import { defaultUploadStyle } from "../SingleImageUpload/SingleImageUpload.css";
 import { Dialog, Transition } from "@headlessui/react";
-import Link from "next/link";
-import { Event } from "../../types/Event";
-import readSplits from "../../data/contract/requests/readSplits";
 import { useRouter } from 'next/router'
 import endStream from "../../data/rest/endStream";
 import updateSplit from "../../data/contract/requests/updateSplit";
 import { Rsvp } from "../../types/Rsvp";
-
+import { RsvpStat } from "../../types/RsvpStat";
+import updateEvent from "../../data/rest/updateEvent";
+import calculateSplit from "../../utils/calculateSplit";
+import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from "../../packages/ipfs-service";
+import getUserBy from "../../data/rest/getUserBy";
+import { Event } from "../../types/Event";
+import { MINE_ADMIN_EOA } from "../../constants/addresses";
 interface Props {
-  eventID: string,
-  splitAddress: `0x${string}`
+  event: Event,
+  splitAddress: `0x${string}`,
+  treasurySum: number | null
 }
 
-export default function AdminSection({ eventID, splitAddress }: Props) {
+export default function AdminSection({ event, splitAddress, treasurySum  }: Props) {
 
   const [ promptOpen, setPrompt] = useState<boolean>(false);
   const router = useRouter()
-  // readSplits()
 
   const [splitReady, setSplitReady] = useState<boolean>(false)
   const [ rosterData, setRosterData] = useState<Rsvp[]>([])
@@ -34,22 +35,56 @@ export default function AdminSection({ eventID, splitAddress }: Props) {
   }
 
   async function endEvent(eventID: string){
-     await endStream(eventID).then((roster) =>{
-      if(roster){
-        setRosterData(roster)
+
+    const owner = await getUserBy(event.ownerAddress!)
+
+    const rsvpStats: RsvpStat[] = [{
+      userId: '9134100c-2f83-4d57-911f-b492f735d83b',
+      walletAddress: MINE_ADMIN_EOA,
+      percentageSplit: 100000,
+    }, {
+      userId: owner?.id!,
+      walletAddress: event.ownerAddress!,
+      percentageSplit: 500000,
+    }]
+
+     const results = await endStream(eventID)
+
+
+    if(results){
+      for (let i = 0; i < results.length; i++) {
+          rsvpStats.push({
+            userId: results[i].userID,
+            walletAddress: results[i].walletAddress,
+            percentageSplit: calculateSplit(results[i].weight, treasurySum!),
+          })
       }
-    })
+      const rsvpMeta = JSON.stringify(rsvpStats, null, 2)
+      const blob = new Blob([rsvpMeta], { type: 'application/json' })
+      const metaDataFile = new File([blob], `${event.id}-rsvp-stats.json`) // Specify the desired filename
+      const { cid } = await uploadFile(metaDataFile, { cache: true })
+      const url = normalizeIPFSUrl(cid)?.toString()
+      const updatedEvents = await updateEvent({
+        id: event.id,
+        statsMetadata: getFetchableUrl(url)
+      })
+
+      if(updatedEvents){
+        setSplitReady(true)
+        setRosterData(results)
+      }
+      }
 
   }
 
   useEffect(() => {
 
-    if(rosterData.length > 1){
+    if(rosterData.length > 1 && splitReady){
       console.log('write triggered')
 
-      write?.()
+      // write?.()
     }
-  }, [rosterData])
+  }, [splitReady, rosterData])
 
 
   useEffect(() => {
@@ -118,7 +153,7 @@ export default function AdminSection({ eventID, splitAddress }: Props) {
                         type="button"
                         className="cursor-pointer inline-flex justify-center border-solid border-[#B999FA] rounded-md bg-[#B999FA] px-4 py-2 text-sm font-medium text-[#12002C] hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                         // onClick={() => router.push(`/livestream/${eventID}/exit-stream`)}
-                        onClick={() => endEvent(eventID)}
+                        onClick={() => endEvent(event?.id!)}
 
                       >
                         End Stream
