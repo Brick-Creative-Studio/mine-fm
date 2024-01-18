@@ -12,18 +12,18 @@ interface Props {
 export default function YourStreamsSection({ aura, userId }: Props) {
   const [memoryCards, setMemoryCards] = useState<string[]>([])
   useEffect(() => {
-    console.log('USER ID', userId)
     const fetchUserRsvps = async () => {
       const userRSVPs: Rsvp[] = await getRSVPsWhere(userId)
       if (userRSVPs) {
         const array: string[] = []
-        userRSVPs.forEach(async (rsvp: Rsvp) => {
-          const userEventsReq = await getEventsWhere({ id: rsvp.eventID })
+        for (let i = 0; i < userRSVPs.length; i++) {
+          const userEventsReq = await getEventsWhere({ id: userRSVPs[i].eventID })
+
           if (userEventsReq) {
             const memoryCard = userEventsReq[0].memoryCard
             array.push(memoryCard!)
           }
-        })
+        }
         setMemoryCards(array)
       }
     }
@@ -31,7 +31,6 @@ export default function YourStreamsSection({ aura, userId }: Props) {
   }, [userId])
   return memoryCards ? (
     <div className="flex items-center justify-start h-96 w-[100vw]">
-      {console.log('MEMORY CARDS', memoryCards)}
       {memoryCards.map((card) => {
         return (
           <div className="w-[300px] aspect-square relative" key={card}>
