@@ -82,7 +82,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Admin',
-      component: [<AdminSection splitAddress={eventInfo?.splitAddress as `0x${string}`} eventID={eventInfo?.id!} key={'Admin'} />],
+      component: [<AdminSection treasurySum={treasuryAmountInEth} splitAddress={eventInfo?.splitAddress as `0x${string}`} event={eventInfo!} key={'Admin'} />],
     },
   ]
 

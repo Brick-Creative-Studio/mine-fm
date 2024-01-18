@@ -6,7 +6,7 @@ import updateSplit from "../../data/contract/requests/updateSplit";
 import { Rsvp } from "../../types/Rsvp";
 import { RsvpStat } from "../../types/RsvpStat";
 import updateEvent from "../../data/rest/updateEvent";
-import calculateSplit from "../../utils/calculateSplit";
+import calculateAudienceSplit from "../../utils/calculateAudienceSplit";
 import { getFetchableUrl, normalizeIPFSUrl, uploadFile } from "../../packages/ipfs-service";
 import getUserBy from "../../data/rest/getUserBy";
 import { Event } from "../../types/Event";
@@ -37,15 +37,21 @@ export default function AdminSection({ event, splitAddress, treasurySum  }: Prop
   async function endEvent(eventID: string){
 
     const owner = await getUserBy(event.ownerAddress!)
+    const PROTOCOL_SPLIT = 0.10
+    const ARTIST_SPIT = 0.50
 
-    const rsvpStats: RsvpStat[] = [{
+
+    const rsvpStats: any[] = [{
       userId: '9134100c-2f83-4d57-911f-b492f735d83b',
       walletAddress: MINE_ADMIN_EOA,
-      percentageSplit: 100000,
+      percentageSplit: PROTOCOL_SPLIT,
+      ethSplit: PROTOCOL_SPLIT * treasurySum!
     }, {
       userId: owner?.id!,
       walletAddress: event.ownerAddress!,
-      percentageSplit: 500000,
+      percentageSplit: ARTIST_SPIT,
+      ethSplit: ARTIST_SPIT * treasurySum!
+
     }]
 
      const results = await endStream(eventID)
@@ -53,12 +59,19 @@ export default function AdminSection({ event, splitAddress, treasurySum  }: Prop
 
     if(results){
       for (let i = 0; i < results.length; i++) {
+
+        const splits = calculateAudienceSplit(results[i].weight, treasurySum!)
           rsvpStats.push({
             userId: results[i].userID,
             walletAddress: results[i].walletAddress,
-            percentageSplit: calculateSplit(results[i].weight, treasurySum!),
+            percentageSplit: splits.percentageSplit,
+            ethSplit: splits.ethSplit
           })
       }
+      rsvpStats.push({
+        treasury: treasurySum,
+        eventID: eventID
+      })
       const rsvpMeta = JSON.stringify(rsvpStats, null, 2)
       const blob = new Blob([rsvpMeta], { type: 'application/json' })
       const metaDataFile = new File([blob], `${event.id}-rsvp-stats.json`) // Specify the desired filename
@@ -70,8 +83,9 @@ export default function AdminSection({ event, splitAddress, treasurySum  }: Prop
       })
 
       if(updatedEvents){
-        setSplitReady(true)
         setRosterData(results)
+
+        console.log('split ready', results)
       }
       }
 
