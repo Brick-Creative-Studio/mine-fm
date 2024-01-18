@@ -40,7 +40,7 @@ export default function Profile() {
     {
       title: 'Livestream',
       component: [
-        <YourStreamsSection aura={gradient} userId={user?.id} key={'Livestream'} />,
+        <YourStreamsSection aura={gradient} userId={user?.id!} key={'Livestream'} />,
       ],
     },
     {
@@ -252,11 +252,7 @@ export default function Profile() {
                 {user.bio}{' '}
               </h3>
             ) : (
-              <h3 className="text-ellipsis	">
-                Contrary to popular belief, Lorem Ipsum is not simply random text. It has
-                roots in a piece of classical Latin literature from 45 BC, making it over
-                2000 years old. Richard McClintock, a Latin professor at Hampden
-              </h3>
+              <h3 className="text-ellipsis	">{null}</h3>
             )}
           </div>
           <SectionHandler
