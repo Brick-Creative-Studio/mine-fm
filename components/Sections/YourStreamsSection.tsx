@@ -10,30 +10,34 @@ interface Props {
   userId: string
 }
 export default function YourStreamsSection({ aura, userId }: Props) {
-  const [memoryCards, setMemoryCards] = useState<(string | null)[]>([])
+  const [memoryCards, setMemoryCards] = useState<string[]>([])
   useEffect(() => {
+    console.log('USER ID', userId)
     const fetchUserRsvps = async () => {
-      const userRSVPs = await getRSVPsWhere(userId)
+      const userRSVPs: Rsvp[] = await getRSVPsWhere(userId)
       if (userRSVPs) {
-        const userEvents = userRSVPs.map(async (rsvp: Rsvp) => {
-          const userEventsReq = await getEventsWhere({ id: rsvp.eventID }).then((res) => {
-            return res
-          })
+        const array: string[] = []
+        userRSVPs.forEach(async (rsvp: Rsvp) => {
+          const userEventsReq = await getEventsWhere({ id: rsvp.eventID })
           if (userEventsReq) {
-            const memoryCards = userEventsReq.map((event: Event) => event.memoryCard)
-            setMemoryCards(memoryCards)
+            const memoryCard = userEventsReq[0].memoryCard
+            array.push(memoryCard!)
           }
-          return userEvents
         })
+        setMemoryCards(array)
       }
     }
-
     fetchUserRsvps()
   }, [userId])
   return memoryCards ? (
-    <div className="mt-8 h-96 w-full">
+    <div className="flex items-center justify-start h-96 w-[100vw]">
+      {console.log('MEMORY CARDS', memoryCards)}
       {memoryCards.map((card) => {
-        return <Image width="100" height="100" src={card} />
+        return (
+          <div className="w-[300px] aspect-square relative" key={card}>
+            <Image layout="fill" src={card} alt="memory-card" />
+          </div>
+        )
       })}
     </div>
   ) : (
