@@ -348,16 +348,7 @@ export default function StreamInfoPage({}) {
               </button>
             </div>
           </div>
-          <div className="flex flex-row p-2 w-full justify-center rounded-lg">
-            {/* attendance list box component */}
-            {/* TODO: Break out to separate component  */}
-            <div className="w-full h-80 bg-black/50 border-solid border-gray-500 rounded-lg flex items-center justify-center">
-              <p className={'text-center'}>
-                {' '}
-                The organizer has not made any announcements yet{' '}
-              </p>
-            </div>
-          </div>
+
         </div>
       ) : (
         <div className={'animate-pulse'}>Loading...</div>
