@@ -82,7 +82,7 @@ export default function StreamInfo({ eventInfo, nextTokenPrice, treasury }: Prop
         <p className={'text-[#7DD934]'}> {`${eventInfo.title}`} </p>
       </div>
       <div className={'flex-row flex items-center w-full'}>
-        <p className={'mr-2'}> Event Time: </p>
+        <p className={'mr-2'}> Start Time: </p>
         <p className={'text-[#7DD934] mr-2'}> {`${time}`} </p>
       </div>
 

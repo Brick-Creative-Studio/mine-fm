@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useForm, SubmitHandler, FormProvider, useFormContext } from 'react-hook-form'
 import Popup from 'reactjs-popup'
-import { useLayoutStore, useEventStore } from '../../stores'
+import { useLayoutStore, useEventStore, useProfileStore } from '../../stores'
 import SingleImageUpload from '../SingleImageUpload/SingleImageUpload'
 import MemoryCardUpload from '../MemoryCardUpload/MemoryCardUpload'
 import { streamValidationSchema } from './LivestreamForm.schema'
@@ -37,6 +37,7 @@ export default function LivestreamForm({}) {
   } = methods
   const [isMounted, setIsMounted] = useState(false)
   const state = useEventStore((state) => state)
+  const { id : userID } = useProfileStore((state) => state)
   const { isMobile, signerAddress } = useLayoutStore()
   let [isOpen, setIsOpen] = useState(false)
   const [eventID, setEventId] = useState<string>()
@@ -54,6 +55,7 @@ export default function LivestreamForm({}) {
       ownerAddress: signerAddress as string,
       organizer: data.organizer,
       artist: data.artist,
+      ownerId: userID,
       isOnline: true,
       website: data.website,
       social: data.social,

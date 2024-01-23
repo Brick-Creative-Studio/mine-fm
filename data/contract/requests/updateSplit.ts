@@ -6,7 +6,6 @@ import { Rsvp } from "../../../types/Rsvp";
 import { ethers } from "ethers";
 import { RsvpStat } from "../../../types/RsvpStat";
 
-
 const updateSplit = (splitWallet: `0x${string}`, roster: RsvpStat[] ) => {
   const { chain } = useNetwork();
 

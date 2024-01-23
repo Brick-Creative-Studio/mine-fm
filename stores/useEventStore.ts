@@ -11,6 +11,7 @@ interface EventStoreProps {
   address: string | null
   website?: string  | null
   ownerAddress: string | null
+  ownerId: string | null,
   organizer: string | null
   artist: string | null
   isFree: boolean
@@ -42,6 +43,7 @@ const initialState ={
   memoryCardFile: null,
   address: null,
   ownerAddress: null,
+  ownerId: null,
   organizer: null,
   artist: null,
   website: null,
