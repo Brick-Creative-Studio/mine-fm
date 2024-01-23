@@ -98,7 +98,7 @@ export default function InstaModal({ instaUrl, isUserPage } : SocialProps) {
       )}
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-0" onClose={closeModal}>
+        <Dialog as="div" className="relative z-0 " onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -122,10 +122,10 @@ export default function InstaModal({ instaUrl, isUserPage } : SocialProps) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-[#12002C] border-solid border-2 border-[#B999FA]  p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-medium leading-6 text-[#B999FA]"
                   >
                     Add your Insatgram profile url
                   </Dialog.Title>
@@ -146,7 +146,7 @@ export default function InstaModal({ instaUrl, isUserPage } : SocialProps) {
                   <div className="mt-4">
                     <button
                       type="submit"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="inline-flex cursor-pointer justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={closeAndSubmit}
                     >
                       Save

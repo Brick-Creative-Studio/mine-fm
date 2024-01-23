@@ -19,17 +19,23 @@ import addRewardFee from '../../utils/addRewardFee'
 import { getNextTokenPrice } from '../../data/contract/requests/getNextTokenPrice'
 import { ethers } from 'ethers'
 import { NULL_ADDRESS } from "../../constants/addresses";
+import { ElementInternalsShim } from "@lit-labs/ssr-dom-shim/lib/element-internals";
 export default function StreamInfoPage({}) {
   const router = useRouter()
   const { id: pathID } = router.query
   const [isLoading, setIsLoading] = useState(false)
+  const [transition, setTransition] = useState(false);
+  const [entryText, setEntryText] = useState('ENTER STREAM');
+
   const [event, setEvent] = useState<Event | undefined>(undefined)
   const [isOwner, setIsOwner] = useState<boolean>(false)
   const { isConnected, address } = useAccount()
   const { openConnectModal } = useConnectModal()
   const { id: accountId } = useProfileStore()
   const [codeVisibile, setCodeVisibilty] = useState<boolean>(false)
-  const streamKey = process.env.NEXT_PUBLIC_EVENINGS_KEY
+  const STREAM_KEY = process.env.NEXT_PUBLIC_EVENINGS_KEY
+  const SERVER_URL = process.env.NEXT_PUBLIC_EVE_SERVER_URL
+
   const isMounted = useIsMounted()
   const endpoint = 'event/event'
   const eventURL = process.env.NEXT_PUBLIC_BASE_URL + endpoint
@@ -155,7 +161,29 @@ export default function StreamInfoPage({}) {
 
   const { uri, totalMinted, maxSupply } = useTokenInfo(event?.tokenAddress!, 1)
 
+  useEffect(() => {
+    const handleStart = (url: string) => (url !== router.asPath) && setTransition(true);
+    const handleComplete = (url: string) => (url === router.asPath) && setTransition(false);
 
+    router.events.on('routeChangeStart', handleStart)
+    router.events.on('routeChangeComplete', handleComplete)
+    router.events.on('routeChangeError', handleComplete)
+
+    return () => {
+      router.events.off('routeChangeStart', handleStart)
+      router.events.off('routeChangeComplete', handleComplete)
+      router.events.off('routeChangeError', handleComplete)
+    }
+  })
+
+  useEffect(() => {
+    if (transition){
+      setEntryText('PLEASE HOLD')
+    } else {
+      setEntryText('ENTER STREAM')
+
+    }
+  }, [transition])
 
   const {
     data: mintData,
@@ -219,13 +247,14 @@ export default function StreamInfoPage({}) {
                     <Link
                       href={`/livestream/${pathID}`}
                     >
-                    <h3 className={'text-sm w-32 text-[#1D0045]'}> ENTER STREAM </h3>
+                      { transition ? <h3 className={'text-sm w-32 animate-pulse text-[#1D0045]'}> {entryText} </h3> : <h3 className={'text-sm w-32 text-[#1D0045]'}> {entryText} </h3>}
                     </Link>
                   )}
                 </button>
               </div>
               {isOwner ? (
                 codeVisibile ? (
+                  <div className={'flex flex-col'}>
                   <div className={'flex items-center w-44'}>
                     <button
                       onClick={() => setCodeVisibilty(false)}
@@ -238,9 +267,15 @@ export default function StreamInfoPage({}) {
                         alt={'key viewable icon'}
                         src={'/eye-open.svg'}
                       />
-                      <p className={'text-[#7DD934] '}> {streamKey}</p>
+                      <p className={'text-[#7DD934] '}> {STREAM_KEY}</p>
                     </button>
-                    <CopyButtonLight text={streamKey} />
+                    <CopyButtonLight text={STREAM_KEY} />
+                  </div>
+                    <div className={'flex items-center w-44'}>
+
+                    <p className={'text-[#7DD934] mx-10'}> {SERVER_URL}</p>
+                    <CopyButtonLight text={SERVER_URL} />
+                    </div>
                   </div>
                 ) : (
                   <div className={'flex'}>

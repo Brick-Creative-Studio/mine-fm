@@ -48,6 +48,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
 
   const [isGranted, setGranted] = useState<boolean>(isVerified)
 
+
   const guestSections = [
     {
       title: 'Chat',

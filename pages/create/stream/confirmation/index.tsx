@@ -66,6 +66,7 @@ export default function ConfirmPage({
       isOnline: true,
       organizer: eventStore?.organizer,
       ownerAddress: eventStore?.ownerAddress,
+      ownerId: eventStore?.ownerId,
       posterURL: eventStore?.posterUrl,
       startDate: new Date(startTime),
       startingPrice: eventStore?.startingPrice,

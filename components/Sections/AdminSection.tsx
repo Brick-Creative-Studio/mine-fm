@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import endStream from '../../data/rest/endStream'
 import { Rsvp } from '../../types/Rsvp'
 import updateEvent from '../../data/rest/updateEvent'
-import calculateAudienceSplit from '../../utils/calculateAudienceSplit'
+import calculateAudienceSplit from "../../utils/calculateAudienceSplit";
 import {
   getFetchableUrl,
   normalizeIPFSUrl,
