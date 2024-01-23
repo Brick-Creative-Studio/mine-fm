@@ -1,70 +1,94 @@
-import React, { Fragment, useEffect, useState } from "react";
-import Image from 'next/image'
-import { defaultUploadStyle } from "../SingleImageUpload/SingleImageUpload.css";
-import { Dialog, Transition } from "@headlessui/react";
-import Link from "next/link";
-import { Event } from "../../types/Event";
-import readSplits from "../../data/contract/requests/readSplits";
+import React, { Fragment, useEffect, useState } from 'react'
+import { Dialog, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router'
-import endStream from "../../data/rest/endStream";
-import updateSplit from "../../data/contract/requests/updateSplit";
-import { Rsvp } from "../../types/Rsvp";
-
+import endStream from '../../data/rest/endStream'
+import { Rsvp } from '../../types/Rsvp'
+import updateEvent from '../../data/rest/updateEvent'
+import calculateAudienceSplit from '../../utils/calculateAudienceSplit'
+import {
+  getFetchableUrl,
+  normalizeIPFSUrl,
+  uploadFile,
+} from '../../packages/ipfs-service'
+import getUserBy from '../../data/rest/getUserBy'
+import { Event } from '../../types/Event'
+import { MINE_ADMIN_EOA } from '../../constants/addresses'
 interface Props {
-  eventID: string,
+  event: Event
   splitAddress: `0x${string}`
+  treasurySum: number | null
 }
 
-export default function AdminSection({ eventID, splitAddress }: Props) {
-
-  const [ promptOpen, setPrompt] = useState<boolean>(false);
+export default function AdminSection({ event, splitAddress, treasurySum }: Props) {
+  const [promptOpen, setPrompt] = useState<boolean>(false)
   const router = useRouter()
-  // readSplits()
-
-  const [splitReady, setSplitReady] = useState<boolean>(false)
-  const [ rosterData, setRosterData] = useState<Rsvp[]>([])
-  const { data,
-    isLoading,
-    isSuccess,
-    write,
-    txData, } = updateSplit(splitAddress, rosterData)
+  const ADMIN_UID = '9134100c-2f83-4d57-911f-b492f735d83b'
 
   function closeExitModal() {
     setPrompt(false)
   }
+  async function endEvent(eventID: string) {
+    const owner = await getUserBy(event.ownerAddress!)
+    const PROTOCOL_SPLIT = 0.1
+    const ARTIST_SPIT = 0.5
 
-  async function endEvent(eventID: string){
-     await endStream(eventID).then((roster) =>{
-      if(roster){
-        setRosterData(roster)
+    const rsvpStats: any[] = [
+      {
+        treasury: treasurySum,
+        eventID: eventID,
+      },
+      {
+        userId: ADMIN_UID,
+        walletAddress: MINE_ADMIN_EOA,
+        percentageSplit: PROTOCOL_SPLIT,
+        ethSplit: PROTOCOL_SPLIT * treasurySum!,
+      },
+      {
+        userId: owner?.id!,
+        walletAddress: event.ownerAddress!,
+        percentageSplit: ARTIST_SPIT,
+        ethSplit: ARTIST_SPIT * treasurySum!,
+      },
+    ]
+
+    const results = await endStream(eventID)
+
+    if (results) {
+      for (let i = 0; i < results.length; i++) {
+        const splits = calculateAudienceSplit(results[i].weight, treasurySum!)
+        rsvpStats.push({
+          userId: results[i].userID,
+          walletAddress: results[i].walletAddress,
+          percentageSplit: results[i].weight,
+          ethSplit: splits.ethSplit,
+        })
       }
-    })
 
+      const rsvpMeta = JSON.stringify(rsvpStats, null, 2)
+      const blob = new Blob([rsvpMeta], { type: 'application/json' })
+      const metaDataFile = new File([blob], `${event.id}-rsvp-stats.json`) // Specify the desired filename
+      const { cid } = await uploadFile(metaDataFile, { cache: true })
+      const url = normalizeIPFSUrl(cid)?.toString()
+
+      await updateEvent({
+        id: event.id,
+        statsMetadata: getFetchableUrl(url),
+      }).then(() => {
+        router.push(`/livestream/${eventID}/exit-stream`)
+        console.log('event updated')
+      })
+    }
   }
-
-  useEffect(() => {
-
-    if(rosterData.length > 1){
-      console.log('write triggered')
-
-      write?.()
-    }
-  }, [rosterData])
-
-
-  useEffect(() => {
-
-    if(txData && isSuccess){
-      console.log('update split success', txData)
-    }
-  }, [txData, isSuccess])
-
-
 
   return (
     <div className={'flex flex-col h-full px-4 pt-40 overflow-scroll md:h-[605px]'}>
       <h3 className={'text-center'}> Would You Like to End This Livestream? </h3>
-      <button onClick={() => setPrompt(true)} className={'bg-red-500 hover:bg-red-400 border-transparent h-12 rounded-lg font-mono font-bold text-lg cursor-pointer'}>
+      <button
+        onClick={() => setPrompt(true)}
+        className={
+          'bg-red-500 hover:bg-red-400 border-transparent h-12 rounded-lg font-mono font-bold text-lg cursor-pointer'
+        }
+      >
         <p className={'my-auto'}> End Stream </p>
       </button>
 
@@ -102,7 +126,8 @@ export default function AdminSection({ eventID, splitAddress }: Props) {
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-white">
-                      Are you sure you want to end the stream? This action cannot be undone, and the memory card sale will end.
+                      Are you sure you want to end the stream? This action cannot be
+                      undone, and the memory card sale will end.
                     </p>
                   </div>
 
@@ -114,15 +139,14 @@ export default function AdminSection({ eventID, splitAddress }: Props) {
                     >
                       Continue streaming
                     </button>
-                      <button
-                        type="button"
-                        className="cursor-pointer inline-flex justify-center border-solid border-[#B999FA] rounded-md bg-[#B999FA] px-4 py-2 text-sm font-medium text-[#12002C] hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        // onClick={() => router.push(`/livestream/${eventID}/exit-stream`)}
-                        onClick={() => endEvent(eventID)}
-
-                      >
-                        End Stream
-                      </button>
+                    <button
+                      type="button"
+                      className="cursor-pointer inline-flex justify-center border-solid border-[#B999FA] rounded-md bg-[#B999FA] px-4 py-2 text-sm font-medium text-[#12002C] hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      // onClick={() => router.push(`/livestream/${eventID}/exit-stream`)}
+                      onClick={() => endEvent(event?.id!)}
+                    >
+                      End Stream
+                    </button>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

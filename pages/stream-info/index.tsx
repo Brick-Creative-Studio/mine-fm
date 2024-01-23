@@ -136,15 +136,6 @@ export default function StreamInfoPage({}) {
   }
 
   const { data: attendanceData } = useSWR(rsvpURL, fetchAttendance)
-  // const { data: verificationData, isValidating } = useSWR(
-  //   [address as `0x${string}`, 1, event?.tokenAddress as `0x${string}`],
-  //   (
-  //     [walletAddress,
-  //      isLoading,
-  //      isVerified]) => useVerifyAttendance(walletAddress, isLoading, isVerified), {
-  //     revalidateOnMount: true,
-  //     revalidateIfStale: true,
-  //   })
 
   function formatAuraList(userList: User[]) {
     if (userList.length > 5) {
@@ -357,16 +348,7 @@ export default function StreamInfoPage({}) {
               </button>
             </div>
           </div>
-          <div className="flex flex-row p-2 w-full justify-center rounded-lg">
-            {/* attendance list box component */}
-            {/* TODO: Break out to separate component  */}
-            <div className="w-full h-80 bg-black/50 border-solid border-gray-500 rounded-lg flex items-center justify-center">
-              <p className={'text-center'}>
-                {' '}
-                The organizer has not made any announcements yet{' '}
-              </p>
-            </div>
-          </div>
+
         </div>
       ) : (
         <div className={'animate-pulse'}>Loading...</div>

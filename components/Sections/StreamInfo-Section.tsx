@@ -5,21 +5,28 @@ import { Attendee } from '../../types/Attendee'
 import useSWR from 'swr'
 import getAttendees from '../../data/rest/getAttendees'
 import TwitterShare from 'components/Modals/TwitterShare'
+import addRewardFee from "../../utils/addRewardFee";
+import { ethers } from "ethers";
 
 interface Props {
-  eventInfo: Event
+  eventInfo: Event,
+  nextTokenPrice: bigint | null,
+  treasury: number | null
 }
 
-export default function StreamInfo({ eventInfo }: Props) {
+export default function StreamInfo({ eventInfo, nextTokenPrice, treasury }: Props) {
   const [shareUrl, setShareUrl] = useState<string>('')
   const { data: attendees, error } = useSWR([eventInfo?.id], getAttendees, {
     revalidateOnMount: true,
     revalidateIfStale: true,
   })
+  const [currentPrice, setCurrentPrice] = useState('0')
+
   const time = new Date(eventInfo.startDate).toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit',
   })
+
   const formatDate = new Date(eventInfo.startDate)
     .toISOString()
     .replace(/T/, ' ')
@@ -29,6 +36,13 @@ export default function StreamInfo({ eventInfo }: Props) {
   function selectTweet() {
     return `I just minted ‘${eventInfo.title}’ on @mine_fm`
   }
+
+  useEffect(() => {
+    if (!eventInfo.isFree) {
+      const priceWithFee = addRewardFee(nextTokenPrice!)
+      setCurrentPrice(ethers.utils.formatEther(priceWithFee.toString()))
+    }
+  }, [eventInfo])
 
   useEffect(() => {
     setShareUrl(`${process.env.NEXT_PUBLIC_CLIENT_URL}/livestream/${eventInfo.id}`)
@@ -50,12 +64,12 @@ export default function StreamInfo({ eventInfo }: Props) {
       </div>
       <div className={'flex-row flex items-center w-full'}>
         <p className={'mr-2'}> Current Entry Fee: </p>
-        <p className={'text-[#7DD934]'}> {`N/A eth`} </p>
+        <p className={'text-[#7DD934]'}>{eventInfo.isFree ? 'N/A ETH' : `${currentPrice} ETH`}</p>
       </div>
 
       <div className={'flex-row flex items-center w-full'}>
         <p className={'mr-2'}> Treasury: </p>
-        <p className={'text-[#7DD934]'}> {`N/A eth`} </p>
+        <p className={'text-[#7DD934]'}> {eventInfo.isFree ? 'N/A ETH' : `${treasury} ETH` } </p>
       </div>
 
       <div className={'flex-row flex items-center w-full'}>

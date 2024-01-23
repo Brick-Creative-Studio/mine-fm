@@ -8,6 +8,8 @@ export type Event = {
 
   ownerAddress: string | null
 
+  ownerAura: string | null
+
   tokenAddress: string | null
 
   tokenId: number | null
@@ -35,6 +37,8 @@ export type Event = {
   posterURL: string | null
 
   startingPrice: string | null
+
+  statsMetadata: string | null
 
   startDate: Date
 

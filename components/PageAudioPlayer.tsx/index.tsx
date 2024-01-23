@@ -83,10 +83,12 @@ const PageAudioPlayer = () => {
       ) : !playable ? (
         <div>Stream is not Live</div>
       ) : null}
-      <audio src="https://media.evenings.co/s/ML3761y9Q"  ref={audioRef}/>
-        {/*<source src="https://stream-relay-geo.ntslive.net/stream/64.aac?client=NTSWebApp&t=1691770293785" />*/}
+      {/*<audio src="https://media.evenings.co/s/ML3761y9Q"  ref={audioRef}/>*/}
+      <audio  ref={audioRef}>
+
+      <source src="https://stream-relay-geo.ntslive.net/stream/64.aac?client=NTSWebApp&t=1691770293785" />
       {/*   <source src="https://media.evenings.co/s/ML3761y9Q" type={'audio/mpeg'} />*/}
-      {/*</audio>*/}
+      </audio>
     </>
   )
 }
