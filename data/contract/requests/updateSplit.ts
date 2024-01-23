@@ -4,9 +4,10 @@ import { useState } from "react";
 import { MINE_ADMIN_EOA, SPLIT_MAIN_ADDRESS_GOERLI_BASE } from "../../../constants/addresses";
 import { Rsvp } from "../../../types/Rsvp";
 import { ethers } from "ethers";
+import { RsvpStat } from "../../../types/RsvpStat";
 
 
-const updateSplit = (splitWallet: `0x${string}`, roster: Rsvp[] ) => {
+const updateSplit = (splitWallet: `0x${string}`, roster: RsvpStat[] ) => {
   const { chain } = useNetwork();
 
 
@@ -15,10 +16,14 @@ const updateSplit = (splitWallet: `0x${string}`, roster: Rsvp[] ) => {
 
 
   function formatPercentage(split: number): number {
+
     const percentageValue = split * 100;
 
     const formattedPercentage = percentageValue.toFixed(4);
-    return  Number.parseFloat(formattedPercentage.replace('.', ''));
+
+    const x = Number.parseFloat(formattedPercentage.replace('.', ''));
+    console.log('percent split', x)
+    return x
   }
 
   function sortHexadecimalArray(addressArray: `0x${string}`[]): `0x${string}`[] {
@@ -38,28 +43,29 @@ const updateSplit = (splitWallet: `0x${string}`, roster: Rsvp[] ) => {
   }
 
 
-  function sortRoster(roster: Rsvp[]){
+  function sortRoster(roster: RsvpStat[]){
     roster.sort((rsvpOne, rsvpTwo) =>
       rsvpOne.walletAddress < rsvpTwo.walletAddress ? -1 :
         rsvpOne.walletAddress > rsvpTwo.walletAddress ? 1 : 0 );
 
     roster.map((rsvp, index, roster) => {
-      recipientAddresses.push(rsvp.walletAddress as `0x${string}`);
-      const formattedPercentage = formatPercentage(rsvp.weight)
+      recipientAddresses.push(rsvp.walletAddress as `0x${string}`)
+
+      const formattedPercentage = formatPercentage(rsvp.percentageSplit)
       percentageSplits.push(formattedPercentage)
     })
   }
 
   if(roster.length > 1){
     sortRoster(roster)
-    percentageSplits[0] =   percentageSplits[0] + 1
+    // percentageSplits[0] = percentageSplits[0] + 1
 
     sortHexadecimalArray(recipientAddresses)
 
 
   } else if(roster.length === 1) {
     recipientAddresses.push(roster[0].walletAddress as `0x${string}`);
-    const formattedPercentage = ethers.utils.parseEther(roster[0].weight.toString()).toNumber()
+    const formattedPercentage = ethers.utils.parseEther(roster[0].percentageSplit.toString()).toNumber()
     percentageSplits.push(formattedPercentage)
   }
 
@@ -69,7 +75,7 @@ const updateSplit = (splitWallet: `0x${string}`, roster: Rsvp[] ) => {
   } as const;
 
 
-
+console.log('percent splits', percentageSplits)
   const { config } = usePrepareContractWrite({
     ...splitContract,
     functionName: "updateSplit",

@@ -1,18 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import { Event } from "../../../types/Event";
 import Image from "next/image";
 import Link from "next/link";
 import CopyButtonLight from "../../../components/CopyButton/CopyButtonLight";
+import updateSplit from "../../../data/contract/requests/updateSplit";
 import { ethers } from "ethers";
 import { getPreviousTokenPrice } from "../../../data/contract/requests/getPreviousTokenPrice";
 import { GetServerSideProps } from "next";
 import axios from "axios";
+import { RsvpStat } from "../../../types/RsvpStat";
 interface Props {
   event: Event | null,
 }
 export default function ReviewStatsPage({ event } : Props){
+  const [ rsvps, setRsvps] = useState<RsvpStat[]>([])
 
 
+  useEffect(() => {
+
+    async function fetchStats(){
+      const response = await fetch(event?.statsMetadata!)
+      let responseJson = await response.json();
+
+      // console.log('stats response', responseJson.slice(1))
+      setRsvps(responseJson.slice(1))
+    }
+    if(event){
+      fetchStats()
+    }
+  },[event])
+
+  const { data,
+    isLoading,
+    isSuccess,
+    write,
+    txData, } = updateSplit(event?.splitAddress as `0x${string}`, rsvps)
   const formatDate = event
     ? new Date(event.startDate)?.toLocaleDateString('en-US', {
       weekday: 'long',
@@ -28,7 +50,7 @@ export default function ReviewStatsPage({ event } : Props){
     })
     : 'N/A'
 
-  const data = getPreviousTokenPrice(event?.tokenAddress as `0x${string}`, 1)
+  const tokenData = getPreviousTokenPrice(event?.tokenAddress as `0x${string}`, 1)
   return (
     <div className="flex flex-col mt-24 items-center justify-center w-full">
       {event ? (
@@ -101,17 +123,26 @@ export default function ReviewStatsPage({ event } : Props){
               </div>
               <div className={'flex justify-between'}>
                 <p className={'text-lg'}> Initial Price: </p>
-                <p className={'text-lg text-[#7DD934]'}> {event.startingPrice} ETH </p>
+                <p suppressHydrationWarning={true} className={'text-lg text-[#7DD934]'}> {event.startingPrice} ETH </p>
               </div>
               <div className={'flex justify-between'}>
                 <p className={'text-lg'}> Last Ticket Price: </p>
-                <p className={'text-lg text-[#7DD934]'}>
+                <p suppressHydrationWarning={true} className={'text-lg text-[#7DD934]'}>
                   {' '}
-                  {ethers.utils.formatEther(data)} ETH{' '}
+                  {ethers.utils.formatEther(tokenData)} ETH{' '}
                 </p>
               </div>
             </div>
+
           </div>
+          <button
+            className="not-italic bg-transparent h-12 rounded-lg font-mono font-bold hover:bg-purple-400 text-lg p-2 px-4 border-solid border-[#B999FA] mt-6 cursor-pointer"
+            onClick={() => {
+              write?.()
+            }}
+          >
+            {isLoading ? (<p className={'text-lg m-0 animate-pulse'}>Processing Transaction</p>) : (<p className={'text-lg m-0'}> Update split and withdraw </p>)}
+          </button>
         </div>
       ) : (
         <div className={'animate-pulse'}>Loading...</div>

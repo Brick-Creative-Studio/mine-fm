@@ -38,6 +38,8 @@ export type Event = {
 
   startingPrice: string | null
 
+  statsMetadata: string | null
+
   startDate: Date
 
   endDate: Date
