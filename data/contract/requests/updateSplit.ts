@@ -3,6 +3,7 @@ import { useNetwork, useWaitForTransaction, useContractWrite, usePrepareContract
 import { useState } from "react";
 import { MINE_ADMIN_EOA, SPLIT_MAIN_ADDRESS_GOERLI_BASE } from "../../../constants/addresses";
 import { Rsvp } from "../../../types/Rsvp";
+import sortHexadecimalArray from "../../../utils/sortHexadecimalArray";
 import { ethers } from "ethers";
 import { RsvpStat } from "../../../types/RsvpStat";
 
@@ -24,23 +25,6 @@ const updateSplit = (splitWallet: `0x${string}`, roster: RsvpStat[] ) => {
     console.log('percent split', x)
     return x
   }
-
-  function sortHexadecimalArray(addressArray: `0x${string}`[]): `0x${string}`[] {
-    // Use a custom comparator function to convert hex strings to numbers
-    // and compare them numerically.
-    const comparator = (a: string, b: string): number => {
-      const numA = parseInt(a, 16);
-      const numB = parseInt(b, 16);
-
-      if (numA < numB) return -1;
-      if (numA > numB) return 1;
-      return 0;
-    };
-
-    // Use the custom comparator to sort the array
-    return addressArray.sort(comparator);
-  }
-
 
   function sortRoster(roster: RsvpStat[]){
     roster.sort((rsvpOne, rsvpTwo) =>

@@ -9,7 +9,6 @@ export function useVerifyAttendance(
   tokenAddress: `0x${string}`
 ) {
   const { chain } = useNetwork()
-  const { address } = useAccount()
   const [isVerified, setVerified] = React.useState(false)
 
   const creatorContract = {
@@ -27,7 +26,7 @@ export function useVerifyAttendance(
 
   useMemo<number>(() => {
     const tokenCount = data ? Number(ethers.utils.formatEther(data!)) : 0
-    if (tokenCount > 0 || walletAddress === address) {
+    if (tokenCount > 0) {
       setVerified(true)
     }
 
@@ -36,4 +35,3 @@ export function useVerifyAttendance(
 
   return { isVerified, isError, isLoading }
 }
-197

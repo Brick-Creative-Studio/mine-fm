@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { useLayoutStore, useEventStore } from 'stores'
+import { useLayoutStore, useEventStore, useProfileStore } from 'stores'
 import useStore from '../../../../stores/useStore'
 import { useIsMounted } from '../../../../hooks/useMounted'
 import Image from 'next/future/image'
@@ -33,6 +33,8 @@ export default function ConfirmPage({
   const router = useRouter()
   const [metaURL, setMetaURL] = useState<string | undefined>(undefined)
   const eventStore = useStore(useEventStore, (state) => state)
+  const { aura } = useProfileStore((state) => state)
+
   const [eventData, setEventData] = useState<Event | undefined>(undefined)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const startTime = eventStore
@@ -66,6 +68,7 @@ export default function ConfirmPage({
       isOnline: true,
       organizer: eventStore?.organizer,
       ownerAddress: eventStore?.ownerAddress,
+      ownerAura: `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`,
       ownerId: eventStore?.ownerId,
       posterURL: eventStore?.posterUrl,
       startDate: new Date(startTime),
@@ -78,14 +81,17 @@ export default function ConfirmPage({
       memoryCard: eventStore?.memoryCardURL
     }
     return await createEvent(event).then((newEvent) => {
-      if (newEvent !== undefined) {
+      if (newEvent) {
         // router?.push(`/explore?tab=livestream`)
-        setIsLoading(false)
-        setPrompt(true)
         eventStore?.setId(newEvent.id!)
+        setIsLoading(false)
+        if(newEvent.isFree){
+          router?.push(`/explore?tab=livestream`)
+        } else{
+          setPrompt(true)
+        }
         return newEvent.id;
       }
-      console.log('form set open check:', event)
     })
   }
 
@@ -113,8 +119,8 @@ export default function ConfirmPage({
     }
 
     //if free skip metadata and deployment prompt
-    if(eventStore?.startingPrice == "0"){
-      return await eventUpload(true)
+    if(eventStore?.isFree){
+      return await eventUpload(true).then()
     }
 
     const metaJSON = JSON.stringify(meta, null, 2)
@@ -125,7 +131,6 @@ export default function ConfirmPage({
     const url = normalizeIPFSUrl(cid)?.toString()
     console.log('Livestream Event IPFS url:', url)
 
-
     if (url) {
       setMetaURL(url)
       setPrompt(true)
@@ -135,10 +140,6 @@ export default function ConfirmPage({
 
   function closeModal() {
     setPrompt(false)
-  }
-
-  function openModal() {
-    setPrompt(true)
   }
 
   useEffect(() => {
@@ -242,7 +243,7 @@ export default function ConfirmPage({
         // onClick={() => metaURL ?  ctWrite?.() : write?.()}
         onClick={() => uploadMetaData()}
       >
-        <p> Upload Metadata and Save </p>
+        <p> Save and Upload </p>
       </button>
 
       <Transition appear show={promptOpen} as={Fragment}>

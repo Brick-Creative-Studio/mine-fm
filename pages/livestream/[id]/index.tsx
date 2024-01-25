@@ -46,7 +46,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
     eventInfo?.tokenId ? eventInfo?.tokenId : 1
   )
 
-  const [isGranted, setGranted] = useState<boolean>(isVerified)
+  const [isGranted, setGranted] = useState<boolean>(eventInfo?.isFree ? true : isVerified)
 
 
   const guestSections = [
@@ -88,15 +88,19 @@ export default function LivestreamPage({ eventInfo }: Props) {
   ]
 
   useEffect(() => {
-    if (!isVerified) {
-      closeValidationModal()
-    } else {
-      setGranted(true)
+    if (eventInfo?.isFree) {
+
+      return
     }
-  }, [isVerified])
+    if (isVerified || eventInfo?.ownerAddress === address) {
+      setGranted(true)
+    } else {
+      closeValidationModal()
+    }
+  }, [isVerified, address])
 
   useEffect(() => {
-    if (eventInfo && isVerified) {
+    if (eventInfo && isGranted) {
       socket.on('connect', () => {
         socket.emit('join_room', {
           roomName: eventInfo.id,
@@ -132,7 +136,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
       socket.off('chat')
       //leaveStream()
     }
-  }, [eventInfo?.id, socket, isVerified])
+  }, [eventInfo?.id, socket, isVerified, isGranted])
 
   const warningText =
     'Are you sure you want to leave this page? Leaving this page will impact your listening stats.'
