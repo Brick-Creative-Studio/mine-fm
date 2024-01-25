@@ -67,7 +67,7 @@ export default function LivestreamForm({}) {
       endDate: data.endDate,
       endTime: data.endTime,
       startingPrice: isChecked ? "0.00" : data.startingPrice,
-      isFree: data.isFree,
+      isFree: isChecked,
     }
 
     state.setEvent(event)

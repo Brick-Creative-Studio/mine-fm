@@ -1,6 +1,7 @@
 import splitMainABI from "../abis/SplitMain";
 import { useNetwork, useWaitForTransaction, useContractWrite, usePrepareContractWrite, useAccount } from "wagmi";
 import { useState } from "react";
+import sortHexadecimalArray from "../../../utils/sortHexadecimalArray";
 import { SPLIT_MAIN_ADDRESS_GOERLI_BASE,
   MINE_ADMIN_EOA,
   MINE_TEST_EOA,
@@ -16,12 +17,12 @@ const useCreateSplit = (ownerAddress: `0x${string}`) => {
     abi: splitMainABI,
   } as const;
 
-  const splittyArgs = [MINE_TEST_EOA_2, ownerAddress].sort()
+  const splitArgs = sortHexadecimalArray([MINE_ADMIN_EOA, ownerAddress])
 
   const { config } = usePrepareContractWrite({
     ...splitContract,
     functionName: "createSplit",
-    args: [[ownerAddress, MINE_TEST_EOA_2], [500000, 500000], 0, MINE_ADMIN_EOA]
+    args: [splitArgs, [500000, 500000], 0, MINE_ADMIN_EOA]
   })
 
 

@@ -13,6 +13,7 @@ import {
   useConnectModal,
 } from '@rainbow-me/rainbowkit';
 import { Attendee } from "../../types/Attendee";
+import Link from "next/link";
 
 interface ModalProps {
   streamEvent: Event,
@@ -31,70 +32,6 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
   const { isConnected, address } = useAccount()
 
   const router = useRouter();
-  async function handleRSVP() {
-    const endpoint = 'attendee/create'
-    const url = process.env.NEXT_PUBLIC_BASE_URL + endpoint
-    const attendee = {
-      eventID: streamEvent.id,
-      userID: userId
-    }
-    setLoading(true)
-
-
-    //check wallet connection
-    if(!isConnected && openConnectModal){
-      openConnectModal()
-      return
-    }
-    //check for mine account
-    if(!hasAccount){
-      return
-    }
-
-    //check if owner
-    if(streamEvent.ownerAddress === address as string){
-      await router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`)
-      return
-    }
-
-    let isAttending = false
-
-    if(rsvpList && rsvpList.length >= 1) {
-      //check if already in rsvp list.
-      rsvpList.map((attendee) => {
-        if(attendee.userID === userId as string) {
-          isAttending = true
-        }
-      })
-    }
-
-    //otherwise, rsvp to stream
-    if(isAttending){
-      await router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`)
-    } else {
-      // try {
-      //   await axios.post(url, attendee).then((res) => {
-      //     console.log(res.data)
-          router.push(`/livestream/${streamEvent.id}`, `/livestream/${streamEvent.id}`)
-      //     return res.data
-      //   }).catch((error) => {
-      //     console.log('fetch user error:', error)
-      //   })
-      // } catch (error) {
-      //   console.log('create event error:', error)
-      //   return
-      // }
-    }
-    setLoading(false)
-
-  }
-
-  function entranceUI(){
-    //check if free
-    //if free show regular UI
-    //else show large centered see more button
-
-  }
 
   function closeModal() {
     setIsOpen(false)
@@ -185,28 +122,21 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
                     </div>
                     { streamEvent.isFree ? (
                       <div className={'flex justify-around'}>
-                        <div className="mt-4 w-1/3 ">
-                          {/*<Link href={`/livestream/${streamEvent.id}?tab=chat`}>*/}
-                          <button
-                            type="button"
-                            className="w-full bg-[#1D0045] rounded-sm border-solid border border-[#FF8500] cursor-pointer"
-                            onClick={() => router.push(`/stream-info?id=${streamEvent.id}`, `/stream-info?id=${streamEvent.id}`)}
-                          >
-                            <h3 className={'text-[#FF8500]'}>{`EVENT DETAILS`}</h3>
-                          </button>
-                          {/*</Link>*/}
-                        </div>
+
                         <div className="mt-4 w-1/3">
                           { !isLoading ? (
+                            <Link href={`/livestream/${streamEvent.id}?tab=chat`}>
+
                             <button
                               type="button"
                               className={`bg-[#FF8500] border-[#FF8500] w-full rounded-sm cursor-pointer`}
-                              onClick={handleRSVP}
                               disabled={!hasAccount}
 
                             >
                               <h3 className={'text-[#1D0045]'}>{`ENTER`}</h3>
                             </button>
+                            </Link>
+
                           ) : (
                             <button
                               type="button"

@@ -131,7 +131,7 @@ export default function TwitterModal({ twitterUrl, isUserPage }: SocialProps) {
                     <input
                     placeholder='www.twitter/mine_fm'
                     defaultValue={ twitterUrl ? twitterUrl : undefined}
-                    className="bg-slate-200/75 h-10 w-full border p-2 border-solid rounded-md text-black"
+                    className="bg-black/50 h-10 w-full p-2 border-none rounded-md text-white"
                     {...register('url')}
                      >
                       
@@ -141,7 +141,7 @@ export default function TwitterModal({ twitterUrl, isUserPage }: SocialProps) {
                   <div className="mt-4">
                     <button
                       type="submit"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-transparent cursor-pointer bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={closeAndSubmit}
                     >
                       Save

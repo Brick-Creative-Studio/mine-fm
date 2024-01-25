@@ -49,7 +49,7 @@ export default function StreamInfoPage({}) {
     1,
     event?.tokenAddress as `0x${string}`
   )
-  const [ isValid, setValidity ] = useState<boolean>(false)
+  const [ hasCard, setHasCard ] = useState<boolean>(false)
 
 
   async function fetchEvent(url: string) {
@@ -152,8 +152,17 @@ export default function StreamInfoPage({}) {
 
   useEffect(() => {
     if (event) {
-      event.ownerAddress === address ? setIsOwner(true) : setIsOwner(false)
-      setValidity(true)
+
+      if(event.ownerAddress === address){
+        setIsOwner(true)
+        setHasCard(true)
+      } else {
+        setIsOwner(false)
+      }
+
+      if(isVerified){
+        setHasCard(true)
+      }
       const priceWithFee = addRewardFee(nextTokenPrice)
       setCurrentPrice(priceWithFee.toString())
     }
@@ -205,7 +214,7 @@ export default function StreamInfoPage({}) {
     if (txData?.status === 'success'){
       setTimeout(() => {
         setIsLoading(false)
-        setValidity(true)
+        setHasCard(true)
 
       }, 7000);
     }
@@ -233,24 +242,32 @@ export default function StreamInfoPage({}) {
               <div>
                 <p className={'text-[32px] md:mt-0'}> {event.title} </p>
 
-                <button
-                  className={
-                    'bg-[#FF8500] hover:bg-orange-300 m-2 rounded-sm cursor-pointer'
-                  }
-                >
-                  { !isValid ? (
+
+                  { hasCard ? (
+                    <Link
+                      href={`/livestream/${pathID}`}
+                    >
+                    <button
+                      className={
+                        'bg-[#FF8500] hover:bg-orange-300 m-2 rounded-sm cursor-pointer'
+                      }
+                    >
+                      { transition ? <h3 className={'text-sm w-32 animate-pulse text-[#1D0045]'}> {entryText} </h3> : <h3 className={'text-sm w-32 text-[#1D0045]'}> {entryText} </h3>}
+                    </button>
+                    </Link>
+
+                  ) : (
+                    <button
+                      className={
+                        'bg-[#FF8500] hover:bg-orange-300 m-2 rounded-sm cursor-pointer'
+                      }
+                    >
                     <h3 className={'text-sm w-48 text-[#1D0045]'}>
                       {' '}
                       MEMORY CARD REQUIRED {' '}
                     </h3>
-                  ) : (
-                    <Link
-                      href={`/livestream/${pathID}`}
-                    >
-                      { transition ? <h3 className={'text-sm w-32 animate-pulse text-[#1D0045]'}> {entryText} </h3> : <h3 className={'text-sm w-32 text-[#1D0045]'}> {entryText} </h3>}
-                    </Link>
+                    </button>
                   )}
-                </button>
               </div>
               {isOwner ? (
                 codeVisibile ? (
@@ -331,7 +348,7 @@ export default function StreamInfoPage({}) {
             <p className={'text-[32px] self-start mb-1'}> Description </p>
             <p className={'text-xl text-start self-start'}>{event.description}</p>
           </div>
-          <div className={'flex mb-10'}>
+          <div className={`flex mb-10 ${event.isFree ? 'invisible' : null} `}>
             <div
               className={
                 'w-96 h-96 bg-black/50 border-solid border-[#7DD934] rounded-md my-auto items-center justify-center flex'

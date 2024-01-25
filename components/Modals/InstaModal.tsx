@@ -135,7 +135,7 @@ export default function InstaModal({ instaUrl, isUserPage } : SocialProps) {
                   <input
                     placeholder='www.insagram/mine_fm'
                     defaultValue={ instaUrl ? instaUrl : undefined }
-                    className="bg-slate-200/75 h-10 w-full border p-2 border-solid rounded-md text-black"
+                    className="bg-black/50 h-10 w-full border-none p-2 rounded-md text-white"
                     {...register('url')}
                      >
                       

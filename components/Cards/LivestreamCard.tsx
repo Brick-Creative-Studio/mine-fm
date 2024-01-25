@@ -72,7 +72,7 @@ export const LivestreamCard: React.FC<CardProps> = ({ streamEvent }) => {
           </div>
           <div className="flex flex-col justify-center mx-2">
             <p className="m-0 text-[#B999FA] font-light"> Entrance Fee </p>
-            <p className="m-0 mt-1 self-start text-[#B999FA]"> {streamEvent.startingPrice} eth </p>
+            <p className="m-0 mt-1 self-start text-[#B999FA]"> {streamEvent.isFree ? 'FREE' : streamEvent.startingPrice + ` eth`}  </p>
           </div>
         </div>
 
