@@ -63,7 +63,7 @@ const WaveformVisual = ({
         frequencyHz_2: 10.0,
       })
     }
-  }, [visual])
+  }, [visual, set])
 
   return (
     <>
