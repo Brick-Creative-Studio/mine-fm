@@ -52,10 +52,10 @@ export default function AudioVisualizer() {
 
   return (
     <main style={{ height: '100%', width: '100%' }}>
-      <Suspense fallback={<span>loading...</span>}>
-        {getAnalyzerComponent(mode as ApplicationMode)}
-        {getCanvasComponent(mode as ApplicationMode)}
-      </Suspense>
+      {/* <Suspense fallback={<span>loading...</span>}> */}
+      {getAnalyzerComponent(mode as ApplicationMode)}
+      {getCanvasComponent(mode as ApplicationMode)}
+      {/* </Suspense> */}
     </main>
   )
 }
