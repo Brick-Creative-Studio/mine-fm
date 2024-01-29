@@ -64,7 +64,6 @@ const PageAudioPlayer = () => {
 
   return (
     <>
-      <AudioVisualizer />
       {!isPlaying && playable ? (
         <div className={styles.overlay}>
           <div
@@ -91,7 +90,7 @@ const PageAudioPlayer = () => {
         </div>
       ) : isPlaying && playable ? (
         <div className={styles.overlay}>
-          <div
+          {/* <div
             className={
               'absolute w-full md:opacity-0 md:hover:opacity-100 h-64 md:h-[600px]'
             }
@@ -106,12 +105,8 @@ const PageAudioPlayer = () => {
                 'cursor-pointer relative left-1/3 opacity-0 active:opacity-100 md:opacity-100 top-1/4 md:relative  md:left-[28rem] md:top-[12rem]'
               }
             />
-          </div>
-          <img
-            src={'/gif/mine-cube.gif'}
-            alt={'mine-cube gif'}
-            className={' w-full h-full object-contain'}
-          />
+          </div> */}
+          <AudioVisualizer />
         </div>
       ) : !playable ? (
         <div>Stream is not Live</div>
