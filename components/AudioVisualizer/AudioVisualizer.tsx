@@ -41,7 +41,7 @@ export default function AudioVisualizer() {
   const { mode } = useControls({
     mode: {
       value:
-        modeParam && AVAILABLE_MODES.includes(modeParam) ? modeParam : AVAILABLE_MODES[0],
+        modeParam && AVAILABLE_MODES.includes(modeParam) ? modeParam : AVAILABLE_MODES[2],
       options: AVAILABLE_MODES.reduce(
         (o, mode) => ({ ...o, [getAppModeDisplayName(mode)]: mode }),
         {}
