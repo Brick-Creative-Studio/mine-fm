@@ -20,6 +20,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import readTreasury from '../../../data/contract/requests/readTreasury'
 import { getNextTokenPrice } from '../../../data/contract/requests/getNextTokenPrice'
+import { Leva } from 'leva'
 interface Props {
   eventInfo: Event | null
 }
@@ -72,7 +73,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Viz',
-      component: [<div></div>],
+      component: [<Leva key={'leva-controls'} flat fill />],
     },
   ]
 
@@ -108,6 +109,10 @@ export default function LivestreamPage({ eventInfo }: Props) {
           key={'Admin'}
         />,
       ],
+    },
+    {
+      title: 'Viz',
+      component: [<Leva key={'leva-controls'} flat fill />],
     },
   ]
 
