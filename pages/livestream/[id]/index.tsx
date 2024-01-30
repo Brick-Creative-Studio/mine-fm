@@ -73,7 +73,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Viz',
-      component: [<Leva key={'leva-controls'} flat fill />],
+      component: [<Leva key={'leva-controls'} flat fill titleBar={false} />],
     },
   ]
 
@@ -112,7 +112,7 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Viz',
-      component: [<Leva key={'leva-controls'} flat fill />],
+      component: [<Leva key={'leva-controls'} flat fill titleBar={false} />],
     },
   ]
 
