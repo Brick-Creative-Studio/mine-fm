@@ -18,8 +18,8 @@ import { socket } from '../../../utils/socket-client'
 import Image from 'next/image'
 import { Dialog, Transition } from '@headlessui/react'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
-import readTreasury from "../../../data/contract/requests/readTreasury";
-import { getNextTokenPrice } from "../../../data/contract/requests/getNextTokenPrice";
+import readTreasury from '../../../data/contract/requests/readTreasury'
+import { getNextTokenPrice } from '../../../data/contract/requests/getNextTokenPrice'
 interface Props {
   eventInfo: Event | null
 }
@@ -48,7 +48,6 @@ export default function LivestreamPage({ eventInfo }: Props) {
 
   const [isGranted, setGranted] = useState<boolean>(eventInfo?.isFree ? true : isVerified)
 
-
   const guestSections = [
     {
       title: 'Chat',
@@ -62,7 +61,18 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Info',
-      component: [<StreamInfo treasury={treasuryAmountInEth} nextTokenPrice={nextTokenPrice} eventInfo={eventInfo!} key={'info'} />],
+      component: [
+        <StreamInfo
+          treasury={treasuryAmountInEth}
+          nextTokenPrice={nextTokenPrice}
+          eventInfo={eventInfo!}
+          key={'info'}
+        />,
+      ],
+    },
+    {
+      title: 'Viz',
+      component: [<div></div>],
     },
   ]
 
@@ -79,17 +89,30 @@ export default function LivestreamPage({ eventInfo }: Props) {
     },
     {
       title: 'Info',
-      component: [<StreamInfo treasury={treasuryAmountInEth} nextTokenPrice={nextTokenPrice} eventInfo={eventInfo!} key={'info'} />],
+      component: [
+        <StreamInfo
+          treasury={treasuryAmountInEth}
+          nextTokenPrice={nextTokenPrice}
+          eventInfo={eventInfo!}
+          key={'info'}
+        />,
+      ],
     },
     {
       title: 'Admin',
-      component: [<AdminSection treasurySum={treasuryAmountInEth} splitAddress={eventInfo?.splitAddress as `0x${string}`} event={eventInfo!} key={'Admin'} />],
+      component: [
+        <AdminSection
+          treasurySum={treasuryAmountInEth}
+          splitAddress={eventInfo?.splitAddress as `0x${string}`}
+          event={eventInfo!}
+          key={'Admin'}
+        />,
+      ],
     },
   ]
 
   useEffect(() => {
     if (eventInfo?.isFree) {
-
       return
     }
     if (isVerified || eventInfo?.ownerAddress === address) {
@@ -216,7 +239,11 @@ export default function LivestreamPage({ eventInfo }: Props) {
           </div>
 
           <div className="hidden md:flex">
-            <StreamInfoDesktop nextTokenPrice={nextTokenPrice} treasuryAmountInEth={treasuryAmountInEth} event={eventInfo!} />
+            <StreamInfoDesktop
+              nextTokenPrice={nextTokenPrice}
+              treasuryAmountInEth={treasuryAmountInEth}
+              event={eventInfo!}
+            />
           </div>
         </div>
 
