@@ -10,37 +10,34 @@ const GridVisual = ({
   palette = COLOR_PALETTE.THREE_COOL_TO_WARM,
 }: VisualProps) => {
   const { nGridRows, nGridCols, gridUnitSideLength, gridUnitSpacingScalar } = useControls(
+    'Visual - Grid',
     {
-      'Visual - Grid': folder(
-        {
-          nGridRows: {
-            value: 100,
-            min: 2,
-            max: 500,
-            step: 1,
-          },
-          nGridCols: {
-            value: 100,
-            min: 2,
-            max: 500,
-            step: 1,
-          },
-          gridUnitSideLength: {
-            value: 0.025,
-            min: 0.01,
-            max: 0.5,
-            step: 0.005,
-          },
-          gridUnitSpacingScalar: {
-            value: 5,
-            min: 1,
-            max: 10,
-            step: 0.5,
-          },
-        },
-        { collapsed: true }
-      ),
+      nGridRows: {
+        value: 100,
+        min: 2,
+        max: 500,
+        step: 1,
+      },
+      nGridCols: {
+        value: 100,
+        min: 2,
+        max: 500,
+        step: 1,
+      },
+      gridUnitSideLength: {
+        value: 0.025,
+        min: 0.01,
+        max: 0.5,
+        step: 0.005,
+      },
+      gridUnitSpacingScalar: {
+        value: 5,
+        min: 1,
+        max: 10,
+        step: 0.5,
+      },
     }
+    // { collapsed: false }
   )
 
   return (

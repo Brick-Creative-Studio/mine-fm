@@ -59,18 +59,17 @@ const Visual3DCanvas = ({ mode }: Visual3DCanvasProps) => {
       options: AVAILABLE_VISUALS,
     },
   })
-  const { palette, colorBackground } = useControls({
-    'Visual - Color': folder(
-      {
-        palette: {
-          value: COLOR_PALETTE.THREE_COOL_TO_WARM,
-          options: AVAILABLE_COLOR_PALETTES,
-        },
-        colorBackground: false,
+  const { palette, colorBackground } = useControls(
+    'Visual - Color',
+    {
+      palette: {
+        value: COLOR_PALETTE.THREE_COOL_TO_WARM,
+        options: AVAILABLE_COLOR_PALETTES,
       },
-      { collapsed: true }
-    ),
-  })
+      colorBackground: false,
+    },
+    { collapsed: false }
+  )
   const backgroundColor = colorBackground
     ? ColorPalette.getPalette(palette).calcBackgroundColor(0)
     : '#010204'
