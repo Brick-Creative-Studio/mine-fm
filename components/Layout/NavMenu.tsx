@@ -3,10 +3,11 @@ import { miniAvatar, navAvatar } from './styles.css'
 import { useDisconnect, useBalance, useAccount } from 'wagmi'
 import { Menu } from '@headlessui/react'
 import { useProfileStore } from '../../stores'
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Link from 'next/link'
 import { parseEther, formatEther } from 'ethers/lib/utils'
 import { BigNumber } from 'ethers'
+import { usePrivy, useLogin } from '@privy-io/react-auth';
+
 
 interface NavMenuProps {
   signerAddress: string | null
@@ -14,13 +15,23 @@ interface NavMenuProps {
 }
 
 const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
+  const { login } = useLogin({
+    onComplete: (user, isNewUser, wasAlreadyAuthenticated) => {
+      console.log(user, isNewUser, wasAlreadyAuthenticated);
+      // Any logic you'd like to execute if the user is/becomes authenticated while this
+      // component is mounted
+    },
+    onError: (error) => {
+      console.log(error);
+      // Any logic you'd like to execute after a user exits the login flow or there is an error
+    }
+  })
   const { aura } = useProfileStore((state) => state)
   const { disconnect } = useDisconnect()
   const { data } = useBalance({
     address: signerAddress as `0x${string}`,
     formatUnits: 'ether',
   })
-  const { openConnectModal } = useConnectModal();
 
   const [hamburgerOpen, setHamburgerOpen] = useState(false)
 
@@ -202,10 +213,10 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                   active && 'bg-blue-500'
                 } border-[#B999FA] rounded-md border-solid hover:bg-red-500 bg-transparent flex items-center justify-center w-3/4 cursor-pointer`}
                 onClick={() =>  {
-                  signerAddress ? disconnect() : openConnectModal?.()
+                  signerAddress ? disconnect() : login()
                 }}
               >
-                {<h3 className={'text-[20px] font-light text-white'}>{ signerAddress ? `Disconnect` : `Connect`} </h3>}
+                {<h3 className={'text-[20px] font-light text-white'}>{ signerAddress ? `Log Out` : `Log In`} </h3>}
               </button>
             )}
           </Menu.Item>
