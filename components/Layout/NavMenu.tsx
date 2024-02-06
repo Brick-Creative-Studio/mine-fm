@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { miniAvatar, navAvatar } from './styles.css'
 import { useDisconnect, useBalance, useAccount } from 'wagmi'
 import { Menu } from '@headlessui/react'
-import { useProfileStore } from '../../stores'
+import { useLayoutStore, useProfileStore } from "../../stores";
 import Link from 'next/link'
 import { parseEther, formatEther } from 'ethers/lib/utils'
 import { BigNumber } from 'ethers'
@@ -15,18 +15,24 @@ interface NavMenuProps {
 }
 
 const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
+
+  const { aura, setHasAccount } = useProfileStore((state) => state)
+  const { setSignerAddress, isMobile } = useLayoutStore((state) => state)
+
   const { login } = useLogin({
     onComplete: (user, isNewUser, wasAlreadyAuthenticated) => {
       console.log(user, isNewUser, wasAlreadyAuthenticated);
-      // Any logic you'd like to execute if the user is/becomes authenticated while this
-      // component is mounted
+      if(isNewUser){
+        setHasAccount(false)
+      } else {
+        setHasAccount(true)
+      }
     },
     onError: (error) => {
       console.log(error);
       // Any logic you'd like to execute after a user exits the login flow or there is an error
     }
   })
-  const { aura } = useProfileStore((state) => state)
   const { disconnect } = useDisconnect()
   const { data } = useBalance({
     address: signerAddress as `0x${string}`,
