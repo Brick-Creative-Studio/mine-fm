@@ -22,6 +22,7 @@ interface Props {
 export default function AdminSection({ event, splitAddress, treasurySum }: Props) {
   const [promptOpen, setPrompt] = useState<boolean>(false)
   const router = useRouter()
+  //TODO: Replace with env var
   const ADMIN_UID = '9134100c-2f83-4d57-911f-b492f735d83b'
 
   function closeExitModal() {
@@ -29,55 +30,26 @@ export default function AdminSection({ event, splitAddress, treasurySum }: Props
   }
   async function endEvent(eventID: string) {
     const owner = await getUserBy(event.ownerAddress!)
-    const PROTOCOL_SPLIT = 0.1
-    const ARTIST_SPIT = 0.5
 
-    const rsvpStats: any[] = [
-      {
-        treasury: treasurySum,
-        eventID: eventID,
-      },
-      {
-        userId: ADMIN_UID,
-        walletAddress: MINE_ADMIN_EOA,
-        percentageSplit: PROTOCOL_SPLIT,
-        ethSplit: PROTOCOL_SPLIT * treasurySum!,
-      },
-      {
-        userId: owner?.id!,
-        walletAddress: event.ownerAddress!,
-        percentageSplit: ARTIST_SPIT,
-        ethSplit: ARTIST_SPIT * treasurySum!,
-      },
-    ]
+    const results = await endStream(eventID, treasurySum!)
+    console.log('event stats:', results)
 
-    const results = await endStream(eventID)
-
-    if (results) {
-      for (let i = 0; i < results.length; i++) {
-        const splits = calculateAudienceSplit(results[i].weight, treasurySum!)
-        rsvpStats.push({
-          userId: results[i].userID,
-          walletAddress: results[i].walletAddress,
-          percentageSplit: results[i].weight,
-          ethSplit: splits.ethSplit,
-        })
-      }
-
-      const rsvpMeta = JSON.stringify(rsvpStats, null, 2)
-      const blob = new Blob([rsvpMeta], { type: 'application/json' })
-      const metaDataFile = new File([blob], `${event.id}-rsvp-stats.json`) // Specify the desired filename
-      const { cid } = await uploadFile(metaDataFile, { cache: true })
-      const url = normalizeIPFSUrl(cid)?.toString()
-
-      await updateEvent({
-        id: event.id,
-        statsMetadata: getFetchableUrl(url),
-      }).then(() => {
-        router.push(`/livestream/${eventID}/exit-stream`)
-        console.log('event updated')
-      })
-    }
+    // if (results) {
+    //
+    //   const rsvpMeta = JSON.stringify(results, null, 2)
+    //   const blob = new Blob([rsvpMeta], { type: 'application/json' })
+    //   const metaDataFile = new File([blob], `${event.id}-rsvp-stats.json`) // Specify the desired filename
+    //   const { cid } = await uploadFile(metaDataFile, { cache: true })
+    //   const url = normalizeIPFSUrl(cid)?.toString()
+    //
+    //   await updateEvent({
+    //     id: event.id,
+    //     statsMetadata: getFetchableUrl(url),
+    //   }).then(() => {
+    //     router.push(`/livestream/${eventID}/exit-stream`)
+    //     console.log('event updated')
+    //   })
+    // }
   }
 
   return (
