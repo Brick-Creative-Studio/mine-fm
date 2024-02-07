@@ -136,7 +136,7 @@ const Nav = () => {
       {/*)}*/}
 
       <div className={navActions}>
-        {address && <NavMenu hasAccount={hasAccount} signerAddress={address} />}
+        {address && <NavMenu />}
       </div>
       {!hasAccount && <CreateAccountModal />}
     </nav>
@@ -202,7 +202,7 @@ const Nav = () => {
       {/*)}*/}
 
       <div className={'flex items-center justify-between'}>
-        <NavMenu hasAccount={hasAccount} signerAddress={null} />
+        <NavMenu  />
       </div>
     </div>
   )

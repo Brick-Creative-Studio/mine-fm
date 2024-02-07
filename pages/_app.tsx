@@ -11,6 +11,8 @@ import Footer from "../components/Layout/Footer";
 import { createPublicClient, http, } from 'viem'
 import React from "react";
 import Head from "next/head";
+import {publicProvider} from 'wagmi/providers/public';
+import {PrivyWagmiConnector} from '@privy-io/wagmi-connector';
 
 
 
@@ -21,11 +23,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   const handleLogin = (user: any) => {
     console.log(`User ${user.id} logged in!`)
   }
+  const configureChainsConfig = configureChains([base, baseGoerli], [publicProvider()]);
+
 
 
   return (
-    <WagmiConfig config={config}>
-        {/* Head */}
+    <>
         <Head>
           <title key="title">MINE.FM</title>
           <meta
@@ -82,15 +85,18 @@ function MyApp({ Component, pageProps }: AppProps) {
           supportedChains: [ baseGoerli ]
         }}
       >
-      <Layout>
+        <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}>
+
+        <Layout>
         <Component {...pageProps} />
       </Layout>
         <Footer />
 
         <Analytics />
-      </PrivyProvider>
+        </PrivyWagmiConnector>
 
-    </WagmiConfig>
+      </PrivyProvider>
+    </>
   )
 }
 

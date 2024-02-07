@@ -33,7 +33,7 @@ const provider = alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID ? 
 
 
 export const config = createConfig({
-  autoConnect: true,
+  autoConnect: false,
   connectors,
   publicClient,
 })
