@@ -34,48 +34,48 @@ const Nav = () => {
       address && setSignerAddress(address)
     },
   })
-
-  const { error, isLoading, user } = useGetUser(address as string)
-
-  const { data, error: swrError } = useSWR([address as string], useGetUser, {
-    revalidateOnMount: true,
-    revalidateIfStale: true,
-  })
-
-  useEffect(() => {
-    if (user) {
-      setIdentity({
-        id: user.id,
-        miner_tag: user.miner_tag,
-        instagram: user.instagram,
-        twitter: user.twitter,
-        email: user.email,
-        bio: user.bio,
-        name: user.name,
-      })
-      setAura({
-        colorOne: user.colorOne!!,
-        colorTwo: user.colorTwo!!,
-        colorThree: user.colorThree!!,
-        direction: user.direction!!,
-      })
-      setHasAccount(true)
-      return
-    }
-
-    if (error || !user) {
-      resetProfileState()
-      return
-    }
-  }, [user, error, isLoading])
-
-  useEffect(() => {
-    if (router.pathname.includes('livestream')) {
-      setHidden(true)
-      return
-    }
-    setHidden(false)
-  }, [router])
+  //
+  // const { error, isLoading, user } = useGetUser(address as string)
+  //
+  // const { data, error: swrError } = useSWR([address as string], useGetUser, {
+  //   revalidateOnMount: true,
+  //   revalidateIfStale: true,
+  // })
+  //
+  // useEffect(() => {
+  //   if (user) {
+  //     setIdentity({
+  //       id: user.id,
+  //       miner_tag: user.miner_tag,
+  //       instagram: user.instagram,
+  //       twitter: user.twitter,
+  //       email: user.email,
+  //       bio: user.bio,
+  //       name: user.name,
+  //     })
+  //     setAura({
+  //       colorOne: user.colorOne!!,
+  //       colorTwo: user.colorTwo!!,
+  //       colorThree: user.colorThree!!,
+  //       direction: user.direction!!,
+  //     })
+  //     setHasAccount(true)
+  //     return
+  //   }
+  //
+  //   if (error || !user) {
+  //     resetProfileState()
+  //     return
+  //   }
+  // }, [user, error, isLoading])
+  //
+  // useEffect(() => {
+  //   if (router.pathname.includes('livestream')) {
+  //     setHidden(true)
+  //     return
+  //   }
+  //   setHidden(false)
+  // }, [router])
 
   return isHidden ? null : isMounted && address ? (
     <nav className={NavBar}>
@@ -138,7 +138,7 @@ const Nav = () => {
       <div className={navActions}>
         {address && <NavMenu />}
       </div>
-      {!hasAccount && <CreateAccountModal />}
+      {/*{!hasAccount && <CreateAccountModal />}*/}
     </nav>
   ) : (
     <div className={NavBar}>

@@ -6,7 +6,8 @@ export const mood001 = {
     tags: ['Amapiano', 'Afrodance'],
     description: 'an Amapiano/Afro Dance mix to shake off the winter',
     date: '04-20-23',
-    socialURL: 'https://www.instagram.com/elinam.yaa/'
+    socialURL: 'https://www.instagram.com/elinam.yaa/',
+    moodColor: '#4CBB17'
 }
 
 
@@ -18,7 +19,9 @@ export const mood002 = {
   tags: ['Mellow', 'Ambient'],
   description: 'melancholic catharsis',
   date: '08-07-23',
-  socialURL: 'https://www.instagram.com/jamierbh/'
+  socialURL: 'https://www.instagram.com/jamierbh/',
+  moodColor: '#B2FFFF'
+
 }
 
 export const mood003 = {
@@ -29,6 +32,7 @@ export const mood003 = {
   tags: ['Urgent', 'Forward'],
   description: 'a new day, a new sun, with uptempo dance grooves.',
   date: '11-01-23',
-  socialURL: 'https://www.instagram.com/keithcharles/'
+  socialURL: 'https://www.instagram.com/keithcharles/',
+  moodColor: '#FCF55F'
 
 }

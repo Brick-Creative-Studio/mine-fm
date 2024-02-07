@@ -15,9 +15,13 @@ interface NavMenuProps {
 
 const NavMenu: React.FC<NavMenuProps> = ({ }) => {
 
-  const { aura, setHasAccount, hasAccount } = useProfileStore((state) => state)
+  const { aura, setHasAccount } = useProfileStore((state) => state)
   const { isMobile } = useLayoutStore((state) => state)
   const {disconnect} = useDisconnect();
+
+  //TODO: Change after inital launch
+  const isConnected = false;
+  const hasAccount = false;
 
   const { login } = useLogin({
     onComplete: (user, isNewUser, wasAlreadyAuthenticated) => {
@@ -40,7 +44,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ }) => {
       await disconnect()
     },
   })
-  const {address, isConnected, isConnecting, isDisconnected} = useAccount({
+  const {address, isConnecting, isDisconnected} = useAccount({
     async onDisconnect() {
       await logout()
     }
@@ -122,7 +126,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ }) => {
             </Menu.Item>
             <Menu.Item as="div" className={'p-4'}>
               {({ active }) => (
-                address ? <div style={{ background: `${userGradient}` }}
+                isConnected ? <div style={{ background: `${userGradient}` }}
                      className={miniAvatar} /> : <div/>
               )}
             </Menu.Item>
@@ -136,7 +140,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ }) => {
                 {formattedBalance ? formattedBalance : 0} ETH{' '}
               </h2> :
                 <h2 className={'text-center'}>
-                  Sign In to View Balance
+                  {/*Sign In to View Balance*/}
                 </h2>
               // <h2 className={'text-center'}> { 0 } ETH </h2>
             )}
@@ -181,7 +185,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ }) => {
             } flex items-center  justify-between w-full`}
             href={hasAccount ? `/profile/${address}` : '/onboarding?tab=aura'}
           >
-          <Menu.Item as="div" className={`flex my-4 cursor-pointer hover:bg-[#FF8500] ${address ? null : 'hidden'}`}>
+          <Menu.Item as="div" className={`flex my-4 cursor-pointer hover:bg-[#FF8500] ${isConnected ? null : 'hidden'}`}>
                 {hasAccount ? (
                   <h3 className={'text-[20px] font-light mx-8 cursor-pointer'}>Profile</h3>
                 ) : (
@@ -209,36 +213,36 @@ const NavMenu: React.FC<NavMenuProps> = ({ }) => {
               { <h3 className={'text-[20px] font-light mx-8 cursor-pointer'}>About Us </h3> }
             </Menu.Item>
           </Link>
+          {/*TODO: add back in after Launch 1 */}
+          {/*<Menu.Item as="div" className={`flex my-4`}>*/}
+          {/*  {({ active }) => (*/}
+          {/*    <a*/}
+          {/*      className={`${*/}
+          {/*        active && 'bg-[#FF8500]'*/}
+          {/*      } flex items-center justify-between w-full`}*/}
+          {/*      href={'https://brickstudio.notion.site/FAQ-04bfb4c4580c4ce8a94202f4e6a7b359?pvs=4'}*/}
+          {/*      target="_blank"*/}
+          {/*    >*/}
+          {/*      <h3 className={'text-[20px] font-light mx-8'}>FAQ </h3>*/}
 
-          <Menu.Item as="div" className={`flex my-4`}>
-            {({ active }) => (
-              <a
-                className={`${
-                  active && 'bg-[#FF8500]'
-                } flex items-center justify-between w-full`}
-                href={'https://brickstudio.notion.site/FAQ-04bfb4c4580c4ce8a94202f4e6a7b359?pvs=4'}
-                target="_blank"
-              >
-                <h3 className={'text-[20px] font-light mx-8'}>FAQ </h3>
+          {/*    </a>*/}
+          {/*  )}*/}
+          {/*</Menu.Item>*/}
 
-              </a>
-            )}
-          </Menu.Item>
-
-          <Menu.Item as="div" className={`flex my-4 justify-center `}>
-            {({ active }) => (
-              <button
-                className={`${
-                  active && 'bg-blue-500'
-                } border-[#B999FA] rounded-md border-solid hover:bg-red-500 bg-transparent flex items-center justify-center w-3/4 cursor-pointer`}
-                onClick={() =>  {
-                  isConnected ? (disconnect() ): login()
-                }}
-              >
-                {<h3 className={'text-[20px] font-light text-white'}>{ isConnected ? `Log Out` : `Log In`} </h3>}
-              </button>
-            )}
-          </Menu.Item>
+          {/*<Menu.Item as="div" className={`flex my-4 justify-center `}>*/}
+          {/*  {({ active }) => (*/}
+          {/*    <button*/}
+          {/*      className={`${*/}
+          {/*        active && 'bg-blue-500'*/}
+          {/*      } border-[#B999FA] rounded-md border-solid hover:bg-red-500 bg-transparent flex items-center justify-center w-3/4 cursor-pointer`}*/}
+          {/*      onClick={() =>  {*/}
+          {/*        isConnected ? (disconnect() ): login()*/}
+          {/*      }}*/}
+          {/*    >*/}
+          {/*      {<h3 className={'text-[20px] font-light text-white'}>{ isConnected ? `Log Out` : `Log In`} </h3>}*/}
+          {/*    </button>*/}
+          {/*  )}*/}
+          {/*</Menu.Item>*/}
         </Menu.Items>
       </Menu>
     </nav>

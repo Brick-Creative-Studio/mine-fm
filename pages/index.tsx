@@ -144,8 +144,8 @@ export default function HomePage({}) {
             </div>
             <div className={'border border-[#984DDF] rounded-md border-solid mr-8 mt-8 md:mr-40 w-full h-1/2 px-2 md:p-24 mb-12'}>
               <div className={'ml-24 py-8 md:py-2'}>
-              <h3 className={'text-[#B999FA]'}> WHAT IS MINE.FM? </h3>
-              <p className={'leading-loose text-[#B999FA]'}> MINE.FM combines the ability to LIVESTREAM from anywhere with our unique REVENUE DISTRIBUTION MODEL. We provide a new way for artists and fans to connect and profit together. </p>
+              <h2 className={'text-[#B999FA]'}> WHAT IS MINE.FM? </h2>
+              <p className={' text-xl leading-loose text-[#B999FA]'}> A space to share, discover and build around music. We're creating tools for musical connections.  </p>
               </div>
             </div>
 
