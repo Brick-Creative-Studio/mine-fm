@@ -1,6 +1,5 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import '@rainbow-me/rainbowkit/styles.css'
 import { Analytics } from '@vercel/analytics/react'
 import {PrivyProvider} from '@privy-io/react-auth';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
