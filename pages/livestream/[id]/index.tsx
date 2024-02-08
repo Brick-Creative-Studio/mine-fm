@@ -17,7 +17,6 @@ import { useProfileStore } from '../../../stores'
 import { socket } from '../../../utils/socket-client'
 import Image from 'next/image'
 import { Dialog, Transition } from '@headlessui/react'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
 import readTreasury from "../../../data/contract/requests/readTreasury";
 import { getNextTokenPrice } from "../../../data/contract/requests/getNextTokenPrice";
 interface Props {
@@ -29,7 +28,6 @@ export default function LivestreamPage({ eventInfo }: Props) {
   const auraCode = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
   const [promptOpen, setPrompt] = useState<boolean>(false)
   const router = useRouter()
-  const { openConnectModal } = useConnectModal()
   const { query } = useRouter()
   const { address } = useAccount()
   const [modalText, setModalText] = useState<string>('Verifying Your RSVP...')
@@ -115,10 +113,10 @@ export default function LivestreamPage({ eventInfo }: Props) {
         setIsConnected(true)
 
         //check wallet connection
-        if (!isConnected && openConnectModal) {
-          openConnectModal()
-          return
-        }
+        // if (!isConnected && openConnectModal) {
+        //   openConnectModal()
+        //   return
+        // }
         //check for mine account
         if (!hasAccount) {
           return

@@ -9,7 +9,6 @@ import useSWR, { Fetcher, Key } from 'swr'
 import { Event } from '../../types/Event'
 import { Attendee } from '../../types/Attendee'
 import { User } from '../../types/User'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
 import CopyButtonLight from '../../components/CopyButton/CopyButtonLight'
 import { useIsMounted } from '../../hooks/useMounted'
 import useMint from '../../data/contract/requests/useMint'
@@ -30,7 +29,6 @@ export default function StreamInfoPage({}) {
   const [event, setEvent] = useState<Event | undefined>(undefined)
   const [isOwner, setIsOwner] = useState<boolean>(false)
   const { isConnected, address } = useAccount()
-  const { openConnectModal } = useConnectModal()
   const { id: accountId } = useProfileStore()
   const [codeVisibile, setCodeVisibilty] = useState<boolean>(false)
   const STREAM_KEY = process.env.NEXT_PUBLIC_EVENINGS_KEY

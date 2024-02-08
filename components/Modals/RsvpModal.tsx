@@ -4,14 +4,10 @@ import { getFetchableUrl } from '../../packages/ipfs-service'
 import Image from 'next/image'
 import { Event } from '../../types/Event'
 import { useRouter } from "next/router";
-import axios from "axios";
 import { useProfileStore } from "../../stores";
-import process from "process";
 import { useAccount } from 'wagmi';
 
-import {
-  useConnectModal,
-} from '@rainbow-me/rainbowkit';
+
 import { Attendee } from "../../types/Attendee";
 import Link from "next/link";
 
@@ -24,10 +20,8 @@ export default function RsvpModal({ streamEvent, rsvpList }: ModalProps) {
   let [isOpen, setIsOpen] = useState(false)
   const [isLoading, setLoading] = useState<boolean>(false)
   const [ canEnter, setEntrance ] = useState<boolean>(false)
-
   const formatDate = new Date(streamEvent?.startDate!).toLocaleDateString("en-US", { weekday: "long",year: "numeric", month: "long", day: "numeric",})
   const formatTime = new Date(streamEvent.startDate!).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-  const { openConnectModal } = useConnectModal();
   const { hasAccount, id: userId } = useProfileStore((state) => state);
   const { isConnected, address } = useAccount()
 
