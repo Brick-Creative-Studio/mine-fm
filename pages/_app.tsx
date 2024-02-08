@@ -17,11 +17,7 @@ import {PrivyWagmiConnector} from '@privy-io/wagmi-connector';
 
 function MyApp({ Component, pageProps }: AppProps) {
 
-  // This method will be passed to the PrivyProvider as a callback
-// that runs after successful login.
-  const handleLogin = (user: any) => {
-    console.log(`User ${user.id} logged in!`)
-  }
+
   const configureChainsConfig = configureChains([base, baseGoerli], [publicProvider()]);
 
 
@@ -73,7 +69,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         </Head>
       <PrivyProvider
         appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID!}
-        onSuccess={handleLogin}
         config={{
           loginMethods: ['email', 'wallet', 'sms'],
           appearance: {
