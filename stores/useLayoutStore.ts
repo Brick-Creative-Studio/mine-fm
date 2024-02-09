@@ -25,4 +25,7 @@ export const useLayoutStore = create<LayoutStoreProps>((set) => ({
 
   provider: undefined,
   setProvider: (provider: Provider | undefined) => set({ provider }),
+
+  //TODO: isAudioInit value
+  // setter function and reference in page audio player will have setter function and will be reading isAudioPlaying in the viz component
 }))
