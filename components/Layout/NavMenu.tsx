@@ -164,7 +164,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ }) => {
                   </button>
                 </Link>
 
-                <Link href={'/explore?tab=livestream'}>
+                <Link href={'/explore?tab=moods'}>
                   <button
                     onClick={() => close()}
                     className={

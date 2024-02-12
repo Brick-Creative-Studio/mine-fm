@@ -16,16 +16,16 @@ export default function Explore({}) {
 
   const sections = [
     {
+      title: 'Moods',
+      component: [<MoodsSection key={'moods'} />],
+    },
+    {
       title: 'Livestream',
       component: [<StreamSection key={'livestream'} />],
     },
     {
       title: 'I R L',
       component: [<IRLSection key={'irl'} />],
-    },
-    {
-      title: 'Moods',
-      component: [<MoodsSection key={'moods'} />],
     },
   ]
 

@@ -91,7 +91,7 @@ export default function HomePage({}) {
 
 
               <Link
-              href={'/explore?tab=livestream'}
+              href={'/explore?tab=moods'}
               >
                 <button className={'m-3 bg-transparent text-white flex flex-row-reverse w-40 h-12 md:w-40 md:h-12 hover:bg-fuchsia-950 justify-between items-center cursor-pointer rounded-3xl border-solid border-4 border-[#B999FA]'}>
                 {/*<div className={'w-8 h-8 bg-[#B999FA] rounded-full flex justify-center items-center'}>*/}
@@ -115,7 +115,7 @@ export default function HomePage({}) {
                     closeOnDocumentClick
                   >
                     <div className={'bg-[#12002C] w-48 p-4 rounded-md border-[#7DD934] border-solid'}>
-                      <p className={'text-sm'}><span className={'text-[#B999FA] text-xs'}> MOODs: </span> are audio mixes curated by our community of creative partners for miners (you) to enjoy :)</p>
+                      <h3 className={'text-sm'}><span className={'text-[#B999FA] text-xs'}> MOODs: </span> audio mixes curated by our community of creative partners.</h3>
                     </div>
                   </Popup>
 
@@ -145,7 +145,7 @@ export default function HomePage({}) {
             <div className={'border border-[#984DDF] rounded-md border-solid mr-8 mt-8 md:mr-40 w-full h-1/2 px-2 md:p-24 mb-12'}>
               <div className={'ml-24 py-8 md:py-2'}>
               <h2 className={'text-[#B999FA]'}> WHAT IS MINE.FM? </h2>
-              <p className={' text-xl leading-loose text-[#B999FA]'}> A space to share, discover and build around music. We're creating tools for musical connections.  </p>
+              <p className={' text-lg leading-loose text-[#B999FA]'}> MINE.FM helps you discovery new music and communities via sound and color.   </p>
               </div>
             </div>
 
