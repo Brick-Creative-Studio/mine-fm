@@ -76,7 +76,7 @@ const WaveformPlayer = () => {
     if (muted) {
       return (
         <button className="bg-transparent cursor-pointer" onClick={() => mute(false)}>
-        <img src="/speaker-mute.svg" alt="Mute" className={'cursor-pointer w-10 h-10'} />
+        <img src="/speaker-mute.svg" alt="Mute" className={'cursor-pointer w-6 h-6 md:w-10 md:h-10'} />
         </button>
       )
     } else {
@@ -86,7 +86,7 @@ const WaveformPlayer = () => {
         <img
           src="/speaker-loud.svg"
           alt="Volume"
-          className={'cursor-pointer w-10 h-10'}
+          className={'cursor-pointer w-6 h-6 md:w-10 md:h-10'}
         />
         </button>
       )
@@ -114,7 +114,7 @@ const WaveformPlayer = () => {
         } className="bg-transparent w-fit ">
           <img
             src="/Pause.svg"
-            className={'cursor-pointer w-10 h-10 p-0 border-none'}
+            className={'cursor-pointer w-6 h-6 md:w-10 md:h-10  p-0 border-none'}
             alt="Pause button"
           />
         </button>
@@ -129,7 +129,7 @@ const WaveformPlayer = () => {
         } className="bg-transparent w-fit ">
         <img
           src="/play.svg"
-          className={'cursor-pointer w-12 h-12 p-0 border-none'}
+          className={'cursor-pointer w-6 h-6 md:w-12 md:h-12 p-0 border-none'}
           alt="Play"
         />
         </button>
@@ -164,7 +164,7 @@ const WaveformPlayer = () => {
         <img
           src={'/cross-white.svg'}
           alt={'close audio button'}
-          className={'w-10 h-10 '}
+          className={'w-6 h-6 md:w-10 md:h-10 '}
         />
       </button>
     </div>

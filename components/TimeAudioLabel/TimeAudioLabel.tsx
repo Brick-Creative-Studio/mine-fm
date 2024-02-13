@@ -31,12 +31,12 @@ export const TimeAudioLabel = () => {
   }, [getPosition])
 
   return <div className={'w-full flex justify-between items-center'}>
-    <p className={'px-2'}>
+    <p className={'pr-2 text-sm md:text-md'}>
       {`${formatTime(pos)}`}
     </p>
     <AudioSeekBar/>
 
-    <p className={'px-2'} >
+    <p className={'pl-2 text-sm md:text-md'} >
       {`${formatTime(duration)}`}
     </p>
   </div>
