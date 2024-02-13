@@ -40,7 +40,7 @@ export const mood003 = {
 
 export const mood004 = {
   audioSrc: 'https://mfm-audio-bucket.s3.us-east-2.amazonaws.com/SO%CC%88REN+-+MINE+FM+(02_11_23).wav',
-  artworkURL: '/stock/mood-004-cover.jpeg',
+  artworkURL: '/stock/mood-004-cover-alt.jpeg',
   artist: 'SÖREN',
   title: 'New Neighbors',
   tags: ['House', 'Dance'],
