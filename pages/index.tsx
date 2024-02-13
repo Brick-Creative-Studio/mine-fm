@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useLayoutStore } from '../stores'
 
 import { MoodCard } from "../components/Cards/MoodCard";
-import { mood001, mood002, mood003 } from "../constants/moods";
+import { mood001, mood002, mood003, mood004 } from "../constants/moods";
 import React from "react";
 import Popup from "reactjs-popup";
 
@@ -122,11 +122,9 @@ export default function HomePage({}) {
                 </div>
               <div className={'flex space-x-4 > * + * md:space-x-24 > * + * pr-4'}>
 
+                <MoodCard mood={mood004}/>
                 <MoodCard mood={mood003}/>
-
                 <MoodCard mood={mood002}/>
-
-                <MoodCard mood={mood001}/>
 
                 <Link href={'/explore?tab=moods'}>
                   <div className={'self-center flex items-center'}>
