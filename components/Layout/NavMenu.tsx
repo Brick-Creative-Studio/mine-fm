@@ -2,25 +2,54 @@ import React, { useEffect, useState } from "react";
 import { miniAvatar, navAvatar } from './styles.css'
 import { useDisconnect, useBalance, useAccount } from 'wagmi'
 import { Menu } from '@headlessui/react'
-import { useProfileStore } from '../../stores'
-import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useLayoutStore, useProfileStore } from "../../stores";
 import Link from 'next/link'
 import { parseEther, formatEther } from 'ethers/lib/utils'
 import { BigNumber } from 'ethers'
+import { usePrivy, useLogin, useLogout } from '@privy-io/react-auth';
+
 
 interface NavMenuProps {
-  signerAddress: string | null
-  hasAccount: boolean
+
 }
 
-const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
-  const { aura } = useProfileStore((state) => state)
-  const { disconnect } = useDisconnect()
+const NavMenu: React.FC<NavMenuProps> = ({ }) => {
+
+  const { aura, setHasAccount, hasAccount } = useProfileStore((state) => state)
+  const { isMobile } = useLayoutStore((state) => state)
+  const {disconnect} = useDisconnect();
+
+  const { login } = useLogin({
+    onComplete: (user, isNewUser, wasAlreadyAuthenticated) => {
+      console.log(user, isNewUser, wasAlreadyAuthenticated);
+      if(isNewUser){
+        setHasAccount(false)
+      } else {
+        setHasAccount(true)
+      }
+    },
+    onError: (error) => {
+      console.log(error);
+      // Any logic you'd like to execute after a user exits the login flow or there is an error
+    }
+  })
+  const {logout} = useLogout({
+    onSuccess: async () => {
+      console.log('User logged out');
+      setHasAccount(false)
+      await disconnect()
+    },
+  })
+  const {address, isConnected, isConnecting, isDisconnected} = useAccount({
+    async onDisconnect() {
+      await logout()
+    }
+  });
+
   const { data } = useBalance({
-    address: signerAddress as `0x${string}`,
+    address: address as `0x${string}`,
     formatUnits: 'ether',
   })
-  const { openConnectModal } = useConnectModal();
 
   const [hamburgerOpen, setHamburgerOpen] = useState(false)
 
@@ -39,12 +68,13 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
     userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
   }, [aura])
 
+
   return (
     <nav className="z-40">
       <Menu as="div" className="">
         <Menu.Button as={React.Fragment}>
           {
-            signerAddress ? (
+            isConnected ? (
               <button style={{ background: `${userGradient}` }} className={navAvatar} />
             ) : (
               <div className="pl-[20px] mr-[-20px] cursor-pointer" onClick={toggleHamburger}>
@@ -92,7 +122,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
             </Menu.Item>
             <Menu.Item as="div" className={'p-4'}>
               {({ active }) => (
-                signerAddress ? <div style={{ background: `${userGradient}` }}
+                address ? <div style={{ background: `${userGradient}` }}
                      className={miniAvatar} /> : <div/>
               )}
             </Menu.Item>
@@ -100,7 +130,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
           <Menu.Item>
             {({ active }) => (
 
-              signerAddress ?
+              isConnected ?
               <h2 className={'text-center'}>
                 {' '}
                 {formattedBalance ? formattedBalance : 0} ETH{' '}
@@ -149,9 +179,9 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
           <Link
             className={`
             } flex items-center  justify-between w-full`}
-            href={hasAccount ? `/profile/${signerAddress}` : '/onboarding?tab=aura'}
+            href={hasAccount ? `/profile/${address}` : '/onboarding?tab=aura'}
           >
-          <Menu.Item as="div" className={`flex my-4 cursor-pointer hover:bg-[#FF8500] ${signerAddress ? null : 'hidden'}`}>
+          <Menu.Item as="div" className={`flex my-4 cursor-pointer hover:bg-[#FF8500] ${address ? null : 'hidden'}`}>
                 {hasAccount ? (
                   <h3 className={'text-[20px] font-light mx-8 cursor-pointer'}>Profile</h3>
                 ) : (
@@ -162,7 +192,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
 
           <Link
             className={`flex items-center justify-between w-full`}
-            href={hasAccount ? `/profile/${signerAddress}/settings?tab=aura` : ''}
+            href={hasAccount ? `/profile/${address}/settings?tab=aura` : ''}
           >
           <Menu.Item as="div" className={`flex my-4 cursor-pointer hover:bg-[#FF8500] ${hasAccount ? null : 'hidden'}`}>
 
@@ -202,10 +232,10 @@ const NavMenu: React.FC<NavMenuProps> = ({ signerAddress, hasAccount }) => {
                   active && 'bg-blue-500'
                 } border-[#B999FA] rounded-md border-solid hover:bg-red-500 bg-transparent flex items-center justify-center w-3/4 cursor-pointer`}
                 onClick={() =>  {
-                  signerAddress ? disconnect() : openConnectModal?.()
+                  isConnected ? (disconnect() ): login()
                 }}
               >
-                {<h3 className={'text-[20px] font-light text-white'}>{ signerAddress ? `Disconnect` : `Connect`} </h3>}
+                {<h3 className={'text-[20px] font-light text-white'}>{ isConnected ? `Log Out` : `Log In`} </h3>}
               </button>
             )}
           </Menu.Item>

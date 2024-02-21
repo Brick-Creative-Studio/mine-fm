@@ -117,9 +117,8 @@ export const MoodCard = (props: CardProps) => {
         </div>
         <div className={'flex justify-between'}>
           <a href={props.mood.socialURL} target="_blank">
-            <p className={'text-[#B999FA] cursor-pointer'}> {props.mood.artist} </p>
+            <p className={'text-lg hover:text-blue-600 text-[#B999FA] cursor-pointer'}> {props.mood.artist} </p>
           </a>
-          <p className={'text-[#B999FA]'}> {props.mood.date} </p>
         </div>
         <p className={'my-0 text-xl text-[#B999FA]'}> {props.mood.title} </p>
 
