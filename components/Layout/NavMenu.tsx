@@ -17,11 +17,12 @@ const NavMenu: React.FC<NavMenuProps> = ({ }) => {
 
   const { aura, setHasAccount, hasAccount } = useProfileStore((state) => state)
   const { isMobile } = useLayoutStore((state) => state)
+  const [isWalletConnected, setWalletConnection] = useState(false);
   const {disconnect} = useDisconnect();
 
   const { login } = useLogin({
     onComplete: (user, isNewUser, wasAlreadyAuthenticated) => {
-      console.log(user, isNewUser, wasAlreadyAuthenticated);
+      console.log('user info after login:',user, isNewUser, wasAlreadyAuthenticated);
       if(isNewUser){
         setHasAccount(false)
       } else {
@@ -68,13 +69,21 @@ const NavMenu: React.FC<NavMenuProps> = ({ }) => {
     userGradient = `linear-gradient(to ${aura.direction}, ${aura.colorOne}, ${aura.colorTwo}, ${aura.colorThree})`
   }, [aura])
 
+  useEffect(() => {
+    if(isConnected){
+      setWalletConnection(true)
+    } else {
+      setWalletConnection(false)
+    }
+  }, [isConnected])
+
 
   return (
     <nav className="z-40">
       <Menu as="div" className="">
         <Menu.Button as={React.Fragment}>
           {
-            isConnected ? (
+            isWalletConnected ? (
               <button style={{ background: `${userGradient}` }} className={navAvatar} />
             ) : (
               <div className="pl-[20px] mr-[-20px] cursor-pointer" onClick={toggleHamburger}>

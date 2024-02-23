@@ -143,7 +143,8 @@ const Nav = () => {
   ) : (
     <div className={NavBar}>
       <div className={navLogo}>
-        <Link key={'home'} href={'/'}>
+        <Link key={'home'} href={'/'} passHref>
+          <a>
           <Image
             src={'/mine-boxLogo-icon.svg'}
             alt={'minefm-logo'}
@@ -151,6 +152,7 @@ const Nav = () => {
             height={48}
             color={'#FFF'}
           />
+            </a>
         </Link>
       </div>
       {/*<div className={marquee}>*/}
