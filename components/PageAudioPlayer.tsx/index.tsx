@@ -18,21 +18,38 @@ const PageAudioPlayer = () => {
   const [isPlaying, setIsPlaying]: [boolean, Function] = useState(false)
 
   // useEffect to check if audio src is playable
+  // useEffect(() => {
+  //   const eveningsAPI = "https://api.evenings.co/v1/streams/mine.fm/public"
+  //   async function fetchStatus(){
+  //     const stationData = await fetch(eveningsAPI)
+  //     const data: Station = await stationData?.json()
+  //
+  //     if(data.online){
+  //       setPlayable(true)
+  //     } else{
+  //       setPlayable(false)
+  //     }
+  //   }
+  //   fetchStatus()
+  //
+  // }, [])
+
   useEffect(() => {
-    const eveningsAPI = "https://api.evenings.co/v1/streams/mine.fm/public"
-    async function fetchStatus(){
-      const stationData = await fetch(eveningsAPI)
-      const data: Station = await stationData?.json()
-
-      if(data.online){
-        setPlayable(true)
-      } else{
-        setPlayable(false)
-      }
-    }
-    fetchStatus()
-
+    const audio = audioRef.current?.currentSrc
+    fetch(audio as string)
+      .then((res) => {
+        if (res.ok) {
+          setPlayable(true)
+        } else {
+          setPlayable(false)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [])
+
+
 
   const handlePlayPause = () => {
     if (!playable) return

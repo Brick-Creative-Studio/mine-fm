@@ -12,6 +12,7 @@ type Mood = {
   description: string | null
   date: string | null
   socialURL: string
+  moodColor: string
 }
 interface CardProps {
   mood: Mood
@@ -96,7 +97,7 @@ export const MoodCard = (props: CardProps) => {
   return (
     <div
       className={
-        'flex flex-col justify-between  p-2 px-4 mb-4 rounded-md drop-shadow-lg h-[26.625rem] w-72 bg-[#1D0045]'
+        'flex flex-col justify-between  p-2 px-4 mb-4 rounded-md drop-shadow-lg h-[27.625rem] w-72 bg-[#1D0045]'
       }
     >
       <div>
@@ -120,9 +121,15 @@ export const MoodCard = (props: CardProps) => {
             <p className={'text-lg hover:text-blue-600 text-[#B999FA] cursor-pointer'}> {props.mood.artist} </p>
           </a>
         </div>
-        <p className={'my-0 text-xl text-[#B999FA]'}> {props.mood.title} </p>
+        <div className={'relative flex-col'}>
+          <p className={'my-0 text-xl text-[#B999FA]'}> {props.mood.title} </p>
 
-        <p className={'my-0 text-sm'}> {props.mood.description}</p>
+          <p className={'my-0 text-sm'}> {props.mood.description}</p>
+
+          <div style={{ background: props.mood.moodColor}} className={`w-full flex grow justify-center items-center  absolute  top-16 h-8 p-0 mx-0 mt-4`}>
+            <p className={'my-0 text-sm text-gray-950 text-center '}> MOOD Code: {props.mood.moodColor}</p>
+          </div>
+        </div>
       </div>
       <div className={'flex my-2'}>
         <div
