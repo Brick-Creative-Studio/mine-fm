@@ -27,7 +27,7 @@ const Footer = () => {
   return hideFooter ? null : (
     <>
       { isVisible ? (
-        <footer className="flex flex-col bg-[#1D0045] mt-8 ml-0 justify-center fixed bottom-0 left-0 right-0  w-full h-16">
+        <footer className="flex flex-col bg-[#1D0045] mt-8 ml-0 justify-center fixed bottom-0 left-0 right-0  w-full h-20">
 
           <WaveformPlayer />
 
