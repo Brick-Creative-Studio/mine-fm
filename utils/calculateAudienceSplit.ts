@@ -7,11 +7,10 @@ const calculateAudienceSplit = (weight: number, treasurySum: number) => {
 
   if (weight <= 0) {
     return {
-      ethSplit: 0,
-      percentageSplit: 0
+      ethSplit: 0
     }
   } else {
-    const ethSplit = Math.ceil((weight * AUDIENCE_SPLIT) * treasurySum  * 10000) / 10000
+    const ethSplit = Math.ceil((weight * treasurySum) * 10000) / 10000
     console.log('eth split:', ethSplit)
     return {
      ethSplit: ethSplit,
