@@ -34,7 +34,7 @@ export const TimeAudioLabel = () => {
     <>
       {
         isMobile ? (
-          <div className={'w-full flex flex-col mt-5 bottom-0'}>
+          <div className={'w-full flex flex-col mt-4 bottom-0'}>
 
             <AudioSeekBar/>
             <div className={'w-full justify-between p-0 m-0 h-fit flex'}>
