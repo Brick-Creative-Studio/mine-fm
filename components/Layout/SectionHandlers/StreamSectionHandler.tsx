@@ -3,8 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Link from 'next/link'
 import { slugify } from 'utils/slugify'
 import { unslugify } from 'utils/unslugify'
-import { useRouter } from "next/router";
-import { shallow } from "zustand/shallow";
+import { useRouter } from 'next/router'
+import { shallow } from 'zustand/shallow'
 
 interface SectionHandlerProps {
   sections: {
@@ -27,7 +27,6 @@ export const StreamSectionHandler: React.FC<SectionHandlerProps> = ({
   activeTab,
   eventId,
 }) => {
-
   const router = useRouter()
   /*
     handle active session if:
@@ -56,7 +55,7 @@ export const StreamSectionHandler: React.FC<SectionHandlerProps> = ({
   }, [activeTab, tab])
 
   function changeSection(section: string) {
-    router.push(`/livestream/${eventId}?tab=${section}`, undefined, { shallow: true})
+    router.push(`/livestream/${eventId}?tab=${section}`, undefined, { shallow: true })
   }
 
   return (
