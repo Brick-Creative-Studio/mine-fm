@@ -1,15 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import styles from './Player.module.css'
+import AudioVisualizer from 'components/AudioVisualizer/AudioVisualizer'
 
 interface Station {
-  id: string,
-  name: string,
-  host: string,
-  description: string,
-  streamUrl: string,
-  image: string,
-  online: boolean,
+  id: string
+  name: string
+  host: string
+  description: string
+  streamUrl: string
+  image: string
+  online: boolean
   listeners: number
 }
 const PageAudioPlayer = () => {
@@ -19,19 +20,18 @@ const PageAudioPlayer = () => {
 
   // useEffect to check if audio src is playable
   // useEffect(() => {
-  //   const eveningsAPI = "https://api.evenings.co/v1/streams/mine.fm/public"
-  //   async function fetchStatus(){
+  //   const eveningsAPI = 'https://api.evenings.co/v1/streams/mine.fm/public'
+  //   async function fetchStatus() {
   //     const stationData = await fetch(eveningsAPI)
   //     const data: Station = await stationData?.json()
-  //
-  //     if(data.online){
+
+  //     if (data.online) {
   //       setPlayable(true)
-  //     } else{
+  //     } else {
   //       setPlayable(false)
   //     }
   //   }
   //   fetchStatus()
-  //
   // }, [])
 
   useEffect(() => {
