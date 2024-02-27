@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import styles from './Player.module.css'
+import { VolumeControl } from "../VolumeControl/VolumeControl";
 import AudioVisualizer from 'components/AudioVisualizer/AudioVisualizer'
 
 interface Station {
@@ -17,6 +18,8 @@ const PageAudioPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [playable, setPlayable] = useState<boolean>(false)
   const [isPlaying, setIsPlaying]: [boolean, Function] = useState(false)
+  const [vol, setVol] = useState(1)
+
 
   // useEffect to check if audio src is playable
   // useEffect(() => {
@@ -64,47 +67,79 @@ const PageAudioPlayer = () => {
     }
   }
 
+  useEffect(() => {
+    if(audioRef.current){
+      audioRef.current!.volume = vol
+      console.log('change vol', audioRef.current!.volume)
+    }
+  }, [vol])
+
   return (
     <>
       {!isPlaying && playable ? (
-
         <div className={styles.overlay}>
-          <div className={'absolute w-full md:opacity-0 md:hover:opacity-100 h-64 md:h-[600px]'}>
+          <div
+            className={
+              'absolute w-full md:opacity-0 md:hover:opacity-100 h-64 md:h-[600px]'
+            }
+          >
             <img
               src="/PlayIcon.svg"
               alt="play button"
               width={150}
               height={150}
               onClick={handlePlayPause}
-              className={'cursor-pointer relative left-1/3 top-1/4 md:absolute  md:left-[28rem] md:top-[12rem]  '}
+              className={
+                'cursor-pointer relative left-1/3 top-1/4 md:absolute  md:left-[28rem] md:top-[12rem]  '
+              }
             />
           </div>
-          <img src={'/gif/mineCUBE-bw.jpeg'} alt={'mine-cube gif'} className={'m-auto w-full h-full object-contain'}/>
-
+          <img
+            src={'/gif/mineCUBE-bw.jpeg'}
+            alt={'mine-cube gif'}
+            className={'m-auto w-full h-full object-contain'}
+          />
         </div>
       ) : isPlaying && playable ? (
         <div className={styles.overlay}>
-          <div className={'absolute w-full md:opacity-0 md:hover:opacity-100 h-64 md:h-[600px]'}>
-            <img
-              src="/PauseIcon.svg"
-              alt=""
-              width={150}
-              height={150}
-              onClick={handlePlayPause}
-              className={'cursor-pointer relative left-1/3 opacity-0 active:opacity-100 md:opacity-100 top-1/4 md:relative  md:left-[28rem] md:top-[12rem]'}
-            />
-          </div>
-          <img src={'/gif/mine-cube.gif'} alt={'mine-cube gif'} className={' w-full h-full object-contain'}/>
+          {/* <div
+            className={
+              'absolute w-full md:opacity-0 md:hover:opacity-100 h-64 md:h-[600px]'
+            }
+          >
 
+          </div> */}
+          <AudioVisualizer />
+          <div className={'w-full h-12 bg-black/50 absolute bottom-0 flex items-center'}>
+            <img
+              src="/w-pause-icon.svg"
+              alt=""
+              onClick={handlePlayPause}
+              className={
+                'h-10 w-10 cursor-pointer opacity-0 active:opacity-100 md:opacity-100'
+              }
+            />
+
+            <div className="flex items-center">
+              <input
+                type="range"
+                min={0}
+                max={1}
+                className={'cursor-grab'}
+                step={.02}
+                value={vol }
+                onChange={event => {
+                  setVol(event.target.valueAsNumber)
+                  audioRef.current!.volume = vol
+                }}
+              />
+              <i className="volumeControl__icon" />
+            </div>          </div>
         </div>
       ) : !playable ? (
         <div>Stream is not Live</div>
       ) : null}
-      {/*<audio src="https://media.evenings.co/s/ML3761y9Q"  ref={audioRef}/>*/}
-      <audio  ref={audioRef}>
-
-      <source src="https://stream-relay-geo.ntslive.net/stream/64.aac?client=NTSWebApp&t=1691770293785" />
-      {/*   <source src="https://media.evenings.co/s/ML3761y9Q" type={'audio/mpeg'} />*/}
+      <audio ref={audioRef}>
       </audio>
     </>
   )

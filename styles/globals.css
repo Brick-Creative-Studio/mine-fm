@@ -178,5 +178,5 @@ input::-webkit-inner-spin-button {
 }
 
 #leva__root > * {
-  position: inherit
+  position: relative;
 }
